@@ -1,0 +1,41 @@
+[DatabaseService]
+    ;
+    ;### Choose the DB
+    ;
+    ;--- For SQLite
+    StorageProvider = "OpenSim.Data.SQLite.dll"
+    ;--- For MySql
+    ;StorageProvider = "OpenSim.Data.MySQL.dll"
+    ;ConnectionString = "Data Source=localhost;Database=opensim;User ID=opensim;Password=***;"
+
+[AssetService]
+
+    DefaultAssetLoader = "OpenSim.Framework.AssetLoader.Filesystem.dll"
+    AssetLoaderArgs = "assets/AssetSets.xml"
+
+
+[Modules]
+    ;; Choose 0 or 1 cache modules, and the corresponding config file, if it exists.
+    ;; Copy the config .example file into your own .ini file and change configs there
+    
+    ;AssetCaching = "GlynnTuckerAssetCache"
+    
+    ;AssetCaching = "FlotsamAssetCache"
+    ;Include-FlotsamCache = "config-include/FlotsamCache.ini"
+
+    AssetCaching = "CenomeMemoryAssetCache"
+    Include-CenomeCache = "config-include/CenomeCache.ini"
+
+    ;; Enable this to use Freeswitch on a standalone
+    ;FreeswitchServiceInConnector = True
+
+[FreeswitchService]
+    ;; Configuration for the freeswitch service goes here
+    LocalServiceModule = "OpenSim.Services.FreeswitchService.dll:FreeswitchService"
+
+[GridService]
+    ;; For in-memory region storage (default)
+	StorageProvider = "OpenSim.Data.Null.dll:NullRegionData"
+    ;;--- For MySql region storage (alternative)
+ 	;StorageProvider = "OpenSim.Data.MySQL.dll:MySqlRegionData"
+	;ConnectionString = "Data Source=localhost;Database=opensim;User ID=opensim;Password=***;"
