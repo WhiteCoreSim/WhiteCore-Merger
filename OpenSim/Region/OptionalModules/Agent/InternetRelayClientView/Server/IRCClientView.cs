@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -281,7 +281,7 @@ namespace OpenSim.Region.OptionalModules.Agent.InternetRelayClientView.Server
         {
             if (m_hasUser && m_hasNick)
             {
-                SendServerCommand("001 " + m_nick + " :Welcome to OpenSimulator IRCd");
+                SendServerCommand("001 " + m_nick + " :Welcome to WhiteCore-Sim IRCd");
                 SendServerCommand("002 " + m_nick + " :Running OpenSimVersion");
                 SendServerCommand("003 " + m_nick + " :This server was created over 9000 years ago");
                 SendServerCommand("004 " + m_nick + " :opensimirc r1 aoOirw abeiIklmnoOpqrstv");
@@ -298,7 +298,7 @@ namespace OpenSim.Region.OptionalModules.Agent.InternetRelayClientView.Server
                 m_nick = m_username.Replace(" ", "");
 
                 IRC_SendReplyJoin();
-                IRC_SendChannelPrivmsg("System", "Welcome to OpenSimulator.");
+                IRC_SendChannelPrivmsg("System", "Welcome to WhiteCore-Sim.");
                 IRC_SendChannelPrivmsg("System", "You are in a maze of twisty little passages, all alike.");
                 IRC_SendChannelPrivmsg("System", "It is pitch black. You are likely to be eaten by a grue.");
 
@@ -403,14 +403,14 @@ namespace OpenSim.Region.OptionalModules.Agent.InternetRelayClientView.Server
 
         private void IRC_SendMOTD()
         {
-            SendServerCommand("375 :- OpenSimulator Message of the day -");
+            SendServerCommand("375 :- WhiteCore-Sim Message of the day -");
             SendServerCommand("372 :- Hiya!");
             SendServerCommand("376 :End of /MOTD command");
         }
 
         private void IRC_SendReplyTopic()
         {
-            SendServerCommand("332 " + IrcRegionName + " :OpenSimulator IRC Server");
+            SendServerCommand("332 " + IrcRegionName + " :WhiteCore-Sim IRC Server");
         }
 
         private void IRC_SendReplyUsers()

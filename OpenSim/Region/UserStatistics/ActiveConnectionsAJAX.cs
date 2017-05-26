@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -134,7 +134,7 @@ namespace OpenSim.Region.UserStatistics
         public Dictionary<string, int> DecodeClientThrottles(byte[] throttle)
         {
             Dictionary<string, int> returndict = new Dictionary<string, int>();
-            // From mantis http://opensimulator.org/mantis/view.php?id=1374
+            // From mantis http://whitecore-sim.org/mantis/view.php?id=1374
             // it appears that sometimes we are receiving empty throttle byte arrays.
             // TODO: Investigate this behaviour
             if (throttle.Length == 0)
