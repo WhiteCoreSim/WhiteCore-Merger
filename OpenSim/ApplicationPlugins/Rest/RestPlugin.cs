@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -240,7 +240,7 @@ namespace OpenSim.ApplicationPlugins.Rest
                 // the key lookup in Configs failed, which signals to
                 // us that noone is interested in our services...they
                 // don't know what they are missing out on...
-                // NOTE: Under the present OpenSimulator implementation it is
+                // NOTE: Under the present WhiteCore-Sim implementation it is
                 // not possible for the openSimulator pointer to be null. However
                 // were the implementation to be changed, this could
                 // result in a silent initialization failure. Harmless

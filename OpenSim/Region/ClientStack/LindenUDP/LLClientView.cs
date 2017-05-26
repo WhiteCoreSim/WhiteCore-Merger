@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -744,13 +744,13 @@ namespace OpenSim.Region.ClientStack.LindenUDP
 
                         //eq.ChatterboxInvitation(
                         //    new UUID("00000000-68f9-1111-024e-222222111123"),
-                        //    "OpenSimulator Testing", im.fromAgentID, im.message, im.toAgentID, im.fromAgentName, im.dialog, 0,
+                        //    "WhiteCore-Sim Testing", im.fromAgentID, im.message, im.toAgentID, im.fromAgentName, im.dialog, 0,
                         //    false, 0, new Vector3(), 1, im.imSessionID, im.fromGroup, im.binaryBucket);
 
                         eq.ChatterboxInvitation(
                             new UUID("00000000-68f9-1111-024e-222222111123"),
-                            "OpenSimulator Testing", new UUID(im.fromAgentID), im.message, new UUID(im.toAgentID), im.fromAgentName, im.dialog, 0,
-                            false, 0, new Vector3(), 1, new UUID(im.imSessionID), im.fromGroup, Util.StringToBytes256("OpenSimulator Testing"));
+                            "WhiteCore-Sim Testing", new UUID(im.fromAgentID), im.message, new UUID(im.toAgentID), im.fromAgentName, im.dialog, 0,
+                            false, 0, new Vector3(), 1, new UUID(im.imSessionID), im.fromGroup, Util.StringToBytes256("WhiteCore-Sim Testing"));
 
                         eq.ChatterBoxSessionAgentListUpdates(
                             new UUID("00000000-68f9-1111-024e-222222111123"),
@@ -1261,7 +1261,7 @@ namespace OpenSim.Region.ClientStack.LindenUDP
             // packets containing metadata for in excess of 100 items.  But in practice, there may be other
             // factors (e.g. firewalls) restraining the maximum UDP packet size.  See,
             //
-            // http://opensimulator.org/mantis/view.php?id=226
+            // http://whitecore-sim.org/mantis/view.php?id=226
             //
             // for one example of this kind of thing.  In fact, the Linden servers appear to only send about
             // 6 to 7 items at a time, so let's stick with 6

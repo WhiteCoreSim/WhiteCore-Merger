@@ -1,0 +1,242 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{675096A5-0000-0000-0000-000000000000}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon></ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpenSim.Data.SQLite</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder></AppDesignerFolder>
+    <RootNamespace>OpenSim.Data.SQLite</RootNamespace>
+    <StartupObject></StartupObject>
+    <StartArguments></StartArguments>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn></NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>False</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>True</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn></NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net.dll" >
+        <Name>log4net.dll</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Addins.dll" >
+        <Name>Mono.Addins.dll</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Data.SqliteClient" >
+        <Name>Mono.Data.SqliteClient</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenMetaverse.dll" >
+        <Name>OpenMetaverse.dll</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes.dll" >
+        <Name>OpenMetaverseTypes.dll</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" >
+        <Name>System</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" >
+        <Name>System.Data</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.dll" >
+        <Name>System.Data.SQLite.dll</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing" >
+        <Name>System.Drawing</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" >
+        <Name>System.Xml</Name>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenSim.Data.csproj">
+      <Name>OpenSim.Data</Name>
+      <Project>{7E218E2D-0000-0000-0000-000000000000}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\OpenSim.Framework.csproj">
+      <Name>OpenSim.Framework</Name>
+      <Project>{BCCDBB55-0000-0000-0000-000000000000}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Console\OpenSim.Framework.Console.csproj">
+      <Name>OpenSim.Framework.Console</Name>
+      <Project>{0ED8EBE8-0000-0000-0000-000000000000}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Region\Framework\OpenSim.Region.Framework.csproj">
+      <Name>OpenSim.Region.Framework</Name>
+      <Project>{C98F6D97-0000-0000-0000-000000000000}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SQLiteAssetData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteEstateData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteGridData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteInventoryStore.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteRegionData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteUserData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SQLiteUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Resources\001_AssetStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\001_InventoryStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\001_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\001_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\002_AssetStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\002_InventoryStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\002_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\002_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\003_AssetStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\003_InventoryStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\003_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\003_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\004_AssetStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\004_InventoryStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\004_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\004_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\005_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\005_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\006_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\006_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\007_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\007_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\008_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\008_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\009_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\009_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\010_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\010_UserStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\011_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\012_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\013_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\014_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\015_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\016_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\017_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\018_RegionStore.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\OpenSim.Data.SQLite.addin.xml">
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
