@@ -91,7 +91,7 @@ namespace OpenSim.Region.Framework.Scenes
             {
                 GetWearableAssetUuids(assetUuid, assetUuids);
             }
-            else if (assetType.Gesture == assetType)
+            else if (AssetType.Gesture == assetType)
             {
                 GetGestureAssetUuids(assetUuid, assetUuids);
             }
