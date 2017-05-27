@@ -33,7 +33,7 @@
     </Configuration>
 
     <!-- Core OpenSim Projects -->
-<!--
+    <!--
         <Project frameworkVersion="v3_5" name="OpenSim.Model" path="OpenSim/Model" type="Library">
           <Configuration name="Debug">
             <Options>
@@ -533,7 +533,7 @@
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
       <Reference name="OpenSim.Region.Physics.Manager"/>
-      <Reference name="Ode.NET.dll" />    
+      <Reference name="Ode.NET.dll" />
       <Reference name="log4net.dll"/>
 
       <Files>
@@ -570,8 +570,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
-    
 
     <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.Meshing" path="OpenSim/Region/Physics/Meshing" type="Library">
       <Configuration name="Debug">
@@ -656,7 +654,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Framework.Capabilities" path="OpenSim/Framework/Capabilities" type="Library">
       <Configuration name="Debug">
@@ -981,7 +978,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Server.Base" path="OpenSim/Server/Base" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1102,7 +1098,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Grid.UserServer.Modules" path="OpenSim/Grid/UserServer.Modules" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1144,7 +1139,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Grid.UserServer" path="OpenSim/Grid/UserServer" type="Exe">
       <Configuration name="Debug">
@@ -1222,7 +1216,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Grid.MessagingServer" path="OpenSim/Grid/MessagingServer" type="Exe">
       <Configuration name="Debug">
         <Options>
@@ -1288,7 +1281,7 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-    
+
     <Project frameworkVersion="v3_5" name="OpenSim.Services.AuthorizationService" path="OpenSim/Services/AuthorizationService" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1476,7 +1469,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Server.Handlers" path="OpenSim/Server/Handlers" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1619,7 +1611,7 @@
       <Reference name="OpenSim.Region.Physics.Manager"/>
 
       <Reference name="GlynnTucker.Cache.dll"/>
-      
+
       <!-- For scripting in funny languages by default -->
       <Reference name="Microsoft.JScript"/>
       <Reference name="XMLRPC.dll"/>
@@ -1627,8 +1619,8 @@
       <Reference name="Nini.dll" />
       <Reference name="log4net.dll"/>
       <Reference name="DotNetOpenMail.dll"/>
-	  
-	  <!-- To allow regions to have mono addins -->
+
+      <!-- To allow regions to have mono addins -->
       <Reference name="Mono.Addins.dll" />
 
       <Files>
@@ -1662,7 +1654,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Region.OptionalModules" path="OpenSim/Region/OptionalModules" type="Library">
       <Configuration name="Debug">
@@ -1713,7 +1704,6 @@
       <Reference name="log4net.dll"/>
       <Reference name="DotNetOpenMail.dll"/>
 
-	  
       <Files>
         <Match pattern="*.cs" recurse="true">
           <Exclude name="Tests" pattern="Tests" />
@@ -1722,8 +1712,7 @@
       </Files>
     </Project>
 
-
-<Project frameworkVersion="v3_5" name="OpenSim.Region.RegionCombinerModule" path="OpenSim/Region/RegionCombinerModule" type="Library">
+    <Project frameworkVersion="v3_5" name="OpenSim.Region.RegionCombinerModule" path="OpenSim/Region/RegionCombinerModule" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../bin/</OutputPath>
@@ -1751,8 +1740,8 @@
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="Nini.dll" />
       <Reference name="log4net.dll"/>
-	  
-	  <!-- To allow regions to have mono addins -->
+
+      <!-- To allow regions to have mono addins -->
       <Reference name="Mono.Addins.dll" />
 
       <Files>
@@ -1760,9 +1749,6 @@
         <Match pattern="*.addin.xml" path="Resources" buildAction="EmbeddedResource" recurse="true"/>
       </Files>
     </Project>
-
-
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Region.Communications.Hypergrid" path="OpenSim/Region/Communications/Hypergrid" type="Library">
       <Configuration name="Debug">
@@ -2015,7 +2001,7 @@
       </Files>
     </Project>
 
-  <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.CreateCommsManager" path="OpenSim/ApplicationPlugins/CreateCommsManager" type="Library">
+    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.CreateCommsManager" path="OpenSim/ApplicationPlugins/CreateCommsManager" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../bin/</OutputPath>
@@ -2098,8 +2084,7 @@
     </Project>
 
     <!-- REST plugins -->
-    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest"
-             path="OpenSim/ApplicationPlugins/Rest" type="Library">
+    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest" path="OpenSim/ApplicationPlugins/Rest" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../bin/</OutputPath>
@@ -2275,11 +2260,9 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-	
-	
-	<!-- Client Stack Modules -->
-	
-	
+
+    <!-- Client Stack Modules -->
+
     <Project frameworkVersion="v3_5" name="OpenSim.Client.MXP" path="OpenSim/Client/MXP" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -2326,10 +2309,10 @@
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="System"/>
-	  <Reference name="System.Drawing"/>
+      <Reference name="System.Drawing"/>
       <Reference name="OpenSim.Framework"/>
-	  <Reference name="OpenSim.Framework.Servers"/>
-	  <Reference name="OpenSim.Framework.Servers.HttpServer"/>
+      <Reference name="OpenSim.Framework.Servers"/>
+      <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Region.Framework"/>
       <Reference name="OpenSim.Framework.Communications"/>
       <Reference name="OpenSim.Services.Interfaces"/>
@@ -2339,7 +2322,7 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-	
+
     <Project frameworkVersion="v3_5" name="OpenSim.Client.Linden" path="OpenSim/Client/Linden" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -2376,8 +2359,6 @@
         <Match pattern="*.addin.xml" path="Resources" buildAction="EmbeddedResource" recurse="true"/>
       </Files>
     </Project>
-
-
 
     <!-- Data Base Modules -->
     <Project frameworkVersion="v3_5" name="OpenSim.Data.MySQL" path="OpenSim/Data/MySQL" type="Library">
@@ -2747,7 +2728,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Region.UserStatistics" path="OpenSim/Region/UserStatistics" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -2908,7 +2888,6 @@
       </Files>
     </Project>
 
-
     <!-- Test assemblies -->
     <Project frameworkVersion="v3_5" name="OpenSim.Tests.Common" path="OpenSim/Tests/Common" type="Library">
       <Configuration name="Debug">
@@ -2965,7 +2944,7 @@
       <ReferencePath>../../../bin/</ReferencePath>
       <Reference name="System"/>
       <Reference name="System.Xml"/>
-	    <Reference name="System.Core"/>
+      <Reference name="System.Core"/>
       <Reference name="System.Drawing"/>
       <Reference name="System.Data"/>
       <Reference name="OpenMetaverse.dll"/>
@@ -2974,7 +2953,7 @@
       <Reference name="OpenSim.Data"/>
       <Reference name="OpenSim.Region.Framework"/>
       <Reference name="OpenSim.Region.CoreModules"/>
-	    <Reference name="OpenSim.Tests.Common"/>
+      <Reference name="OpenSim.Tests.Common"/>
       <Reference name="log4net.dll"/>
       <Reference name="Mono.Addins.dll" />
       <Reference name="nunit.framework.dll" />
@@ -3215,7 +3194,7 @@
       <Reference name="OpenSim.Region.CoreModules"/>
       <Reference name="OpenSim.Region.Physics.Manager"/>
       <Reference name="OpenSim.Services.Interfaces"/>
-      
+
       <!-- Unit tests -->
       <Reference name="OpenSim.Tests.Common"/>
       <Reference name="Nini.dll"/>
@@ -3415,68 +3394,7 @@
       </Files>
     </Project>
 
-  <?include file="addon-modules/*/prebuild*.xml" ?>
-
-  </Solution>
-
-  <!-- Prebuild tool -->
-  <Solution name="Prebuild" path="Prebuild/" >
-    <Configuration name="Debug">
-      <Options>
-        <CompilerDefines>DEBUG;TRACE</CompilerDefines>
-        <OptimizeCode>false</OptimizeCode>
-        <OutputPath>bin/Debug</OutputPath>
-        <DebugInformation>true</DebugInformation>
-        <SuppressWarnings>1595</SuppressWarnings>
-      </Options>
-    </Configuration>
-    <Configuration name="Release">
-      <Options>
-        <CompilerDefines>TRACE</CompilerDefines>
-        <OutputPath>bin/Release</OutputPath>
-        <OptimizeCode>true</OptimizeCode>
-        <DebugInformation>false</DebugInformation>
-        <SuppressWarnings>1595</SuppressWarnings>
-      </Options>
-    </Configuration>
-
-    <Project frameworkVersion="v3_5" name="Prebuild" path="src/" language="C#" assemblyName="Prebuild" icon="App.ico" type="Exe" rootNamespace="Prebuild" startupObject="Prebuild.Prebuild">
-      <Configuration name="Debug">
-        <Options>
-          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
-          <OptimizeCode>false</OptimizeCode>
-          <OutputPath>..\..\bin\</OutputPath>
-          <DebugInformation>true</DebugInformation>
-          <KeyFile>Prebuild.snk</KeyFile>
-          <SuppressWarnings>1595</SuppressWarnings>
-        </Options>
-      </Configuration>
-      <Configuration name="Release">
-        <Options>
-          <CompilerDefines>TRACE</CompilerDefines>
-          <OutputPath>..\..\bin\</OutputPath>
-          <OptimizeCode>true</OptimizeCode>
-          <DebugInformation>false</DebugInformation>
-          <KeyFile>Prebuild.snk</KeyFile>
-          <SuppressWarnings>1595</SuppressWarnings>
-        </Options>
-      </Configuration>
-      <ReferencePath>../../bin/</ReferencePath>
-      <Reference name="System.EnterpriseServices" />
-      <Reference name="System.Xml" />
-      <Reference name="System" />
-      <Files>
-        <Match pattern="App.ico" buildAction="EmbeddedResource"/>
-        <Match path="data" pattern="prebuild-1.7.xsd" buildAction="EmbeddedResource"/>
-        <Match pattern="*.cs" recurse="true"/>
-      </Files>
-    </Project>
+    <?include file="addon-modules/*/prebuild*.xml" ?>
 
   </Solution>
 </Prebuild>
-
-
-
-
-
-
