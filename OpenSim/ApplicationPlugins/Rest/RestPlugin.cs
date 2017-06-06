@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,18 +45,14 @@ namespace OpenSim.ApplicationPlugins.Rest
     {
         #region properties
 
-        protected static readonly ILog m_log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private IConfig _config; // Configuration source: Rest Plugins
         private IConfig _pluginConfig; // Configuration source: Plugin specific
         private OpenSimBase _app; // The 'server'
         private BaseHttpServer _httpd; // The server's RPC interface
         private string _prefix; // URL prefix below
-        // which all REST URLs
-        // are living
-        // private StringWriter _sw = null;
-        // private RestXmlWriter _xw = null;
+        // which all REST URLs are living
 
         private string _godkey;
         private int _reqk;
@@ -149,32 +147,6 @@ namespace OpenSim.ApplicationPlugins.Rest
         /// </summary>
         public abstract string ConfigName { get; }
 
-        // public XmlTextWriter XmlWriter
-        // {
-        //     get
-        //     {
-        //         if (null == _xw)
-        //         {
-        //             _sw = new StringWriter();
-        //             _xw = new RestXmlWriter(_sw);
-        //             _xw.Formatting = Formatting.Indented;
-        //         }
-        //         return _xw;
-        //     }
-        // }
-
-        // public string XmlWriterResult
-        // {
-        //     get
-        //     {
-        //         _xw.Flush();
-        //         _xw.Close();
-        //         _xw = null;
-
-        //         return _sw.ToString();
-        //     }
-        // }
-
         #endregion properties
 
         #region methods
@@ -189,7 +161,7 @@ namespace OpenSim.ApplicationPlugins.Rest
 
         public void Initialise()
         {
-            m_log.Info("[RESTPLUGIN]: " + Name + " cannot be default-initialized!");
+            m_log.Info("[Rest Plugin]: " + Name + " cannot be default-initialized!");
             throw new PluginNotInitialisedException(Name);
         }
 
@@ -210,13 +182,13 @@ namespace OpenSim.ApplicationPlugins.Rest
             {
                 if ((_config = openSim.ConfigSource.Source.Configs["RestPlugins"]) == null)
                 {
-                    m_log.WarnFormat("{0} Rest Plugins not configured", MsgID);
+                    m_log.WarnFormat("[Rest Plugin]: {0} Rest Plugins not configured", MsgID);
                     return;
                 }
 
                 if (!_config.GetBoolean("enabled", false))
                 {
-                    //m_log.WarnFormat("{0} Rest Plugins are disabled", MsgID);
+                    //m_log.WarnFormat("[Rest Plugin]: {0} Rest Plugins are disabled", MsgID);
                     return;
                 }
 
@@ -232,7 +204,7 @@ namespace OpenSim.ApplicationPlugins.Rest
                 // Get plugin specific config
                 _pluginConfig = openSim.ConfigSource.Source.Configs[ConfigName];
 
-                m_log.InfoFormat("{0} Rest Plugins Enabled", MsgID);
+                m_log.InfoFormat("[Rest Plugin]: {0} Rest Plugins Enabled", MsgID);
             }
             catch (Exception e)
             {
@@ -248,8 +220,8 @@ namespace OpenSim.ApplicationPlugins.Rest
                 // diagnostic indication as to why. The same is true if
                 // the HTTP server reference is bad.
                 // We should at least issue a message...
-                m_log.WarnFormat("{0} Initialization failed: {1}", MsgID, e.Message);
-                m_log.DebugFormat("{0} Initialization failed: {1}", MsgID, e.ToString());
+                m_log.WarnFormat("[Rest Plugin]: {0} Initialization failed: {1}", MsgID, e.Message);
+                m_log.DebugFormat("[Rest Plugin]: {0} Initialization failed: {1}", MsgID, e.ToString());
             }
         }
 
@@ -280,7 +252,7 @@ namespace OpenSim.ApplicationPlugins.Rest
             _httpd.AddStreamHandler(h);
             _handlers.Add(h);
 
-            m_log.DebugFormat("{0} Added REST handler {1} {2}", MsgID, httpMethod, path);
+            m_log.DebugFormat("[Rest Plugin]: {0} Added REST handler {1} {2}", MsgID, httpMethod, path);
         }
 
         /// <summary>
@@ -312,12 +284,15 @@ namespace OpenSim.ApplicationPlugins.Rest
         /// </returns>
         public bool RemoveAgentHandler(string agentName, IHttpAgentHandler handler)
         {
-            if (!IsEnabled) return false;
+            if (!IsEnabled)
+                return false;
+
             if (_agents[agentName] == handler)
             {
                 _agents.Remove(agentName);
                 return _httpd.RemoveAgentHandler(agentName, handler);
             }
+
             return false;
         }
 
@@ -331,7 +306,9 @@ namespace OpenSim.ApplicationPlugins.Rest
         protected bool IsGod(OSHttpRequest request)
         {
             string[] keys = request.Headers.GetValues("X-OpenSim-Godkey");
-            if (null == keys) return false;
+
+            if (null == keys)
+                return false;
 
             // we take the last key supplied
             return keys[keys.Length - 1] == _godkey;
@@ -357,11 +334,14 @@ namespace OpenSim.ApplicationPlugins.Rest
             {
                 _httpd.RemoveStreamHandler(h.HttpMethod, h.Path);
             }
+
             _handlers = null;
+
             foreach (KeyValuePair<string, IHttpAgentHandler> h in _agents)
             {
                 _httpd.RemoveAgentHandler(h.Key, h.Value);
             }
+
             _agents = null;
         }
 
@@ -377,15 +357,14 @@ namespace OpenSim.ApplicationPlugins.Rest
         /// <param name="message">failure message</param>
         /// <remarks>This should probably set a return code as
         /// well. (?)</remarks>
-        protected string Failure(OSHttpResponse response, OSHttpStatusCode status,
-                                 string method, string format, params string[] msg)
+        protected string Failure(OSHttpResponse response, OSHttpStatusCode status, string method, string format, params string[] msg)
         {
             string m = String.Format(format, msg);
 
             response.StatusCode = (int) status;
             response.StatusDescription = m;
 
-            m_log.ErrorFormat("{0} {1} failed: {2}", MsgID, method, m);
+            m_log.ErrorFormat("[Rest Plugin]: {0} {1} failed: {2}", MsgID, method, m);
             return String.Format("<error>{0}</error>", m);
         }
 
@@ -396,16 +375,15 @@ namespace OpenSim.ApplicationPlugins.Rest
         /// <param name="e">exception causing the failure message</param>
         /// <remarks>This should probably set a return code as
         /// well. (?)</remarks>
-        public string Failure(OSHttpResponse response, OSHttpStatusCode status,
-                              string method, Exception e)
+        public string Failure(OSHttpResponse response, OSHttpStatusCode status, string method, Exception e)
         {
             string m = String.Format("exception occurred: {0}", e.Message);
 
             response.StatusCode = (int) status;
             response.StatusDescription = m;
 
-            m_log.DebugFormat("{0} {1} failed: {2}", MsgID, method, e.ToString());
-            m_log.ErrorFormat("{0} {1} failed: {2}", MsgID, method, e.Message);
+            m_log.DebugFormat("[Rest Plugin]: {0} {1} failed: {2}", MsgID, method, e.ToString());
+            m_log.ErrorFormat("[Rest Plugin]: {0} {1} failed: {2}", MsgID, method, e.Message);
 
             return String.Format("<error>{0}</error>", e.Message);
         }

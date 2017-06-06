@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,24 +41,16 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
     public partial class RestRegionPlugin : RestPlugin
     {
         #region GET methods
-        public string GetRegionInfoHandler(string request, string path, string param,
-                                           OSHttpRequest httpRequest, OSHttpResponse httpResponse)
-        {
-            // foreach (string h in httpRequest.Headers.AllKeys)
-            //     foreach (string v in httpRequest.Headers.GetValues(h))
-            //         m_log.DebugFormat("{0} IsGod: {1} -> {2}", MsgID, h, v);
 
+        public string GetRegionInfoHandler(string request, string path, string param, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        {
             MsgID = RequestID;
-            m_log.DebugFormat("{0} GET path {1} param {2}", MsgID, path, param);
+            m_log.DebugFormat("[Rest Plugin]: {0} GET path {1} param {2}", MsgID, path, param);
 
             try
             {
                 // param empty: regions list
-                // if (String.IsNullOrEmpty(param)) 
                 return GetRegionInfoHandlerRegions(httpResponse);
-                    
-                // // param not empty: specific region
-                // return GetRegionInfoHandlerRegion(httpResponse, param);
             }
             catch (Exception e)
             {
@@ -78,6 +72,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
 
                 // regions info: max number of regions
                 rxw.WriteStartAttribute(String.Empty, "max", String.Empty);
+
                 if (App.ConfigSource.Source.Configs["RemoteAdmin"] != null)
                 {
                     rxw.WriteValue(App.ConfigSource.Source.Configs["RemoteAdmin"].GetInt("region_limit", -1));
@@ -86,59 +81,51 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
                 {
                     rxw.WriteValue(-1);
                 }
+
                 rxw.WriteEndAttribute();
-                
+
                 // regions info: region
                 foreach (Scene s in App.SceneManager.Scenes)
                 {
                     rxw.WriteStartElement(String.Empty, "region", String.Empty);
-                    
                     rxw.WriteStartAttribute(String.Empty, "uuid", String.Empty);
                     rxw.WriteString(s.RegionInfo.RegionID.ToString());
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "name", String.Empty);
                     rxw.WriteString(s.RegionInfo.RegionName);
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "x", String.Empty);
                     rxw.WriteValue(s.RegionInfo.RegionLocX);
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "y", String.Empty);
                     rxw.WriteValue(s.RegionInfo.RegionLocY);
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "external_hostname", String.Empty);
                     rxw.WriteString(s.RegionInfo.ExternalHostName);
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "master_name", String.Empty);
                     rxw.WriteString(String.Format("{0} {1}", s.RegionInfo.MasterAvatarFirstName, s.RegionInfo.MasterAvatarLastName));
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "master_uuid", String.Empty);
                     rxw.WriteString(s.RegionInfo.MasterAvatarAssignedUUID.ToString());
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "ip", String.Empty);
                     rxw.WriteString(s.RegionInfo.InternalEndPoint.ToString());
                     rxw.WriteEndAttribute();
-                    
                     int users = s.GetAvatars().Count;
                     rxw.WriteStartAttribute(String.Empty, "avatars", String.Empty);
                     rxw.WriteValue(users);
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteStartAttribute(String.Empty, "objects", String.Empty);
                     rxw.WriteValue(s.Entities.Count - users);
                     rxw.WriteEndAttribute();
-                    
                     rxw.WriteEndElement();
                 }
             }
+
             return rxw.ToString();
         }
+
         #endregion GET methods
     }
 }

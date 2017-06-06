@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -23,7 +25,6 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
  */
 
 using System;
@@ -36,25 +37,25 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
 {
     public class RestTestServices : IRest
     {
-        private bool    enabled = false;
-        private string  qPrefix = "test";
+        private bool enabled = false;
+        private string qPrefix = "test";
 
         // A simple constructor is used to handle any once-only
         // initialization of working classes.
 
         public RestTestServices()
         {
-            Rest.Log.InfoFormat("{0} Test services initializing", MsgId);
-            Rest.Log.InfoFormat("{0} Using REST Implementation Version {1}", MsgId, Rest.Version);
+            Rest.Log.InfoFormat("[Rest Plugin]: {0} Test services initializing", MsgId);
+            Rest.Log.InfoFormat("[Rest Plugin]: {0} Using REST Implementation Version {1}", MsgId, Rest.Version);
 
             // If a relative path was specified, make it absolute by adding
             // the standard prefix, e.g. /admin
 
             if (!qPrefix.StartsWith(Rest.UrlPathSeparator))
             {
-                Rest.Log.InfoFormat("{0} Domain is relative, adding absolute prefix", MsgId);
+                Rest.Log.InfoFormat("[Rest Plugin]: {0} Domain is relative, adding absolute prefix", MsgId);
                 qPrefix = String.Format("{0}{1}{2}", Rest.Prefix, Rest.UrlPathSeparator, qPrefix);
-                Rest.Log.InfoFormat("{0} Domain is now <{1}>", MsgId, qPrefix);
+                Rest.Log.InfoFormat("[Rest Plugin]: {0} Domain is now <{1}>", MsgId, qPrefix);
             }
 
             // Load test cases
@@ -67,13 +68,13 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
 
             // Register interface
 
-            Rest.Plugin.AddPathHandler(DoTests,qPrefix,Allocate);
+            Rest.Plugin.AddPathHandler(DoTests, qPrefix, Allocate);
 
             // Activate
 
             enabled = true;
 
-            Rest.Log.InfoFormat("{0} Test services initialization complete", MsgId);
+            Rest.Log.InfoFormat("[Rest Plugin]: {0} Test services initialization complete", MsgId);
         }
 
         // Post-construction, pre-enabled initialization opportunity
@@ -94,7 +95,8 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
             {
                 test.Close();
             }
-            Rest.Log.InfoFormat("{0} Test services closing down", MsgId);
+
+            Rest.Log.InfoFormat("[Rest Plugin]: {0} Test services closing down", MsgId);
         }
 
         // Properties
@@ -131,27 +133,27 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
             // would be enforced for all in-bound requests.
             // Instead we look at the headers ourselves and 
             // handle authentication directly.
- 
+
             try
             {
                 if (!rdata.IsAuthenticated)
                 {
-                    rdata.Fail(Rest.HttpStatusCodeNotAuthorized, 
-                          String.Format("user \"{0}\" could not be authenticated", rdata.userName));
+                    rdata.Fail(Rest.HttpStatusCodeNotAuthorized, String.Format("user \"{0}\" could not be authenticated", rdata.userName));
                 }
             }
             catch (RestException e)
             {
                 if (e.statusCode == Rest.HttpStatusCodeNotAuthorized)
                 {
-                    Rest.Log.WarnFormat("{0} User not authenticated", MsgId);
-                    Rest.Log.DebugFormat("{0} Authorization header: {1}", MsgId, rdata.request.Headers.Get("Authorization"));
+                    Rest.Log.WarnFormat("[Rest Plugin]: {0} User not authenticated", MsgId);
+                    Rest.Log.DebugFormat("[Rest Plugin]: {0} Authorization header: {1}", MsgId, rdata.request.Headers.Get("Authorization"));
                 }
                 else
                 {
-                    Rest.Log.ErrorFormat("{0} User authentication failed", MsgId);
-                    Rest.Log.DebugFormat("{0} Authorization header: {1}", MsgId, rdata.request.Headers.Get("Authorization"));
+                    Rest.Log.ErrorFormat("[Rest Plugin]: {0} User authentication failed", MsgId);
+                    Rest.Log.DebugFormat("[Rest Plugin]: {0} Authorization header: {1}", MsgId, rdata.request.Headers.Get("Authorization"));
                 }
+
                 throw (e);
             }
 
@@ -159,7 +161,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
 
             if (rdata.Parameters.Length < 1)
             {
-                Rest.Log.DebugFormat("{0} Insufficient parameters", MsgId);
+                Rest.Log.DebugFormat("[Rest Plugin]: {0} Insufficient parameters", MsgId);
                 rdata.Fail(Rest.HttpStatusCodeBadRequest, "not enough parameters");
             }
 
@@ -174,11 +176,11 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
 
         #endregion Interface
 
-        private static bool    testsLoaded = false;
-        private static List<Type> classes  = new List<Type>();
-        private static List<ITest>   tests = new List<ITest>();
-        private static Type[]        parms = new Type[0];
-        private static Object[]      args  = new Object[0];
+        private static bool testsLoaded = false;
+        private static List<Type> classes = new List<Type>();
+        private static List<ITest> tests = new List<ITest>();
+        private static Type[] parms = new Type[0];
+        private static Object[] args = new Object[0];
 
         static RestTestServices()
         {
@@ -186,7 +188,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
             foreach (Module m in mods)
             {
                 Type[] types = m.GetTypes();
-                foreach (Type t in types) 
+                foreach (Type t in types)
                 {
                     try
                     {
@@ -197,7 +199,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
                     }
                     catch (Exception e)
                     {
-                        Rest.Log.WarnFormat("[STATIC-TEST] Unable to include test {0} : {1}", t, e.Message);
+                        Rest.Log.WarnFormat("[Static Test] Unable to include test {0} : {1}", t, e.Message);
                     }
                 }
             }
@@ -216,9 +218,8 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
             {
                 if (!testsLoaded)
                 {
-
                     ConstructorInfo ci;
-                    Object          ht;
+                    Object ht;
 
                     foreach (Type t in classes)
                     {
@@ -229,18 +230,18 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
                                 ci = t.GetConstructor(parms);
                                 ht = ci.Invoke(args);
                                 tests.Add((ITest)ht);
-                                Rest.Log.InfoFormat("{0} Test {1} added", MsgId, t);
+                                Rest.Log.InfoFormat("[Rest Plugin]: {0} Test {1} added", MsgId, t);
                             }
                         }
                         catch (Exception e)
                         {
-                            Rest.Log.WarnFormat("{0} Unable to load test {1} : {2}", MsgId, t, e.Message);
+                            Rest.Log.WarnFormat("[Rest Plugin]: {0} Unable to load test {1} : {2}", MsgId, t, e.Message);
                         }
                     }
+
                     testsLoaded = true;
                 }
             }
         }
-
     }
 }

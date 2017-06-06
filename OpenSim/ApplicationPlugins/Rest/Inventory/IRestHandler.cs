@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,31 +31,24 @@ using OpenSim.Framework.Servers.HttpServer;
 
 namespace OpenSim.ApplicationPlugins.Rest.Inventory
 {
-
     /// <remarks>
     /// The handler delegates are not noteworthy. The allocator allows
     /// a given handler to optionally subclass the base RequestData
     /// structure to carry any locally required per-request state
     /// needed.
     /// </remarks>
-
-    public delegate void        RestMethodHandler(RequestData rdata);
+    public delegate void RestMethodHandler(RequestData rdata);
     public delegate RequestData RestMethodAllocator(OSHttpRequest request, OSHttpResponse response, string path);
 
     /// <summary>
     /// This interface exports the generic plugin-handling services
     /// available to each loaded REST services module (IRest implementation)
     /// </summary>
-
     internal interface IRestHandler
     {
-
-        string MsgId     { get; }
+        string MsgId { get; }
         string RequestId { get; }
-
-        void   AddPathHandler(RestMethodHandler mh, string path, RestMethodAllocator ma);
+        void AddPathHandler(RestMethodHandler mh, string path, RestMethodAllocator ma);
         void AddStreamHandler(string httpMethod, string path, RestMethod method);
-
     }
-
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,39 +41,35 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
     {
         #region POST methods
 
-        public string PostHandler(string request, string path, string param,
-                                  OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        public string PostHandler(string request, string path, string param, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
         {
-            // foreach (string h in httpRequest.Headers.AllKeys)
-            //     foreach (string v in httpRequest.Headers.GetValues(h))
-            //         m_log.DebugFormat("{0} IsGod: {1} -> {2}", MsgID, h, v);
-
             MsgID = RequestID;
-            m_log.DebugFormat("{0} POST path {1} param {2}", MsgID, path, param);
+            m_log.DebugFormat("[Rest Plugin]: {0} POST path {1} param {2}", MsgID, path, param);
 
             try
             {
                 // param empty: new region post
                 if (!IsGod(httpRequest))
-                    // XXX: this needs to be turned into a FailureUnauthorized(...)
-                    return Failure(httpResponse, OSHttpStatusCode.ClientErrorUnauthorized,
-                                   "GET", "you are not god");
+                    // This needs to be turned into a FailureUnauthorized(...)
+                    return Failure(httpResponse, OSHttpStatusCode.ClientErrorUnauthorized, "GET", "you are not god");
 
                 if (String.IsNullOrEmpty(param)) return CreateRegion(httpRequest, httpResponse);
 
                 // Parse region ID and other parameters
-                param = param.TrimEnd(new char[] {'/'});
+                param = param.TrimEnd(new char[] { '/' });
                 string[] comps = param.Split('/');
-                UUID regionID = (UUID) comps[0];
+                UUID regionID = (UUID)comps[0];
 
-                m_log.DebugFormat("{0} POST region UUID {1}", MsgID, regionID.ToString());
-                if (UUID.Zero == regionID) throw new Exception("missing region ID");
+                m_log.DebugFormat("[Rest Plugin]: {0} POST region UUID {1}", MsgID, regionID.ToString());
+
+                if (UUID.Zero == regionID)
+                    throw new Exception("missing region ID");
 
                 Scene scene = null;
                 App.SceneManager.TryGetScene(regionID, out scene);
+
                 if (null == scene)
-                    return Failure(httpResponse, OSHttpStatusCode.ClientErrorNotFound,
-                                   "POST", "cannot find region {0}", regionID.ToString());
+                    return Failure(httpResponse, OSHttpStatusCode.ClientErrorNotFound, "POST", "cannot find region {0}", regionID.ToString());
 
                 if (2 == comps.Length)
                 {
@@ -83,8 +81,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
                     }
                 }
 
-                return Failure(httpResponse, OSHttpStatusCode.ClientErrorNotFound,
-                               "POST", "url {0} not supported", param);
+                return Failure(httpResponse, OSHttpStatusCode.ClientErrorNotFound, "POST", "url {0} not supported", param);
             }
             catch (Exception e)
             {
@@ -97,12 +94,14 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
             RestXmlWriter rxw = new RestXmlWriter(new StringWriter());
 
             rxw.WriteStartElement(String.Empty, "regions", String.Empty);
+
             foreach (Scene s in App.SceneManager.Scenes)
             {
                 rxw.WriteStartElement(String.Empty, "uuid", String.Empty);
                 rxw.WriteString(s.RegionInfo.RegionID.ToString());
                 rxw.WriteEndElement();
             }
+
             rxw.WriteEndElement();
 
             return rxw.ToString();
@@ -111,6 +110,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
         public string LoadPrims(string requestBody, OSHttpRequest request, OSHttpResponse response, Scene scene)
         {
             IRegionSerialiserModule serialiser = scene.RequestModuleInterface<IRegionSerialiserModule>();
+
             if (serialiser != null)
                 serialiser.LoadPrimsFromXml2(scene, new StringReader(requestBody), true);
 

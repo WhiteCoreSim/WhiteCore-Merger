@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,6 +43,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
         }
 
         #region overriding properties
+
         public override string Name
         {
             get { return "REGION"; }
@@ -50,9 +53,11 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
         {
             get { return "RestRegionPlugin"; }
         }
+        
         #endregion overriding properties
 
         #region overriding methods
+        
         /// <summary>
         /// This method is called by OpenSimMain immediately after loading the
         /// plugin and after basic server setup,  but before running any server commands.
@@ -66,13 +71,14 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
             try
             {
                 base.Initialise(openSim);
+
                 if (!IsEnabled)
                 {
-                    //m_log.WarnFormat("{0} Rest Plugins are disabled", MsgID);
+                    //m_log.WarnFormat("[Rest Plugin]: {0} Rest Plugins are disabled", MsgID);
                     return;
                 }
                 
-                m_log.InfoFormat("{0} REST region plugin enabled", MsgID);
+                m_log.InfoFormat("[Rest Plugin]: {0} REST region plugin enabled", MsgID);
 
                 // add REST method handlers
                 AddRestStreamHandler("GET", "/regions/", GetHandler);
@@ -81,14 +87,15 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
             }
             catch (Exception e)
             {
-                m_log.WarnFormat("{0} Initialization failed: {1}", MsgID, e.Message);
-                m_log.DebugFormat("{0} Initialization failed: {1}", MsgID, e.ToString());
+                m_log.WarnFormat("[Rest Plugin]: {0} Initialization failed: {1}", MsgID, e.Message);
+                m_log.DebugFormat("[Rest Plugin]: {0} Initialization failed: {1}", MsgID, e.ToString());
             }
         }
 
         public override void Close()
         {
         }
+
         #endregion overriding methods
     }
 }

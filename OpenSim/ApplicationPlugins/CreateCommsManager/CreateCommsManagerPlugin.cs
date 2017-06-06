@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -74,7 +76,7 @@ namespace OpenSim.ApplicationPlugins.CreateCommsManager
 
         public void Initialise()
         {
-            m_log.Info("[LOADREGIONS]: " + Name + " cannot be default-initialized!");
+            m_log.Info("[Load Regions]: " + Name + " cannot be default-initialized!");
             throw new PluginNotInitialisedException(Name);
         }
 
@@ -165,44 +167,36 @@ namespace OpenSim.ApplicationPlugins.CreateCommsManager
         /// <param name="libraryRootFolder"></param>
         protected virtual void InitialiseStandaloneServices(LibraryRootFolder libraryRootFolder)
         {
-            m_commsManager
-                = new CommunicationsLocal(
-                    m_openSim.ConfigurationSettings, m_openSim.NetServersInfo,
-                    libraryRootFolder);
+            m_commsManager = new CommunicationsLocal(m_openSim.ConfigurationSettings, m_openSim.NetServersInfo, libraryRootFolder);
 
             CreateGridInfoService();
         }
 
         protected virtual void InitialiseGridServices(LibraryRootFolder libraryRootFolder)
         {
-            m_commsManager
-                = new CommunicationsOGS1(m_openSim.NetServersInfo, libraryRootFolder);
+            m_commsManager = new CommunicationsOGS1(m_openSim.NetServersInfo, libraryRootFolder);
 
             m_httpServer.AddStreamHandler(new OpenSim.SimStatusHandler());
             m_httpServer.AddStreamHandler(new OpenSim.XSimStatusHandler(m_openSim));
+
             if (m_openSim.userStatsURI != String.Empty)
                 m_httpServer.AddStreamHandler(new OpenSim.UXSimStatusHandler(m_openSim));
         }
 
         protected virtual void InitialiseHGStandaloneServices(LibraryRootFolder libraryRootFolder)
         {
-            m_commsManager 
-                = new HGCommunicationsStandalone(
-                    m_openSim.ConfigurationSettings, m_openSim.NetServersInfo, m_httpServer, 
-                    libraryRootFolder, false);
+            m_commsManager = new HGCommunicationsStandalone(m_openSim.ConfigurationSettings, m_openSim.NetServersInfo, m_httpServer, libraryRootFolder, false);
             
             CreateGridInfoService();
         }
 
         protected virtual void InitialiseHGGridServices(LibraryRootFolder libraryRootFolder)
         {
-            m_commsManager 
-                = new HGCommunicationsGridMode(
-                    m_openSim.NetServersInfo,
-                    m_openSim.SceneManager, libraryRootFolder);
+            m_commsManager = new HGCommunicationsGridMode(m_openSim.NetServersInfo, m_openSim.SceneManager, libraryRootFolder);
 
             m_httpServer.AddStreamHandler(new OpenSim.SimStatusHandler());
             m_httpServer.AddStreamHandler(new OpenSim.XSimStatusHandler(m_openSim));
+
             if (m_openSim.userStatsURI != String.Empty)
                 m_httpServer.AddStreamHandler(new OpenSim.UXSimStatusHandler(m_openSim));
         }
@@ -212,8 +206,7 @@ namespace OpenSim.ApplicationPlugins.CreateCommsManager
             // provide grid info
             m_gridInfoService = new GridInfoService(m_openSim.ConfigSource.Source);
             m_httpServer.AddXmlRPCHandler("get_grid_info", m_gridInfoService.XmlRpcGridInfoMethod);
-            m_httpServer.AddStreamHandler(
-                 new RestStreamHandler("GET", "/get_grid_info", m_gridInfoService.RestGetGridInfoMethod));
+            m_httpServer.AddStreamHandler(new RestStreamHandler("GET", "/get_grid_info", m_gridInfoService.RestGetGridInfoMethod));
         }
     }
 }
