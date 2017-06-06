@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -72,6 +74,7 @@ namespace OpenSim.Client.Linden
 
             m_InventoryService = interServiceInventoryService;
             m_regionsConnector = regionsConnector;
+
             // Standard behavior: In StandAlone, silent logout of last hung session
             m_warn_already_logged = false;
         }
@@ -79,6 +82,7 @@ namespace OpenSim.Client.Linden
         public override UserProfileData GetTheUser(string firstname, string lastname)
         {
             UserProfileData profile = m_userManager.GetUserProfile(firstname, lastname);
+
             if (profile != null)
             {
                 return profile;
@@ -87,7 +91,7 @@ namespace OpenSim.Client.Linden
             if (!m_authUsers)
             {
                 //no current user account so make one
-                m_log.Info("[LOGIN]: No user account found so creating a new one.");
+                m_log.Info("[Login]: No user account found so creating a new one.");
 
                 m_userManager.AddUser(firstname, lastname, "test", "", m_defaultHomeX, m_defaultHomeY);
 
@@ -102,14 +106,13 @@ namespace OpenSim.Client.Linden
             if (!m_authUsers)
             {
                 //for now we will accept any password in sandbox mode
-                m_log.Info("[LOGIN]: Authorising user (no actual password check)");
+                m_log.Info("[Login]: Authorising user (no actual password check)");
 
                 return true;
             }
             else
             {
-                m_log.Info(
-                    "[LOGIN]: Authenticating " + profile.FirstName + " " + profile.SurName);
+                m_log.Info("[Login]: Authenticating " + profile.FirstName + " " + profile.SurName);
 
                 if (!password.StartsWith("$1$"))
                     password = "$1$" + Util.Md5Hash(password);
@@ -139,8 +142,7 @@ namespace OpenSim.Client.Linden
             return m_regionsConnector.RequestNeighbourInfo(homeRegionId);
         }
 
-        protected override bool PrepareLoginToRegion(
-            RegionInfo regionInfo, UserProfileData user, LoginResponse response, IPEndPoint remoteClient)
+        protected override bool PrepareLoginToRegion(RegionInfo regionInfo, UserProfileData user, LoginResponse response, IPEndPoint remoteClient)
         {
             IPEndPoint endPoint = regionInfo.ExternalEndPoint;
             response.SimAddress = endPoint.Address.ToString();
@@ -153,8 +155,6 @@ namespace OpenSim.Client.Linden
 
             // Don't use the following!  It Fails for logging into any region not on the same port as the http server!
             // Kept here so it doesn't happen again!
-            // response.SeedCapability = regionInfo.ServerURI + capsSeedPath;
-
             string seedcap = "http://";
 
             if (m_serversInfo.HttpUsesSSL)
@@ -176,7 +176,7 @@ namespace OpenSim.Client.Linden
 
             // Notify the target of an incoming user
             m_log.InfoFormat(
-                "[LOGIN]: Telling {0} @ {1},{2} ({3}) to prepare for client connection",
+                "[Login]: Telling {0} @ {1},{2} ({3}) to prepare for client connection",
                 regionInfo.RegionName, response.RegionX, response.RegionY, regionInfo.ServerURI);
 
             // Update agent with target sim
@@ -195,10 +195,10 @@ namespace OpenSim.Client.Linden
             agent.startpos = user.CurrentAgent.Position;
             agent.CapsPath = capsPath;
             agent.Appearance = m_userManager.GetUserAppearance(user.ID);
+
             if (agent.Appearance == null)
             {
-                m_log.WarnFormat(
-                    "[INTER]: Appearance not found for {0} {1}. Creating default.", agent.firstname, agent.lastname);
+                m_log.WarnFormat("[Inter]: Appearance not found for {0} {1}. Creating default.", agent.firstname, agent.lastname);
                 agent.Appearance = new AvatarAppearance(agent.AgentID);
             }
 
@@ -206,13 +206,14 @@ namespace OpenSim.Client.Linden
             {
                 string reason;
                 bool success = m_regionsConnector.NewUserConnection(regionInfo.RegionHandle, agent, out reason);
+
                 if (!success)
                 {
                     response.ErrorReason = "key";
                     response.ErrorMessage = reason;
                 }
+
                 return success;
-                // return m_regionsConnector.NewUserConnection(regionInfo.RegionHandle, agent, out reason);
             }
 
             return false;
@@ -227,18 +228,17 @@ namespace OpenSim.Client.Linden
 
                 if (SimInfo == null)
                 {
-                    m_log.Error("[LOCAL LOGIN]: Region user was in isn't currently logged in");
+                    m_log.Error("[Local Login]: Region user was in isn't currently logged in");
                     return;
                 }
             }
             catch (Exception)
             {
-                m_log.Error("[LOCAL LOGIN]: Unable to look up region to log user off");
+                m_log.Error("[Local Login]: Unable to look up region to log user off");
                 return;
             }
 
-            m_regionsConnector.LogOffUserFromGrid(
-                SimInfo.RegionHandle, theUser.ID, theUser.CurrentAgent.SecureSessionID, "Logging you off");
+            m_regionsConnector.LogOffUserFromGrid(SimInfo.RegionHandle, theUser.ID, theUser.CurrentAgent.SecureSessionID, "Logging you off");
         }
     }
 }

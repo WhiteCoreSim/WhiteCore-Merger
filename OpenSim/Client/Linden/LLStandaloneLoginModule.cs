@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,13 +48,9 @@ namespace OpenSim.Client.Linden
 {
     public class LLStandaloneLoginModule : ISharedRegionModule, ILoginServiceToRegionsConnector
     {
-        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected List<Scene> m_scenes = new List<Scene>();
         protected Scene m_firstScene;
-
         protected bool m_enabled = false; // Module is only enabled if running in standalone mode
-
         protected bool authenticate;
         protected string welcomeMessage;
 
@@ -78,6 +76,7 @@ namespace OpenSim.Client.Linden
         public void Initialise(IConfigSource source)
         {
             IConfig startupConfig = source.Configs["Startup"];
+
             if (startupConfig != null)
             {
                 m_enabled = !startupConfig.GetBoolean("gridmode", false);
@@ -88,6 +87,7 @@ namespace OpenSim.Client.Linden
                 authenticate = true;
                 welcomeMessage = "Welcome to OpenSim";
                 IConfig standaloneConfig = source.Configs["StandAlone"];
+
                 if (standaloneConfig != null)
                 {
                     authenticate = standaloneConfig.GetBoolean("accounts_authenticate", true);
@@ -127,16 +127,15 @@ namespace OpenSim.Client.Linden
                 if (m_enabled)
                 {
                     //TODO: fix casting.
-                    LibraryRootFolder rootFolder
-                        = m_firstScene.CommsManager.UserProfileCacheService.LibraryRoot as LibraryRootFolder;
+                    LibraryRootFolder rootFolder = m_firstScene.CommsManager.UserProfileCacheService.LibraryRoot as LibraryRootFolder;
 
                     IHttpServer httpServer = MainServer.Instance;
 
                     //TODO: fix the casting of the user service, maybe by registering the userManagerBase with scenes, or refactoring so we just need a IUserService reference
-                    m_loginService 
+                    m_loginService
                         = new LLStandaloneLoginService(
-                            (UserManagerBase)m_firstScene.CommsManager.UserAdminService, welcomeMessage, 
-                            m_firstScene.InventoryService, m_firstScene.CommsManager.NetworkServersInfo, authenticate, 
+                            (UserManagerBase)m_firstScene.CommsManager.UserAdminService, welcomeMessage,
+                            m_firstScene.InventoryService, m_firstScene.CommsManager.NetworkServersInfo, authenticate,
                             rootFolder, this);
 
                     httpServer.AddXmlRPCHandler("login_to_simulator", m_loginService.XmlRpcLoginMethod);
@@ -155,7 +154,7 @@ namespace OpenSim.Client.Linden
             }
         }
 
-        public Type ReplaceableInterface 
+        public Type ReplaceableInterface
         {
             get { return null; }
         }
@@ -197,10 +196,12 @@ namespace OpenSim.Client.Linden
         public bool NewUserConnection(ulong regionHandle, AgentCircuitData agent, out string reason)
         {
             Scene scene;
+
             if (TryGetRegion(regionHandle, out scene))
             {
                 return scene.NewUserConnection(agent, out reason);
             }
+
             reason = "Region not found.";
             return false;
         }
@@ -208,25 +209,29 @@ namespace OpenSim.Client.Linden
         public void LogOffUserFromGrid(ulong regionHandle, UUID AvatarID, UUID RegionSecret, string message)
         {
             Scene scene;
+
             if (TryGetRegion(regionHandle, out scene))
             {
-                 scene.HandleLogOffUserFromGrid(AvatarID, RegionSecret, message);
+                scene.HandleLogOffUserFromGrid(AvatarID, RegionSecret, message);
             }
         }
 
         public RegionInfo RequestNeighbourInfo(ulong regionhandle)
         {
             Scene scene;
+
             if (TryGetRegion(regionhandle, out scene))
             {
                 return scene.RegionInfo;
             }
+
             return null;
         }
 
         public RegionInfo RequestClosestRegion(string region)
         {
             Scene scene;
+
             if (TryGetRegion(region, out scene))
             {
                 return scene.RegionInfo;
@@ -235,16 +240,19 @@ namespace OpenSim.Client.Linden
             {
                 return m_scenes[0].RegionInfo;
             }
+
             return null;
         }
 
         public RegionInfo RequestNeighbourInfo(UUID regionID)
         {
             Scene scene;
+
             if (TryGetRegion(regionID, out scene))
             {
                 return scene.RegionInfo;
             }
+
             return null;
         }
 

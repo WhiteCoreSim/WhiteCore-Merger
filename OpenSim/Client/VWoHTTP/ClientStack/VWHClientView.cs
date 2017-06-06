@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,28 +44,28 @@ using OpenSim.Region.Framework.Scenes;
 
 namespace OpenSim.Client.VWoHTTP.ClientStack
 {
-    class VWHClientView : IClientAPI 
+    class VWHClientView : IClientAPI
     {
         private Scene m_scene;
 
-
         public bool ProcessInMsg(OSHttpRequest req, OSHttpResponse resp)
         {
-            //                              0        1          2       3
             // http://simulator.com:9000/vwohttp/sessionid/methodname/param
-            string[] urlparts = req.Url.AbsolutePath.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] urlparts = req.Url.AbsolutePath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             UUID sessionID;
+
             // Check for session
             if (!UUID.TryParse(urlparts[1], out sessionID))
                 return false;
+
             // Check we match session
             if (sessionID != SessionId)
                 return false;
 
             string method = urlparts[2];
-
             string param = String.Empty;
+
             if (urlparts.Length > 3)
                 param = urlparts[3];
 
@@ -85,6 +87,7 @@ namespace OpenSim.Client.VWoHTTP.ClientStack
         private bool ProcessTextureRequest(string param, OSHttpResponse resp)
         {
             UUID assetID;
+
             if (!UUID.TryParse(param, out assetID))
                 return false;
 
@@ -405,8 +408,6 @@ namespace OpenSim.Client.VWoHTTP.ClientStack
         public event MuteListRequest OnMuteListRequest = delegate { };
         public event AvatarInterestUpdate OnAvatarInterestUpdate = delegate { };
         public event PlacesQuery OnPlacesQuery = delegate { };
-
-
 
         public void SetDebugPacketLevel(int newDebug)
         {
@@ -946,6 +947,7 @@ namespace OpenSim.Client.VWoHTTP.ClientStack
         public event ViewerEffectEventHandler OnViewerEffect;
         public event Action<IClientAPI> OnLogout;
         public event Action<IClientAPI> OnConnectionClosed;
+
         public void SendBlueBoxMessage(UUID FromAvatarID, string FromAvatarName, string Message)
         {
             throw new System.NotImplementedException();

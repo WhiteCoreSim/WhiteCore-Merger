@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -20,7 +22,8 @@
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -41,11 +44,8 @@ namespace OpenSim.Client.VWoHTTP
     class VWoHTTPModule : IRegionModule, IHttpAgentHandler
     {
         private bool m_disabled = true;
-
         private IHttpServer m_httpd;
-
         private readonly List<Scene> m_scenes = new List<Scene>();
-
         private Dictionary<UUID, VWHClientView> m_clients = new Dictionary<UUID, VWHClientView>();
 
         #region Implementation of IRegionModule
@@ -56,7 +56,6 @@ namespace OpenSim.Client.VWoHTTP
                 return;
 
             m_scenes.Add(scene);
-
             m_httpd = MainServer.Instance;
         }
 
@@ -92,7 +91,7 @@ namespace OpenSim.Client.VWoHTTP
 
         public bool Handle(OSHttpRequest req, OSHttpResponse resp)
         {
-            string[] urlparts = req.Url.AbsolutePath.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] urlparts = req.Url.AbsolutePath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (urlparts.Length < 2)
                 return false;
@@ -100,11 +99,8 @@ namespace OpenSim.Client.VWoHTTP
             if (urlparts[1] == "connect")
             {
                 UUID sessID = UUID.Random();
-
                 VWHClientView client = new VWHClientView(sessID, UUID.Random(), "VWoHTTPClient", m_scenes[0]);
-
                 m_clients.Add(sessID, client);
-
                 return true;
             }
             else
@@ -113,6 +109,7 @@ namespace OpenSim.Client.VWoHTTP
                     return false;
 
                 UUID sessionID;
+
                 if (!UUID.TryParse(urlparts[1], out sessionID))
                     return false;
 

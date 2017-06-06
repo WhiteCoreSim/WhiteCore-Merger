@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -68,6 +70,7 @@ namespace OpenSim.Client.Linden
                 m_source = source;
 
                 IConfig startupConfig = m_source.Configs["Startup"];
+
                 if (startupConfig != null)
                 {
                     m_clientStackDll = startupConfig.GetString("clientstack_plugin", "OpenSim.Region.ClientStack.LindenUDP.dll");
@@ -84,7 +87,7 @@ namespace OpenSim.Client.Linden
         {
 
         }
-        
+
         public void RegionLoaded(Scene scene)
         {
             if (m_scene == null)
@@ -94,16 +97,14 @@ namespace OpenSim.Client.Linden
 
             if ((m_scene != null) && (m_createClientStack))
             {
-                m_log.Info("[LLClientStackModule] Starting up LLClientStack.");
+                m_log.Info("[LLClient Stack Module] Starting up LLClientStack.");
                 IPEndPoint endPoint = m_scene.RegionInfo.InternalEndPoint;
 
                 uint port = (uint)endPoint.Port;
                 m_clientStackManager = new ClientStackManager(m_clientStackDll);
 
                 m_clientServer
-                   = m_clientStackManager.CreateServer(endPoint.Address,
-                     ref port, m_scene.RegionInfo.ProxyOffset, m_scene.RegionInfo.m_allow_alternate_ports, m_source,
-                       m_scene.AuthenticateHandler);
+                   = m_clientStackManager.CreateServer(endPoint.Address, ref port, m_scene.RegionInfo.ProxyOffset, m_scene.RegionInfo.m_allow_alternate_ports, m_source, m_scene.AuthenticateHandler);
 
                 m_clientServer.AddScene(m_scene);
 
@@ -116,7 +117,7 @@ namespace OpenSim.Client.Linden
 
         }
 
-        public Type ReplaceableInterface 
+        public Type ReplaceableInterface
         {
             get { return null; }
         }

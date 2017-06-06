@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +42,16 @@ using OpenSim.Region.Framework.Scenes;
 
 namespace OpenSim.Client.MXP
 {
-
-    /**
-     * MXP Client Module which adds MXP support to client / region communication.
-     */
+    /// <summary>
+    ///     MXP Client Module which adds MXP support to client/ region communications.
+    /// </summary>
     public class MXPModule : IRegionModule
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private MXPPacketServer m_server;
-
         private IConfigSource m_config;
         private int m_port = 1253;
         private Timer m_ticker;
-
         private readonly Dictionary<UUID, Scene> m_scenes = new Dictionary<UUID, Scene>();
         private bool m_shutdown;
 
@@ -76,7 +74,7 @@ namespace OpenSim.Client.MXP
 
                 m_port = con.GetInt("Port", m_port);
 
-                m_server = new MXPPacketServer(m_port, m_scenes,m_config.Configs["StandAlone"].GetBoolean("accounts_authenticate",true));
+                m_server = new MXPPacketServer(m_port, m_scenes, m_config.Configs["StandAlone"].GetBoolean("accounts_authenticate", true));
 
                 m_ticker = new Timer(100);
                 m_ticker.AutoReset = false;
@@ -85,7 +83,7 @@ namespace OpenSim.Client.MXP
                 lock (m_ticker)
                     m_ticker.Start();
 
-                m_log.Info("[MXP ClientStack] MXP Enabled and Listening");
+                m_log.Info("[MXP Client Stack] MXP Enabled and Listening");
             }
         }
 
@@ -97,7 +95,7 @@ namespace OpenSim.Client.MXP
             }
             catch (Exception ex)
             {
-                m_log.Error("[MXP ClientStack]: Unhandled exception in process loop: " + ex.ToString() + " :" + ex.StackTrace.ToString());
+                m_log.Error("[MXP Client Stack]: Unhandled exception in process loop: " + ex.ToString() + " :" + ex.StackTrace.ToString());
             }
 
             if (!m_shutdown)
@@ -110,6 +108,7 @@ namespace OpenSim.Client.MXP
         public void Close()
         {
             m_shutdown = true;
+
             if (m_ticker != null)
             {
                 lock (m_ticker)
@@ -126,6 +125,5 @@ namespace OpenSim.Client.MXP
         {
             get { return true; }
         }
-
     }
 }
