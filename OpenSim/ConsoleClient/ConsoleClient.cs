@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,12 +27,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Nini.Config;
-using log4net;
-using System.Reflection;
 using System;
-using System.Xml;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Xml;
+using log4net;
+using Nini.Config;
 using OpenSim.Server.Base;
 using OpenSim.Framework.Console;
 using OpenMetaverse;
@@ -51,6 +53,7 @@ namespace OpenSim.ConsoleClient
             m_Server = new ServicesServerBase("Client", args);
 
             IConfig serverConfig = m_Server.Config.Configs["Startup"];
+
             if (serverConfig == null)
             {
                 System.Console.WriteLine("Startup config section missing in .ini file");
@@ -71,7 +74,7 @@ namespace OpenSim.ConsoleClient
             m_Port = serverConfig.GetInt("port", 8003);
             m_Pass = serverConfig.GetString("pass", "secret");
 
-            Requester.MakeRequest("http://"+m_Host+":"+m_Port.ToString()+"/StartSession/", String.Format("USER={0}&PASS={1}", m_User, m_Pass), LoginReply);
+            Requester.MakeRequest("http://" + m_Host + ":" + m_Port.ToString() + "/StartSession/", String.Format("USER={0}&PASS={1}", m_User, m_Pass), LoginReply);
 
             int res = m_Server.Run();
 
@@ -83,22 +86,21 @@ namespace OpenSim.ConsoleClient
         private static void SendCommand(string module, string[] cmd)
         {
             string sendCmd = String.Join(" ", cmd);
-
-            Requester.MakeRequest("http://"+m_Host+":"+m_Port.ToString()+"/SessionCommand/", String.Format("ID={0}&COMMAND={1}", m_SessionID, sendCmd), CommandReply);
+            Requester.MakeRequest("http://" + m_Host + ":" + m_Port.ToString() + "/SessionCommand/", String.Format("ID={0}&COMMAND={1}", m_SessionID, sendCmd), CommandReply);
         }
 
         public static void LoginReply(string requestUrl, string requestData, string replyData)
         {
             XmlDocument doc = new XmlDocument();
-
             doc.LoadXml(replyData);
-
             XmlNodeList rootL = doc.GetElementsByTagName("ConsoleSession");
+
             if (rootL.Count != 1)
             {
                 MainConsole.Instance.Output("Connection data info was not valid");
                 Environment.Exit(1);
             }
+
             XmlElement rootNode = (XmlElement)rootL[0];
 
             if (rootNode == null)
@@ -108,6 +110,7 @@ namespace OpenSim.ConsoleClient
             }
 
             XmlNodeList helpNodeL = rootNode.GetElementsByTagName("HelpTree");
+
             if (helpNodeL.Count != 1)
             {
                 MainConsole.Instance.Output("Connection data info was not valid");
@@ -115,6 +118,7 @@ namespace OpenSim.ConsoleClient
             }
 
             XmlElement helpNode = (XmlElement)helpNodeL[0];
+
             if (helpNode == null)
             {
                 MainConsole.Instance.Output("Connection data info was not valid");
@@ -122,6 +126,7 @@ namespace OpenSim.ConsoleClient
             }
 
             XmlNodeList sessionL = rootNode.GetElementsByTagName("SessionID");
+
             if (sessionL.Count != 1)
             {
                 MainConsole.Instance.Output("Connection data info was not valid");
@@ -129,6 +134,7 @@ namespace OpenSim.ConsoleClient
             }
 
             XmlElement sessionNode = (XmlElement)sessionL[0];
+
             if (sessionNode == null)
             {
                 MainConsole.Instance.Output("Connection data info was not valid");
@@ -142,23 +148,21 @@ namespace OpenSim.ConsoleClient
             }
 
             MainConsole.Instance.Commands.FromXml(helpNode, SendCommand);
-
-            Requester.MakeRequest("http://"+m_Host+":"+m_Port.ToString()+"/ReadResponses/"+m_SessionID.ToString()+"/", String.Empty, ReadResponses);
+            Requester.MakeRequest("http://" + m_Host + ":" + m_Port.ToString() + "/ReadResponses/" + m_SessionID.ToString() + "/", String.Empty, ReadResponses);
         }
 
         public static void ReadResponses(string requestUrl, string requestData, string replyData)
         {
             XmlDocument doc = new XmlDocument();
-
             doc.LoadXml(replyData);
-
             XmlNodeList rootNodeL = doc.GetElementsByTagName("ConsoleSession");
+
             if (rootNodeL.Count != 1 || rootNodeL[0] == null)
             {
                 Requester.MakeRequest(requestUrl, requestData, ReadResponses);
                 return;
             }
-            
+
             List<string> lines = new List<string>();
 
             foreach (XmlNode part in rootNodeL[0].ChildNodes)
@@ -171,16 +175,16 @@ namespace OpenSim.ConsoleClient
 
             // Cut down scrollback to 100 lines (4 screens)
             // for the command line client
-            //
             while (lines.Count > 100)
                 lines.RemoveAt(0);
 
             foreach (string l in lines)
             {
-                string[] parts = l.Split(new char[] {':'}, 3);
+                string[] parts = l.Split(new char[] { ':' }, 3);
+
                 if (parts.Length != 3)
                     continue;
-                
+
                 MainConsole.Instance.Output(parts[2].Trim(), parts[1]);
             }
 

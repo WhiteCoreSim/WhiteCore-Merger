@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +42,23 @@ namespace OpenSim.ConsoleClient
 
     public class Requester
     {
-        public static void MakeRequest(string requestUrl, string data,
-                ReplyDelegate action)
+        public static void MakeRequest(string requestUrl, string data, ReplyDelegate action)
         {
             WebRequest request = WebRequest.Create(requestUrl);
             WebResponse response = null;
-
             request.Method = "POST";
-
             request.ContentType = "application/x-www-form-urlencoded";
-
             byte[] buffer = new System.Text.ASCIIEncoding().GetBytes(data);
-            int length = (int) buffer.Length;
+            int length = (int)buffer.Length;
             request.ContentLength = length;
 
-            request.BeginGetRequestStream(delegate(IAsyncResult res)
+            request.BeginGetRequestStream(delegate (IAsyncResult res)
             {
                 Stream requestStream = request.EndGetRequestStream(res);
 
                 requestStream.Write(buffer, 0, length);
 
-                request.BeginGetResponse(delegate(IAsyncResult ar)
+                request.BeginGetResponse(delegate (IAsyncResult ar)
                 {
                     string reply = String.Empty;
 
