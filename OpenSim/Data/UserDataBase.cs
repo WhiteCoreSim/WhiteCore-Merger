@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,10 +36,6 @@ namespace OpenSim.Data
 {
     public abstract class UserDataBase : IUserDataPlugin
     {
-        // private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        // private Dictionary<UUID, AvatarAppearance> aplist = new Dictionary<UUID, AvatarAppearance>();
-
         public abstract UserProfileData GetUserByUUID(UUID user);
         public abstract UserProfileData GetUserByName(string fname, string lname);
         public abstract UserAgentData GetAgentByUUID(UUID user);
@@ -46,46 +44,30 @@ namespace OpenSim.Data
         public UserProfileData GetUserByUri(Uri uri) { return null; }
         public abstract void StoreWebLoginKey(UUID agentID, UUID webLoginKey);
         public abstract void AddNewUserProfile(UserProfileData user);
-        
+
         public virtual void AddTemporaryUserProfile(UserProfileData userProfile)
         {
             // Deliberately blank - database plugins shouldn't store temporary profiles.
         }
-        
+
         public abstract bool UpdateUserProfile(UserProfileData user);
         public abstract void AddNewUserAgent(UserAgentData agent);
         public abstract void AddNewUserFriend(UUID friendlistowner, UUID friend, uint perms);
         public abstract void RemoveUserFriend(UUID friendlistowner, UUID friend);
         public abstract void UpdateUserFriendPerms(UUID friendlistowner, UUID friend, uint perms);
         public abstract List<FriendListItem> GetUserFriendList(UUID friendlistowner);
-        public abstract Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos (List<UUID> uuids);
+        public abstract Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos(List<UUID> uuids);
         public abstract bool MoneyTransferRequest(UUID from, UUID to, uint amount);
         public abstract bool InventoryTransferRequest(UUID from, UUID to, UUID inventory);
         public abstract List<AvatarPickerAvatar> GeneratePickerResults(UUID queryID, string query);
         public abstract AvatarAppearance GetUserAppearance(UUID user);
         public abstract void UpdateUserAppearance(UUID user, AvatarAppearance appearance);
-        // public virtual AvatarAppearance GetUserAppearance(UUID user) {
-        //     AvatarAppearance aa = null;
-        //     try {
-        //         aa = aplist[user];
-        //         m_log.Info("[APPEARANCE] Found appearance for " + user.ToString() + aa.ToString());
-        //     } catch (System.Collections.Generic.KeyNotFoundException e) {
-        //         m_log.Info("[APPEARANCE] No appearance found for " + user.ToString());
-        //     }
-        //     return aa;
-        // }
-        // public virtual void UpdateUserAppearance(UUID user, AvatarAppearance appearance) {
-        //     aplist[user] = appearance;
-        //     m_log.Info("[APPEARANCE] Setting appearance for " + user.ToString() + appearance.ToString());
-        // }
         public abstract void ResetAttachments(UUID userID);
-
         public abstract void LogoutUsers(UUID regionID);
-
-        public abstract string Version {get;}
-        public abstract string Name {get;}
+        public abstract string Version { get; }
+        public abstract string Name { get; }
         public abstract void Initialise(string connect);
         public abstract void Initialise();
         public abstract void Dispose();
-   }
+    }
 }

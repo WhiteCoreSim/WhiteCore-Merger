@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +33,7 @@ using System.Data.SqlClient;
 namespace OpenSim.Data.MSSQL
 {
     /// <summary>
-    /// Encapsulates a SqlCommand object but ensures that when it is disposed, its connection is closed and disposed also.
+    ///     Encapsulates a SqlCommand object but ensures that when it is disposed, its connection is closed and disposed also.
     /// </summary>
     internal class AutoClosingSqlCommand : IDbCommand
     {
@@ -93,7 +95,7 @@ namespace OpenSim.Data.MSSQL
             }
             set
             {
-                realCommand.Connection = (SqlConnection) value;
+                realCommand.Connection = (SqlConnection)value;
             }
         }
 
@@ -159,18 +161,6 @@ namespace OpenSim.Data.MSSQL
         {
             realCommand.Prepare();
         }
-
-//        IDbTransaction IDbCommand.Transaction
-//        {
-//            get
-//            {
-//                return realCommand.Transaction;
-//            }
-//            set
-//            {
-//                realCommand.Transaction = (SqlTransaction) value;
-//            }
-//        }
 
         public IDbTransaction Transaction
         {

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +42,15 @@ namespace OpenSim.Data.MSSQL
     public class MSSQLEstateData : IEstateDataStore
     {
         private const string _migrationStore = "EstateStore";
-
         private static readonly ILog _Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private MSSQLManager _Database;
-
         private FieldInfo[] _Fields;
         private Dictionary<string, FieldInfo> _FieldMap = new Dictionary<string, FieldInfo>();
 
         #region Public methods
 
         /// <summary>
-        /// Initialises the estatedata class.
+        ///     Initialises the estatedata class.
         /// </summary>
         /// <param name="connectionString">connectionString.</param>
         public void Initialise(string connectionString)
@@ -70,9 +69,7 @@ namespace OpenSim.Data.MSSQL
                 string settingUserId = iniFile.ParseFileReadValue("user_id");
                 string settingPassword = iniFile.ParseFileReadValue("password");
 
-                _Database =
-                    new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId,
-                                     settingPassword);
+                _Database = new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId, settingPassword);
             }
 
             //Migration settings
@@ -92,7 +89,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Loads the estate settings.
+        ///     Loads the estate settings.
         /// </summary>
         /// <param name="regionID">region ID.</param>
         /// <returns></returns>
@@ -117,6 +114,7 @@ namespace OpenSim.Data.MSSQL
                             if (_FieldMap[name].GetValue(es) is bool)
                             {
                                 int v = Convert.ToInt32(reader[name]);
+
                                 if (v != 0)
                                     _FieldMap[name].SetValue(es, true);
                                 else
@@ -124,7 +122,7 @@ namespace OpenSim.Data.MSSQL
                             }
                             else if (_FieldMap[name].GetValue(es) is UUID)
                             {
-                                _FieldMap[name].SetValue(es, new UUID((Guid) reader[name])); // uuid);
+                                _FieldMap[name].SetValue(es, new UUID((Guid)reader[name])); // uuid);
                             }
                             else
                             {
@@ -139,7 +137,6 @@ namespace OpenSim.Data.MSSQL
                 }
             }
 
-
             if (insertEstate)
             {
                 List<string> names = new List<string>(FieldList);
@@ -148,7 +145,6 @@ namespace OpenSim.Data.MSSQL
 
                 sql = string.Format("insert into estate_settings ({0}) values ( @{1})", String.Join(",", names.ToArray()), String.Join(", @", names.ToArray()));
 
-                //_Log.Debug("[DB ESTATE]: SQL: " + sql);
                 using (SqlConnection connection = _Database.DatabaseConnection())
                 {
                     using (SqlCommand insertCommand = connection.CreateCommand())
@@ -159,6 +155,7 @@ namespace OpenSim.Data.MSSQL
                         {
                             insertCommand.Parameters.Add(_Database.CreateParameter("@" + name, _FieldMap[name].GetValue(es)));
                         }
+
                         SqlParameter idParameter = new SqlParameter("@ID", SqlDbType.Int);
                         idParameter.Direction = ParameterDirection.Output;
                         insertCommand.Parameters.Add(idParameter);
@@ -173,31 +170,30 @@ namespace OpenSim.Data.MSSQL
                 {
                     cmd.Parameters.Add(_Database.CreateParameter("@RegionID", regionID));
                     cmd.Parameters.Add(_Database.CreateParameter("@EstateID", es.EstateID));
+
                     // This will throw on dupe key
                     try
                     {
-                       cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
                     }
                     catch (Exception e)
                     {
-                        _Log.DebugFormat("[ESTATE DB]: Error inserting regionID and EstateID in estate_map: {0}", e);
+                        _Log.DebugFormat("[Estate Database]: Error inserting regionID and EstateID in estate_map: {0}", e);
                     }
                 }
 
                 // Munge and transfer the ban list
-
                 sql = string.Format("insert into estateban select {0}, bannedUUID, bannedIp, bannedIpHostMask, '' from regionban where regionban.regionUUID = @UUID", es.EstateID);
                 using (AutoClosingSqlCommand cmd = _Database.Query(sql))
                 {
                     cmd.Parameters.Add(_Database.CreateParameter("@UUID", regionID));
                     try
                     {
-
                         cmd.ExecuteNonQuery();
                     }
                     catch (Exception)
                     {
-                        _Log.Debug("[ESTATE DB]: Error setting up estateban from regionban");
+                        _Log.Debug("[Estate Database]: Error setting up estateban from regionban");
                     }
                 }
 
@@ -217,7 +213,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Stores the estate settings.
+        ///     Stores the estate settings.
         /// </summary>
         /// <param name="es">estate settings</param>
         public void StoreEstateSettings(EstateSettings es)
@@ -226,11 +222,13 @@ namespace OpenSim.Data.MSSQL
 
             names.Remove("EstateID");
 
-            string sql = string.Format("UPDATE estate_settings SET ") ; 
+            string sql = string.Format("UPDATE estate_settings SET ");
+
             foreach (string name in names)
             {
                 sql += name + " = @" + name + ", ";
             }
+
             sql = sql.Remove(sql.LastIndexOf(","));
             sql += " WHERE EstateID = @EstateID";
 
@@ -364,6 +362,7 @@ namespace OpenSim.Data.MSSQL
                 }
             }
         }
+
         #endregion
     }
 }

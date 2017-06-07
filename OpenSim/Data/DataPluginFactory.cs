@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,33 +34,33 @@ using OpenSim.Framework;
 namespace OpenSim.Data
 {
     /// <summary>
-    /// A static class containing methods for obtaining handles to database
-    /// storage objects.
+    ///     A static class containing methods for obtaining handles to database
+    ///     storage objects.
     /// </summary>
     public static class DataPluginFactory
     {
         /// <summary>
-        /// Based on <typeparam name="T" />, returns the appropriate
-        /// PluginInitialiserBase instance in <paramref name="init" /> and
-        /// extension point path in <paramref name="path" />.
+        ///     Based on <typeparam name="T" />, returns the appropriate
+        ///     PluginInitialiserBase instance in <paramref name="init" /> and
+        ///     extension point path in <paramref name="path" />.
         /// </summary>
         /// <param name="connect">
-        /// The DB connection string used when creating a new
-        /// PluginInitialiserBase, returned in <paramref name="init" />.
+        ///     The DB connection string used when creating a new
+        ///     PluginInitialiserBase, returned in <paramref name="init" />.
         /// </param>
         /// <param name="init">
-        /// A reference to a PluginInitialiserBase object in which the proper
-        /// initialiser will be returned.
+        ///     A reference to a PluginInitialiserBase object in which the proper
+        ///     initialiser will be returned.
         /// </param>
         /// <param name="path">
-        /// A string in which the proper extension point path will be returned.
+        ///     A string in which the proper extension point path will be returned.
         /// </param>
         /// <typeparam name="T">
-        /// The type of data plugin requested.
+        ///     The type of data plugin requested.
         /// </typeparam>
         /// <exception cref="NotImplementedException">
-        /// Thrown if <typeparamref name="T" /> is not one of the expected data
-        /// interfaces.
+        ///     Thrown if <typeparamref name="T" /> is not one of the expected data
+        ///     interfaces.
         /// </exception>
         private static void PluginLoaderParamFactory<T>(string connect, out PluginInitialiserBase init, out string path) where T : IPlugin
         {
@@ -97,20 +99,20 @@ namespace OpenSim.Data
         }
 
         /// <summary>
-        /// Returns a list of new <typeparamref name="T" /> data plugins.
-        /// Plugins will be requested in the order they were added.
+        ///     Returns a list of new <typeparamref name="T" /> data plugins.
+        ///     Plugins will be requested in the order they were added.
         /// </summary>
         /// <param name="provider">
-        /// The filename of the inventory server plugin DLL.
+        ///     The filename of the inventory server plugin DLL.
         /// </param>
         /// <param name="connect">
-        /// The connection string for the storage backend.
+        ///     The connection string for the storage backend.
         /// </param>
         /// <typeparam name="T">
-        /// The type of data plugin requested.
+        ///     The type of data plugin requested.
         /// </typeparam>
         /// <returns>
-        /// A list of all loaded plugins matching <typeparamref name="T" />.
+        ///     A list of all loaded plugins matching <typeparamref name="T" />.
         /// </returns>
         public static List<T> LoadDataPlugins<T>(string provider, string connect) where T : IPlugin
         {
@@ -131,20 +133,20 @@ namespace OpenSim.Data
         }
 
         /// <summary>
-        /// Returns a new <typeparamref name="T" /> data plugin instance if
-        /// only one was loaded, otherwise returns null (<c>default(T)</c>).
+        ///     Returns a new <typeparamref name="T" /> data plugin instance if
+        ///     only one was loaded, otherwise returns null (<c>default(T)</c>).
         /// </summary>
         /// <param name="provider">
-        /// The filename of the inventory server plugin DLL.
+        ///     The filename of the inventory server plugin DLL.
         /// </param>
         /// <param name="connect">
-        /// The connection string for the storage backend.
+        ///     The connection string for the storage backend.
         /// </param>
         /// <typeparam name="T">
-        /// The type of data plugin requested.
+        ///     The type of data plugin requested.
         /// </typeparam>
         /// <returns>
-        /// A list of all loaded plugins matching <typeparamref name="T" />.
+        ///     A list of all loaded plugins matching <typeparamref name="T" />.
         /// </returns>
         public static T LoadDataPlugin<T>(string provider, string connect) where T : IPlugin
         {

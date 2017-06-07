@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -45,20 +47,16 @@ namespace OpenSim.Data
     }
 
     /// <summary>
-    /// An interface for connecting to the authentication datastore
+    ///     An interface for connecting to the authentication datastore
     /// </summary>
-    public interface IRegionData 
+    public interface IRegionData
     {
         RegionData Get(UUID regionID, UUID ScopeID);
         List<RegionData> Get(string regionName, UUID ScopeID);
         RegionData Get(int x, int y, UUID ScopeID);
         List<RegionData> Get(int xStart, int yStart, int xEnd, int yEnd, UUID ScopeID);
-
         bool Store(RegionData data);
-
         bool SetDataItem(UUID principalID, string item, string value);
-
         bool Delete(UUID regionID);
-
     }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,35 +36,35 @@ using OpenSim.Framework;
 namespace OpenSim.Data
 {
     /// <summary>
-    /// A class which contains information known to the grid server about a region
+    ///     A class which contains information known to the grid server about a region
     /// </summary>
     [Serializable]
     public class RegionProfileData
     {
         /// <summary>
-        /// The name of the region
+        ///     The name of the region
         /// </summary>
         public string regionName = String.Empty;
 
         /// <summary>
-        /// A 64-bit number combining map position into a (mostly) unique ID
+        ///     A 64-bit number combining map position into a (mostly) unique ID
         /// </summary>
         public ulong regionHandle;
 
         /// <summary>
-        /// OGS/OpenSim Specific ID for a region
+        ///     OGS/OpenSim Specific ID for a region
         /// </summary>
         public UUID UUID;
 
         /// <summary>
-        /// Coordinates of the region
+        ///     Coordinates of the region
         /// </summary>
         public uint regionLocX;
         public uint regionLocY;
         public uint regionLocZ; // Reserved (round-robin, layers, etc)
 
         /// <summary>
-        /// Authentication secrets
+        ///     Authentication secrets
         /// </summary>
         /// <remarks>Not very secure, needs improvement.</remarks>
         public string regionSendKey = String.Empty;
@@ -70,23 +72,22 @@ namespace OpenSim.Data
         public string regionSecret = String.Empty;
 
         /// <summary>
-        /// Whether the region is online
+        ///     Whether the region is online
         /// </summary>
         public bool regionOnline;
 
         /// <summary>
-        /// Information about the server that the region is currently hosted on
+        ///     Information about the server that the region is currently hosted on
         /// </summary>
         public string serverIP = String.Empty;
         public uint serverPort;
         public string serverURI = String.Empty;
-
         public uint httpPort;
         public uint remotingPort;
         public string httpServerURI = String.Empty;
 
         /// <summary>
-        /// Set of optional overrides. Can be used to create non-eulicidean spaces.
+        ///     Set of optional overrides. Can be used to create non-eulicidean spaces.
         /// </summary>
         public ulong regionNorthOverrideHandle;
         public ulong regionSouthOverrideHandle;
@@ -94,48 +95,45 @@ namespace OpenSim.Data
         public ulong regionWestOverrideHandle;
 
         /// <summary>
-        /// Optional: URI Location of the region database
+        ///     Optional: URI Location of the region database
         /// </summary>
         /// <remarks>Used for floating sim pools where the region data is not nessecarily coupled to a specific server</remarks>
         public string regionDataURI = String.Empty;
 
         /// <summary>
-        /// Region Asset Details
+        ///     Region Asset Details
         /// </summary>
         public string regionAssetURI = String.Empty;
-
         public string regionAssetSendKey = String.Empty;
         public string regionAssetRecvKey = String.Empty;
 
         /// <summary>
-        /// Region Userserver Details
+        ///     Region Userserver Details
         /// </summary>
         public string regionUserURI = String.Empty;
-
         public string regionUserSendKey = String.Empty;
         public string regionUserRecvKey = String.Empty;
 
         /// <summary>
-        /// Region Map Texture Asset
+        ///     Region Map Texture Asset
         /// </summary>
         public UUID regionMapTextureID = new UUID("00000000-0000-1111-9999-000000000006");
 
         /// <summary>
-        /// this particular mod to the file provides support within the spec for RegionProfileData for the
-        /// owner_uuid for the region
+        ///     This particular mod to the file provides support within the spec for RegionProfileData for the
+        ///     owner_uuid for the region
         /// </summary>
         public UUID owner_uuid = UUID.Zero;
 
         /// <summary>
-        /// OGS/OpenSim Specific original ID for a region after move/split
+        ///     OGS/OpenSim Specific original ID for a region after move/split
         /// </summary>
         public UUID originUUID;
 
         /// <summary>
-        /// The Maturity rating of the region
+        ///     The Maturity rating of the region
         /// </summary>
         public uint maturity;
-
 
         //Data Wrappers
         public string RegionName
@@ -143,71 +141,85 @@ namespace OpenSim.Data
             get { return regionName; }
             set { regionName = value; }
         }
+
         public ulong RegionHandle
         {
             get { return regionHandle; }
             set { regionHandle = value; }
         }
+
         public UUID Uuid
         {
             get { return UUID; }
             set { UUID = value; }
         }
+
         public uint RegionLocX
         {
             get { return regionLocX; }
             set { regionLocX = value; }
         }
+
         public uint RegionLocY
         {
             get { return regionLocY; }
             set { regionLocY = value; }
         }
+
         public uint RegionLocZ
         {
             get { return regionLocZ; }
             set { regionLocZ = value; }
         }
+
         public string RegionSendKey
         {
             get { return regionSendKey; }
             set { regionSendKey = value; }
         }
+
         public string RegionRecvKey
         {
             get { return regionRecvKey; }
             set { regionRecvKey = value; }
         }
+
         public string RegionSecret
         {
             get { return regionSecret; }
             set { regionSecret = value; }
         }
+
         public bool RegionOnline
         {
             get { return regionOnline; }
             set { regionOnline = value; }
         }
+
         public string ServerIP
         {
             get { return serverIP; }
             set { serverIP = value; }
         }
+
         public uint ServerPort
         {
             get { return serverPort; }
             set { serverPort = value; }
         }
+
         public string ServerURI
         {
             get { return serverURI; }
             set { serverURI = value; }
         }
+
         public uint ServerHttpPort
         {
             get { return httpPort; }
             set { httpPort = value; }
         }
+
         public uint ServerRemotingPort
         {
             get { return remotingPort; }
@@ -219,71 +231,85 @@ namespace OpenSim.Data
             get { return regionNorthOverrideHandle; }
             set { regionNorthOverrideHandle = value; }
         }
+
         public ulong SouthOverrideHandle
         {
             get { return regionSouthOverrideHandle; }
             set { regionSouthOverrideHandle = value; }
         }
+
         public ulong EastOverrideHandle
         {
             get { return regionEastOverrideHandle; }
             set { regionEastOverrideHandle = value; }
         }
+
         public ulong WestOverrideHandle
         {
             get { return regionWestOverrideHandle; }
             set { regionWestOverrideHandle = value; }
         }
+
         public string RegionDataURI
         {
             get { return regionDataURI; }
             set { regionDataURI = value; }
         }
+
         public string RegionAssetURI
         {
             get { return regionAssetURI; }
             set { regionAssetURI = value; }
         }
+
         public string RegionAssetSendKey
         {
             get { return regionAssetSendKey; }
             set { regionAssetSendKey = value; }
         }
+
         public string RegionAssetRecvKey
         {
             get { return regionAssetRecvKey; }
             set { regionAssetRecvKey = value; }
         }
+
         public string RegionUserURI
         {
             get { return regionUserURI; }
             set { regionUserURI = value; }
         }
+
         public string RegionUserSendKey
         {
             get { return regionUserSendKey; }
             set { regionUserSendKey = value; }
         }
+
         public string RegionUserRecvKey
         {
             get { return regionUserRecvKey; }
             set { regionUserRecvKey = value; }
         }
+
         public UUID RegionMapTextureID
         {
             get { return regionMapTextureID; }
             set { regionMapTextureID = value; }
         }
+
         public UUID Owner_uuid
         {
             get { return owner_uuid; }
             set { owner_uuid = value; }
         }
+
         public UUID OriginUUID
         {
             get { return originUUID; }
             set { originUUID = value; }
         }
+
         public uint Maturity
         {
             get { return maturity; }
@@ -294,7 +320,6 @@ namespace OpenSim.Data
         {
             get { return Util.ConvertMaturityToAccessLevel(maturity); }
         }
-
 
         public RegionInfo ToRegionInfo()
         {
@@ -310,7 +335,7 @@ namespace OpenSim.Data
 
             return Create(regionInfo.RegionID, regionInfo.RegionName, regionInfo.RegionLocX,
                           regionInfo.RegionLocY, regionInfo.ExternalHostName,
-                          (uint) regionInfo.ExternalEndPoint.Port, regionInfo.HttpPort, regionInfo.RemotingPort,
+                          (uint)regionInfo.ExternalEndPoint.Port, regionInfo.HttpPort, regionInfo.RemotingPort,
                           regionInfo.ServerURI, regionInfo.AccessLevel);
         }
 
@@ -320,9 +345,7 @@ namespace OpenSim.Data
             regionProfile = new RegionProfileData();
             regionProfile.regionLocX = locX;
             regionProfile.regionLocY = locY;
-            regionProfile.regionHandle =
-                Utils.UIntsToLong((regionProfile.regionLocX * Constants.RegionSize),
-                                  (regionProfile.regionLocY*Constants.RegionSize));
+            regionProfile.regionHandle = Utils.UIntsToLong((regionProfile.regionLocX * Constants.RegionSize), (regionProfile.regionLocY * Constants.RegionSize));
             regionProfile.serverIP = externalHostName;
             regionProfile.serverPort = regionPort;
             regionProfile.httpPort = httpPort;

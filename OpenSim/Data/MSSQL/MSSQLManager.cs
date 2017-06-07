@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,19 +39,18 @@ using OpenMetaverse;
 namespace OpenSim.Data.MSSQL
 {
     /// <summary>
-    /// A management class for the MS SQL Storage Engine
+    ///     A management class for the MS SQL Storage Engine
     /// </summary>
     public class MSSQLManager
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Connection string for ADO.net
+        ///     Connection string for ADO.net
         /// </summary>
         private readonly string connectionString;
 
-        public MSSQLManager(string dataSource, string initialCatalog, string persistSecurityInfo, string userId,
-                            string password)
+        public MSSQLManager(string dataSource, string initialCatalog, string persistSecurityInfo, string userId, string password)
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
@@ -64,7 +65,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Initialize the manager and set the connectionstring
+        ///     Initialize the manager and set the connectionstring
         /// </summary>
         /// <param name="connection"></param>
         public MSSQLManager(string connection)
@@ -82,8 +83,6 @@ namespace OpenSim.Data.MSSQL
             return conn;
         }
 
-        #region Obsolete functions, can be removed!
-
         /// <summary>
         ///
         /// </summary>
@@ -98,69 +97,6 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Define Table function
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-/*
-        [Obsolete("Do not use!")]
-        protected static string defineTable(DataTable dt)
-        {
-            string sql = "create table " + dt.TableName + "(";
-            string subsql = String.Empty;
-            foreach (DataColumn col in dt.Columns)
-            {
-                if (subsql.Length > 0)
-                {
-                    // a map function would rock so much here
-                    subsql += ",\n";
-                }
-
-                subsql += col.ColumnName + " " + SqlType(col.DataType);
-                if (col == dt.PrimaryKey[0])
-                {
-                    subsql += " primary key";
-                }
-            }
-            sql += subsql;
-            sql += ")";
-            return sql;
-        }
-*/
-
-        #endregion
-
-        /// <summary>
-        /// Type conversion function
-        /// </summary>
-        /// <param name="type">a type</param>
-        /// <returns>a sqltype</returns>
-        /// <remarks>this is something we'll need to implement for each db slightly differently.</remarks>
-/*
-        [Obsolete("Used by a obsolete methods")]
-        public static string SqlType(Type type)
-        {
-            if (type == typeof(String))
-            {
-                return "varchar(255)";
-            }
-            if (type == typeof(Int32))
-            {
-                return "integer";
-            }
-            if (type == typeof(Double))
-            {
-                return "float";
-            }
-            if (type == typeof(Byte[]))
-            {
-                return "image";
-            }
-            return "varchar(255)";
-        }
-*/
-
-        /// <summary>
         /// Type conversion to a SQLDbType functions
         /// </summary>
         /// <param name="type"></param>
@@ -171,47 +107,57 @@ namespace OpenSim.Data.MSSQL
             {
                 return SqlDbType.VarChar;
             }
+
             if (type == typeof(double))
             {
                 return SqlDbType.Float;
             }
+
             if (type == typeof(Single))
             {
                 return SqlDbType.Float;
             }
+
             if (type == typeof(int))
             {
                 return SqlDbType.Int;
             }
+
             if (type == typeof(bool))
             {
                 return SqlDbType.Bit;
             }
+
             if (type == typeof(UUID))
             {
                 return SqlDbType.UniqueIdentifier;
             }
+
             if (type == typeof(sbyte))
             {
                 return SqlDbType.Int;
             }
+
             if (type == typeof(Byte[]))
             {
                 return SqlDbType.Image;
             }
+
             if (type == typeof(uint) || type == typeof(ushort))
             {
                 return SqlDbType.Int;
             }
+
             if (type == typeof(ulong))
             {
                 return SqlDbType.BigInt;
             }
+
             return SqlDbType.VarChar;
         }
 
         /// <summary>
-        /// Creates value for parameter.
+        ///     Creates value for parameter.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
@@ -221,29 +167,34 @@ namespace OpenSim.Data.MSSQL
 
             if (valueType == typeof(UUID)) //TODO check if this works
             {
-                return ((UUID) value).Guid;
+                return ((UUID)value).Guid;
             }
+
             if (valueType == typeof(UUID))
             {
                 return ((UUID)value).Guid;
             }
+
             if (valueType == typeof(bool))
             {
                 return (bool)value ? 1 : 0;
             }
+
             if (valueType == typeof(Byte[]))
             {
                 return value;
             }
+
             if (valueType == typeof(int))
             {
                 return value;
             }
+
             return value;
         }
 
         /// <summary>
-        /// Create a parameter for a command
+        ///     Create a parameter for a command
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="parameterObject">parameter object.</param>
@@ -254,7 +205,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Creates the parameter for a command.
+        ///     Creates the parameter for a command.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="parameterObject">parameter object.</param>
@@ -286,7 +237,7 @@ namespace OpenSim.Data.MSSQL
         private static readonly Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
 
         /// <summary>
-        /// Run a query and return a sql db command
+        ///     Run a query and return a sql db command
         /// </summary>
         /// <param name="sql">The SQL query.</param>
         /// <returns></returns>
@@ -296,7 +247,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Runs a query with protection against SQL Injection by using parameterised input.
+        ///     Runs a query with protection against SQL Injection by using parameterised input.
         /// </summary>
         /// <param name="sql">The SQL string - replace any variables such as WHERE x = "y" with WHERE x = @y</param>
         /// <param name="parameters">The parameters - index so that @y is indexed as 'y'</param>
@@ -305,6 +256,7 @@ namespace OpenSim.Data.MSSQL
         {
             SqlCommand dbcommand = DatabaseConnection().CreateCommand();
             dbcommand.CommandText = sql;
+
             foreach (KeyValuePair<string, string> param in parameters)
             {
                 dbcommand.Parameters.AddWithValue(param.Key, param.Value);
@@ -314,7 +266,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Runs a query with protection against SQL Injection by using parameterised input.
+        ///     Runs a query with protection against SQL Injection by using parameterised input.
         /// </summary>
         /// <param name="sql">The SQL string - replace any variables such as WHERE x = "y" with WHERE x = @y</param>
         /// <param name="sqlParameter">A parameter - use createparameter to create parameter</param>
@@ -329,7 +281,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Checks if we need to do some migrations to the database
+        ///     Checks if we need to do some migrations to the database
         /// </summary>
         /// <param name="migrationStore">migrationStore.</param>
         public void CheckMigration(string migrationStore)
@@ -348,7 +300,7 @@ namespace OpenSim.Data.MSSQL
         #region Old Testtable functions
 
         /// <summary>
-        /// Execute a SQL statement stored in a resource, as a string
+        ///     Execute a SQL statement stored in a resource, as a string
         /// </summary>
         /// <param name="name">the ressource string</param>
         public void ExecuteResourceSql(string name)
@@ -360,7 +312,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Given a list of tables, return the version of the tables, as seen in the database
+        ///     Given a list of tables, return the version of the tables, as seen in the database
         /// </summary>
         /// <param name="tableList"></param>
         public void GetTableVersion(Dictionary<string, string> tableList)
@@ -368,8 +320,7 @@ namespace OpenSim.Data.MSSQL
             Dictionary<string, string> param = new Dictionary<string, string>();
             param["dbname"] = new SqlConnectionStringBuilder(connectionString).InitialCatalog;
 
-            using (IDbCommand tablesCmd =
-                Query("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_CATALOG=@dbname", param))
+            using (IDbCommand tablesCmd = Query("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_CATALOG=@dbname", param))
             using (IDataReader tables = tablesCmd.ExecuteReader())
             {
                 while (tables.Read())
@@ -377,6 +328,7 @@ namespace OpenSim.Data.MSSQL
                     try
                     {
                         string tableName = (string)tables["TABLE_NAME"];
+
                         if (tableList.ContainsKey(tableName))
                             tableList[tableName] = tableName;
                     }
@@ -385,9 +337,9 @@ namespace OpenSim.Data.MSSQL
                         m_log.Error(e.ToString());
                     }
                 }
+
                 tables.Close();
             }
-
         }
 
         /// <summary>
@@ -410,24 +362,23 @@ namespace OpenSim.Data.MSSQL
                             return resourceString;
                         }
                     }
+
             throw new Exception(string.Format("Resource '{0}' was not found", name));
         }
 
         #endregion
 
         /// <summary>
-        /// Returns the version of this DB provider
+        ///     Returns the version of this DB provider
         /// </summary>
         /// <returns>A string containing the DB provider</returns>
         public string getVersion()
         {
             Module module = GetType().Module;
-            // string dllName = module.Assembly.ManifestModule.Name;
             Version dllVersion = module.Assembly.GetName().Version;
 
             return
-                string.Format("{0}.{1}.{2}.{3}", dllVersion.Major, dllVersion.Minor, dllVersion.Build,
-                              dllVersion.Revision);
+                string.Format("{0}.{1}.{2}.{3}", dllVersion.Major, dllVersion.Minor, dllVersion.Build, dllVersion.Revision);
         }
     }
 }

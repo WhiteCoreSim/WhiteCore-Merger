@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -52,6 +54,7 @@ namespace OpenSim.Data.Tests
     public class PropertyCompareConstraint<T> : NUnit.Framework.Constraints.Constraint
     {
         private readonly object _expected;
+
         //the reason everywhere uses propertyNames.Reverse().ToArray() is because the stack is backwards of the order we want to display the properties in.
         private string failingPropertyName = string.Empty;
         private object failingExpected;
@@ -103,8 +106,9 @@ namespace OpenSim.Data.Tests
 
             if (actual.GetType() == typeof(Color))
             {
-                Color actualColor = (Color) actual;
-                Color expectedColor = (Color) expected;
+                Color actualColor = (Color)actual;
+                Color expectedColor = (Color)expected;
+
                 if (actualColor.R != expectedColor.R)
                 {
                     propertyNames.Push("R");
@@ -114,6 +118,7 @@ namespace OpenSim.Data.Tests
                     failingExpected = expectedColor.R;
                     return false;
                 }
+
                 if (actualColor.G != expectedColor.G)
                 {
                     propertyNames.Push("G");
@@ -123,6 +128,7 @@ namespace OpenSim.Data.Tests
                     failingExpected = expectedColor.G;
                     return false;
                 }
+
                 if (actualColor.B != expectedColor.B)
                 {
                     propertyNames.Push("B");
@@ -132,6 +138,7 @@ namespace OpenSim.Data.Tests
                     failingExpected = expectedColor.B;
                     return false;
                 }
+
                 if (actualColor.A != expectedColor.A)
                 {
                     propertyNames.Push("A");
@@ -141,10 +148,12 @@ namespace OpenSim.Data.Tests
                     failingExpected = expectedColor.A;
                     return false;
                 }
+
                 return true;
             }
 
             IComparable comp = actual as IComparable;
+
             if (comp != null)
             {
                 if (comp.CompareTo(expected) != 0)
@@ -154,14 +163,17 @@ namespace OpenSim.Data.Tests
                     failingExpected = expected;
                     return false;
                 }
+
                 return true;
             }
 
             //Now try the much more annoying IComparable<T>
             Type icomparableInterface = actual.GetType().GetInterface("IComparable`1");
+
             if (icomparableInterface != null)
             {
                 int result = (int)icomparableInterface.GetMethod("CompareTo").Invoke(actual, new[] { expected });
+
                 if (result != 0)
                 {
                     failingPropertyName = string.Join(".", propertyNames.Reverse().ToArray());
@@ -169,14 +181,17 @@ namespace OpenSim.Data.Tests
                     failingExpected = expected;
                     return false;
                 }
+
                 return true;
             }
 
             IEnumerable arr = actual as IEnumerable;
+
             if (arr != null)
             {
                 List<object> actualList = arr.Cast<object>().ToList();
                 List<object> expectedList = ((IEnumerable)expected).Cast<object>().ToList();
+
                 if (actualList.Count != expectedList.Count)
                 {
                     propertyNames.Push("Count");
@@ -186,20 +201,25 @@ namespace OpenSim.Data.Tests
                     propertyNames.Pop();
                     return false;
                 }
+
                 //actualList and expectedList should be the same size.
                 for (int i = 0; i < actualList.Count; i++)
                 {
                     propertyNames.Push("[" + i + "]");
+
                     if (!ObjectCompare(expectedList[i], actualList[i], propertyNames))
                         return false;
+
                     propertyNames.Pop();
                 }
+
                 //Everything seems okay...
                 return true;
             }
 
             //Skip static properties.  I had a nasty problem comparing colors because of all of the public static colors.
             PropertyInfo[] properties = expected.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
             foreach (var property in properties)
             {
                 if (ignores.Contains(property.Name))
@@ -209,8 +229,10 @@ namespace OpenSim.Data.Tests
                 object expectedValue = property.GetValue(expected, null);
 
                 propertyNames.Push(property.Name);
+
                 if (!ObjectCompare(expectedValue, actualValue, propertyNames))
                     return false;
+
                 propertyNames.Pop();
             }
 
@@ -232,6 +254,7 @@ namespace OpenSim.Data.Tests
         //These notes assume the lambda: (x=>x.Parent.Value)
         //ignores should really contain like a fully dotted version of the property name, but I'm starting with small steps
         readonly List<string> ignores = new List<string>();
+
         public PropertyCompareConstraint<T> IgnoreProperty(Expression<Func<T, object>> func)
         {
             Expression express = func.Body;
@@ -245,6 +268,7 @@ namespace OpenSim.Data.Tests
             //This deals with any casts... like implicit casts to object.  Not all UnaryExpression are casts, but this is a first attempt.
             if (express is UnaryExpression)
                 PullApartExpression(((UnaryExpression)express).Operand);
+
             if (express is MemberExpression)
             {
                 //If the inside of the lambda is the access to x, we've hit the end of the chain.
@@ -268,7 +292,6 @@ namespace OpenSim.Data.Tests
             HasInt actual = new HasInt { TheValue = 5 };
             HasInt expected = new HasInt { TheValue = 5 };
             var constraint = Constraints.PropertyCompareConstraint(expected);
-
             Assert.That(constraint.Matches(actual), Is.True);
         }
 
@@ -278,10 +301,8 @@ namespace OpenSim.Data.Tests
             HasInt actual = new HasInt { TheValue = 5 };
             HasInt expected = new HasInt { TheValue = 4 };
             var constraint = Constraints.PropertyCompareConstraint(expected);
-
             Assert.That(constraint.Matches(actual), Is.False);
         }
-
 
         [Test]
         public void IntShouldIgnore()
@@ -289,7 +310,6 @@ namespace OpenSim.Data.Tests
             HasInt actual = new HasInt { TheValue = 5 };
             HasInt expected = new HasInt { TheValue = 4 };
             var constraint = Constraints.PropertyCompareConstraint(expected).IgnoreProperty(x => x.TheValue);
-
             Assert.That(constraint.Matches(actual), Is.True);
         }
 
@@ -299,9 +319,7 @@ namespace OpenSim.Data.Tests
             UUID uuid1 = UUID.Random();
             AssetBase actual = new AssetBase(uuid1, "asset one", (sbyte)AssetType.Texture);
             AssetBase expected = new AssetBase(uuid1, "asset one", (sbyte)AssetType.Texture);
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
-
             Assert.That(constraint.Matches(actual), Is.True);
         }
 
@@ -311,9 +329,7 @@ namespace OpenSim.Data.Tests
             UUID uuid1 = UUID.Random();
             AssetBase actual = new AssetBase(uuid1, "asset one", (sbyte)AssetType.Texture);
             AssetBase expected = new AssetBase(UUID.Random(), "asset one", (sbyte)AssetType.Texture);
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
-
             Assert.That(constraint.Matches(actual), Is.False);
         }
 
@@ -323,9 +339,7 @@ namespace OpenSim.Data.Tests
             UUID uuid1 = UUID.Random();
             AssetBase actual = new AssetBase(uuid1, "asset one", (sbyte)AssetType.Texture);
             AssetBase expected = new AssetBase(uuid1, "asset two", (sbyte)AssetType.Texture);
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
-
             Assert.That(constraint.Matches(actual), Is.False);
         }
 
@@ -334,9 +348,7 @@ namespace OpenSim.Data.Tests
         {
             UUID uuid1 = UUID.Random();
             UUID uuid2 = UUID.Parse(uuid1.ToString());
-
             var constraint = Constraints.PropertyCompareConstraint(uuid1);
-
             Assert.That(constraint.Matches(uuid2), Is.True);
         }
 
@@ -345,9 +357,7 @@ namespace OpenSim.Data.Tests
         {
             UUID uuid1 = UUID.Random();
             UUID uuid2 = UUID.Random();
-
             var constraint = Constraints.PropertyCompareConstraint(uuid1);
-
             Assert.That(constraint.Matches(uuid2), Is.False);
         }
 
@@ -356,9 +366,7 @@ namespace OpenSim.Data.Tests
         {
             Color actual = Color.Red;
             Color expected = Color.FromArgb(actual.A, actual.R, actual.G, actual.B);
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
-
             Assert.That(constraint.Matches(actual), Is.True);
         }
 
@@ -367,18 +375,15 @@ namespace OpenSim.Data.Tests
         {
             List<int> expected = new List<int> { 1, 2, 3 };
             List<int> actual = new List<int> { 1, 2, 3 };
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
             Assert.That(constraint.Matches(actual), Is.True);
         }
-
 
         [Test]
         public void ShouldFailToCompareListsThatAreDifferent()
         {
             List<int> expected = new List<int> { 1, 2, 3 };
             List<int> actual = new List<int> { 1, 2, 4 };
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
             Assert.That(constraint.Matches(actual), Is.False);
         }
@@ -388,7 +393,6 @@ namespace OpenSim.Data.Tests
         {
             List<int> expected = new List<int> { 1, 2, 3 };
             List<int> actual = new List<int> { 1, 2 };
-
             var constraint = Constraints.PropertyCompareConstraint(expected);
             Assert.That(constraint.Matches(actual), Is.False);
         }
@@ -405,7 +409,6 @@ namespace OpenSim.Data.Tests
             Recursive child = new Recursive();
             parent.Other = child;
             child.Other = parent;
-
             var constraint = Constraints.PropertyCompareConstraint(child);
             Assert.That(constraint.Matches(child), Is.False);
         }

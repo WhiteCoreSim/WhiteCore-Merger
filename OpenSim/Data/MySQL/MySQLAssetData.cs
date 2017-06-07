@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,7 +39,7 @@ using OpenSim.Framework;
 namespace OpenSim.Data.MySQL
 {
     /// <summary>
-    /// A MySQL Interface for the Asset Server
+    ///     A MySQL Interface for the Asset Server
     /// </summary>
     public class MySQLAssetData : AssetDataBase
     {
@@ -101,13 +103,12 @@ namespace OpenSim.Data.MySQL
             string port = GridDataMySqlFile.ParseFileReadValue("port");
 
             _dbConnection = new MySQLManager(hostname, database, username, password, pooling, port);
-
         }
 
         public override void Dispose() { }
 
         /// <summary>
-        /// Database provider version
+        ///     Database provider version
         /// </summary>
         override public string Version
         {
@@ -115,7 +116,7 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// The name of this DB provider
+        ///     The name of this DB provider
         /// </summary>
         override public string Name
         {
@@ -127,7 +128,7 @@ namespace OpenSim.Data.MySQL
         #region IAssetDataPlugin Members
 
         /// <summary>
-        /// Fetch Asset <paramref name="assetID"/> from database
+        ///     Fetch Asset <paramref name="assetID"/> from database
         /// </summary>
         /// <param name="assetID">Asset UUID to fetch</param>
         /// <returns>Return the asset</returns>
@@ -139,10 +140,7 @@ namespace OpenSim.Data.MySQL
             {
                 _dbConnection.CheckConnection();
 
-                MySqlCommand cmd =
-                    new MySqlCommand(
-                        "SELECT name, description, assetType, local, temporary, data FROM assets WHERE id=?id",
-                        _dbConnection.Connection);
+                MySqlCommand cmd = new MySqlCommand("SELECT name, description, assetType, local, temporary, data FROM assets WHERE id=?id", _dbConnection.Connection);
                 cmd.Parameters.AddWithValue("?id", assetID.ToString());
 
                 try
@@ -152,10 +150,11 @@ namespace OpenSim.Data.MySQL
                         if (dbReader.Read())
                         {
                             asset = new AssetBase(assetID, (string)dbReader["name"], (sbyte)dbReader["assetType"]);
-                            asset.Data = (byte[]) dbReader["data"];
-                            asset.Description = (string) dbReader["description"];
+                            asset.Data = (byte[])dbReader["data"];
+                            asset.Description = (string)dbReader["description"];
 
                             string local = dbReader["local"].ToString();
+
                             if (local.Equals("1") || local.Equals("true", StringComparison.InvariantCultureIgnoreCase))
                                 asset.Local = true;
                             else
@@ -163,25 +162,26 @@ namespace OpenSim.Data.MySQL
 
                             asset.Temporary = Convert.ToBoolean(dbReader["temporary"]);
                         }
+
                         dbReader.Close();
                         cmd.Dispose();
                     }
+
                     if (asset != null)
                         UpdateAccessTime(asset);
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat(
-                        "[ASSETS DB]: MySql failure fetching asset {0}" + Environment.NewLine + e.ToString()
-                        + Environment.NewLine + "Reconnecting", assetID);
+                    m_log.ErrorFormat("[Assets Database]: MySql failure fetching asset {0}" + Environment.NewLine + e.ToString() + Environment.NewLine + "Reconnecting", assetID);
                     _dbConnection.Reconnect();
                 }
             }
+
             return asset;
         }
 
         /// <summary>
-        /// Create an asset in database, or update it if existing.
+        ///     Create an asset in database, or update it if existing.
         /// </summary>
         /// <param name="asset">Asset UUID to create</param>
         /// <remarks>On failure : Throw an exception and attempt to reconnect to database</remarks>
@@ -198,19 +198,21 @@ namespace OpenSim.Data.MySQL
                         _dbConnection.Connection);
 
                 string assetName = asset.Name;
+
                 if (asset.Name.Length > 64)
                 {
                     assetName = asset.Name.Substring(0, 64);
-                    m_log.Warn("[ASSET DB]: Name field truncated from " + asset.Name.Length + " to " + assetName.Length + " characters on add");
+                    m_log.Warn("[Assets Database]: Name field truncated from " + asset.Name.Length + " to " + assetName.Length + " characters on add");
                 }
-                
+
                 string assetDescription = asset.Description;
+
                 if (asset.Description.Length > 64)
                 {
                     assetDescription = asset.Description.Substring(0, 64);
-                    m_log.Warn("[ASSET DB]: Description field truncated from " + asset.Description.Length + " to " + assetDescription.Length + " characters on add");
+                    m_log.Warn("[Assets Database]: Description field truncated from " + asset.Description.Length + " to " + assetDescription.Length + " characters on add");
                 }
-                
+
                 // need to ensure we dispose
                 try
                 {
@@ -233,8 +235,7 @@ namespace OpenSim.Data.MySQL
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat("[ASSET DB]: MySQL failure creating asset {0} with name \"{1}\". Attempting reconnect. Error: {2}",
-                        asset.FullID, asset.Name, e.Message);
+                    m_log.ErrorFormat("[Assets Database]: MySQL failure creating asset {0} with name \"{1}\". Attempting reconnect. Error: {2}", asset.FullID, asset.Name, e.Message);
                     _dbConnection.Reconnect();
                 }
             }
@@ -249,9 +250,7 @@ namespace OpenSim.Data.MySQL
             {
                 _dbConnection.CheckConnection();
 
-                MySqlCommand cmd =
-                    new MySqlCommand("update assets set access_time=?access_time where id=?id",
-                                     _dbConnection.Connection);
+                MySqlCommand cmd = new MySqlCommand("update assets set access_time=?access_time where id=?id", _dbConnection.Connection);
 
                 // need to ensure we dispose
                 try
@@ -269,17 +268,16 @@ namespace OpenSim.Data.MySQL
                 catch (Exception e)
                 {
                     m_log.ErrorFormat(
-                        "[ASSETS DB]: " +
+                        "[Assets Database]: " +
                         "MySql failure updating access_time for asset {0} with name {1}" + Environment.NewLine + e.ToString()
                         + Environment.NewLine + "Attempting reconnection", asset.FullID, asset.Name);
                     _dbConnection.Reconnect();
                 }
             }
-
         }
 
         /// <summary>
-        /// check if the asset UUID exist in database
+        ///     check if the asset UUID exist in database
         /// </summary>
         /// <param name="uuid">The asset UUID</param>
         /// <returns>true if exist.</returns>
@@ -291,10 +289,7 @@ namespace OpenSim.Data.MySQL
             {
                 _dbConnection.CheckConnection();
 
-                MySqlCommand cmd =
-                    new MySqlCommand(
-                        "SELECT id FROM assets WHERE id=?id",
-                        _dbConnection.Connection);
+                MySqlCommand cmd = new MySqlCommand("SELECT id FROM assets WHERE id=?id", _dbConnection.Connection);
 
                 cmd.Parameters.AddWithValue("?id", uuid.ToString());
 
@@ -324,8 +319,8 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// Returns a list of AssetMetadata objects. The list is a subset of
-        /// the entire data set offset by <paramref name="start" /> containing
+        ///     Returns a list of AssetMetadata objects. The list is a subset of
+        ///     the entire data set offset by <paramref name="start" /> containing
         /// <paramref name="count" /> elements.
         /// </summary>
         /// <param name="start">The number of results to discard from the total data set.</param>
@@ -350,14 +345,14 @@ namespace OpenSim.Data.MySQL
                         while (dbReader.Read())
                         {
                             AssetMetadata metadata = new AssetMetadata();
-                            metadata.Name = (string) dbReader["name"];
-                            metadata.Description = (string) dbReader["description"];
-                            metadata.Type = (sbyte) dbReader["assetType"];
+                            metadata.Name = (string)dbReader["name"];
+                            metadata.Description = (string)dbReader["description"];
+                            metadata.Type = (sbyte)dbReader["assetType"];
                             metadata.Temporary = Convert.ToBoolean(dbReader["temporary"]); // Not sure if this is correct.
-                            metadata.FullID = new UUID((string) dbReader["id"]);
+                            metadata.FullID = new UUID((string)dbReader["id"]);
 
                             // Current SHA1s are not stored/computed.
-                            metadata.SHA1 = new byte[] {};
+                            metadata.SHA1 = new byte[] { };
 
                             retList.Add(metadata);
                         }
@@ -374,7 +369,5 @@ namespace OpenSim.Data.MySQL
         }
 
         #endregion
-
-
     }
 }

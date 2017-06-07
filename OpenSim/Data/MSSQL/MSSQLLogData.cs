@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,28 +35,27 @@ using OpenSim.Framework;
 namespace OpenSim.Data.MSSQL
 {
     /// <summary>
-    /// An interface to the log database for MSSQL
+    ///     An interface to the log database for MSSQL
     /// </summary>
     internal class MSSQLLogData : ILogDataPlugin
     {
         private const string _migrationStore = "LogStore";
-
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// The database manager
+        ///     The database manager
         /// </summary>
         public MSSQLManager database;
 
         [Obsolete("Cannot be default-initialized!")]
         public void Initialise()
         {
-            m_log.Info("[LOG DB]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            m_log.Info("[Log Database]: " + Name + " cannot be default-initialized!");
+            throw new PluginNotInitialisedException(Name);
         }
 
         /// <summary>
-        /// Artificial constructor called when the plugin is loaded
+        ///     Artificial constructor called when the plugin is loaded
         /// </summary>
         public void Initialise(string connect)
         {
@@ -72,9 +73,7 @@ namespace OpenSim.Data.MSSQL
                 string settingUserId = gridDataMSSqlFile.ParseFileReadValue("user_id");
                 string settingPassword = gridDataMSSqlFile.ParseFileReadValue("password");
 
-                database =
-                    new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId,
-                                     settingPassword);
+                database = new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId, settingPassword);
             }
 
             //Updating mechanisme
@@ -82,7 +81,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Saves a log item to the database
+        ///     Saves a log item to the database
         /// </summary>
         /// <param name="serverDaemon">The daemon triggering the event</param>
         /// <param name="target">The target of the action (region / agent UUID, etc)</param>
@@ -90,8 +89,7 @@ namespace OpenSim.Data.MSSQL
         /// <param name="arguments">The arguments passed to the method</param>
         /// <param name="priority">How critical is this?</param>
         /// <param name="logMessage">The message to log</param>
-        public void saveLog(string serverDaemon, string target, string methodCall, string arguments, int priority,
-                            string logMessage)
+        public void saveLog(string serverDaemon, string target, string methodCall, string arguments, int priority, string logMessage)
         {
             string sql = "INSERT INTO logs ([target], [server], [method], [arguments], [priority], [message]) VALUES ";
             sql += "(@target, @server, @method, @arguments, @priority, @message);";
@@ -99,7 +97,7 @@ namespace OpenSim.Data.MSSQL
             using (AutoClosingSqlCommand command = database.Query(sql))
             {
                 command.Parameters.Add(database.CreateParameter("server", serverDaemon));
-                command.Parameters.Add(database.CreateParameter("target",target));
+                command.Parameters.Add(database.CreateParameter("target", target));
                 command.Parameters.Add(database.CreateParameter("method", methodCall));
                 command.Parameters.Add(database.CreateParameter("arguments", arguments));
                 command.Parameters.Add(database.CreateParameter("priority", priority.ToString()));
@@ -112,13 +110,13 @@ namespace OpenSim.Data.MSSQL
                 catch (Exception e)
                 {
                     //Are we not in a loop here
-                    m_log.Error("[LOG DB] Error logging : " + e.Message);
+                    m_log.Error("[Log Development] Error logging : " + e.Message);
                 }
             }
         }
 
         /// <summary>
-        /// Returns the name of this DB provider
+        ///     Returns the name of this DB provider
         /// </summary>
         /// <returns>A string containing the DB provider name</returns>
         public string Name
@@ -127,7 +125,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Closes the database provider
+        ///     Closes the database provider
         /// </summary>
         public void Dispose()
         {
@@ -135,7 +133,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Returns the version of this DB provider
+        ///     Returns the version of this DB provider
         /// </summary>
         /// <returns>A string containing the provider version</returns>
         public string Version

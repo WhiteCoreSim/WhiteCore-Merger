@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,7 +44,7 @@ using OpenSim.Region.Framework.Scenes;
 namespace OpenSim.Data.MySQL
 {
     /// <summary>
-    /// A MySQL Interface for the Region Server
+    ///     A MySQL Interface for the Region Server
     /// </summary>
     public class MySQLDataStore : IRegionDataStore
     {
@@ -61,31 +63,9 @@ namespace OpenSim.Data.MySQL
             m_Connection.Open();
 
             // Apply new Migrations
-            //
             Assembly assem = GetType().Assembly;
             Migration m = new Migration(m_Connection, assem, "RegionStore");
             m.Update();
-
-            // NOTE: This is a very slow query that times out on regions with a lot of prims.
-            // I'm told that it is no longer relevant so it's commented out now, but if it
-            // is relevant it should be added as a console command instead of part of the
-            // startup phase
-            // Clean dropped attachments
-            //
-            //try
-            //{
-            //    using (MySqlCommand cmd = m_Connection.CreateCommand())
-            //    {
-            //        cmd.CommandText = "delete from prims, primshapes using prims " +
-            //                "left join primshapes on prims.uuid = primshapes.uuid " +
-            //                "where PCode = 9 and State <> 0";
-            //        ExecuteNonQuery(cmd);
-            //    }
-            //}
-            //catch (MySqlException ex)
-            //{
-            //    m_log.Error("[REGION DB]: Error cleaning up dropped attachments: " + ex.Message);
-            //}
         }
 
         private IDataReader ExecuteReader(MySqlCommand c)
@@ -104,7 +84,7 @@ namespace OpenSim.Data.MySQL
                     Thread.Sleep(500);
 
                     m_Connection.Close();
-                    m_Connection = (MySqlConnection) ((ICloneable)m_Connection).Clone();
+                    m_Connection = (MySqlConnection)((ICloneable)m_Connection).Clone();
                     m_Connection.Open();
                     c.Connection = m_Connection;
 
@@ -113,6 +93,7 @@ namespace OpenSim.Data.MySQL
                         errorSeen = true;
                         continue;
                     }
+
                     throw;
                 }
 
@@ -137,7 +118,7 @@ namespace OpenSim.Data.MySQL
                     Thread.Sleep(500);
 
                     m_Connection.Close();
-                    m_Connection = (MySqlConnection) ((ICloneable)m_Connection).Clone();
+                    m_Connection = (MySqlConnection)((ICloneable)m_Connection).Clone();
                     m_Connection.Open();
                     c.Connection = m_Connection;
 
@@ -146,6 +127,7 @@ namespace OpenSim.Data.MySQL
                         errorSeen = true;
                         continue;
                     }
+
                     throw;
                 }
 
@@ -153,16 +135,16 @@ namespace OpenSim.Data.MySQL
             }
         }
 
-        public void Dispose() {}
+        public void Dispose() { }
 
         public void StoreObject(SceneObjectGroup obj, UUID regionUUID)
         {
             uint flags = obj.RootPart.GetEffectiveObjectFlags();
 
             // Eligibility check
-            //
             if ((flags & (uint)PrimFlags.Temporary) != 0)
                 return;
+
             if ((flags & (uint)PrimFlags.TemporaryOnRez) != 0)
                 return;
 
@@ -174,72 +156,72 @@ namespace OpenSim.Data.MySQL
                 {
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "replace into prims ("+
-                            "UUID, CreationDate, "+
-                            "Name, Text, Description, "+
-                            "SitName, TouchName, ObjectFlags, "+
-                            "OwnerMask, NextOwnerMask, GroupMask, "+
-                            "EveryoneMask, BaseMask, PositionX, "+
-                            "PositionY, PositionZ, GroupPositionX, "+
-                            "GroupPositionY, GroupPositionZ, VelocityX, "+
-                            "VelocityY, VelocityZ, AngularVelocityX, "+
-                            "AngularVelocityY, AngularVelocityZ, "+
-                            "AccelerationX, AccelerationY, "+
-                            "AccelerationZ, RotationX, "+
-                            "RotationY, RotationZ, "+
-                            "RotationW, SitTargetOffsetX, "+
-                            "SitTargetOffsetY, SitTargetOffsetZ, "+
-                            "SitTargetOrientW, SitTargetOrientX, "+
-                            "SitTargetOrientY, SitTargetOrientZ, "+
-                            "RegionUUID, CreatorID, "+
-                            "OwnerID, GroupID, "+
-                            "LastOwnerID, SceneGroupID, "+
-                            "PayPrice, PayButton1, "+
-                            "PayButton2, PayButton3, "+
-                            "PayButton4, LoopedSound, "+
-                            "LoopedSoundGain, TextureAnimation, "+
-                            "OmegaX, OmegaY, OmegaZ, "+
-                            "CameraEyeOffsetX, CameraEyeOffsetY, "+
-                            "CameraEyeOffsetZ, CameraAtOffsetX, "+
-                            "CameraAtOffsetY, CameraAtOffsetZ, "+
-                            "ForceMouselook, ScriptAccessPin, "+
-                            "AllowedDrop, DieAtEdge, "+
-                            "SalePrice, SaleType, "+
-                            "ColorR, ColorG, ColorB, ColorA, "+
-                            "ParticleSystem, ClickAction, Material, "+
-                            "CollisionSound, CollisionSoundVolume, "+
-                            "PassTouches, "+
-                            "LinkNumber) values (" + "?UUID, "+
-                            "?CreationDate, ?Name, ?Text, "+
-                            "?Description, ?SitName, ?TouchName, "+
-                            "?ObjectFlags, ?OwnerMask, ?NextOwnerMask, "+
-                            "?GroupMask, ?EveryoneMask, ?BaseMask, "+
-                            "?PositionX, ?PositionY, ?PositionZ, "+
-                            "?GroupPositionX, ?GroupPositionY, "+
-                            "?GroupPositionZ, ?VelocityX, "+
-                            "?VelocityY, ?VelocityZ, ?AngularVelocityX, "+
-                            "?AngularVelocityY, ?AngularVelocityZ, "+
-                            "?AccelerationX, ?AccelerationY, "+
-                            "?AccelerationZ, ?RotationX, "+
-                            "?RotationY, ?RotationZ, "+
-                            "?RotationW, ?SitTargetOffsetX, "+
-                            "?SitTargetOffsetY, ?SitTargetOffsetZ, "+
-                            "?SitTargetOrientW, ?SitTargetOrientX, "+
-                            "?SitTargetOrientY, ?SitTargetOrientZ, "+
-                            "?RegionUUID, ?CreatorID, ?OwnerID, "+
-                            "?GroupID, ?LastOwnerID, ?SceneGroupID, "+
-                            "?PayPrice, ?PayButton1, ?PayButton2, "+
-                            "?PayButton3, ?PayButton4, ?LoopedSound, "+
-                            "?LoopedSoundGain, ?TextureAnimation, "+
-                            "?OmegaX, ?OmegaY, ?OmegaZ, "+
-                            "?CameraEyeOffsetX, ?CameraEyeOffsetY, "+
-                            "?CameraEyeOffsetZ, ?CameraAtOffsetX, "+
-                            "?CameraAtOffsetY, ?CameraAtOffsetZ, "+
-                            "?ForceMouselook, ?ScriptAccessPin, "+
-                            "?AllowedDrop, ?DieAtEdge, ?SalePrice, "+
-                            "?SaleType, ?ColorR, ?ColorG, "+
-                            "?ColorB, ?ColorA, ?ParticleSystem, "+
-                            "?ClickAction, ?Material, ?CollisionSound, "+
+                    cmd.CommandText = "replace into prims (" +
+                            "UUID, CreationDate, " +
+                            "Name, Text, Description, " +
+                            "SitName, TouchName, ObjectFlags, " +
+                            "OwnerMask, NextOwnerMask, GroupMask, " +
+                            "EveryoneMask, BaseMask, PositionX, " +
+                            "PositionY, PositionZ, GroupPositionX, " +
+                            "GroupPositionY, GroupPositionZ, VelocityX, " +
+                            "VelocityY, VelocityZ, AngularVelocityX, " +
+                            "AngularVelocityY, AngularVelocityZ, " +
+                            "AccelerationX, AccelerationY, " +
+                            "AccelerationZ, RotationX, " +
+                            "RotationY, RotationZ, " +
+                            "RotationW, SitTargetOffsetX, " +
+                            "SitTargetOffsetY, SitTargetOffsetZ, " +
+                            "SitTargetOrientW, SitTargetOrientX, " +
+                            "SitTargetOrientY, SitTargetOrientZ, " +
+                            "RegionUUID, CreatorID, " +
+                            "OwnerID, GroupID, " +
+                            "LastOwnerID, SceneGroupID, " +
+                            "PayPrice, PayButton1, " +
+                            "PayButton2, PayButton3, " +
+                            "PayButton4, LoopedSound, " +
+                            "LoopedSoundGain, TextureAnimation, " +
+                            "OmegaX, OmegaY, OmegaZ, " +
+                            "CameraEyeOffsetX, CameraEyeOffsetY, " +
+                            "CameraEyeOffsetZ, CameraAtOffsetX, " +
+                            "CameraAtOffsetY, CameraAtOffsetZ, " +
+                            "ForceMouselook, ScriptAccessPin, " +
+                            "AllowedDrop, DieAtEdge, " +
+                            "SalePrice, SaleType, " +
+                            "ColorR, ColorG, ColorB, ColorA, " +
+                            "ParticleSystem, ClickAction, Material, " +
+                            "CollisionSound, CollisionSoundVolume, " +
+                            "PassTouches, " +
+                            "LinkNumber) values (" + "?UUID, " +
+                            "?CreationDate, ?Name, ?Text, " +
+                            "?Description, ?SitName, ?TouchName, " +
+                            "?ObjectFlags, ?OwnerMask, ?NextOwnerMask, " +
+                            "?GroupMask, ?EveryoneMask, ?BaseMask, " +
+                            "?PositionX, ?PositionY, ?PositionZ, " +
+                            "?GroupPositionX, ?GroupPositionY, " +
+                            "?GroupPositionZ, ?VelocityX, " +
+                            "?VelocityY, ?VelocityZ, ?AngularVelocityX, " +
+                            "?AngularVelocityY, ?AngularVelocityZ, " +
+                            "?AccelerationX, ?AccelerationY, " +
+                            "?AccelerationZ, ?RotationX, " +
+                            "?RotationY, ?RotationZ, " +
+                            "?RotationW, ?SitTargetOffsetX, " +
+                            "?SitTargetOffsetY, ?SitTargetOffsetZ, " +
+                            "?SitTargetOrientW, ?SitTargetOrientX, " +
+                            "?SitTargetOrientY, ?SitTargetOrientZ, " +
+                            "?RegionUUID, ?CreatorID, ?OwnerID, " +
+                            "?GroupID, ?LastOwnerID, ?SceneGroupID, " +
+                            "?PayPrice, ?PayButton1, ?PayButton2, " +
+                            "?PayButton3, ?PayButton4, ?LoopedSound, " +
+                            "?LoopedSoundGain, ?TextureAnimation, " +
+                            "?OmegaX, ?OmegaY, ?OmegaZ, " +
+                            "?CameraEyeOffsetX, ?CameraEyeOffsetY, " +
+                            "?CameraEyeOffsetZ, ?CameraAtOffsetX, " +
+                            "?CameraAtOffsetY, ?CameraAtOffsetZ, " +
+                            "?ForceMouselook, ?ScriptAccessPin, " +
+                            "?AllowedDrop, ?DieAtEdge, ?SalePrice, " +
+                            "?SaleType, ?ColorR, ?ColorG, " +
+                            "?ColorB, ?ColorA, ?ParticleSystem, " +
+                            "?ClickAction, ?Material, ?CollisionSound, " +
                             "?CollisionSoundVolume, ?PassTouches, ?LinkNumber)";
 
                     FillPrimCommand(cmd, prim, obj.UUID, regionUUID);
@@ -248,32 +230,33 @@ namespace OpenSim.Data.MySQL
 
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "replace into primshapes ("+
-                            "UUID, Shape, ScaleX, ScaleY, "+
-                            "ScaleZ, PCode, PathBegin, PathEnd, "+
-                            "PathScaleX, PathScaleY, PathShearX, "+
-                            "PathShearY, PathSkew, PathCurve, "+
-                            "PathRadiusOffset, PathRevolutions, "+
-                            "PathTaperX, PathTaperY, PathTwist, "+
-                            "PathTwistBegin, ProfileBegin, ProfileEnd, "+
-                            "ProfileCurve, ProfileHollow, Texture, "+
-                            "ExtraParams, State) values (?UUID, "+
-                            "?Shape, ?ScaleX, ?ScaleY, ?ScaleZ, "+
-                            "?PCode, ?PathBegin, ?PathEnd, "+
-                            "?PathScaleX, ?PathScaleY, "+
-                            "?PathShearX, ?PathShearY, "+
-                            "?PathSkew, ?PathCurve, ?PathRadiusOffset, "+
-                            "?PathRevolutions, ?PathTaperX, "+
-                            "?PathTaperY, ?PathTwist, "+
-                            "?PathTwistBegin, ?ProfileBegin, "+
-                            "?ProfileEnd, ?ProfileCurve, "+
-                            "?ProfileHollow, ?Texture, ?ExtraParams, "+
+                    cmd.CommandText = "replace into primshapes (" +
+                            "UUID, Shape, ScaleX, ScaleY, " +
+                            "ScaleZ, PCode, PathBegin, PathEnd, " +
+                            "PathScaleX, PathScaleY, PathShearX, " +
+                            "PathShearY, PathSkew, PathCurve, " +
+                            "PathRadiusOffset, PathRevolutions, " +
+                            "PathTaperX, PathTaperY, PathTwist, " +
+                            "PathTwistBegin, ProfileBegin, ProfileEnd, " +
+                            "ProfileCurve, ProfileHollow, Texture, " +
+                            "ExtraParams, State) values (?UUID, " +
+                            "?Shape, ?ScaleX, ?ScaleY, ?ScaleZ, " +
+                            "?PCode, ?PathBegin, ?PathEnd, " +
+                            "?PathScaleX, ?PathScaleY, " +
+                            "?PathShearX, ?PathShearY, " +
+                            "?PathSkew, ?PathCurve, ?PathRadiusOffset, " +
+                            "?PathRevolutions, ?PathTaperX, " +
+                            "?PathTaperY, ?PathTwist, " +
+                            "?PathTwistBegin, ?ProfileBegin, " +
+                            "?ProfileEnd, ?ProfileCurve, " +
+                            "?ProfileHollow, ?Texture, ?ExtraParams, " +
                             "?State)";
 
                     FillShapeCommand(cmd, prim);
 
                     ExecuteNonQuery(cmd);
                 }
+
                 cmd.Dispose();
             }
         }
@@ -289,7 +272,6 @@ namespace OpenSim.Data.MySQL
             // issues if we delete the contents only. Deleting it all may
             // cause the loss of a prim, but is cleaner.
             // It's also faster because it uses the primary key.
-            //
             lock (m_Connection)
             {
                 using (MySqlCommand cmd = m_Connection.CreateCommand())
@@ -320,8 +302,8 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// Remove all persisted items of the given prim.
-        /// The caller must acquire the necessrary synchronization locks
+        ///     Remove all persisted items of the given prim.
+        ///     The caller must acquire the necessrary synchronization locks
         /// </summary>
         /// <param name="uuid">the Item UUID</param>
         private void RemoveItems(UUID uuid)
@@ -339,8 +321,8 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// Remove all persisted shapes for a list of prims
-        /// The caller must acquire the necessrary synchronization locks
+        ///     Remove all persisted shapes for a list of prims
+        ///     The caller must acquire the necessrary synchronization locks
         /// </summary>
         /// <param name="uuids">the list of UUIDs</param>
         private void RemoveShapes(List<UUID> uuids)
@@ -354,7 +336,8 @@ namespace OpenSim.Data.MySQL
                     for (int i = 0; i < uuids.Count; i++)
                     {
                         if ((i + 1) == uuids.Count)
-                        {// end of the list
+                        {
+                            // end of the list
                             sql += "(UUID = ?UUID" + i + ")";
                         }
                         else
@@ -362,6 +345,7 @@ namespace OpenSim.Data.MySQL
                             sql += "(UUID = ?UUID" + i + ") or ";
                         }
                     }
+
                     cmd.CommandText = sql;
 
                     for (int i = 0; i < uuids.Count; i++)
@@ -373,8 +357,8 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// Remove all persisted items for a list of prims
-        /// The caller must acquire the necessrary synchronization locks
+        ///     Remove all persisted items for a list of prims
+        ///     The caller must acquire the necessrary synchronization locks
         /// </summary>
         /// <param name="uuids">the list of UUIDs</param>
         private void RemoveItems(List<UUID> uuids)
@@ -397,6 +381,7 @@ namespace OpenSim.Data.MySQL
                             sql += "(PrimID = ?PrimID" + i + ") or ";
                         }
                     }
+
                     cmd.CommandText = sql;
 
                     for (int i = 0; i < uuids.Count; i++)
@@ -421,8 +406,7 @@ namespace OpenSim.Data.MySQL
             {
                 using (MySqlCommand cmd = m_Connection.CreateCommand())
                 {
-                    cmd.CommandText =
-                        "SELECT * FROM prims LEFT JOIN primshapes ON prims.UUID = primshapes.UUID WHERE RegionUUID = ?RegionUUID";
+                    cmd.CommandText = "SELECT * FROM prims LEFT JOIN primshapes ON prims.UUID = primshapes.UUID WHERE RegionUUID = ?RegionUUID";
                     cmd.Parameters.AddWithValue("RegionUUID", regionID.ToString());
 
                     using (IDataReader reader = ExecuteReader(cmd))
@@ -430,20 +414,23 @@ namespace OpenSim.Data.MySQL
                         while (reader.Read())
                         {
                             SceneObjectPart prim = BuildPrim(reader);
+
                             if (reader["Shape"] is DBNull)
                                 prim.Shape = PrimitiveBaseShape.Default;
                             else
                                 prim.Shape = BuildShape(reader);
 
                             UUID parentID = new UUID(reader["SceneGroupID"].ToString());
+
                             if (parentID != prim.UUID)
                                 prim.ParentUUID = parentID;
 
                             prims[prim.UUID] = prim;
 
                             ++count;
+
                             if (count % ROWS_PER_QUERY == 0)
-                                m_log.Debug("[REGION DB]: Loaded " + count + " prims...");
+                                m_log.Debug("[Region Database]: Loaded " + count + " prims...");
                         }
                     }
                 }
@@ -464,6 +451,7 @@ namespace OpenSim.Data.MySQL
             foreach (SceneObjectPart prim in prims.Values)
             {
                 SceneObjectGroup sog;
+
                 if (prim.UUID != prim.ParentUUID)
                 {
                     if (objects.TryGetValue(prim.ParentUUID, out sog))
@@ -480,7 +468,7 @@ namespace OpenSim.Data.MySQL
                     else
                     {
                         m_log.WarnFormat(
-                            "[REGION DB]: Database contains an orphan child prim {0} {1} in region {2} pointing to missing parent {3}.  This prim will not be loaded.",
+                            "[Region Database]: Database contains an orphan child prim {0} {1} in region {2} pointing to missing parent {3}.  This prim will not be loaded.",
                             prim.Name, prim.UUID, regionID, prim.ParentUUID);
                     }
                 }
@@ -488,7 +476,7 @@ namespace OpenSim.Data.MySQL
 
             #endregion SceneObjectGroup Creation
 
-            m_log.DebugFormat("[REGION DB]: Loaded {0} objects using {1} prims", objects.Count, prims.Count);
+            m_log.DebugFormat("[Region Database]: Loaded {0} objects using {1} prims", objects.Count, prims.Count);
 
             #region Prim Inventory Loading
 
@@ -497,11 +485,13 @@ namespace OpenSim.Data.MySQL
             // list from DB of all prims which have items and
             // LoadItems only on those
             List<SceneObjectPart> primsWithInventory = new List<SceneObjectPart>();
+
             lock (m_Connection)
             {
                 using (MySqlCommand itemCmd = m_Connection.CreateCommand())
                 {
                     itemCmd.CommandText = "SELECT DISTINCT primID FROM primitems";
+
                     using (IDataReader itemReader = ExecuteReader(itemCmd))
                     {
                         while (itemReader.Read())
@@ -509,6 +499,7 @@ namespace OpenSim.Data.MySQL
                             if (!(itemReader["primID"] is DBNull))
                             {
                                 UUID primID = new UUID(itemReader["primID"].ToString());
+
                                 if (prims.ContainsKey(primID))
                                     primsWithInventory.Add(prims[primID]);
                             }
@@ -524,13 +515,13 @@ namespace OpenSim.Data.MySQL
 
             #endregion Prim Inventory Loading
 
-            m_log.DebugFormat("[REGION DB]: Loaded inventory from {0} objects", primsWithInventory.Count);
+            m_log.DebugFormat("[Region Database]: Loaded inventory from {0} objects", primsWithInventory.Count);
 
             return new List<SceneObjectGroup>(objects.Values);
         }
 
         /// <summary>
-        /// Load in a prim's persisted inventory.
+        ///     Load in a prim's persisted inventory.
         /// </summary>
         /// <param name="prim">The prim</param>
         private void LoadItems(SceneObjectPart prim)
@@ -562,7 +553,7 @@ namespace OpenSim.Data.MySQL
 
         public void StoreTerrain(double[,] ter, UUID regionID)
         {
-            m_log.Info("[REGION DB]: Storing terrain");
+            m_log.Info("[Region Database]: Storing terrain");
 
             lock (m_Connection)
             {
@@ -570,15 +561,10 @@ namespace OpenSim.Data.MySQL
                 {
                     cmd.CommandText = "delete from terrain where RegionUUID = ?RegionUUID";
                     cmd.Parameters.AddWithValue("RegionUUID", regionID.ToString());
-
                     ExecuteNonQuery(cmd);
 
-                    cmd.CommandText = "insert into terrain (RegionUUID, " +
-                        "Revision, Heightfield) values (?RegionUUID, " +
-                        "1, ?Heightfield)";
-
+                    cmd.CommandText = "insert into terrain (RegionUUID, " + "Revision, Heightfield) values (?RegionUUID, " + "1, ?Heightfield)";
                     cmd.Parameters.AddWithValue("Heightfield", SerializeTerrain(ter));
-
                     ExecuteNonQuery(cmd);
                 }
             }
@@ -592,9 +578,7 @@ namespace OpenSim.Data.MySQL
             {
                 using (MySqlCommand cmd = m_Connection.CreateCommand())
                 {
-                    cmd.CommandText = "select RegionUUID, Revision, Heightfield " +
-                        "from terrain where RegionUUID = ?RegionUUID " +
-                        "order by Revision desc limit 1";
+                    cmd.CommandText = "select RegionUUID, Revision, Heightfield " + "from terrain where RegionUUID = ?RegionUUID " + "order by Revision desc limit 1";
                     cmd.Parameters.AddWithValue("RegionUUID", regionID.ToString());
 
                     using (IDataReader reader = ExecuteReader(cmd))
@@ -619,7 +603,7 @@ namespace OpenSim.Data.MySQL
                                     }
                                 }
 
-                                m_log.InfoFormat("[REGION DB]: Loaded terrain revision r{0}", rev);
+                                m_log.InfoFormat("[Region Database]: Loaded terrain revision r{0}", rev);
                             }
                         }
                     }
@@ -637,7 +621,6 @@ namespace OpenSim.Data.MySQL
                 {
                     cmd.CommandText = "delete from land where UUID = ?UUID";
                     cmd.Parameters.AddWithValue("UUID", globalID.ToString());
-
                     ExecuteNonQuery(cmd);
                 }
             }
@@ -671,17 +654,13 @@ namespace OpenSim.Data.MySQL
                         "?AuthbuyerID, ?OtherCleanTime, ?Dwell)";
 
                     FillLandCommand(cmd, parcel.LandData, parcel.RegionUUID);
-
                     ExecuteNonQuery(cmd);
 
                     cmd.CommandText = "delete from landaccesslist where LandUUID = ?UUID";
-
                     ExecuteNonQuery(cmd);
 
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "insert into landaccesslist (LandUUID, " +
-                            "AccessUUID, Flags) values (?LandUUID, ?AccessUUID, " +
-                            "?Flags)";
+                    cmd.CommandText = "insert into landaccesslist (LandUUID, " + "AccessUUID, Flags) values (?LandUUID, ?AccessUUID, " + "?Flags)";
 
                     foreach (ParcelManager.ParcelAccessEntry entry in parcel.LandData.ParcelAccessList)
                     {
@@ -823,22 +802,27 @@ namespace OpenSim.Data.MySQL
         {
             SceneObjectPart prim = new SceneObjectPart();
             prim.UUID = new UUID((string)row["UUID"]);
+
             // explicit conversion of integers is required, which sort
             // of sucks.  No idea if there is a shortcut here or not.
             prim.CreationDate = (int)row["CreationDate"];
+
             if (row["Name"] != DBNull.Value)
                 prim.Name = (string)row["Name"];
             else
                 prim.Name = String.Empty;
+
             // Various text fields
             prim.Text = (string)row["Text"];
             prim.Color = Color.FromArgb((int)row["ColorA"],
                                         (int)row["ColorR"],
                                         (int)row["ColorG"],
                                         (int)row["ColorB"]);
+
             prim.Description = (string)row["Description"];
             prim.SitName = (string)row["SitName"];
             prim.TouchName = (string)row["TouchName"];
+
             // Permissions
             prim.ObjectFlags = (uint)(int)row["ObjectFlags"];
             prim.CreatorID = new UUID((string)row["CreatorID"]);
@@ -850,32 +834,38 @@ namespace OpenSim.Data.MySQL
             prim.GroupMask = (uint)(int)row["GroupMask"];
             prim.EveryoneMask = (uint)(int)row["EveryoneMask"];
             prim.BaseMask = (uint)(int)row["BaseMask"];
+
             // Vectors
             prim.OffsetPosition = new Vector3(
                 (float)(double)row["PositionX"],
                 (float)(double)row["PositionY"],
                 (float)(double)row["PositionZ"]
                 );
+
             prim.GroupPosition = new Vector3(
                 (float)(double)row["GroupPositionX"],
                 (float)(double)row["GroupPositionY"],
                 (float)(double)row["GroupPositionZ"]
                 );
+
             prim.Velocity = new Vector3(
                 (float)(double)row["VelocityX"],
                 (float)(double)row["VelocityY"],
                 (float)(double)row["VelocityZ"]
                 );
+
             prim.AngularVelocity = new Vector3(
                 (float)(double)row["AngularVelocityX"],
                 (float)(double)row["AngularVelocityY"],
                 (float)(double)row["AngularVelocityZ"]
                 );
+
             prim.Acceleration = new Vector3(
                 (float)(double)row["AccelerationX"],
                 (float)(double)row["AccelerationY"],
                 (float)(double)row["AccelerationZ"]
                 );
+
             // quaternions
             prim.RotationOffset = new Quaternion(
                 (float)(double)row["RotationX"],
@@ -883,11 +873,13 @@ namespace OpenSim.Data.MySQL
                 (float)(double)row["RotationZ"],
                 (float)(double)row["RotationW"]
                 );
+
             prim.SitTargetPositionLL = new Vector3(
                 (float)(double)row["SitTargetOffsetX"],
                 (float)(double)row["SitTargetOffsetY"],
                 (float)(double)row["SitTargetOffsetZ"]
                 );
+
             prim.SitTargetOrientationLL = new Quaternion(
                 (float)(double)row["SitTargetOrientX"],
                 (float)(double)row["SitTargetOrientY"],
@@ -907,6 +899,7 @@ namespace OpenSim.Data.MySQL
 
             if (!(row["TextureAnimation"] is DBNull))
                 prim.TextureAnimation = (byte[])row["TextureAnimation"];
+
             if (!(row["ParticleSystem"] is DBNull))
                 prim.ParticleSystem = (byte[])row["ParticleSystem"];
 
@@ -949,17 +942,17 @@ namespace OpenSim.Data.MySQL
 
             prim.CollisionSound = new UUID(row["CollisionSound"].ToString());
             prim.CollisionSoundVolume = (float)(double)row["CollisionSoundVolume"];
-            
+
             if ((sbyte)row["PassTouches"] != 0)
                 prim.PassTouches = true;
+
             prim.LinkNum = (int)row["LinkNumber"];
 
             return prim;
         }
 
-
         /// <summary>
-        /// Build a prim inventory item from the persisted data.
+        ///     Build a prim inventory item from the persisted data.
         /// </summary>
         /// <param name="row"></param>
         /// <returns></returns>
@@ -967,28 +960,28 @@ namespace OpenSim.Data.MySQL
         {
             TaskInventoryItem taskItem = new TaskInventoryItem();
 
-            taskItem.ItemID        = new UUID((String)row["itemID"]);
-            taskItem.ParentPartID  = new UUID((String)row["primID"]);
-            taskItem.AssetID       = new UUID((String)row["assetID"]);
-            taskItem.ParentID      = new UUID((String)row["parentFolderID"]);
+            taskItem.ItemID = new UUID((String)row["itemID"]);
+            taskItem.ParentPartID = new UUID((String)row["primID"]);
+            taskItem.AssetID = new UUID((String)row["assetID"]);
+            taskItem.ParentID = new UUID((String)row["parentFolderID"]);
 
-            taskItem.InvType       = Convert.ToInt32(row["invType"]);
-            taskItem.Type          = Convert.ToInt32(row["assetType"]);
+            taskItem.InvType = Convert.ToInt32(row["invType"]);
+            taskItem.Type = Convert.ToInt32(row["assetType"]);
 
-            taskItem.Name          = (String)row["name"];
-            taskItem.Description   = (String)row["description"];
-            taskItem.CreationDate  = Convert.ToUInt32(row["creationDate"]);
-            taskItem.CreatorID     = new UUID((String)row["creatorID"]);
-            taskItem.OwnerID       = new UUID((String)row["ownerID"]);
-            taskItem.LastOwnerID   = new UUID((String)row["lastOwnerID"]);
-            taskItem.GroupID       = new UUID((String)row["groupID"]);
+            taskItem.Name = (String)row["name"];
+            taskItem.Description = (String)row["description"];
+            taskItem.CreationDate = Convert.ToUInt32(row["creationDate"]);
+            taskItem.CreatorID = new UUID((String)row["creatorID"]);
+            taskItem.OwnerID = new UUID((String)row["ownerID"]);
+            taskItem.LastOwnerID = new UUID((String)row["lastOwnerID"]);
+            taskItem.GroupID = new UUID((String)row["groupID"]);
 
             taskItem.NextPermissions = Convert.ToUInt32(row["nextPermissions"]);
-            taskItem.CurrentPermissions     = Convert.ToUInt32(row["currentPermissions"]);
-            taskItem.BasePermissions      = Convert.ToUInt32(row["basePermissions"]);
-            taskItem.EveryonePermissions  = Convert.ToUInt32(row["everyonePermissions"]);
-            taskItem.GroupPermissions     = Convert.ToUInt32(row["groupPermissions"]);
-            taskItem.Flags         = Convert.ToUInt32(row["flags"]);
+            taskItem.CurrentPermissions = Convert.ToUInt32(row["currentPermissions"]);
+            taskItem.BasePermissions = Convert.ToUInt32(row["basePermissions"]);
+            taskItem.EveryonePermissions = Convert.ToUInt32(row["everyonePermissions"]);
+            taskItem.GroupPermissions = Convert.ToUInt32(row["groupPermissions"]);
+            taskItem.Flags = Convert.ToUInt32(row["flags"]);
 
             return taskItem;
         }
@@ -997,7 +990,7 @@ namespace OpenSim.Data.MySQL
         {
             RegionSettings newSettings = new RegionSettings();
 
-            newSettings.RegionUUID = new UUID((string) row["regionUUID"]);
+            newSettings.RegionUUID = new UUID((string)row["regionUUID"]);
             newSettings.BlockTerraform = Convert.ToBoolean(row["block_terraform"]);
             newSettings.AllowDamage = Convert.ToBoolean(row["allow_damage"]);
             newSettings.BlockFly = Convert.ToBoolean(row["block_fly"]);
@@ -1011,10 +1004,10 @@ namespace OpenSim.Data.MySQL
             newSettings.DisableScripts = Convert.ToBoolean(row["disable_scripts"]);
             newSettings.DisableCollisions = Convert.ToBoolean(row["disable_collisions"]);
             newSettings.DisablePhysics = Convert.ToBoolean(row["disable_physics"]);
-            newSettings.TerrainTexture1 = new UUID((String) row["terrain_texture_1"]);
-            newSettings.TerrainTexture2 = new UUID((String) row["terrain_texture_2"]);
-            newSettings.TerrainTexture3 = new UUID((String) row["terrain_texture_3"]);
-            newSettings.TerrainTexture4 = new UUID((String) row["terrain_texture_4"]);
+            newSettings.TerrainTexture1 = new UUID((String)row["terrain_texture_1"]);
+            newSettings.TerrainTexture2 = new UUID((String)row["terrain_texture_2"]);
+            newSettings.TerrainTexture3 = new UUID((String)row["terrain_texture_3"]);
+            newSettings.TerrainTexture4 = new UUID((String)row["terrain_texture_4"]);
             newSettings.Elevation1NW = Convert.ToDouble(row["elevation_1_nw"]);
             newSettings.Elevation2NW = Convert.ToDouble(row["elevation_2_nw"]);
             newSettings.Elevation1NE = Convert.ToDouble(row["elevation_1_ne"]);
@@ -1028,21 +1021,23 @@ namespace OpenSim.Data.MySQL
             newSettings.TerrainLowerLimit = Convert.ToDouble(row["terrain_lower_limit"]);
             newSettings.UseEstateSun = Convert.ToBoolean(row["use_estate_sun"]);
             newSettings.Sandbox = Convert.ToBoolean(row["sandbox"]);
-            newSettings.SunVector = new Vector3 (
+
+            newSettings.SunVector = new Vector3(
                                                  Convert.ToSingle(row["sunvectorx"]),
                                                  Convert.ToSingle(row["sunvectory"]),
                                                  Convert.ToSingle(row["sunvectorz"])
                                                  );
+
             newSettings.FixedSun = Convert.ToBoolean(row["fixed_sun"]);
             newSettings.SunPosition = Convert.ToDouble(row["sun_position"]);
-            newSettings.Covenant = new UUID((String) row["covenant"]);
+            newSettings.Covenant = new UUID((String)row["covenant"]);
 
             newSettings.LoadedCreationDateTime = Convert.ToInt32(row["loaded_creation_datetime"]);
-            
+
             if (row["loaded_creation_id"] is DBNull)
                 newSettings.LoadedCreationID = "";
-            else 
-                newSettings.LoadedCreationID = (String) row["loaded_creation_id"];
+            else
+                newSettings.LoadedCreationID = (String)row["loaded_creation_id"];
 
             return newSettings;
         }
@@ -1056,32 +1051,34 @@ namespace OpenSim.Data.MySQL
         {
             LandData newData = new LandData();
 
-            newData.GlobalID = new UUID((String) row["UUID"]);
+            newData.GlobalID = new UUID((String)row["UUID"]);
             newData.LocalID = Convert.ToInt32(row["LocalLandID"]);
 
             // Bitmap is a byte[512]
-            newData.Bitmap = (Byte[]) row["Bitmap"];
+            newData.Bitmap = (Byte[])row["Bitmap"];
 
-            newData.Name = (String) row["Name"];
-            newData.Description = (String) row["Description"];
+            newData.Name = (String)row["Name"];
+            newData.Description = (String)row["Description"];
             newData.OwnerID = new UUID((String)row["OwnerUUID"]);
             newData.IsGroupOwned = Convert.ToBoolean(row["IsGroupOwned"]);
             newData.Area = Convert.ToInt32(row["Area"]);
             newData.AuctionID = Convert.ToUInt32(row["AuctionID"]); //Unimplemented
-            newData.Category = (ParcelCategory) Convert.ToInt32(row["Category"]);
-                //Enum libsecondlife.Parcel.ParcelCategory
+            newData.Category = (ParcelCategory)Convert.ToInt32(row["Category"]);
+
+            //Enum libsecondlife.Parcel.ParcelCategory
             newData.ClaimDate = Convert.ToInt32(row["ClaimDate"]);
             newData.ClaimPrice = Convert.ToInt32(row["ClaimPrice"]);
-            newData.GroupID = new UUID((String) row["GroupUUID"]);
+            newData.GroupID = new UUID((String)row["GroupUUID"]);
             newData.SalePrice = Convert.ToInt32(row["SalePrice"]);
-            newData.Status = (ParcelStatus) Convert.ToInt32(row["LandStatus"]);
-                //Enum. libsecondlife.Parcel.ParcelStatus
+            newData.Status = (ParcelStatus)Convert.ToInt32(row["LandStatus"]);
+
+            //Enum. libsecondlife.Parcel.ParcelStatus
             newData.Flags = Convert.ToUInt32(row["LandFlags"]);
             newData.LandingType = Convert.ToByte(row["LandingType"]);
             newData.MediaAutoScale = Convert.ToByte(row["MediaAutoScale"]);
-            newData.MediaID = new UUID((String) row["MediaTextureUUID"]);
-            newData.MediaURL = (String) row["MediaURL"];
-            newData.MusicURL = (String) row["MusicURL"];
+            newData.MediaID = new UUID((String)row["MediaTextureUUID"]);
+            newData.MediaURL = (String)row["MediaURL"];
+            newData.MusicURL = (String)row["MusicURL"];
             newData.PassHours = Convert.ToSingle(row["PassHours"]);
             newData.PassPrice = Convert.ToInt32(row["PassPrice"]);
             UUID authedbuyer = UUID.Zero;
@@ -1094,20 +1091,17 @@ namespace OpenSim.Data.MySQL
 
             newData.AuthBuyerID = authedbuyer;
             newData.SnapshotID = snapshotID;
+
             try
             {
-                newData.UserLocation =
-                    new Vector3(Convert.ToSingle(row["UserLocationX"]), Convert.ToSingle(row["UserLocationY"]),
-                                  Convert.ToSingle(row["UserLocationZ"]));
-                newData.UserLookAt =
-                    new Vector3(Convert.ToSingle(row["UserLookAtX"]), Convert.ToSingle(row["UserLookAtY"]),
-                                  Convert.ToSingle(row["UserLookAtZ"]));
+                newData.UserLocation = new Vector3(Convert.ToSingle(row["UserLocationX"]), Convert.ToSingle(row["UserLocationY"]), Convert.ToSingle(row["UserLocationZ"]));
+                newData.UserLookAt = new Vector3(Convert.ToSingle(row["UserLookAtX"]), Convert.ToSingle(row["UserLookAtY"]), Convert.ToSingle(row["UserLookAtZ"]));
             }
             catch (InvalidCastException)
             {
                 newData.UserLocation = Vector3.Zero;
                 newData.UserLookAt = Vector3.Zero;
-                m_log.ErrorFormat("[PARCEL]: unable to get parcel telehub settings for {1}", newData.Name);
+                m_log.ErrorFormat("[Parcel]: unable to get parcel telehub settings for {1}", newData.Name);
             }
 
             newData.ParcelAccessList = new List<ParcelManager.ParcelAccessEntry>();
@@ -1123,8 +1117,8 @@ namespace OpenSim.Data.MySQL
         private static ParcelManager.ParcelAccessEntry BuildLandAccessData(IDataReader row)
         {
             ParcelManager.ParcelAccessEntry entry = new ParcelManager.ParcelAccessEntry();
-            entry.AgentID = new UUID((string) row["AccessUUID"]);
-            entry.Flags = (AccessList) Convert.ToInt32(row["Flags"]);
+            entry.AgentID = new UUID((string)row["AccessUUID"]);
+            entry.Flags = (AccessList)Convert.ToInt32(row["Flags"]);
             entry.Time = new DateTime();
             return entry;
         }
@@ -1136,7 +1130,7 @@ namespace OpenSim.Data.MySQL
         /// <returns></returns>
         private static Array SerializeTerrain(double[,] val)
         {
-            MemoryStream str = new MemoryStream(((int)Constants.RegionSize * (int)Constants.RegionSize) *sizeof (double));
+            MemoryStream str = new MemoryStream(((int)Constants.RegionSize * (int)Constants.RegionSize) * sizeof(double));
             BinaryWriter bw = new BinaryWriter(str);
 
             // TODO: COMPATIBILITY - Add byte-order conversions
@@ -1144,6 +1138,7 @@ namespace OpenSim.Data.MySQL
                 for (int y = 0; y < (int)Constants.RegionSize; y++)
                 {
                     double height = val[x, y];
+
                     if (height == 0.0)
                         height = double.Epsilon;
 
@@ -1154,7 +1149,7 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// Fill the prim command with prim values
+        ///     Fill the prim command with prim values
         /// </summary>
         /// <param name="row"></param>
         /// <param name="prim"></param>
@@ -1167,7 +1162,8 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("CreationDate", prim.CreationDate);
             cmd.Parameters.AddWithValue("Name", prim.Name);
             cmd.Parameters.AddWithValue("SceneGroupID", sceneGroupID.ToString());
-                // the UUID of the root part for this SceneObjectGroup
+
+            // the UUID of the root part for this SceneObjectGroup
             // various text fields
             cmd.Parameters.AddWithValue("Text", prim.Text);
             cmd.Parameters.AddWithValue("ColorR", prim.Color.R);
@@ -1177,6 +1173,7 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("Description", prim.Description);
             cmd.Parameters.AddWithValue("SitName", prim.SitName);
             cmd.Parameters.AddWithValue("TouchName", prim.TouchName);
+
             // permissions
             cmd.Parameters.AddWithValue("ObjectFlags", prim.ObjectFlags);
             cmd.Parameters.AddWithValue("CreatorID", prim.CreatorID.ToString());
@@ -1188,6 +1185,7 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("GroupMask", prim.GroupMask);
             cmd.Parameters.AddWithValue("EveryoneMask", prim.EveryoneMask);
             cmd.Parameters.AddWithValue("BaseMask", prim.BaseMask);
+
             // vectors
             cmd.Parameters.AddWithValue("PositionX", (double)prim.OffsetPosition.X);
             cmd.Parameters.AddWithValue("PositionY", (double)prim.OffsetPosition.Y);
@@ -1204,6 +1202,7 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("AccelerationX", (double)prim.Acceleration.X);
             cmd.Parameters.AddWithValue("AccelerationY", (double)prim.Acceleration.Y);
             cmd.Parameters.AddWithValue("AccelerationZ", (double)prim.Acceleration.Z);
+
             // quaternions
             cmd.Parameters.AddWithValue("RotationX", (double)prim.RotationOffset.X);
             cmd.Parameters.AddWithValue("RotationY", (double)prim.RotationOffset.Y);
@@ -1364,7 +1363,6 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("Covenant", settings.Covenant.ToString());
             cmd.Parameters.AddWithValue("LoadedCreationDateTime", settings.LoadedCreationDateTime);
             cmd.Parameters.AddWithValue("LoadedCreationID", settings.LoadedCreationID);
-
         }
 
         /// <summary>
@@ -1435,11 +1433,13 @@ namespace OpenSim.Data.MySQL
         private PrimitiveBaseShape BuildShape(IDataReader row)
         {
             PrimitiveBaseShape s = new PrimitiveBaseShape();
+
             s.Scale = new Vector3(
                 (float)(double)row["ScaleX"],
                 (float)(double)row["ScaleY"],
                 (float)(double)row["ScaleZ"]
             );
+
             // paths
             s.PCode = (byte)(int)row["PCode"];
             s.PathBegin = (ushort)(int)row["PathBegin"];
@@ -1456,6 +1456,7 @@ namespace OpenSim.Data.MySQL
             s.PathTaperY = (sbyte)(int)row["PathTaperY"];
             s.PathTwist = (sbyte)(int)row["PathTwist"];
             s.PathTwistBegin = (sbyte)(int)row["PathTwistBegin"];
+
             // profile
             s.ProfileBegin = (ushort)(int)row["ProfileBegin"];
             s.ProfileEnd = (ushort)(int)row["ProfileEnd"];
@@ -1479,12 +1480,15 @@ namespace OpenSim.Data.MySQL
         {
             PrimitiveBaseShape s = prim.Shape;
             cmd.Parameters.AddWithValue("UUID", prim.UUID.ToString());
+
             // shape is an enum
             cmd.Parameters.AddWithValue("Shape", 0);
+
             // vectors
             cmd.Parameters.AddWithValue("ScaleX", (double)s.Scale.X);
             cmd.Parameters.AddWithValue("ScaleY", (double)s.Scale.Y);
             cmd.Parameters.AddWithValue("ScaleZ", (double)s.Scale.Z);
+
             // paths
             cmd.Parameters.AddWithValue("PCode", s.PCode);
             cmd.Parameters.AddWithValue("PathBegin", s.PathBegin);
@@ -1501,6 +1505,7 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("PathTaperY", s.PathTaperY);
             cmd.Parameters.AddWithValue("PathTwist", s.PathTwist);
             cmd.Parameters.AddWithValue("PathTwistBegin", s.PathTwistBegin);
+
             // profile
             cmd.Parameters.AddWithValue("ProfileBegin", s.ProfileBegin);
             cmd.Parameters.AddWithValue("ProfileEnd", s.ProfileEnd);
@@ -1522,20 +1527,20 @@ namespace OpenSim.Data.MySQL
                 if (items.Count == 0)
                     return;
 
-                cmd.CommandText = "insert into primitems ("+
-                        "invType, assetType, name, "+
-                        "description, creationDate, nextPermissions, "+
-                        "currentPermissions, basePermissions, "+
-                        "everyonePermissions, groupPermissions, "+
-                        "flags, itemID, primID, assetID, "+
-                        "parentFolderID, creatorID, ownerID, "+
-                        "groupID, lastOwnerID) values (?invType, "+
-                        "?assetType, ?name, ?description, "+
-                        "?creationDate, ?nextPermissions, "+
-                        "?currentPermissions, ?basePermissions, "+
-                        "?everyonePermissions, ?groupPermissions, "+
-                        "?flags, ?itemID, ?primID, ?assetID, "+
-                        "?parentFolderID, ?creatorID, ?ownerID, "+
+                cmd.CommandText = "insert into primitems (" +
+                        "invType, assetType, name, " +
+                        "description, creationDate, nextPermissions, " +
+                        "currentPermissions, basePermissions, " +
+                        "everyonePermissions, groupPermissions, " +
+                        "flags, itemID, primID, assetID, " +
+                        "parentFolderID, creatorID, ownerID, " +
+                        "groupID, lastOwnerID) values (?invType, " +
+                        "?assetType, ?name, ?description, " +
+                        "?creationDate, ?nextPermissions, " +
+                        "?currentPermissions, ?basePermissions, " +
+                        "?everyonePermissions, ?groupPermissions, " +
+                        "?flags, ?itemID, ?primID, ?assetID, " +
+                        "?parentFolderID, ?creatorID, ?ownerID, " +
                         "?groupID, ?lastOwnerID)";
 
                 foreach (TaskInventoryItem item in items)
@@ -1546,7 +1551,7 @@ namespace OpenSim.Data.MySQL
 
                     ExecuteNonQuery(cmd);
                 }
-                
+
                 cmd.Dispose();
             }
         }

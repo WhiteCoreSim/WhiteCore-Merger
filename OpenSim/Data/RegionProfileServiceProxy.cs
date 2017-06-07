@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,7 +40,7 @@ namespace OpenSim.Data
     public class RegionProfileServiceProxy : IRegionProfileRouter
     {
         /// <summary>
-        /// Request sim data based on arbitrary key/value
+        ///     Request sim data based on arbitrary key/value
         /// </summary>
         private RegionProfileData RequestSimData(Uri gridserverUrl, string gridserverSendkey, string keyField, string keyValue)
         {
@@ -49,9 +51,7 @@ namespace OpenSim.Data
             SendParams.Add(requestData);
             XmlRpcRequest GridReq = new XmlRpcRequest("simulator_data_request", SendParams);
             XmlRpcResponse GridResp = GridReq.Send(gridserverUrl.ToString(), 3000);
-
-            Hashtable responseData = (Hashtable) GridResp.Value;
-
+            Hashtable responseData = (Hashtable)GridResp.Value;
             RegionProfileData simData = null;
 
             if (!responseData.ContainsKey("error"))
@@ -66,7 +66,6 @@ namespace OpenSim.Data
                 UUID regionID = new UUID((string)responseData["region_UUID"]);
                 string regionName = (string)responseData["region_name"];
                 byte access = Convert.ToByte((string)responseData["access"]);
-
                 simData = RegionProfileData.Create(regionID, regionName, locX, locY, externalHostName, simPort, httpPort, remotingPort, serverUri, access);
             }
 
@@ -74,7 +73,7 @@ namespace OpenSim.Data
         }
 
         /// <summary>
-        /// Request sim profile information from a grid server, by Region UUID
+        ///     Request sim profile information from a grid server, by Region UUID
         /// </summary>
         /// <param name="regionId">The region UUID to look for</param>
         /// <param name="gridserverUrl"></param>
@@ -82,36 +81,33 @@ namespace OpenSim.Data
         /// <param name="gridserverRecvkey"></param>
         /// <returns>The sim profile.  Null if there was a request failure</returns>
         /// <remarks>This method should be statics</remarks>
-        public RegionProfileData RequestSimProfileData(UUID regionId, Uri gridserverUrl,
-                                                              string gridserverSendkey, string gridserverRecvkey)
+        public RegionProfileData RequestSimProfileData(UUID regionId, Uri gridserverUrl, string gridserverSendkey, string gridserverRecvkey)
         {
             return RequestSimData(gridserverUrl, gridserverSendkey, "region_UUID", regionId.Guid.ToString());
         }
 
         /// <summary>
-        /// Request sim profile information from a grid server, by Region Handle
+        ///     Request sim profile information from a grid server, by Region Handle
         /// </summary>
         /// <param name="regionHandle">the region handle to look for</param>
         /// <param name="gridserverUrl"></param>
         /// <param name="gridserverSendkey"></param>
         /// <param name="gridserverRecvkey"></param>
         /// <returns>The sim profile.  Null if there was a request failure</returns>
-        public RegionProfileData RequestSimProfileData(ulong regionHandle, Uri gridserverUrl,
-                                                              string gridserverSendkey, string gridserverRecvkey)
+        public RegionProfileData RequestSimProfileData(ulong regionHandle, Uri gridserverUrl, string gridserverSendkey, string gridserverRecvkey)
         {
             return RequestSimData(gridserverUrl, gridserverSendkey, "region_handle", regionHandle.ToString());
         }
 
         /// <summary>
-        /// Request sim profile information from a grid server, by Region Name
+        ///     Request sim profile information from a grid server, by Region Name
         /// </summary>
         /// <param name="regionName">the region name to look for</param>
         /// <param name="gridserverUrl"></param>
         /// <param name="gridserverSendkey"></param>
         /// <param name="gridserverRecvkey"></param>
         /// <returns>The sim profile.  Null if there was a request failure</returns>
-        public RegionProfileData RequestSimProfileData(string regionName, Uri gridserverUrl,
-                                                              string gridserverSendkey, string gridserverRecvkey)
+        public RegionProfileData RequestSimProfileData(string regionName, Uri gridserverUrl, string gridserverSendkey, string gridserverRecvkey)
         {
             return RequestSimData(gridserverUrl, gridserverSendkey, "region_name_search", regionName);
         }

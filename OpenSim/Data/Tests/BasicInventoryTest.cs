@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,36 +28,32 @@
  */
 
 using System;
+using System.Reflection;
+using log4net;
 using log4net.Config;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using OpenMetaverse;
 using OpenSim.Framework;
-using log4net;
-using System.Reflection;
 
 namespace OpenSim.Data.Tests
 {
     public class BasicInventoryTest
     {
-        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public IInventoryDataPlugin db;
         public UUID zero = UUID.Zero;
-
         public UUID folder1;
         public UUID folder2;
         public UUID folder3;
         public UUID owner1;
         public UUID owner2;
         public UUID owner3;
-
         public UUID item1;
         public UUID item2;
         public UUID item3;
         public UUID asset1;
         public UUID asset2;
         public UUID asset3;
-
         public string name1;
         public string name2;
         public string name3;
@@ -113,6 +111,7 @@ namespace OpenSim.Data.Tests
         public void T010_FolderNonParent()
         {
             InventoryFolderBase f1 = NewFolder(folder2, folder1, owner1, name2);
+
             // the folder will go in
             db.addInventoryFolder(f1);
             InventoryFolderBase f1a = db.getUserRootFolder(owner1);
@@ -123,6 +122,7 @@ namespace OpenSim.Data.Tests
         public void T011_FolderCreate()
         {
             InventoryFolderBase f1 = NewFolder(folder1, zero, owner1, name1);
+
             // TODO: this is probably wrong behavior, but is what we have
             // db.updateInventoryFolder(f1);
             // InventoryFolderBase f1a = db.getUserRootFolder(owner1);
@@ -153,7 +153,6 @@ namespace OpenSim.Data.Tests
             Assert.That(db.getInventoryFolders(folder2).Count, Is.EqualTo(0), "Assert.That(db.getInventoryFolders(folder2).Count, Is.EqualTo(0))");
             Assert.That(db.getInventoryFolders(folder3).Count, Is.EqualTo(0), "Assert.That(db.getInventoryFolders(folder3).Count, Is.EqualTo(0))");
             Assert.That(db.getInventoryFolders(UUID.Random()).Count, Is.EqualTo(0), "Assert.That(db.getInventoryFolders(UUID.Random()).Count, Is.EqualTo(0))");
-
         }
 
         [Test]
@@ -165,7 +164,6 @@ namespace OpenSim.Data.Tests
             Assert.That(db.getFolderHierarchy(folder3).Count, Is.EqualTo(0), "Assert.That(db.getFolderHierarchy(folder3).Count, Is.EqualTo(0))");
             Assert.That(db.getFolderHierarchy(UUID.Random()).Count, Is.EqualTo(0), "Assert.That(db.getFolderHierarchy(UUID.Random()).Count, Is.EqualTo(0))");
         }
-
 
         [Test]
         public void T014_MoveFolder()

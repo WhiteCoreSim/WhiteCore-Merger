@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,10 +41,8 @@ namespace OpenSim.Data.MySQL
     {
         private string m_Realm;
         private List<string> m_ColumnNames = null;
-//        private int m_LastExpire = 0;
 
-        public MySqlUserAccountData(string connectionString, string realm)
-                : base(connectionString)
+        public MySqlUserAccountData(string connectionString, string realm) : base(connectionString)
         {
             m_Realm = realm;
 
@@ -60,7 +60,8 @@ namespace OpenSim.Data.MySQL
             UserAccountData ret = new UserAccountData();
             ret.Data = new Dictionary<string, object>();
 
-            string command = "select * from `"+m_Realm+"` where UUID = ?principalID";
+            string command = "select * from `" + m_Realm + "` where UUID = ?principalID";
+
             if (scopeID != UUID.Zero)
                 command += " and ScopeID = ?scopeID";
 
@@ -83,6 +84,7 @@ namespace OpenSim.Data.MySQL
                     m_ColumnNames = new List<string>();
 
                     DataTable schemaTable = result.GetSchemaTable();
+
                     foreach (DataRow row in schemaTable.Rows)
                         m_ColumnNames.Add(row["ColumnName"].ToString());
                 }
@@ -91,6 +93,7 @@ namespace OpenSim.Data.MySQL
                 {
                     if (s == "UUID")
                         continue;
+
                     if (s == "ScopeID")
                         continue;
 
@@ -113,6 +116,7 @@ namespace OpenSim.Data.MySQL
         {
             if (data.Data.ContainsKey("UUID"))
                 data.Data.Remove("UUID");
+
             if (data.Data.ContainsKey("ScopeID"))
                 data.Data.Remove("ScopeID");
 
@@ -120,17 +124,19 @@ namespace OpenSim.Data.MySQL
 
             MySqlCommand cmd = new MySqlCommand();
 
-            string update = "update `"+m_Realm+"` set ";
+            string update = "update `" + m_Realm + "` set ";
             bool first = true;
+
             foreach (string field in fields)
             {
                 if (!first)
                     update += ", ";
-                update += "`" + field + "` = ?"+field;
+
+                update += "`" + field + "` = ?" + field;
 
                 first = false;
 
-                cmd.Parameters.AddWithValue("?"+field, data.Data[field]);
+                cmd.Parameters.AddWithValue("?" + field, data.Data[field]);
             }
 
             update += " where UUID = ?principalID";
@@ -164,11 +170,9 @@ namespace OpenSim.Data.MySQL
 
         public bool SetDataItem(UUID principalID, string item, string value)
         {
-            MySqlCommand cmd = new MySqlCommand("update `" + m_Realm +
-                    "` set `" + item + "` = ?" + item + " where UUID = ?UUID");
+            MySqlCommand cmd = new MySqlCommand("update `" + m_Realm + "` set `" + item + "` = ?" + item + " where UUID = ?UUID");
 
-
-            cmd.Parameters.AddWithValue("?"+item, value);
+            cmd.Parameters.AddWithValue("?" + item, value);
             cmd.Parameters.AddWithValue("?UUID", principalID.ToString());
 
             if (ExecuteNonQuery(cmd) > 0)

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,15 +28,15 @@
  */
 
 using System;
+using System.Reflection;
+using System.Text;
+using log4net;
 using log4net.Config;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using OpenMetaverse;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Interfaces;
-using System.Text;
-using log4net;
-using System.Reflection;
 
 namespace OpenSim.Data.Tests
 {
@@ -42,15 +44,11 @@ namespace OpenSim.Data.Tests
     {
         public IEstateDataStore db;
         public IRegionDataStore regionDb;
-
         public static UUID REGION_ID = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed7");
-
         public static UUID USER_ID_1 = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed1");
         public static UUID USER_ID_2 = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed2");
-
         public static UUID MANAGER_ID_1 = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed3");
         public static UUID MANAGER_ID_2 = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed4");
-
         public static UUID GROUP_ID_1 = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed5");
         public static UUID GROUP_ID_2 = new UUID("250d214e-1c7e-4f9b-a488-87c5e53feed6");
 
@@ -253,7 +251,6 @@ namespace OpenSim.Data.Tests
             Assert.AreEqual(DataTestUtil.UUID_MIN, loadedSettings.EstateBans[0].BannedUserID);
 
             Assert.AreEqual(DataTestUtil.UUID_MAX, loadedSettings.EstateBans[1].BannedUserID);
-
         }
 
         #endregion
@@ -287,7 +284,6 @@ namespace OpenSim.Data.Tests
             UUID estateOwner
             )
         {
-
             // Letting estate store generate rows to database for us
             EstateSettings originalSettings = db.LoadEstateSettings(regionId);
 
@@ -375,7 +371,6 @@ namespace OpenSim.Data.Tests
                 abuseEmail,
                 estateOwner
                 );
-
         }
 
         #endregion
@@ -491,6 +486,5 @@ namespace OpenSim.Data.Tests
         }
 
         #endregion
-
     }
 }

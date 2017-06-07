@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,12 +29,12 @@
 
 using System;
 using System.Collections.Generic;
+using log4net;
 using log4net.Config;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using OpenMetaverse;
 using OpenSim.Framework;
-using log4net;
 
 namespace OpenSim.Data.Tests
 {
@@ -47,7 +49,6 @@ namespace OpenSim.Data.Tests
         public void SuperInit()
         {
             OpenSim.Tests.Common.TestLogging.LogToConsole();
-
             uuid1 = UUID.Random();
             uuid2 = UUID.Random();
             uuid3 = UUID.Random();
@@ -87,7 +88,7 @@ namespace OpenSim.Data.Tests
             db.StoreAsset(a1);
             db.StoreAsset(a2);
             db.StoreAsset(a3);
-            
+
             AssetBase a1a = db.GetAsset(uuid1);
             Assert.That(a1a, Constraints.PropertyCompareConstraint(a1));
 

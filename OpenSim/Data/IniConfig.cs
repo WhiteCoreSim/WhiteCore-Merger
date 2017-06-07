@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,18 +27,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * Taken from public code listing by Alex Pinsker at:
+ * http://alexpinsker.blogspot.com/2005/12/reading-ini-file-from-c_113432097333021549.html
+ */
+
 using System.IO;
 using System.Text.RegularExpressions;
-
-/*
- Taken from public code listing at by Alex Pinsker
- http://alexpinsker.blogspot.com/2005/12/reading-ini-file-from-c_113432097333021549.html
- */
 
 namespace OpenSim.Data
 {
     /// <summary>
-    /// Parse settings from ini-like files
+    ///     Parse settings from ini-like files
     /// </summary>
     public class IniFile
     {
@@ -63,28 +65,26 @@ namespace OpenSim.Data
 
         public string ParseFileReadValue(string key)
         {
-            using (StreamReader reader =
-                new StreamReader(_iniFileName))
+            using (StreamReader reader = new StreamReader(_iniFileName))
             {
                 do
                 {
                     string line = reader.ReadLine();
-                    Match match =
-                        _iniKeyValuePatternRegex.Match(line);
+                    Match match = _iniKeyValuePatternRegex.Match(line);
+
                     if (match.Success)
                     {
-                        string currentKey =
-                            match.Groups["Key"].Value as string;
-                        if (currentKey != null &&
-                            currentKey.Trim().CompareTo(key) == 0)
+                        string currentKey = match.Groups["Key"].Value as string;
+
+                        if (currentKey != null && currentKey.Trim().CompareTo(key) == 0)
                         {
-                            string value =
-                                match.Groups["Value"].Value as string;
+                            string value = match.Groups["Value"].Value as string;
                             return value;
                         }
                     }
                 } while (reader.Peek() != -1);
             }
+
             return null;
         }
 

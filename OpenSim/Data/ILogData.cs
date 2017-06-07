@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,46 +32,50 @@ using OpenSim.Framework;
 namespace OpenSim.Data
 {
     /// <summary>
-    /// The severity of an individual log message
+    ///     The severity of an individual log message
     /// </summary>
     public enum LogSeverity : int
     {
         /// <summary>
-        /// Critical: systems failure
+        ///     Critical: systems failure
         /// </summary>
         CRITICAL = 1,
+
         /// <summary>
-        /// Major: warning prior to systems failure
+        ///     Major: warning prior to systems failure
         /// </summary>
         MAJOR = 2,
+
         /// <summary>
-        /// Medium: an individual non-critical task failed
+        ///     Medium: an individual non-critical task failed
         /// </summary>
         MEDIUM = 3,
+
         /// <summary>
-        /// Low: Informational warning
+        ///     Low: Informational warning
         /// </summary>
         LOW = 4,
+
         /// <summary>
-        /// Info: Information
+        ///     Info: Information
         /// </summary>
         INFO = 5,
+
         /// <summary>
-        /// Verbose: Debug Information
+        ///     Verbose: Debug Information
         /// </summary>
         VERBOSE = 6
     }
 
     /// <summary>
-    /// An interface to a LogData storage system
+    ///     An interface to a LogData storage system
     /// </summary>
     public interface ILogDataPlugin : IPlugin
     {
-        void saveLog(string serverDaemon, string target, string methodCall, string arguments, int priority,
-                     string logMessage);
+        void saveLog(string serverDaemon, string target, string methodCall, string arguments, int priority, string logMessage);
 
         /// <summary>
-        /// Initialises the interface
+        ///     Initialises the interface
         /// </summary>
         void Initialise(string connect);
     }
@@ -77,11 +83,11 @@ namespace OpenSim.Data
     public class LogDataInitialiser : PluginInitialiserBase
     {
         private string connect;
-        public LogDataInitialiser (string s) { connect = s; }
-        public override void Initialise (IPlugin plugin)
+        public LogDataInitialiser(string s) { connect = s; }
+        public override void Initialise(IPlugin plugin)
         {
             ILogDataPlugin p = plugin as ILogDataPlugin;
-            p.Initialise (connect);
+            p.Initialise(connect);
         }
     }
 }

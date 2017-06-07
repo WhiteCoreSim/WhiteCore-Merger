@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,18 +43,20 @@ namespace OpenSim.Data.MySQL.Tests
         public string file;
         public MySQLManager database;
         public string connect = "Server=localhost;Port=3306;Database=opensim-nunit;User ID=opensim-nunit;Password=opensim-nunit;Pooling=false;";
-        
+
         [TestFixtureSetUp]
         public void Init()
         {
             SuperInit();
+
             // If we manage to connect to the database with the user
             // and password above it is our test database, and run
             // these tests.  If anything goes wrong, ignore these
             // tests.
-            try 
+            try
             {
                 database = new MySQLManager(connect);
+
                 // clear db incase to ensure we are in a clean state
                 ClearDB(database);
 
@@ -60,7 +64,7 @@ namespace OpenSim.Data.MySQL.Tests
                 regionDb.Initialise(connect);
                 db = new MySQLEstateStore();
                 db.Initialise(connect);
-            } 
+            }
             catch (Exception e)
             {
                 m_log.Error("Exception {0}", e);
@@ -75,6 +79,7 @@ namespace OpenSim.Data.MySQL.Tests
             {
                 regionDb.Dispose();
             }
+
             ClearDB(database);
         }
 

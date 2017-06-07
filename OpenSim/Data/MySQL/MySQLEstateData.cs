@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,20 +41,15 @@ namespace OpenSim.Data.MySQL
 {
     public class MySQLEstateStore : IEstateDataStore
     {
-        private static readonly ILog m_log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private const string m_waitTimeoutSelect = "select @@wait_timeout";
-
         private MySqlConnection m_connection;
         private string m_connectionString;
         private long m_waitTimeout;
         private long m_waitTimeoutLeeway = 60 * TimeSpan.TicksPerSecond;
         private long m_lastConnectionUse;
-
         private FieldInfo[] m_Fields;
-        private Dictionary<string, FieldInfo> m_FieldMap =
-                new Dictionary<string, FieldInfo>();
+        private Dictionary<string, FieldInfo> m_FieldMap = new Dictionary<string, FieldInfo>();
 
         public void Initialise(string connectionString)
         {
@@ -60,7 +57,7 @@ namespace OpenSim.Data.MySQL
 
             try
             {
-                m_log.Info("[REGION DB]: MySql - connecting: " + Util.GetDisplayConnectionString(m_connectionString));
+                m_log.Info("[Region Database]: MySql - connecting: " + Util.GetDisplayConnectionString(m_connectionString));
             }
             catch (Exception e)
             {
@@ -95,17 +92,13 @@ namespace OpenSim.Data.MySQL
 
         protected void GetWaitTimeout()
         {
-            MySqlCommand cmd = new MySqlCommand(m_waitTimeoutSelect,
-                    m_connection);
+            MySqlCommand cmd = new MySqlCommand(m_waitTimeoutSelect, m_connection);
 
-            using (MySqlDataReader dbReader =
-                    cmd.ExecuteReader(CommandBehavior.SingleRow))
+            using (MySqlDataReader dbReader = cmd.ExecuteReader(CommandBehavior.SingleRow))
             {
                 if (dbReader.Read())
                 {
-                    m_waitTimeout
-                        = Convert.ToInt32(dbReader["@@wait_timeout"]) *
-                        TimeSpan.TicksPerSecond + m_waitTimeoutLeeway;
+                    m_waitTimeout = Convert.ToInt32(dbReader["@@wait_timeout"]) * TimeSpan.TicksPerSecond + m_waitTimeoutLeeway;
                 }
 
                 dbReader.Close();
@@ -114,18 +107,16 @@ namespace OpenSim.Data.MySQL
 
             m_lastConnectionUse = DateTime.Now.Ticks;
 
-            m_log.DebugFormat(
-                "[REGION DB]: Connection wait timeout {0} seconds",
-                m_waitTimeout / TimeSpan.TicksPerSecond);
+            m_log.DebugFormat("[Region Database]: Connection wait timeout {0} seconds", m_waitTimeout / TimeSpan.TicksPerSecond);
         }
 
         protected void CheckConnection()
         {
             long timeNow = DateTime.Now.Ticks;
-            if (timeNow - m_lastConnectionUse > m_waitTimeout ||
-                    m_connection.State != ConnectionState.Open)
+
+            if (timeNow - m_lastConnectionUse > m_waitTimeout || m_connection.State != ConnectionState.Open)
             {
-                m_log.DebugFormat("[REGION DB]: Database connection has gone away - reconnecting");
+                m_log.DebugFormat("[Region Database]: Database connection has gone away - reconnecting");
 
                 lock (m_connection)
                 {
@@ -161,6 +152,7 @@ namespace OpenSim.Data.MySQL
                     if (m_FieldMap[name].GetValue(es) is bool)
                     {
                         int v = Convert.ToInt32(r[name]);
+
                         if (v != 0)
                             m_FieldMap[name].SetValue(es, true);
                         else
@@ -178,12 +170,12 @@ namespace OpenSim.Data.MySQL
                         m_FieldMap[name].SetValue(es, r[name]);
                     }
                 }
+
                 r.Close();
             }
             else
             {
                 // Migration case
-                //
                 r.Close();
 
                 List<string> names = new List<string>(FieldList);
@@ -237,7 +229,6 @@ namespace OpenSim.Data.MySQL
                 }
 
                 // Munge and transfer the ban list
-                //
                 cmd.Parameters.Clear();
                 cmd.CommandText = "insert into estateban select " + es.EstateID.ToString() + ", bannedUUID, bannedIp, bannedIpHostMask, '' from regionban where regionban.regionUUID = ?UUID";
                 cmd.Parameters.AddWithValue("?UUID", regionID.ToString());
@@ -319,6 +310,7 @@ namespace OpenSim.Data.MySQL
                 eb.BannedHostIPMask = "0.0.0.0";
                 es.AddBan(eb);
             }
+
             r.Close();
         }
 
@@ -388,12 +380,12 @@ namespace OpenSim.Data.MySQL
             while (r.Read())
             {
                 // EstateBan eb = new EstateBan();
-
                 UUID uuid = new UUID();
                 UUID.TryParse(r["uuid"].ToString(), out uuid);
 
                 uuids.Add(uuid);
             }
+
             r.Close();
 
             return uuids.ToArray();

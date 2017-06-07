@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,7 +36,7 @@ using OpenSim.Region.Framework.Scenes;
 namespace OpenSim.Data.Null
 {
     /// <summary>
-    /// NULL DataStore, do not store anything
+    ///     NULL DataStore, do not store anything
     /// </summary>
     public class NullDataStore : IRegionDataStore
     {

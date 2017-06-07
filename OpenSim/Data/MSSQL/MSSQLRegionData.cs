@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -13,7 +15,7 @@
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ''AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
@@ -41,7 +43,7 @@ using OpenSim.Region.Framework.Scenes;
 namespace OpenSim.Data.MSSQL
 {
     /// <summary>
-    /// A MSSQL Interface for the Region Server.
+    ///     A MSSQL Interface for the Region Server.
     /// </summary>
     public class MSSQLRegionData : IRegionData
     {
@@ -51,7 +53,7 @@ namespace OpenSim.Data.MSSQL
         private MSSQLManager m_database;
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public MSSQLRegionData(string connectionString, string realm) 
+        public MSSQLRegionData(string connectionString, string realm)
         {
             m_Realm = realm;
             m_ConnectionString = connectionString;
@@ -63,13 +65,15 @@ namespace OpenSim.Data.MSSQL
                 Migration m = new Migration(conn, GetType().Assembly, "GridStore");
                 m.Update();
             }
-         }
+        }
 
         public List<RegionData> Get(string regionName, UUID scopeID)
         {
-            string sql = "select * from ["+m_Realm+"] where regionName like @regionName";
+            string sql = "select * from [" + m_Realm + "] where regionName like @regionName";
+
             if (scopeID != UUID.Zero)
                 sql += " and ScopeID = @scopeID";
+
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
@@ -82,7 +86,8 @@ namespace OpenSim.Data.MSSQL
 
         public RegionData Get(int posX, int posY, UUID scopeID)
         {
-            string sql = "select * from ["+m_Realm+"] where locX = @posX and locY = @posY";
+            string sql = "select * from [" + m_Realm + "] where locX = @posX and locY = @posY";
+
             if (scopeID != UUID.Zero)
                 sql += " and ScopeID = @scopeID";
 
@@ -94,6 +99,7 @@ namespace OpenSim.Data.MSSQL
                 cmd.Parameters.Add(m_database.CreateParameter("@scopeID", scopeID));
                 conn.Open();
                 List<RegionData> ret = RunCommand(cmd);
+
                 if (ret.Count == 0)
                     return null;
 
@@ -103,9 +109,11 @@ namespace OpenSim.Data.MSSQL
 
         public RegionData Get(UUID regionID, UUID scopeID)
         {
-            string sql = "select * from ["+m_Realm+"] where uuid = @regionID";
+            string sql = "select * from [" + m_Realm + "] where uuid = @regionID";
+
             if (scopeID != UUID.Zero)
                 sql += " and ScopeID = @scopeID";
+
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
@@ -113,6 +121,7 @@ namespace OpenSim.Data.MSSQL
                 cmd.Parameters.Add(m_database.CreateParameter("@scopeID", scopeID));
                 conn.Open();
                 List<RegionData> ret = RunCommand(cmd);
+
                 if (ret.Count == 0)
                     return null;
 
@@ -122,7 +131,8 @@ namespace OpenSim.Data.MSSQL
 
         public List<RegionData> Get(int startX, int startY, int endX, int endY, UUID scopeID)
         {
-            string sql = "select * from ["+m_Realm+"] where locX between @startX and @endX and locY between @startY and @endY";
+            string sql = "select * from [" + m_Realm + "] where locX between @startX and @endX and locY between @startY and @endY";
+
             if (scopeID != UUID.Zero)
                 sql += " and ScopeID = @scopeID";
 
@@ -167,6 +177,7 @@ namespace OpenSim.Data.MSSQL
                     m_ColumnNames = new List<string>();
 
                     DataTable schemaTable = result.GetSchemaTable();
+
                     foreach (DataRow row in schemaTable.Rows)
                         m_ColumnNames.Add(row["ColumnName"].ToString());
                 }
@@ -175,12 +186,16 @@ namespace OpenSim.Data.MSSQL
                 {
                     if (s == "uuid")
                         continue;
+
                     if (s == "ScopeID")
                         continue;
+
                     if (s == "regionName")
                         continue;
+
                     if (s == "locX")
                         continue;
+
                     if (s == "locY")
                         continue;
 
@@ -189,6 +204,7 @@ namespace OpenSim.Data.MSSQL
 
                 retList.Add(ret);
             }
+
             return retList;
         }
 
@@ -196,20 +212,28 @@ namespace OpenSim.Data.MSSQL
         {
             if (data.Data.ContainsKey("uuid"))
                 data.Data.Remove("uuid");
+
             if (data.Data.ContainsKey("ScopeID"))
                 data.Data.Remove("ScopeID");
+
             if (data.Data.ContainsKey("regionName"))
                 data.Data.Remove("regionName");
+
             if (data.Data.ContainsKey("posX"))
                 data.Data.Remove("posX");
+
             if (data.Data.ContainsKey("posY"))
                 data.Data.Remove("posY");
+
             if (data.Data.ContainsKey("sizeX"))
                 data.Data.Remove("sizeX");
+
             if (data.Data.ContainsKey("sizeY"))
                 data.Data.Remove("sizeY");
+
             if (data.Data.ContainsKey("locX"))
                 data.Data.Remove("locX");
+
             if (data.Data.ContainsKey("locY"))
                 data.Data.Remove("locY");
 
@@ -218,12 +242,10 @@ namespace OpenSim.Data.MSSQL
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand())
             {
-
                 string update = "update [" + m_Realm + "] set locX=@posX, locY=@posY, sizeX=@sizeX, sizeY=@sizeY ";
-                
+
                 foreach (string field in fields)
                 {
-
                     update += ", ";
                     update += "[" + field + "] = @" + field;
 
@@ -279,32 +301,34 @@ namespace OpenSim.Data.MSSQL
 
         public bool SetDataItem(UUID regionID, string item, string value)
         {
-            string sql = "update [" + m_Realm +
-                    "] set [" + item + "] = @" + item + " where uuid = @UUID";
+            string sql = "update [" + m_Realm + "] set [" + item + "] = @" + item + " where uuid = @UUID";
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.Add(m_database.CreateParameter("@" + item, value));
                 cmd.Parameters.Add(m_database.CreateParameter("@UUID", regionID));
                 conn.Open();
+
                 if (cmd.ExecuteNonQuery() > 0)
                     return true;
             }
+
             return false;
         }
 
         public bool Delete(UUID regionID)
         {
-            string sql = "delete from [" + m_Realm +
-                    "] where uuid = @UUID";
+            string sql = "delete from [" + m_Realm + "] where uuid = @UUID";
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.Add(m_database.CreateParameter("@UUID", regionID));
                 conn.Open();
+
                 if (cmd.ExecuteNonQuery() > 0)
                     return true;
             }
+
             return false;
         }
     }

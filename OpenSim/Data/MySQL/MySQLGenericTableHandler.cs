@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,23 +39,20 @@ using OpenSim.Region.Framework.Interfaces;
 
 namespace OpenSim.Data.MySQL
 {
-    public class MySQLGenericTableHandler<T> : MySqlFramework where T: struct
+    public class MySQLGenericTableHandler<T> : MySqlFramework where T : struct
     {
-        private static readonly ILog m_log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-
-        protected Dictionary<string, FieldInfo> m_Fields =
-                new Dictionary<string, FieldInfo>();
+        protected Dictionary<string, FieldInfo> m_Fields = new Dictionary<string, FieldInfo>();
 
         protected List<string> m_ColumnNames = null;
         protected string m_Realm;
         protected FieldInfo m_DataField = null;
 
-        public MySQLGenericTableHandler(string connectionString,
-                string realm, string storeName) : base(connectionString)
+        public MySQLGenericTableHandler(string connectionString, string realm, string storeName) : base(connectionString)
         {
             m_Realm = realm;
+
             if (storeName != String.Empty)
             {
                 Assembly assem = GetType().Assembly;
@@ -70,7 +69,7 @@ namespace OpenSim.Data.MySQL
             if (fields.Length == 0)
                 return;
 
-            foreach (FieldInfo f in  fields)
+            foreach (FieldInfo f in fields)
             {
                 if (f.Name != "Data")
                     m_Fields[f.Name] = f;
@@ -87,10 +86,10 @@ namespace OpenSim.Data.MySQL
             m_ColumnNames = new List<string>();
 
             DataTable schemaTable = reader.GetSchemaTable();
+
             foreach (DataRow row in schemaTable.Rows)
             {
-                if (row["ColumnName"] != null &&
-                        (!m_Fields.ContainsKey(row["ColumnName"].ToString())))
+                if (row["ColumnName"] != null && (!m_Fields.ContainsKey(row["ColumnName"].ToString())))
                     m_ColumnNames.Add(row["ColumnName"].ToString());
             }
         }
@@ -109,7 +108,7 @@ namespace OpenSim.Data.MySQL
 
             MySqlCommand cmd = new MySqlCommand();
 
-            for (int i = 0 ; i < fields.Length ; i++)
+            for (int i = 0; i < fields.Length; i++)
             {
                 cmd.Parameters.AddWithValue(fields[i], keys[i]);
                 terms.Add("`" + fields[i] + "` = ?" + fields[i]);
@@ -117,8 +116,7 @@ namespace OpenSim.Data.MySQL
 
             string where = String.Join(" and ", terms.ToArray());
 
-            string query = String.Format("select * from {0} where {1}",
-                    m_Realm, where);
+            string query = String.Format("select * from {0} where {1}", m_Realm, where);
 
             cmd.CommandText = query;
 
@@ -128,6 +126,7 @@ namespace OpenSim.Data.MySQL
         protected T[] DoQuery(MySqlCommand cmd)
         {
             IDataReader reader = ExecuteReader(cmd);
+
             if (reader == null)
                 return new T[0];
 
@@ -158,11 +157,10 @@ namespace OpenSim.Data.MySQL
                         m_Fields[name].SetValue(row, reader[name]);
                     }
                 }
-                
+
                 if (m_DataField != null)
                 {
-                    Dictionary<string, string> data =
-                            new Dictionary<string, string>();
+                    Dictionary<string, string> data = new Dictionary<string, string>();
 
                     foreach (string col in m_ColumnNames)
                         data[col] = reader[col].ToString();
@@ -182,8 +180,7 @@ namespace OpenSim.Data.MySQL
         {
             MySqlCommand cmd = new MySqlCommand();
 
-            string query = String.Format("select * from {0} where {1}",
-                    m_Realm, where);
+            string query = String.Format("select * from {0} where {1}", m_Realm, where);
 
             cmd.CommandText = query;
 

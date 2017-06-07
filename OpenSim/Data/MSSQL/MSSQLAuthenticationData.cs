@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -13,7 +15,7 @@
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ''AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
@@ -29,11 +31,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using OpenMetaverse;
-using OpenSim.Framework;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
+using OpenMetaverse;
+using OpenSim.Framework;
 
 namespace OpenSim.Data.MSSQL
 {
@@ -80,6 +82,7 @@ namespace OpenSim.Data.MSSQL
                             m_ColumnNames = new List<string>();
 
                             DataTable schemaTable = result.GetSchemaTable();
+
                             foreach (DataRow row in schemaTable.Rows)
                                 m_ColumnNames.Add(row["ColumnName"].ToString());
                         }
@@ -91,10 +94,12 @@ namespace OpenSim.Data.MSSQL
 
                             ret.Data[s] = result[s].ToString();
                         }
+
                         return ret;
                     }
                 }
             }
+
             return null;
         }
 
@@ -105,18 +110,20 @@ namespace OpenSim.Data.MSSQL
 
             string[] fields = new List<string>(data.Data.Keys).ToArray();
             StringBuilder updateBuilder = new StringBuilder();
-           
+
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand())
             {
                 updateBuilder.AppendFormat("update {0} set ", m_Realm);
 
                 bool first = true;
+
                 foreach (string field in fields)
                 {
                     if (!first)
                         updateBuilder.Append(", ");
-                    updateBuilder.AppendFormat("{0} = @{0}",field);
+
+                    updateBuilder.AppendFormat("{0} = @{0}", field);
 
                     first = false;
                     cmd.Parameters.Add(m_database.CreateParameter("@" + field, data.Data[field]));
@@ -127,8 +134,9 @@ namespace OpenSim.Data.MSSQL
                 cmd.CommandText = updateBuilder.ToString();
                 cmd.Connection = conn;
                 cmd.Parameters.Add(m_database.CreateParameter("@principalID", data.PrincipalID));
-                
+
                 conn.Open();
+
                 if (cmd.ExecuteNonQuery() < 1)
                 {
                     StringBuilder insertBuilder = new StringBuilder();
@@ -147,6 +155,7 @@ namespace OpenSim.Data.MSSQL
                     }
                 }
             }
+
             return true;
         }
 
@@ -158,9 +167,11 @@ namespace OpenSim.Data.MSSQL
             {
                 cmd.Parameters.Add(m_database.CreateParameter("@" + item, value));
                 conn.Open();
+
                 if (cmd.ExecuteNonQuery() > 0)
                     return true;
             }
+
             return false;
         }
 
@@ -168,6 +179,7 @@ namespace OpenSim.Data.MSSQL
         {
             if (System.Environment.TickCount - m_LastExpire > 30000)
                 DoExpire();
+
             string sql = "insert into tokens (UUID, token, validity) values (@principalID, @token, date_add(now(), interval @lifetime minute))";
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -182,6 +194,7 @@ namespace OpenSim.Data.MSSQL
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -189,6 +202,7 @@ namespace OpenSim.Data.MSSQL
         {
             if (System.Environment.TickCount - m_LastExpire > 30000)
                 DoExpire();
+
             string sql = "update tokens set validity = date_add(now(), interval @lifetime minute) where UUID = @principalID and token = @token and validity > now()";
             using (SqlConnection conn = new SqlConnection(m_ConnectionString))
             using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -203,6 +217,7 @@ namespace OpenSim.Data.MSSQL
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -215,6 +230,7 @@ namespace OpenSim.Data.MSSQL
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+
             m_LastExpire = System.Environment.TickCount;
         }
     }

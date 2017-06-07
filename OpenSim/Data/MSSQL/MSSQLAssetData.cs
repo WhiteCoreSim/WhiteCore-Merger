@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,14 +32,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Collections.Generic;
-using OpenMetaverse;
 using log4net;
+using OpenMetaverse;
 using OpenSim.Framework;
 
 namespace OpenSim.Data.MSSQL
 {
     /// <summary>
-    /// A MSSQL Interface for the Asset server
+    ///     A MSSQL Interface for the Asset server
     /// </summary>
     public class MSSQLAssetData : AssetDataBase
     {
@@ -45,8 +47,9 @@ namespace OpenSim.Data.MSSQL
 
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private long m_ticksToEpoch;
+
         /// <summary>
-        /// Database manager
+        ///     Database manager
         /// </summary>
         private MSSQLManager m_database;
 
@@ -57,18 +60,17 @@ namespace OpenSim.Data.MSSQL
         /// <summary>
         /// <para>Initialises asset interface</para>
         /// </summary>
-        // [Obsolete("Cannot be default-initialized!")]
         override public void Initialise()
         {
-            m_log.Info("[MSSQLAssetData]: " + Name + " cannot be default-initialized!");
+            m_log.Info("[MSSQL Asset Data]: " + Name + " cannot be default-initialized!");
             throw new PluginNotInitialisedException(Name);
         }
 
         /// <summary>
-        /// Initialises asset interface
+        ///     Initialises asset interface
         /// </summary>
         /// <para>
-        /// a string instead of file, if someone writes the support
+        ///     a string instead of file, if someone writes the support
         /// </para>
         /// <param name="connectionString">connect string</param>
         override public void Initialise(string connectionString)
@@ -88,9 +90,7 @@ namespace OpenSim.Data.MSSQL
                 string settingUserId = gridDataMSSqlFile.ParseFileReadValue("user_id");
                 string settingPassword = gridDataMSSqlFile.ParseFileReadValue("password");
 
-                m_database =
-                    new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId,
-                                     settingPassword);
+                m_database = new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId, settingPassword);
             }
 
             //New migration to check for DB changes
@@ -98,7 +98,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Database provider version.
+        ///     Database provider version.
         /// </summary>
         override public string Version
         {
@@ -106,7 +106,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// The name of this DB provider.
+        ///     The name of this DB provider.
         /// </summary>
         override public string Name
         {
@@ -118,7 +118,7 @@ namespace OpenSim.Data.MSSQL
         #region IAssetDataPlugin Members
 
         /// <summary>
-        /// Fetch Asset from m_database
+        ///     Fetch Asset from m_database
         /// </summary>
         /// <param name="assetID">the asset UUID</param>
         /// <returns></returns>
@@ -137,6 +137,7 @@ namespace OpenSim.Data.MSSQL
                             (string)reader["name"],
                             Convert.ToSByte(reader["assetType"])
                         );
+
                         // Region Main
                         asset.Description = (string)reader["description"];
                         asset.Local = Convert.ToBoolean(reader["local"]);
@@ -144,13 +145,14 @@ namespace OpenSim.Data.MSSQL
                         asset.Data = (byte[])reader["data"];
                         return asset;
                     }
-                    return null; // throw new Exception("No rows to return");
+
+                    return null;
                 }
             }
         }
 
         /// <summary>
-        /// Create asset in m_database
+        ///     Create asset in m_database
         /// </summary>
         /// <param name="asset">the asset</param>
         override public void StoreAsset(AssetBase asset)
@@ -161,35 +163,36 @@ namespace OpenSim.Data.MSSQL
                 InsertAsset(asset);
         }
 
-
         private void InsertAsset(AssetBase asset)
         {
             if (ExistsAsset(asset.FullID))
             {
                 return;
             }
-            
+
             string sql = @"INSERT INTO assets
                             ([id], [name], [description], [assetType], [local], 
                              [temporary], [create_time], [access_time], [data])
                            VALUES
                             (@id, @name, @description, @assetType, @local, 
                              @temporary, @create_time, @access_time, @data)";
-            
+
             string assetName = asset.Name;
+
             if (asset.Name.Length > 64)
             {
                 assetName = asset.Name.Substring(0, 64);
-                m_log.Warn("[ASSET DB]: Name field truncated from " + asset.Name.Length + " to " + assetName.Length + " characters on add");
+                m_log.Warn("[Asset Database]: Name field truncated from " + asset.Name.Length + " to " + assetName.Length + " characters on add");
             }
-            
+
             string assetDescription = asset.Description;
+
             if (asset.Description.Length > 64)
             {
                 assetDescription = asset.Description.Substring(0, 64);
-                m_log.Warn("[ASSET DB]: Description field truncated from " + asset.Description.Length + " to " + assetDescription.Length + " characters on add");
+                m_log.Warn("[Assets Database]: Description field truncated from " + asset.Description.Length + " to " + assetDescription.Length + " characters on add");
             }
-            
+
             using (AutoClosingSqlCommand command = m_database.Query(sql))
             {
                 int now = (int)((System.DateTime.Now.Ticks - m_ticksToEpoch) / 10000000);
@@ -207,15 +210,15 @@ namespace OpenSim.Data.MSSQL
                 {
                     command.ExecuteNonQuery();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    m_log.Error("[ASSET DB]: Error inserting item :" + e.Message);
+                    m_log.Error("[Asset Database]: Error inserting item :" + e.Message);
                 }
             }
         }
 
         /// <summary>
-        /// Update asset in m_database
+        ///     Update asset in m_database
         /// </summary>
         /// <param name="asset">the asset</param>
         private void UpdateAsset(AssetBase asset)
@@ -225,19 +228,21 @@ namespace OpenSim.Data.MSSQL
                            WHERE id = @keyId;";
 
             string assetName = asset.Name;
+
             if (asset.Name.Length > 64)
             {
                 assetName = asset.Name.Substring(0, 64);
-                m_log.Warn("[ASSET DB]: Name field truncated from " + asset.Name.Length + " to " + assetName.Length + " characters on update");
+                m_log.Warn("[Assets Database]: Name field truncated from " + asset.Name.Length + " to " + assetName.Length + " characters on update");
             }
-            
+
             string assetDescription = asset.Description;
+
             if (asset.Description.Length > 64)
             {
                 assetDescription = asset.Description.Substring(0, 64);
-                m_log.Warn("[ASSET DB]: Description field truncated from " + asset.Description.Length + " to " + assetDescription.Length + " characters on update");
+                m_log.Warn("[Assets Database]: Description field truncated from " + asset.Description.Length + " to " + assetDescription.Length + " characters on update");
             }
-            
+
             using (AutoClosingSqlCommand command = m_database.Query(sql))
             {
                 command.Parameters.Add(m_database.CreateParameter("id", asset.FullID));
@@ -260,27 +265,8 @@ namespace OpenSim.Data.MSSQL
             }
         }
 
-// Commented out since currently unused - this probably should be called in GetAsset()
-//        private void UpdateAccessTime(AssetBase asset)
-//        {
-//            using (AutoClosingSqlCommand cmd = m_database.Query("UPDATE assets SET access_time = @access_time WHERE id=@id"))
-//            {
-//                int now = (int)((System.DateTime.Now.Ticks - m_ticksToEpoch) / 10000000);
-//                cmd.Parameters.AddWithValue("@id", asset.FullID.ToString());
-//                cmd.Parameters.AddWithValue("@access_time", now);
-//                try
-//                {
-//                    cmd.ExecuteNonQuery();
-//                }
-//                catch (Exception e)
-//                {
-//                    m_log.Error(e.ToString());
-//                }
-//            }
-//        }
-
         /// <summary>
-        /// Check if asset exist in m_database
+        ///     Check if asset exist in m_database
         /// </summary>
         /// <param name="uuid"></param>
         /// <returns>true if exist.</returns>
@@ -290,12 +276,13 @@ namespace OpenSim.Data.MSSQL
             {
                 return true;
             }
+
             return false;
         }
 
         /// <summary>
-        /// Returns a list of AssetMetadata objects. The list is a subset of
-        /// the entire data set offset by <paramref name="start" /> containing
+        ///     Returns a list of AssetMetadata objects. The list is a subset of
+        ///     the entire data set offset by <paramref name="start" /> containing
         /// <paramref name="count" /> elements.
         /// </summary>
         /// <param name="start">The number of results to discard from the total data set.</param>
@@ -307,7 +294,7 @@ namespace OpenSim.Data.MSSQL
             string sql = @"SELECT (name,description,assetType,temporary,id), Row = ROW_NUMBER() 
                             OVER (ORDER BY (some column to order by)) 
                             WHERE Row >= @Start AND Row < @Start + @Count";
-            
+
             using (AutoClosingSqlCommand command = m_database.Query(sql))
             {
                 command.Parameters.Add(m_database.CreateParameter("start", start));

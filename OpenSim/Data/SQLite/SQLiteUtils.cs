@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,7 +34,7 @@ using Mono.Data.SqliteClient;
 namespace OpenSim.Data.SQLite
 {
     /// <summary>
-    /// A base class for methods needed by all SQLite database classes
+    ///     A base class for methods needed by all SQLite database classes
     /// </summary>
     public class SQLiteUtil
     {
@@ -67,24 +69,24 @@ namespace OpenSim.Data.SQLite
          **********************************************************************/
 
         /// <summary>
-        /// Create an insert command
+        ///     Create an insert command
         /// </summary>
         /// <param name="table">table name</param>
         /// <param name="dt">data table</param>
         /// <returns>the created command</returns>
         /// <remarks>
-        /// This is subtle enough to deserve some commentary.
-        /// Instead of doing *lots* and *lots of hardcoded strings
-        /// for database definitions we'll use the fact that
-        /// realistically all insert statements look like "insert
-        /// into A(b, c) values(:b, :c) on the parameterized query
-        /// front.  If we just have a list of b, c, etc... we can
-        /// generate these strings instead of typing them out.
+        ///     This is subtle enough to deserve some commentary.
+        ///     Instead of doing *lots* and *lots of hardcoded strings
+        ///     for database definitions we'll use the fact that
+        ///     realistically all insert statements look like "insert
+        ///     into A(b, c) values(:b, :c) on the parameterized query
+        ///     front.  If we just have a list of b, c, etc... we can
+        ///     generate these strings instead of typing them out.
         /// </remarks>
         public static SqliteCommand createInsertCommand(string table, DataTable dt)
         {
-
             string[] cols = new string[dt.Columns.Count];
+
             for (int i = 0; i < dt.Columns.Count; i++)
             {
                 DataColumn col = dt.Columns[i];
@@ -93,6 +95,7 @@ namespace OpenSim.Data.SQLite
 
             string sql = "insert into " + table + "(";
             sql += String.Join(", ", cols);
+
             // important, the first ':' needs to be here, the rest get added in the join
             sql += ") values (:";
             sql += String.Join(", :", cols);
@@ -105,11 +108,12 @@ namespace OpenSim.Data.SQLite
             {
                 cmd.Parameters.Add(createSqliteParameter(col.ColumnName, col.DataType));
             }
+
             return cmd;
         }
 
         /// <summary>
-        /// create an update command
+        ///     create an update command
         /// </summary>
         /// <param name="table">table name</param>
         /// <param name="pk"></param>
@@ -119,6 +123,7 @@ namespace OpenSim.Data.SQLite
         {
             string sql = "update " + table + " set ";
             string subsql = String.Empty;
+
             foreach (DataColumn col in dt.Columns)
             {
                 if (subsql.Length > 0)
@@ -126,19 +131,21 @@ namespace OpenSim.Data.SQLite
                     // a map function would rock so much here
                     subsql += ", ";
                 }
+
                 subsql += col.ColumnName + "= :" + col.ColumnName;
             }
+
             sql += subsql;
             sql += " where " + pk;
             SqliteCommand cmd = new SqliteCommand(sql);
 
             // this provides the binding for all our parameters, so
             // much less code than it used to be
-
             foreach (DataColumn col in dt.Columns)
             {
                 cmd.Parameters.Add(createSqliteParameter(col.ColumnName, col.DataType));
             }
+
             return cmd;
         }
 
@@ -151,6 +158,7 @@ namespace OpenSim.Data.SQLite
         {
             string sql = "create table " + dt.TableName + "(";
             string subsql = String.Empty;
+
             foreach (DataColumn col in dt.Columns)
             {
                 if (subsql.Length > 0)
@@ -158,7 +166,9 @@ namespace OpenSim.Data.SQLite
                     // a map function would rock so much here
                     subsql += ",\n";
                 }
+
                 subsql += col.ColumnName + " " + sqliteType(col.DataType);
+
                 if (dt.PrimaryKey.Length > 0)
                 {
                     if (col == dt.PrimaryKey[0])
@@ -167,6 +177,7 @@ namespace OpenSim.Data.SQLite
                     }
                 }
             }
+
             sql += subsql;
             sql += ")";
             return sql;
@@ -183,16 +194,16 @@ namespace OpenSim.Data.SQLite
 
         ///<summary>
         /// <para>
-        /// This is a convenience function that collapses 5 repetitive
-        /// lines for defining SqliteParameters to 2 parameters:
-        /// column name and database type.
+        ///     This is a convenience function that collapses 5 repetitive
+        ///     lines for defining SqliteParameters to 2 parameters:
+        ///     column name and database type.
         /// </para>
         /// 
         /// <para>
-        /// It assumes certain conventions like :param as the param
-        /// name to replace in parametrized queries, and that source
-        /// version is always current version, both of which are fine
-        /// for us.
+        ///     It assumes certain conventions like :param as the param
+        ///     name to replace in parametrized queries, and that source
+        ///     version is always current version, both of which are fine
+        ///     for us.
         /// </para>
         ///</summary>
         /// <param name="name"></param>
@@ -215,41 +226,41 @@ namespace OpenSim.Data.SQLite
          **********************************************************************/
 
         /// <summary>
-        /// Type conversion function
+        ///     Type conversion function
         /// </summary>
         /// <param name="type">a type</param>
         /// <returns>a DbType</returns>
         public static DbType dbtypeFromType(Type type)
         {
-            if (type == typeof (String))
+            if (type == typeof(String))
             {
                 return DbType.String;
             }
-            else if (type == typeof (Int32))
+            else if (type == typeof(Int32))
             {
                 return DbType.Int32;
             }
-            else if (type == typeof (UInt32))
+            else if (type == typeof(UInt32))
             {
                 return DbType.UInt32;
             }
-            else if (type == typeof (Int64))
+            else if (type == typeof(Int64))
             {
                 return DbType.Int64;
             }
-            else if (type == typeof (UInt64))
+            else if (type == typeof(UInt64))
             {
                 return DbType.UInt64;
             }
-            else if (type == typeof (Double))
+            else if (type == typeof(Double))
             {
                 return DbType.Double;
             }
-            else if (type == typeof (Boolean))
+            else if (type == typeof(Boolean))
             {
                 return DbType.Boolean;
             }
-            else if (type == typeof (Byte[]))
+            else if (type == typeof(Byte[]))
             {
                 return DbType.Binary;
             }
@@ -266,35 +277,35 @@ namespace OpenSim.Data.SQLite
         /// <remarks>this is something we'll need to implement for each db slightly differently.</remarks>
         public static string sqliteType(Type type)
         {
-            if (type == typeof (String))
+            if (type == typeof(String))
             {
                 return "varchar(255)";
             }
-            else if (type == typeof (Int32))
+            else if (type == typeof(Int32))
             {
                 return "integer";
             }
-            else if (type == typeof (UInt32))
+            else if (type == typeof(UInt32))
             {
                 return "integer";
             }
-            else if (type == typeof (Int64))
+            else if (type == typeof(Int64))
             {
                 return "varchar(255)";
             }
-            else if (type == typeof (UInt64))
+            else if (type == typeof(UInt64))
             {
                 return "varchar(255)";
             }
-            else if (type == typeof (Double))
+            else if (type == typeof(Double))
             {
                 return "float";
             }
-            else if (type == typeof (Boolean))
+            else if (type == typeof(Boolean))
             {
                 return "integer";
             }
-            else if (type == typeof (Byte[]))
+            else if (type == typeof(Byte[]))
             {
                 return "blob";
             }

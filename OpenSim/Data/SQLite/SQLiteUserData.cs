@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,17 +39,15 @@ using OpenSim.Framework;
 namespace OpenSim.Data.SQLite
 {
     /// <summary>
-    /// A User storage interface for the SQLite database system
+    ///     A User storage interface for the SQLite database system
     /// </summary>
     public class SQLiteUserData : UserDataBase
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// The database manager
-        /// </summary>
-        /// <summary>
-        /// Artificial constructor called upon plugin load
+        ///     The database manager
+        ///     Artificial constructor called upon plugin load
         /// </summary>
         private const string SelectUserByUUID = "select * from users where UUID=:UUID";
         private const string SelectUserByName = "select * from users where username=:username and surname=:surname";
@@ -70,8 +70,8 @@ namespace OpenSim.Data.SQLite
 
         public override void Initialise()
         {
-            m_log.Info("[SQLiteUserData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            m_log.Info("[SQLite User Data]: " + Name + " cannot be default-initialized!");
+            throw new PluginNotInitialisedException(Name);
         }
 
         /// <summary>
@@ -98,13 +98,11 @@ namespace OpenSim.Data.SQLite
             Migration m = new Migration(g_conn, assem, "UserStore");
             m.Update();
 
-
             ds = new DataSet();
             da = new SqliteDataAdapter(new SqliteCommand(userSelect, conn));
             dua = new SqliteDataAdapter(new SqliteCommand(userAgentSelect, conn));
             daf = new SqliteDataAdapter(new SqliteCommand(userFriendsSelect, conn));
             daa = new SqliteDataAdapter(new SqliteCommand(AvatarAppearanceSelect, conn));
-            //if (daa == null) m_log.Info("[SQLiteUserData]: daa = null");
 
             lock (ds)
             {
@@ -129,33 +127,38 @@ namespace OpenSim.Data.SQLite
             return;
         }
 
-        public override void Dispose ()
+        public override void Dispose()
         {
             if (g_conn != null)
             {
                 g_conn.Close();
                 g_conn = null;
             }
+
             if (ds != null)
             {
                 ds.Dispose();
                 ds = null;
             }
+
             if (da != null)
             {
                 da.Dispose();
                 da = null;
             }
+
             if (daf != null)
             {
                 daf.Dispose();
                 daf = null;
             }
+
             if (dua != null)
             {
                 dua.Dispose();
                 dua = null;
             }
+
             if (daa != null)
             {
                 daa.Dispose();
@@ -164,8 +167,8 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// see IUserDataPlugin,
-        /// Get user data profile by UUID
+        ///     see IUserDataPlugin,
+        ///     Get user data profile by UUID
         /// </summary>
         /// <param name="uuid">User UUID</param>
         /// <returns>user profile data</returns>
@@ -174,6 +177,7 @@ namespace OpenSim.Data.SQLite
             lock (ds)
             {
                 DataRow row = ds.Tables["users"].Rows.Find(uuid.ToString());
+
                 if (row != null)
                 {
                     UserProfileData user = buildUserProfile(row);
@@ -187,8 +191,8 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// see IUserDataPlugin,
-        /// Get user data profile by name
+        ///     see IUserDataPlugin,
+        ///     Get user data profile by name
         /// </summary>
         /// <param name="fname">first name</param>
         /// <param name="lname">last name</param>
@@ -199,6 +203,7 @@ namespace OpenSim.Data.SQLite
             lock (ds)
             {
                 DataRow[] rows = ds.Tables["users"].Select(select);
+
                 if (rows.Length > 0)
                 {
                     UserProfileData user = buildUserProfile(rows[0]);
@@ -238,13 +243,14 @@ namespace OpenSim.Data.SQLite
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[USER DB]: Exception getting friends list for user: " + ex.ToString());
+                    m_log.Error("[User Database]: Exception getting friends list for user: " + ex.ToString());
                     return false;
                 }
             }
         }
+
         /// <summary>
-        /// Add a new friend in the friendlist
+        ///     Add a new friend in the friendlist
         /// </summary>
         /// <param name="friendlistowner">UUID of the friendlist owner</param>
         /// <param name="friend">UUID of the friend to add</param>
@@ -272,7 +278,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Remove a user from the friendlist
+        ///     Remove a user from the friendlist
         /// </summary>
         /// <param name="friendlistowner">UUID of the friendlist owner</param>
         /// <param name="friend">UUID of the friend to remove</param>
@@ -288,7 +294,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Update the friendlist permission
+        ///     Update the friendlist permission
         /// </summary>
         /// <param name="friendlistowner">UUID of the friendlist owner</param>
         /// <param name="friend">UUID of the friend to modify</param>
@@ -306,7 +312,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Get (fetch?) the friendlist for a user
+        ///     Get (fetch?) the friendlist for a user
         /// </summary>
         /// <param name="friendlistowner">UUID of the friendlist owner</param>
         /// <returns>The friendlist list</returns>
@@ -331,21 +337,22 @@ namespace OpenSim.Data.SQLite
                             user.FriendListOwnerPerms = Convert.ToUInt32(reader[2]);
                             returnlist.Add(user);
                         }
+
                         reader.Close();
                     }
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[USER DB]: Exception getting friends list for user: " + ex.ToString());
+                    m_log.Error("[User Database]: Exception getting friends list for user: " + ex.ToString());
                 }
             }
 
             return returnlist;
         }
 
-        override public Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos (List<UUID> uuids)
+        override public Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos(List<UUID> uuids)
         {
-            Dictionary<UUID, FriendRegionInfo> infos = new Dictionary<UUID,FriendRegionInfo>();
+            Dictionary<UUID, FriendRegionInfo> infos = new Dictionary<UUID, FriendRegionInfo>();
 
             DataTable agents = ds.Tables["useragents"];
             foreach (UUID uuid in uuids)
@@ -353,7 +360,9 @@ namespace OpenSim.Data.SQLite
                 lock (ds)
                 {
                     DataRow row = agents.Rows.Find(uuid.ToString());
-                    if (row == null) infos[uuid] = null;
+
+                    if (row == null)
+                        infos[uuid] = null;
                     else
                     {
                         FriendRegionInfo fri = new FriendRegionInfo();
@@ -363,6 +372,7 @@ namespace OpenSim.Data.SQLite
                     }
                 }
             }
+
             return infos;
         }
 
@@ -379,6 +389,7 @@ namespace OpenSim.Data.SQLite
             List<AvatarPickerAvatar> returnlist = new List<AvatarPickerAvatar>();
             string[] querysplit;
             querysplit = query.Split(' ');
+
             if (querysplit.Length == 2)
             {
                 using (SqliteCommand cmd = new SqliteCommand(AvatarPickerAndSQL, g_conn))
@@ -391,11 +402,12 @@ namespace OpenSim.Data.SQLite
                         while (reader.Read())
                         {
                             AvatarPickerAvatar user = new AvatarPickerAvatar();
-                            user.AvatarID = new UUID((string) reader["UUID"]);
-                            user.firstName = (string) reader["username"];
-                            user.lastName = (string) reader["surname"];
+                            user.AvatarID = new UUID((string)reader["UUID"]);
+                            user.firstName = (string)reader["username"];
+                            user.lastName = (string)reader["surname"];
                             returnlist.Add(user);
                         }
+
                         reader.Close();
                     }
                 }
@@ -412,20 +424,22 @@ namespace OpenSim.Data.SQLite
                         while (reader.Read())
                         {
                             AvatarPickerAvatar user = new AvatarPickerAvatar();
-                            user.AvatarID = new UUID((string) reader["UUID"]);
-                            user.firstName = (string) reader["username"];
-                            user.lastName = (string) reader["surname"];
+                            user.AvatarID = new UUID((string)reader["UUID"]);
+                            user.firstName = (string)reader["username"];
+                            user.lastName = (string)reader["surname"];
                             returnlist.Add(user);
                         }
+
                         reader.Close();
                     }
                 }
             }
+
             return returnlist;
         }
 
         /// <summary>
-        /// Returns a user by UUID direct
+        ///     Returns a user by UUID direct
         /// </summary>
         /// <param name="uuid">The user's account ID</param>
         /// <returns>A matching user profile</returns>
@@ -434,6 +448,7 @@ namespace OpenSim.Data.SQLite
             lock (ds)
             {
                 DataRow row = ds.Tables["useragents"].Rows.Find(uuid.ToString());
+
                 if (row != null)
                 {
                     return buildUserAgent(row);
@@ -446,7 +461,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Returns a session by account name
+        ///     Returns a session by account name
         /// </summary>
         /// <param name="name">The account name</param>
         /// <returns>The user's session agent</returns>
@@ -456,7 +471,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Returns a session by account name
+        ///     Returns a session by account name
         /// </summary>
         /// <param name="fname">The first part of the user's account name</param>
         /// <param name="lname">The second part of the user's account name</param>
@@ -466,15 +481,17 @@ namespace OpenSim.Data.SQLite
             UserAgentData agent = null;
 
             UserProfileData profile = GetUserByName(fname, lname);
+
             if (profile != null)
             {
                 agent = GetAgentByUUID(profile.ID);
             }
+
             return agent;
         }
 
         /// <summary>
-        /// DEPRECATED? Store the weblogin key
+        ///     DEPRECATED? Store the weblogin key
         /// </summary>
         /// <param name="AgentID">UUID of the user</param>
         /// <param name="WebLoginKey">UUID of the weblogin</param>
@@ -484,9 +501,10 @@ namespace OpenSim.Data.SQLite
             lock (ds)
             {
                 DataRow row = users.Rows.Find(AgentID.ToString());
+
                 if (row == null)
                 {
-                    m_log.Warn("[USER DB]: Unable to store new web login key for non-existant user");
+                    m_log.Warn("[User Database]: Unable to store new web login key for non-existant user");
                 }
                 else
                 {
@@ -523,46 +541,48 @@ namespace OpenSim.Data.SQLite
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[USER DB]: Exception searching for user's first and last name: " + ex.ToString());
+                    m_log.Error("[User Database]: Exception searching for user's first and last name: " + ex.ToString());
                     return false;
                 }
             }
         }
 
         /// <summary>
-        /// Creates a new user profile
+        ///     Creates a new user profile
         /// </summary>
         /// <param name="user">The profile to add to the database</param>
         override public void AddNewUserProfile(UserProfileData user)
         {
             DataTable users = ds.Tables["users"];
             UUID zero = UUID.Zero;
+
             if (ExistsFirstLastName(user.FirstName, user.SurName) || user.ID == zero)
                 return;
 
             lock (ds)
             {
                 DataRow row = users.Rows.Find(user.ID.ToString());
+
                 if (row == null)
                 {
                     row = users.NewRow();
                     fillUserRow(row, user);
                     users.Rows.Add(row);
 
-                    m_log.Debug("[USER DB]: Syncing user database: " + ds.Tables["users"].Rows.Count + " users stored");
+                    m_log.Debug("[User Database]: Syncing user database: " + ds.Tables["users"].Rows.Count + " users stored");
 
                     // save changes off to disk
                     da.Update(ds, "users");
                 }
                 else
                 {
-                    m_log.WarnFormat("[USER DB]: Ignoring add since user with id {0} already exists", user.ID);
+                    m_log.WarnFormat("[User Database]: Ignoring add since user with id {0} already exists", user.ID);
                 }
             }
         }
 
         /// <summary>
-        /// Creates a new user profile
+        ///     Creates a new user profile
         /// </summary>
         /// <param name="user">The profile to add to the database</param>
         /// <returns>True on success, false on error</returns>
@@ -572,6 +592,7 @@ namespace OpenSim.Data.SQLite
             lock (ds)
             {
                 DataRow row = users.Rows.Find(user.ID.ToString());
+
                 if (row == null)
                 {
                     return false;
@@ -583,17 +604,17 @@ namespace OpenSim.Data.SQLite
                 }
             }
 
-            //AddNewUserProfile(user);
             return true;
         }
 
         /// <summary>
-        /// Creates a new user agent
+        ///     Creates a new user agent
         /// </summary>
         /// <param name="agent">The agent to add to the database</param>
         override public void AddNewUserAgent(UserAgentData agent)
         {
             UUID zero = UUID.Zero;
+
             if (agent.SessionID == zero || agent.ProfileID == zero)
                 return;
 
@@ -601,6 +622,7 @@ namespace OpenSim.Data.SQLite
             lock (ds)
             {
                 DataRow row = agents.Rows.Find(agent.ProfileID.ToString());
+
                 if (row == null)
                 {
                     row = agents.NewRow();
@@ -610,16 +632,17 @@ namespace OpenSim.Data.SQLite
                 else
                 {
                     fillUserAgentRow(row, agent);
-
                 }
-                m_log.Info("[USER DB]: Syncing useragent database: " + ds.Tables["useragents"].Rows.Count + " agents stored");
+
+                m_log.Info("[User Database]: Syncing useragent database: " + ds.Tables["useragents"].Rows.Count + " agents stored");
+
                 // save changes off to disk
                 dua.Update(ds, "useragents");
             }
         }
 
         /// <summary>
-        /// Transfers money between two user accounts
+        ///     Transfers money between two user accounts
         /// </summary>
         /// <param name="from">Starting account</param>
         /// <param name="to">End account</param>
@@ -631,7 +654,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Transfers inventory between two accounts
+        ///     Transfers inventory between two accounts
         /// </summary>
         /// <remarks>Move to inventory server</remarks>
         /// <param name="from">Senders account</param>
@@ -643,68 +666,60 @@ namespace OpenSim.Data.SQLite
             return false; //for consistency with the MySQL impl
         }
 
-
         /// <summary>
-        /// Appearance.
-        /// TODO: stubs for now to do in memory appearance.
+        ///     Appearance.
+        ///     TODO: stubs for now to do in memory appearance.
         /// </summary>
         /// <param name="user">The user UUID</param>
         /// <returns>Avatar Appearence</returns>
         override public AvatarAppearance GetUserAppearance(UUID user)
         {
-            m_log.Info("[APPEARANCE] GetUserAppearance " + user.ToString());
+            m_log.Info("[Appearance] GetUserAppearance " + user.ToString());
 
             AvatarAppearance aa = new AvatarAppearance(user);
-            //try {
+
             aa.Owner = user;
 
             DataTable aap = ds.Tables["avatarappearance"];
+
             lock (ds)
             {
                 DataRow row = aap.Rows.Find(Util.ToRawUuidString(user));
+
                 if (row == null)
                 {
-                    m_log.Info("[APPEARANCE] Could not find appearance for " + user.ToString());
-
-                    //m_log.Debug("[USER DB]: Creating avatarappearance For: " + user.ToString());
-
-                    //row = aap.NewRow();
-                    //fillAvatarAppearanceRow(row, user, appearance);
-                    //aap.Rows.Add(row);
-                    //    m_log.Debug("[USER DB]: Syncing user database: " + ds.Tables["users"].Rows.Count + " users stored");
-                    // save changes off to disk
-                    //daa.Update(ds, "avatarappearance");
+                    m_log.Info("[Appearance]: Could not find appearance for " + user.ToString());
                 }
                 else
                 {
-                    m_log.InfoFormat("[APPEARANCE] appearance found for {0}", user.ToString());
+                    m_log.InfoFormat("[Appearance]: appearance found for {0}", user.ToString());
 
-                    aa.BodyAsset        = new UUID((String)row["BodyAsset"]);
-                    aa.BodyItem         = new UUID((String)row["BodyItem"]);
-                    aa.SkinItem         = new UUID((String)row["SkinItem"]);
-                    aa.SkinAsset        = new UUID((String)row["SkinAsset"]);
-                    aa.HairItem         = new UUID((String)row["HairItem"]);
-                    aa.HairAsset        = new UUID((String)row["HairAsset"]);
-                    aa.EyesItem         = new UUID((String)row["EyesItem"]);
-                    aa.EyesAsset        = new UUID((String)row["EyesAsset"]);
-                    aa.ShirtItem        = new UUID((String)row["ShirtItem"]);
-                    aa.ShirtAsset       = new UUID((String)row["ShirtAsset"]);
-                    aa.PantsItem        = new UUID((String)row["PantsItem"]);
-                    aa.PantsAsset       = new UUID((String)row["PantsAsset"]);
-                    aa.ShoesItem        = new UUID((String)row["ShoesItem"]);
-                    aa.ShoesAsset       = new UUID((String)row["ShoesAsset"]);
-                    aa.SocksItem        = new UUID((String)row["SocksItem"]);
-                    aa.SocksAsset       = new UUID((String)row["SocksAsset"]);
-                    aa.JacketItem       = new UUID((String)row["JacketItem"]);
-                    aa.JacketAsset      = new UUID((String)row["JacketAsset"]);
-                    aa.GlovesItem       = new UUID((String)row["GlovesItem"]);
-                    aa.GlovesAsset      = new UUID((String)row["GlovesAsset"]);
-                    aa.UnderShirtItem   = new UUID((String)row["UnderShirtItem"]);
-                    aa.UnderShirtAsset  = new UUID((String)row["UnderShirtAsset"]);
-                    aa.UnderPantsItem   = new UUID((String)row["UnderPantsItem"]);
-                    aa.UnderPantsAsset  = new UUID((String)row["UnderPantsAsset"]);
-                    aa.SkirtItem        = new UUID((String)row["SkirtItem"]);
-                    aa.SkirtAsset       = new UUID((String)row["SkirtAsset"]);
+                    aa.BodyAsset = new UUID((String)row["BodyAsset"]);
+                    aa.BodyItem = new UUID((String)row["BodyItem"]);
+                    aa.SkinItem = new UUID((String)row["SkinItem"]);
+                    aa.SkinAsset = new UUID((String)row["SkinAsset"]);
+                    aa.HairItem = new UUID((String)row["HairItem"]);
+                    aa.HairAsset = new UUID((String)row["HairAsset"]);
+                    aa.EyesItem = new UUID((String)row["EyesItem"]);
+                    aa.EyesAsset = new UUID((String)row["EyesAsset"]);
+                    aa.ShirtItem = new UUID((String)row["ShirtItem"]);
+                    aa.ShirtAsset = new UUID((String)row["ShirtAsset"]);
+                    aa.PantsItem = new UUID((String)row["PantsItem"]);
+                    aa.PantsAsset = new UUID((String)row["PantsAsset"]);
+                    aa.ShoesItem = new UUID((String)row["ShoesItem"]);
+                    aa.ShoesAsset = new UUID((String)row["ShoesAsset"]);
+                    aa.SocksItem = new UUID((String)row["SocksItem"]);
+                    aa.SocksAsset = new UUID((String)row["SocksAsset"]);
+                    aa.JacketItem = new UUID((String)row["JacketItem"]);
+                    aa.JacketAsset = new UUID((String)row["JacketAsset"]);
+                    aa.GlovesItem = new UUID((String)row["GlovesItem"]);
+                    aa.GlovesAsset = new UUID((String)row["GlovesAsset"]);
+                    aa.UnderShirtItem = new UUID((String)row["UnderShirtItem"]);
+                    aa.UnderShirtAsset = new UUID((String)row["UnderShirtAsset"]);
+                    aa.UnderPantsItem = new UUID((String)row["UnderPantsItem"]);
+                    aa.UnderPantsAsset = new UUID((String)row["UnderPantsAsset"]);
+                    aa.SkirtItem = new UUID((String)row["SkirtItem"]);
+                    aa.SkirtAsset = new UUID((String)row["SkirtAsset"]);
 
                     // Ewe Loon
                     //  Used Base64String because for some reason it wont accept using Byte[] (which works in Region date)
@@ -719,19 +734,15 @@ namespace OpenSim.Data.SQLite
 
                     aa.Serial = Convert.ToInt32(row["Serial"]);
                     aa.AvatarHeight = Convert.ToSingle(row["AvatarHeight"]);
-                    m_log.InfoFormat("[APPEARANCE] appearance set for {0}", user.ToString());
+                    m_log.InfoFormat("[Appearance]: appearance set for {0}", user.ToString());
                 }
             }
 
-           //     m_log.Info("[APPEARANCE] Found appearance for " + user.ToString() + aa.ToString());
-           // } catch (KeyNotFoundException) {
-           //     m_log.InfoFormat("[APPEARANCE] No appearance found for {0}", user.ToString());
-           // }
             return aa;
         }
 
         /// <summary>
-        /// Update a user appearence
+        ///     Update a user appearence
         /// </summary>
         /// <param name="user">the user UUID</param>
         /// <param name="appearance">appearence</param>
@@ -739,23 +750,25 @@ namespace OpenSim.Data.SQLite
         {
             appearance.Owner = user;
             DataTable aap = ds.Tables["avatarappearance"];
+
             lock (ds)
             {
                 DataRow row = aap.Rows.Find(Util.ToRawUuidString(user));
+
                 if (row == null)
                 {
-                    m_log.Debug("[USER DB]: Creating UserAppearance For: " + user.ToString());
+                    m_log.Debug("[User Database]: Creating UserAppearance For: " + user.ToString());
 
                     row = aap.NewRow();
                     fillAvatarAppearanceRow(row, user, appearance);
                     aap.Rows.Add(row);
-                    //    m_log.Debug("[USER DB]: Syncing user database: " + ds.Tables["users"].Rows.Count + " users stored");
+
                     // save changes off to disk
                     daa.Update(ds, "avatarappearance");
                 }
                 else
                 {
-                    m_log.Debug("[USER DB]: Updating UserAppearance For: " + user.ToString());
+                    m_log.Debug("[Uuser Database]: Updating UserAppearance For: " + user.ToString());
                     fillAvatarAppearanceRow(row, user, appearance);
                     daa.Update(ds, "avatarappearance");
                 }
@@ -763,21 +776,21 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Returns the name of the storage provider
+        ///     Returns the name of the storage provider
         /// </summary>
         /// <returns>Storage provider name</returns>
         override public string Name
         {
-            get {return "Sqlite Userdata";}
+            get { return "Sqlite Userdata"; }
         }
 
         /// <summary>
-        /// Returns the version of the storage provider
+        ///     Returns the version of the storage provider
         /// </summary>
         /// <returns>Storage provider version</returns>
         override public string Version
         {
-            get {return "0.1";}
+            get { return "0.1"; }
         }
 
         /***********************************************************************
@@ -794,86 +807,91 @@ namespace OpenSim.Data.SQLite
          **********************************************************************/
 
         /// <summary>
-        /// Create the "users" table
+        ///     Create the "users" table
         /// </summary>
         /// <returns>DataTable</returns>
         private static DataTable createUsersTable()
         {
             DataTable users = new DataTable("users");
 
-            SQLiteUtil.createCol(users, "UUID", typeof (String));
-            SQLiteUtil.createCol(users, "username", typeof (String));
-            SQLiteUtil.createCol(users, "surname", typeof (String));
-            SQLiteUtil.createCol(users, "email", typeof (String));
-            SQLiteUtil.createCol(users, "passwordHash", typeof (String));
-            SQLiteUtil.createCol(users, "passwordSalt", typeof (String));
+            SQLiteUtil.createCol(users, "UUID", typeof(String));
+            SQLiteUtil.createCol(users, "username", typeof(String));
+            SQLiteUtil.createCol(users, "surname", typeof(String));
+            SQLiteUtil.createCol(users, "email", typeof(String));
+            SQLiteUtil.createCol(users, "passwordHash", typeof(String));
+            SQLiteUtil.createCol(users, "passwordSalt", typeof(String));
 
-            SQLiteUtil.createCol(users, "homeRegionX", typeof (Int32));
-            SQLiteUtil.createCol(users, "homeRegionY", typeof (Int32));
-            SQLiteUtil.createCol(users, "homeRegionID", typeof (String));
-            SQLiteUtil.createCol(users, "homeLocationX", typeof (Double));
-            SQLiteUtil.createCol(users, "homeLocationY", typeof (Double));
-            SQLiteUtil.createCol(users, "homeLocationZ", typeof (Double));
-            SQLiteUtil.createCol(users, "homeLookAtX", typeof (Double));
-            SQLiteUtil.createCol(users, "homeLookAtY", typeof (Double));
-            SQLiteUtil.createCol(users, "homeLookAtZ", typeof (Double));
-            SQLiteUtil.createCol(users, "created", typeof (Int32));
-            SQLiteUtil.createCol(users, "lastLogin", typeof (Int32));
-            SQLiteUtil.createCol(users, "rootInventoryFolderID", typeof (String));
-            SQLiteUtil.createCol(users, "userInventoryURI", typeof (String));
-            SQLiteUtil.createCol(users, "userAssetURI", typeof (String));
-            SQLiteUtil.createCol(users, "profileCanDoMask", typeof (Int32));
-            SQLiteUtil.createCol(users, "profileWantDoMask", typeof (Int32));
-            SQLiteUtil.createCol(users, "profileAboutText", typeof (String));
-            SQLiteUtil.createCol(users, "profileFirstText", typeof (String));
-            SQLiteUtil.createCol(users, "profileImage", typeof (String));
-            SQLiteUtil.createCol(users, "profileFirstImage", typeof (String));
+            SQLiteUtil.createCol(users, "homeRegionX", typeof(Int32));
+            SQLiteUtil.createCol(users, "homeRegionY", typeof(Int32));
+            SQLiteUtil.createCol(users, "homeRegionID", typeof(String));
+            SQLiteUtil.createCol(users, "homeLocationX", typeof(Double));
+            SQLiteUtil.createCol(users, "homeLocationY", typeof(Double));
+            SQLiteUtil.createCol(users, "homeLocationZ", typeof(Double));
+            SQLiteUtil.createCol(users, "homeLookAtX", typeof(Double));
+            SQLiteUtil.createCol(users, "homeLookAtY", typeof(Double));
+            SQLiteUtil.createCol(users, "homeLookAtZ", typeof(Double));
+            SQLiteUtil.createCol(users, "created", typeof(Int32));
+            SQLiteUtil.createCol(users, "lastLogin", typeof(Int32));
+            SQLiteUtil.createCol(users, "rootInventoryFolderID", typeof(String));
+            SQLiteUtil.createCol(users, "userInventoryURI", typeof(String));
+            SQLiteUtil.createCol(users, "userAssetURI", typeof(String));
+            SQLiteUtil.createCol(users, "profileCanDoMask", typeof(Int32));
+            SQLiteUtil.createCol(users, "profileWantDoMask", typeof(Int32));
+            SQLiteUtil.createCol(users, "profileAboutText", typeof(String));
+            SQLiteUtil.createCol(users, "profileFirstText", typeof(String));
+            SQLiteUtil.createCol(users, "profileImage", typeof(String));
+            SQLiteUtil.createCol(users, "profileFirstImage", typeof(String));
             SQLiteUtil.createCol(users, "webLoginKey", typeof(String));
-            SQLiteUtil.createCol(users, "userFlags", typeof (Int32));
-            SQLiteUtil.createCol(users, "godLevel", typeof (Int32));
-            SQLiteUtil.createCol(users, "customType", typeof (String));
-            SQLiteUtil.createCol(users, "partner", typeof (String));
+            SQLiteUtil.createCol(users, "userFlags", typeof(Int32));
+            SQLiteUtil.createCol(users, "godLevel", typeof(Int32));
+            SQLiteUtil.createCol(users, "customType", typeof(String));
+            SQLiteUtil.createCol(users, "partner", typeof(String));
+
             // Add in contraints
-            users.PrimaryKey = new DataColumn[] {users.Columns["UUID"]};
+            users.PrimaryKey = new DataColumn[] { users.Columns["UUID"] };
             return users;
         }
 
         /// <summary>
-        /// Create the "useragents" table
+        ///     Create the "useragents" table
         /// </summary>
         /// <returns>Data Table</returns>
         private static DataTable createUserAgentsTable()
         {
             DataTable ua = new DataTable("useragents");
+
             // this is the UUID of the user
-            SQLiteUtil.createCol(ua, "UUID", typeof (String));
-            SQLiteUtil.createCol(ua, "agentIP", typeof (String));
-            SQLiteUtil.createCol(ua, "agentPort", typeof (Int32));
-            SQLiteUtil.createCol(ua, "agentOnline", typeof (Boolean));
-            SQLiteUtil.createCol(ua, "sessionID", typeof (String));
-            SQLiteUtil.createCol(ua, "secureSessionID", typeof (String));
-            SQLiteUtil.createCol(ua, "regionID", typeof (String));
-            SQLiteUtil.createCol(ua, "loginTime", typeof (Int32));
-            SQLiteUtil.createCol(ua, "logoutTime", typeof (Int32));
-            SQLiteUtil.createCol(ua, "currentRegion", typeof (String));
-            SQLiteUtil.createCol(ua, "currentHandle", typeof (String));
+            SQLiteUtil.createCol(ua, "UUID", typeof(String));
+            SQLiteUtil.createCol(ua, "agentIP", typeof(String));
+            SQLiteUtil.createCol(ua, "agentPort", typeof(Int32));
+            SQLiteUtil.createCol(ua, "agentOnline", typeof(Boolean));
+            SQLiteUtil.createCol(ua, "sessionID", typeof(String));
+            SQLiteUtil.createCol(ua, "secureSessionID", typeof(String));
+            SQLiteUtil.createCol(ua, "regionID", typeof(String));
+            SQLiteUtil.createCol(ua, "loginTime", typeof(Int32));
+            SQLiteUtil.createCol(ua, "logoutTime", typeof(Int32));
+            SQLiteUtil.createCol(ua, "currentRegion", typeof(String));
+            SQLiteUtil.createCol(ua, "currentHandle", typeof(String));
+
             // vectors
-            SQLiteUtil.createCol(ua, "currentPosX", typeof (Double));
-            SQLiteUtil.createCol(ua, "currentPosY", typeof (Double));
-            SQLiteUtil.createCol(ua, "currentPosZ", typeof (Double));
+            SQLiteUtil.createCol(ua, "currentPosX", typeof(Double));
+            SQLiteUtil.createCol(ua, "currentPosY", typeof(Double));
+            SQLiteUtil.createCol(ua, "currentPosZ", typeof(Double));
+
             // constraints
-            ua.PrimaryKey = new DataColumn[] {ua.Columns["UUID"]};
+            ua.PrimaryKey = new DataColumn[] { ua.Columns["UUID"] };
 
             return ua;
         }
 
         /// <summary>
-        /// Create the "userfriends" table
+        ///     Create the "userfriends" table
         /// </summary>
         /// <returns>Data Table</returns>
         private static DataTable createUserFriendsTable()
         {
             DataTable ua = new DataTable("userfriends");
+
             // table contains user <----> user relationship with perms
             SQLiteUtil.createCol(ua, "ownerID", typeof(String));
             SQLiteUtil.createCol(ua, "friendID", typeof(String));
@@ -885,13 +903,13 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Create the "avatarappearance" table
+        ///     Create the "avatarappearance" table
         /// </summary>
         /// <returns>Data Table</returns>
         private static DataTable createAvatarAppearanceTable()
         {
+            // Table contains user appearance items
             DataTable aa = new DataTable("avatarappearance");
-            // table contains user appearance items
 
             SQLiteUtil.createCol(aa, "Owner", typeof(String));
             SQLiteUtil.createCol(aa, "BodyItem", typeof(String));
@@ -922,8 +940,8 @@ namespace OpenSim.Data.SQLite
             SQLiteUtil.createCol(aa, "SkirtAsset", typeof(String));
 
             //  Used Base64String because for some reason it wont accept using Byte[] (which works in Region date)
-            SQLiteUtil.createCol(aa, "Texture", typeof (String));
-            SQLiteUtil.createCol(aa, "VisualParams", typeof (String));
+            SQLiteUtil.createCol(aa, "Texture", typeof(String));
+            SQLiteUtil.createCol(aa, "VisualParams", typeof(String));
 
             SQLiteUtil.createCol(aa, "Serial", typeof(Int32));
             SQLiteUtil.createCol(aa, "AvatarHeight", typeof(Double));
@@ -942,9 +960,9 @@ namespace OpenSim.Data.SQLite
          **********************************************************************/
 
         /// <summary>
-        /// TODO: this doesn't work yet because something more
-        /// interesting has to be done to actually get these values
-        /// back out.  Not enough time to figure it out yet.
+        ///     TODO: this doesn't work yet because something more
+        ///     interesting has to be done to actually get these values
+        ///     back out.  Not enough time to figure it out yet.
         /// </summary>
         /// <param name="row"></param>
         /// <returns></returns>
@@ -954,12 +972,12 @@ namespace OpenSim.Data.SQLite
             UUID tmp;
             UUID.TryParse((String)row["UUID"], out tmp);
             user.ID = tmp;
-            user.FirstName = (String) row["username"];
-            user.SurName = (String) row["surname"];
-            user.Email = (row.IsNull("email")) ? "" : (String) row["email"];
+            user.FirstName = (String)row["username"];
+            user.SurName = (String)row["surname"];
+            user.Email = (row.IsNull("email")) ? "" : (String)row["email"];
 
-            user.PasswordHash = (String) row["passwordHash"];
-            user.PasswordSalt = (String) row["passwordSalt"];
+            user.PasswordHash = (String)row["passwordHash"];
+            user.PasswordSalt = (String)row["passwordSalt"];
 
             user.HomeRegionX = Convert.ToUInt32(row["homeRegionX"]);
             user.HomeRegionY = Convert.ToUInt32(row["homeRegionY"]);
@@ -980,28 +998,28 @@ namespace OpenSim.Data.SQLite
 
             user.Created = Convert.ToInt32(row["created"]);
             user.LastLogin = Convert.ToInt32(row["lastLogin"]);
-            user.RootInventoryFolderID = new UUID((String) row["rootInventoryFolderID"]);
-            user.UserInventoryURI = (String) row["userInventoryURI"];
-            user.UserAssetURI = (String) row["userAssetURI"];
+            user.RootInventoryFolderID = new UUID((String)row["rootInventoryFolderID"]);
+            user.UserInventoryURI = (String)row["userInventoryURI"];
+            user.UserAssetURI = (String)row["userAssetURI"];
             user.CanDoMask = Convert.ToUInt32(row["profileCanDoMask"]);
             user.WantDoMask = Convert.ToUInt32(row["profileWantDoMask"]);
-            user.AboutText = (String) row["profileAboutText"];
-            user.FirstLifeAboutText = (String) row["profileFirstText"];
+            user.AboutText = (String)row["profileAboutText"];
+            user.FirstLifeAboutText = (String)row["profileFirstText"];
             UUID.TryParse((String)row["profileImage"], out tmp);
             user.Image = tmp;
             UUID.TryParse((String)row["profileFirstImage"], out tmp);
             user.FirstLifeImage = tmp;
-            user.WebLoginKey = new UUID((String) row["webLoginKey"]);
+            user.WebLoginKey = new UUID((String)row["webLoginKey"]);
             user.UserFlags = Convert.ToInt32(row["userFlags"]);
             user.GodLevel = Convert.ToInt32(row["godLevel"]);
             user.CustomType = row["customType"].ToString();
-            user.Partner = new UUID((String) row["partner"]);
+            user.Partner = new UUID((String)row["partner"]);
 
             return user;
         }
 
         /// <summary>
-        /// Persist user profile data
+        ///     Persist user profile data
         /// </summary>
         /// <param name="row"></param>
         /// <param name="user"></param>
@@ -1118,12 +1136,12 @@ namespace OpenSim.Data.SQLite
             ua.AgentIP = (String)row["agentIP"];
             ua.AgentPort = Convert.ToUInt32(row["agentPort"]);
             ua.AgentOnline = Convert.ToBoolean(row["agentOnline"]);
-            ua.SessionID = new UUID((String) row["sessionID"]);
-            ua.SecureSessionID = new UUID((String) row["secureSessionID"]);
-            ua.InitialRegion = new UUID((String) row["regionID"]);
+            ua.SessionID = new UUID((String)row["sessionID"]);
+            ua.SecureSessionID = new UUID((String)row["secureSessionID"]);
+            ua.InitialRegion = new UUID((String)row["regionID"]);
             ua.LoginTime = Convert.ToInt32(row["loginTime"]);
             ua.LogoutTime = Convert.ToInt32(row["logoutTime"]);
-            ua.Region = new UUID((String) row["currentRegion"]);
+            ua.Region = new UUID((String)row["currentRegion"]);
             ua.Handle = Convert.ToUInt64(row["currentHandle"]);
             ua.Position = new Vector3(
                 Convert.ToSingle(row["currentPosX"]),
@@ -1135,6 +1153,7 @@ namespace OpenSim.Data.SQLite
                 Convert.ToSingle(row["currentLookAtY"]),
                 Convert.ToSingle(row["currentLookAtZ"])
                 );
+
             return ua;
         }
 
@@ -1156,6 +1175,7 @@ namespace OpenSim.Data.SQLite
             row["logoutTime"] = ua.LogoutTime;
             row["currentRegion"] = ua.Region.ToString();
             row["currentHandle"] = ua.Handle.ToString();
+
             // vectors
             row["currentPosX"] = ua.Position.X;
             row["currentPosY"] = ua.Position.Y;
@@ -1225,7 +1245,6 @@ namespace OpenSim.Data.SQLite
             delete.Parameters.Add(SQLiteUtil.createSqliteParameter("friendID", typeof(String)));
             delete.Connection = conn;
             daf.DeleteCommand = delete;
-
         }
 
         /// <summary>
@@ -1246,7 +1265,6 @@ namespace OpenSim.Data.SQLite
             delete.Connection = conn;
             daa.DeleteCommand = delete;
         }
-
 
         override public void ResetAttachments(UUID userID)
         {

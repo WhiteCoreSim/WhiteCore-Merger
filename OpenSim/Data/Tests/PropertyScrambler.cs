@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,15 +40,15 @@ using OpenSim.Framework;
 
 namespace OpenSim.Data.Tests
 {
-
     //This is generic so that the lambda expressions will work right in IDEs.
     public class PropertyScrambler<T>
     {
         readonly System.Collections.Generic.List<string> membersToNotScramble = new List<string>();
-        
+
         private void AddExpressionToNotScrableList(Expression expression)
         {
             UnaryExpression unaryExpression = expression as UnaryExpression;
+
             if (unaryExpression != null)
             {
                 AddExpressionToNotScrableList(unaryExpression.Operand);
@@ -54,12 +56,14 @@ namespace OpenSim.Data.Tests
             }
 
             MemberExpression memberExpression = expression as MemberExpression;
+
             if (memberExpression != null)
             {
                 if (!(memberExpression.Member is PropertyInfo))
                 {
                     throw new NotImplementedException("I don't know how deal with a MemberExpression that is a " + expression.Type);
                 }
+
                 membersToNotScramble.Add(memberExpression.Member.Name);
                 return;
             }
@@ -90,9 +94,11 @@ namespace OpenSim.Data.Tests
 
                 RandomizeProperty(obj, property, null);
             }
+
             //Now if it implments IEnumberable, it's probably some kind of list, so we should randomize
             //  everything inside of it.
             IEnumerable enumerable = obj as IEnumerable;
+
             if (enumerable != null)
             {
                 foreach (object value in enumerable)
@@ -104,13 +110,18 @@ namespace OpenSim.Data.Tests
 
         private readonly Random random = new Random();
         private void RandomizeProperty(object obj, PropertyInfo property, object[] index)
-        {//I'd like a better way to compare, but I had lots of problems with InventoryFolderBase because the ID is inherited.
+        {
+            //I'd like a better way to compare, but I had lots of problems with InventoryFolderBase because the ID is inherited.
             if (membersToNotScramble.Contains(property.Name))
                 return;
+
             Type t = property.PropertyType;
+
             if (!property.CanWrite)
                 return;
+
             object value = property.GetValue(obj, index);
+
             if (value == null)
                 return;
 
@@ -150,11 +161,13 @@ namespace OpenSim.Data.Tests
         {
             StringBuilder name = new StringBuilder();
             int size = random.Next(5, 12);
+
             for (int i = 0; i < size; i++)
             {
                 char ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
                 name.Append(ch);
             }
+
             return name.ToString();
         }
     }

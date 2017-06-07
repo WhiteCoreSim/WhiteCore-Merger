@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,12 +38,11 @@ using OpenMetaverse;
 namespace OpenSim.Data.SQLite
 {
     /// <summary>
-    /// SQLite Manager
+    ///     SQLite Manager
     /// </summary>
     internal class SQLiteManager : SQLiteUtil
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private IDbConnection dbcon;
 
         /// <summary>
@@ -56,13 +57,14 @@ namespace OpenSim.Data.SQLite
             try
             {
                 string connectionString = String.Empty;
+
                 if (connect != String.Empty)
                 {
                     connectionString = connect;
                 }
                 else
                 {
-                    m_log.Warn("[SQLITE] grid db not specified, using default");
+                    m_log.Warn("[SQLite] grid db not specified, using default");
                     connectionString = "URI=file:GridServerSqlite.db;";
                 }
 
@@ -77,7 +79,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Shuts down the database connection
+        ///     Shuts down the database connection
         /// </summary>
         public void Close()
         {
@@ -86,14 +88,14 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Runs a query with protection against SQL Injection by using parameterised input.
+        ///     Runs a query with protection against SQL Injection by using parameterised input.
         /// </summary>
         /// <param name="sql">The SQL string - replace any variables such as WHERE x = "y" with WHERE x = @y</param>
         /// <param name="parameters">The parameters - index so that @y is indexed as 'y'</param>
         /// <returns>A SQLite DB Command</returns>
         public IDbCommand Query(string sql, Dictionary<string, string> parameters)
         {
-            SQLiteCommand dbcommand = (SQLiteCommand) dbcon.CreateCommand();
+            SQLiteCommand dbcommand = (SQLiteCommand)dbcon.CreateCommand();
             dbcommand.CommandText = sql;
             foreach (KeyValuePair<string, string> param in parameters)
             {
@@ -101,11 +103,11 @@ namespace OpenSim.Data.SQLite
                 dbcommand.Parameters.Add(paramx);
             }
 
-            return (IDbCommand) dbcommand;
+            return (IDbCommand)dbcommand;
         }
 
         /// <summary>
-        /// Reads a region row from a database reader
+        ///     Reads a region row from a database reader
         /// </summary>
         /// <param name="reader">An active database reader</param>
         /// <returns>A region profile</returns>
@@ -116,66 +118,64 @@ namespace OpenSim.Data.SQLite
             if (reader.Read())
             {
                 // Region Main
-                retval.regionHandle = (ulong) reader["regionHandle"];
-                retval.regionName = (string) reader["regionName"];
-                retval.UUID = new UUID((string) reader["uuid"]);
+                retval.regionHandle = (ulong)reader["regionHandle"];
+                retval.regionName = (string)reader["regionName"];
+                retval.UUID = new UUID((string)reader["uuid"]);
 
                 // Secrets
-                retval.regionRecvKey = (string) reader["regionRecvKey"];
-                retval.regionSecret = (string) reader["regionSecret"];
-                retval.regionSendKey = (string) reader["regionSendKey"];
+                retval.regionRecvKey = (string)reader["regionRecvKey"];
+                retval.regionSecret = (string)reader["regionSecret"];
+                retval.regionSendKey = (string)reader["regionSendKey"];
 
                 // Region Server
-                retval.regionDataURI = (string) reader["regionDataURI"];
+                retval.regionDataURI = (string)reader["regionDataURI"];
                 retval.regionOnline = false; // Needs to be pinged before this can be set.
-                retval.serverIP = (string) reader["serverIP"];
-                retval.serverPort = (uint) reader["serverPort"];
-                retval.serverURI = (string) reader["serverURI"];
+                retval.serverIP = (string)reader["serverIP"];
+                retval.serverPort = (uint)reader["serverPort"];
+                retval.serverURI = (string)reader["serverURI"];
 
                 // Location
-                retval.regionLocX = (uint) ((int) reader["locX"]);
-                retval.regionLocY = (uint) ((int) reader["locY"]);
-                retval.regionLocZ = (uint) ((int) reader["locZ"]);
+                retval.regionLocX = (uint)((int)reader["locX"]);
+                retval.regionLocY = (uint)((int)reader["locY"]);
+                retval.regionLocZ = (uint)((int)reader["locZ"]);
 
                 // Neighbours - 0 = No Override
-                retval.regionEastOverrideHandle = (ulong) reader["eastOverrideHandle"];
-                retval.regionWestOverrideHandle = (ulong) reader["westOverrideHandle"];
-                retval.regionSouthOverrideHandle = (ulong) reader["southOverrideHandle"];
-                retval.regionNorthOverrideHandle = (ulong) reader["northOverrideHandle"];
+                retval.regionEastOverrideHandle = (ulong)reader["eastOverrideHandle"];
+                retval.regionWestOverrideHandle = (ulong)reader["westOverrideHandle"];
+                retval.regionSouthOverrideHandle = (ulong)reader["southOverrideHandle"];
+                retval.regionNorthOverrideHandle = (ulong)reader["northOverrideHandle"];
 
                 // Assets
-                retval.regionAssetURI = (string) reader["regionAssetURI"];
-                retval.regionAssetRecvKey = (string) reader["regionAssetRecvKey"];
-                retval.regionAssetSendKey = (string) reader["regionAssetSendKey"];
+                retval.regionAssetURI = (string)reader["regionAssetURI"];
+                retval.regionAssetRecvKey = (string)reader["regionAssetRecvKey"];
+                retval.regionAssetSendKey = (string)reader["regionAssetSendKey"];
 
                 // Userserver
-                retval.regionUserURI = (string) reader["regionUserURI"];
-                retval.regionUserRecvKey = (string) reader["regionUserRecvKey"];
-                retval.regionUserSendKey = (string) reader["regionUserSendKey"];
+                retval.regionUserURI = (string)reader["regionUserURI"];
+                retval.regionUserRecvKey = (string)reader["regionUserRecvKey"];
+                retval.regionUserSendKey = (string)reader["regionUserSendKey"];
             }
             else
             {
                 throw new Exception("No rows to return");
             }
+
             return retval;
         }
 
         /// <summary>
-        /// Inserts a new region into the database
+        ///     Inserts a new region into the database
         /// </summary>
         /// <param name="profile">The region to insert</param>
         /// <returns>Success?</returns>
         public bool insertRow(RegionProfileData profile)
         {
-            string sql =
-                "REPLACE INTO regions VALUES (regionHandle, regionName, uuid, regionRecvKey, regionSecret, regionSendKey, regionDataURI, ";
-            sql +=
-                "serverIP, serverPort, serverURI, locX, locY, locZ, eastOverrideHandle, westOverrideHandle, southOverrideHandle, northOverrideHandle, regionAssetURI, regionAssetRecvKey, ";
+            string sql = "REPLACE INTO regions VALUES (regionHandle, regionName, uuid, regionRecvKey, regionSecret, regionSendKey, regionDataURI, ";
+            sql += "serverIP, serverPort, serverURI, locX, locY, locZ, eastOverrideHandle, westOverrideHandle, southOverrideHandle, northOverrideHandle, regionAssetURI, regionAssetRecvKey, ";
             sql += "regionAssetSendKey, regionUserURI, regionUserRecvKey, regionUserSendKey) VALUES ";
 
             sql += "(@regionHandle, @regionName, @uuid, @regionRecvKey, @regionSecret, @regionSendKey, @regionDataURI, ";
-            sql +=
-                "@serverIP, @serverPort, @serverURI, @locX, @locY, @locZ, @eastOverrideHandle, @westOverrideHandle, @southOverrideHandle, @northOverrideHandle, @regionAssetURI, @regionAssetRecvKey, ";
+            sql += "@serverIP, @serverPort, @serverURI, @locX, @locY, @locZ, @eastOverrideHandle, @westOverrideHandle, @southOverrideHandle, @northOverrideHandle, @regionAssetURI, @regionAssetRecvKey, ";
             sql += "@regionAssetSendKey, @regionUserURI, @regionUserRecvKey, @regionUserSendKey);";
 
             Dictionary<string, string> parameters = new Dictionary<string, string>();

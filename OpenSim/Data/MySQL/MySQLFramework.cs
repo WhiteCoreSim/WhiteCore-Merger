@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,7 +38,7 @@ using MySql.Data.MySqlClient;
 namespace OpenSim.Data.MySQL
 {
     /// <summary>
-    /// A database interface class to a user profile storage system
+    ///     A database interface class to a user profile storage system
     /// </summary>
     public class MySqlFramework
     {
@@ -48,11 +50,8 @@ namespace OpenSim.Data.MySQL
             m_Connection.Open();
         }
 
-        //////////////////////////////////////////////////////////////
-        //
         // All non queries are funneled through one connection
         // to increase performance a little
-        //
         protected int ExecuteNonQuery(MySqlCommand cmd)
         {
             lock (m_Connection)
@@ -73,14 +72,12 @@ namespace OpenSim.Data.MySQL
                             throw;
 
                         // This is "Server has gone away" and "Server lost"
-                        //
                         if (e.Number == 2006 || e.Number == 2013)
                         {
                             errorSeen = true;
 
                             m_Connection.Close();
-                            MySqlConnection newConnection =
-                                    (MySqlConnection)((ICloneable)m_Connection).Clone();
+                            MySqlConnection newConnection = (MySqlConnection)((ICloneable)m_Connection).Clone();
                             m_Connection.Dispose();
                             m_Connection = newConnection;
                             m_Connection.Open();
@@ -97,15 +94,16 @@ namespace OpenSim.Data.MySQL
                 }
             }
         }
-        
+
         protected IDataReader ExecuteReader(MySqlCommand cmd)
         {
-            MySqlConnection newConnection =
-                    (MySqlConnection)((ICloneable)m_Connection).Clone();
+            MySqlConnection newConnection = (MySqlConnection)((ICloneable)m_Connection).Clone();
             newConnection.Open();
 
             cmd.Connection = newConnection;
-            return cmd.ExecuteReader();
+
+            return
+                cmd.ExecuteReader();
         }
 
         protected void CloseReaderCommand(MySqlCommand cmd)

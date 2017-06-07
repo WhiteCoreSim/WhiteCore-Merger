@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +42,38 @@ namespace OpenSim.Data
     }
 
     /// <summary>
-    /// A standard grid interface
+    ///     A standard grid interface
     /// </summary>
     public interface IGridDataPlugin : IPlugin
     {
         /// <summary>
-        /// Initialises the interface
+        ///     Initialises the interface
         /// </summary>
         void Initialise(string connect);
 
         /// <summary>
-        /// Returns a sim profile from a regionHandle
+        ///     Returns a sim profile from a regionHandle
         /// </summary>
         /// <param name="regionHandle">A 64bit Region Handle</param>
         /// <returns>A simprofile</returns>
         RegionProfileData GetProfileByHandle(ulong regionHandle);
 
         /// <summary>
-        /// Returns a sim profile from a UUID
+        ///     Returns a sim profile from a UUID
         /// </summary>
         /// <param name="UUID">A 128bit UUID</param>
         /// <returns>A sim profile</returns>
         RegionProfileData GetProfileByUUID(UUID UUID);
 
         /// <summary>
-        /// Returns a sim profile from a string match
+        ///     Returns a sim profile from a string match
         /// </summary>
         /// <param name="regionName">A string for a partial region name match</param>
         /// <returns>A sim profile</returns>
         RegionProfileData GetProfileByString(string regionName);
 
         /// <summary>
-        /// Returns all profiles within the specified range
+        ///     Returns all profiles within the specified range
         /// </summary>
         /// <param name="Xmin">Minimum sim coordinate (X)</param>
         /// <param name="Ymin">Minimum sim coordinate (Y)</param>
@@ -81,16 +83,16 @@ namespace OpenSim.Data
         RegionProfileData[] GetProfilesInRange(uint Xmin, uint Ymin, uint Xmax, uint Ymax);
 
         /// <summary>
-        /// Returns up to maxNum profiles of regions that have a name starting with namePrefix
+        ///     Returns up to maxNum profiles of regions that have a name starting with namePrefix
         /// </summary>
         /// <param name="name">The name to match against</param>
         /// <param name="maxNum">Maximum number of profiles to return</param>
         /// <returns>A list of sim profiles</returns>
         List<RegionProfileData> GetRegionsByName(string namePrefix, uint maxNum);
-        
+
         /// <summary>
-        /// Authenticates a sim by use of its recv key.
-        /// WARNING: Insecure
+        ///     Authenticates a sim by use of its recv key.
+        ///     WARNING: Insecure
         /// </summary>
         /// <param name="UUID">The UUID sent by the sim</param>
         /// <param name="regionHandle">The regionhandle sent by the sim</param>
@@ -99,21 +101,21 @@ namespace OpenSim.Data
         bool AuthenticateSim(UUID UUID, ulong regionHandle, string simrecvkey);
 
         /// <summary>
-        /// Adds or updates a profile in the database
+        ///     Adds or updates a profile in the database
         /// </summary>
         /// <param name="profile">The profile to add</param>
         /// <returns>RESPONSE_OK if successful, error if not.</returns>
         DataResponse StoreProfile(RegionProfileData profile);
 
         /// <summary>
-        /// Remove a profile from the database
+        ///     Remove a profile from the database
         /// </summary>
         /// <param name="UUID">ID of profile to remove</param>
         /// <returns></returns>
         DataResponse DeleteProfile(string UUID);
 
         /// <summary>
-        /// Function not used????
+        ///     Function not used????
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -124,11 +126,12 @@ namespace OpenSim.Data
     public class GridDataInitialiser : PluginInitialiserBase
     {
         private string connect;
-        public GridDataInitialiser (string s) { connect = s; }
-        public override void Initialise (IPlugin plugin)
+        public GridDataInitialiser(string s) { connect = s; }
+
+        public override void Initialise(IPlugin plugin)
         {
             IGridDataPlugin p = plugin as IGridDataPlugin;
-            p.Initialise (connect);
+            p.Initialise(connect);
         }
     }
 }

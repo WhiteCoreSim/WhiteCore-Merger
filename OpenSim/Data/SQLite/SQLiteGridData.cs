@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,21 +38,21 @@ using OpenSim.Framework;
 namespace OpenSim.Data.SQLite
 {
     /// <summary>
-    /// A Grid Interface to the SQLite database
+    ///     A Grid Interface to the SQLite database
     /// </summary>
     public class SQLiteGridData : GridDataBase
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// SQLite database manager
+        ///     SQLite database manager
         /// </summary>
         private SQLiteManager database;
 
-        override public void Initialise() 
-        { 
+        override public void Initialise()
+        {
             m_log.Info("[SQLite]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            throw new PluginNotInitialisedException(Name);
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Shuts down the grid interface
+        ///     Shuts down the grid interface
         /// </summary>
         override public void Dispose()
         {
@@ -75,7 +77,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Returns the name of this grid interface
+        ///     Returns the name of this grid interface
         /// </summary>
         /// <returns>A string containing the grid interface</returns>
         override public string Name
@@ -84,7 +86,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Returns the version of this grid interface
+        ///     Returns the version of this grid interface
         /// </summary>
         /// <returns>A string containing the version</returns>
         override public string Version
@@ -93,7 +95,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Returns a list of regions within the specified ranges
+        ///     Returns a list of regions within the specified ranges
         /// </summary>
         /// <param name="a">minimum X coordinate</param>
         /// <param name="b">minimum Y coordinate</param>
@@ -106,20 +108,19 @@ namespace OpenSim.Data.SQLite
             return null;
         }
 
-        
         /// <summary>
-        /// Returns up to maxNum profiles of regions that have a name starting with namePrefix
+        ///     Returns up to maxNum profiles of regions that have a name starting with namePrefix
         /// </summary>
         /// <param name="name">The name to match against</param>
         /// <param name="maxNum">Maximum number of profiles to return</param>
         /// <returns>A list of sim profiles</returns>
-        override public List<RegionProfileData> GetRegionsByName (string namePrefix, uint maxNum)
+        override public List<RegionProfileData> GetRegionsByName(string namePrefix, uint maxNum)
         {
             return null;
         }
 
         /// <summary>
-        /// Returns a sim profile from it's handle
+        ///     Returns a sim profile from it's handle
         /// </summary>
         /// <param name="handle">Region location handle</param>
         /// <returns>Sim profile</returns>
@@ -127,19 +128,16 @@ namespace OpenSim.Data.SQLite
         {
             Dictionary<string, string> param = new Dictionary<string, string>();
             param["handle"] = handle.ToString();
-
             IDbCommand result = database.Query("SELECT * FROM regions WHERE handle = @handle", param);
             IDataReader reader = result.ExecuteReader();
-
             RegionProfileData row = database.getRow(reader);
             reader.Close();
             result.Dispose();
-
             return row;
         }
 
         /// <summary>
-        /// Returns a sim profile from it's Region name string
+        ///     Returns a sim profile from it's Region name string
         /// </summary>
         /// <param name="regionName">The region name search query</param>
         /// <returns>The sim profile</returns>
@@ -148,8 +146,10 @@ namespace OpenSim.Data.SQLite
             if (regionName.Length > 2)
             {
                 Dictionary<string, string> param = new Dictionary<string, string>();
+
                 // Add % because this is a like query.
                 param["?regionName"] = regionName + "%";
+
                 // Only returns one record or no record.
                 IDbCommand result = database.Query("SELECT * FROM regions WHERE regionName like ?regionName LIMIT 1", param);
                 IDataReader reader = result.ExecuteReader();
@@ -162,13 +162,12 @@ namespace OpenSim.Data.SQLite
             }
             else
             {
-                //m_log.Error("[DATABASE]: Searched for a Region Name shorter then 3 characters");
                 return null;
             }
         }
 
         /// <summary>
-        /// Returns a sim profile from it's UUID
+        ///     Returns a sim profile from it's UUID
         /// </summary>
         /// <param name="uuid">The region UUID</param>
         /// <returns>The sim profile</returns>
@@ -176,19 +175,16 @@ namespace OpenSim.Data.SQLite
         {
             Dictionary<string, string> param = new Dictionary<string, string>();
             param["uuid"] = uuid.ToString();
-
             IDbCommand result = database.Query("SELECT * FROM regions WHERE uuid = @uuid", param);
             IDataReader reader = result.ExecuteReader();
-
             RegionProfileData row = database.getRow(reader);
             reader.Close();
             result.Dispose();
-
             return row;
         }
 
         /// <summary>
-        /// Returns a list of avatar and UUIDs that match the query
+        ///     Returns a list of avatar and UUIDs that match the query
         /// </summary>
         /// <remarks>do nothing yet</remarks>
         public List<AvatarPickerAvatar> GeneratePickerResults(UUID queryID, string query)
@@ -199,7 +195,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Adds a new specified region to the database
+        ///     Adds a new specified region to the database
         /// </summary>
         /// <param name="profile">The profile to add</param>
         /// <returns>A dataresponse enum indicating success</returns>
@@ -216,7 +212,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Deletes a sim profile from the database
+        ///     Deletes a sim profile from the database
         /// </summary>
         /// <param name="uuid">the sim UUID</param>
         /// <returns>Successful?</returns>
@@ -226,15 +222,17 @@ namespace OpenSim.Data.SQLite
             param["uuid"] = uuid;
 
             IDbCommand result = database.Query("DELETE FROM regions WHERE uuid = @uuid", param);
+
             if (result.ExecuteNonQuery() > 0)
             {
                 return DataResponse.RESPONSE_OK;
             }
+
             return DataResponse.RESPONSE_ERROR;
         }
 
         /// <summary>
-        /// DEPRECATED. Attempts to authenticate a region by comparing a shared secret.
+        ///     DEPRECATED. Attempts to authenticate a region by comparing a shared secret.
         /// </summary>
         /// <param name="uuid">The UUID of the challenger</param>
         /// <param name="handle">The attempted regionHandle of the challenger</param>
@@ -253,7 +251,7 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// NOT YET FUNCTIONAL. Provides a cryptographic authentication of a region
+        ///     NOT YET FUNCTIONAL. Provides a cryptographic authentication of a region
         /// </summary>
         /// <remarks>This requires a security audit.</remarks>
         /// <param name="uuid"></param>
@@ -263,17 +261,11 @@ namespace OpenSim.Data.SQLite
         /// <returns></returns>
         public bool AuthenticateSim(UUID uuid, ulong handle, string authhash, string challenge)
         {
-            // SHA512Managed HashProvider = new SHA512Managed();
-            // Encoding TextProvider = new UTF8Encoding();
-
-            // byte[] stream = TextProvider.GetBytes(uuid.ToString() + ":" + handle.ToString() + ":" + challenge);
-            // byte[] hash = HashProvider.ComputeHash(stream);
-
             return false;
         }
 
         /// <summary>
-        /// NOT IMPLEMENTED
+        ///     NOT IMPLEMENTED
         /// </summary>
         /// <param name="x">x coordinate</param>
         /// <param name="y">y coordinate</param>

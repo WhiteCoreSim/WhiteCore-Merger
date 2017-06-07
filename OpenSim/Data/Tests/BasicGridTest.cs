@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,6 +48,7 @@ namespace OpenSim.Data.Tests
         {
             // Clean up all the regions.
             List<RegionProfileData> regions = db.GetRegionsByName("", 100);
+
             if (regions != null)
             {
                 foreach (RegionProfileData region in regions)
@@ -69,19 +72,17 @@ namespace OpenSim.Data.Tests
             new PropertyScrambler<RegionProfileData>().Scramble(reg);
             reg.Uuid = regionUUID;
             reg.RegionName = regionName;
-
             db.StoreProfile(reg);
-
             return reg;
         }
 
         [Test]
         public void T001_LoadEmpty()
         {
-            Assert.That(db.GetProfileByUUID(region1),Is.Null);
-            Assert.That(db.GetProfileByUUID(region2),Is.Null);
-            Assert.That(db.GetProfileByUUID(region3),Is.Null);
-            Assert.That(db.GetProfileByUUID(zero),Is.Null);
+            Assert.That(db.GetProfileByUUID(region1), Is.Null);
+            Assert.That(db.GetProfileByUUID(region2), Is.Null);
+            Assert.That(db.GetProfileByUUID(region3), Is.Null);
+            Assert.That(db.GetProfileByUUID(zero), Is.Null);
         }
 
         [Test]
@@ -98,7 +99,7 @@ namespace OpenSim.Data.Tests
             retreg = db.GetProfileByString(newreg.RegionName);
             Assert.That(retreg.Uuid, Is.EqualTo(region2), "Assert.That(retreg.Uuid, Is.EqualTo(region2))");
 
-            RegionProfileData[] retregs = db.GetProfilesInRange(newreg.RegionLocX,newreg.RegionLocY,newreg.RegionLocX,newreg.RegionLocY);
+            RegionProfileData[] retregs = db.GetProfilesInRange(newreg.RegionLocX, newreg.RegionLocY, newreg.RegionLocX, newreg.RegionLocY);
             Assert.That(retregs[0].Uuid, Is.EqualTo(region2), "Assert.That(retregs[0].Uuid, Is.EqualTo(region2))");
         }
 
@@ -109,7 +110,7 @@ namespace OpenSim.Data.Tests
 
             db.DeleteProfile(region1.ToString());
             RegionProfileData retreg = db.GetProfileByUUID(region1);
-            Assert.That(retreg,Is.Null);
+            Assert.That(retreg, Is.Null);
         }
 
         [Test]
@@ -143,10 +144,10 @@ namespace OpenSim.Data.Tests
 
             db.StoreProfile(retreg);
 
-            List<RegionProfileData> listreg = db.GetRegionsByName("Gotham",10);
+            List<RegionProfileData> listreg = db.GetRegionsByName("Gotham", 10);
 
-            Assert.That(listreg.Count,Is.EqualTo(2), "Assert.That(listreg.Count,Is.EqualTo(2))");
-            Assert.That(listreg[0].Uuid,Is.Not.EqualTo(listreg[1].Uuid), "Assert.That(listreg[0].Uuid,Is.Not.EqualTo(listreg[1].Uuid))");
+            Assert.That(listreg.Count, Is.EqualTo(2), "Assert.That(listreg.Count,Is.EqualTo(2))");
+            Assert.That(listreg[0].Uuid, Is.Not.EqualTo(listreg[1].Uuid), "Assert.That(listreg[0].Uuid,Is.Not.EqualTo(listreg[1].Uuid))");
             Assert.That(listreg[0].Uuid, Is.EqualTo(region1) | Is.EqualTo(region2), "Assert.That(listreg[0].Uuid, Is.EqualTo(region1) | Is.EqualTo(region2))");
             Assert.That(listreg[1].Uuid, Is.EqualTo(region1) | Is.EqualTo(region2), "Assert.That(listreg[1].Uuid, Is.EqualTo(region1) | Is.EqualTo(region2))");
         }
@@ -160,13 +161,15 @@ namespace OpenSim.Data.Tests
         protected static string RandomName()
         {
             StringBuilder name = new StringBuilder();
-            int size = random.Next(5,12);
-            char ch ;
-            for (int i=0; i<size; i++)
+            int size = random.Next(5, 12);
+            char ch;
+
+            for (int i = 0; i < size; i++)
             {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65))) ;
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
                 name.Append(ch);
             }
+
             return name.ToString();
         }
     }

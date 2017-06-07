@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,11 +43,9 @@ namespace OpenSim.Data
         public abstract DataResponse StoreProfile(RegionProfileData profile);
         public abstract ReservationData GetReservationAtPoint(uint x, uint y);
         public abstract DataResponse DeleteProfile(string uuid);
-
         public abstract void Initialise();
         public abstract void Initialise(string connect);
         public abstract void Dispose();
-
         public abstract string Name { get; }
         public abstract string Version { get; }
     }

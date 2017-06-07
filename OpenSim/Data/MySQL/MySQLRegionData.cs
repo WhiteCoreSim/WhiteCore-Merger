@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,10 +41,8 @@ namespace OpenSim.Data.MySQL
     {
         private string m_Realm;
         private List<string> m_ColumnNames = null;
-//        private int m_LastExpire = 0;
 
-        public MySqlRegionData(string connectionString, string realm)
-                : base(connectionString)
+        public MySqlRegionData(string connectionString, string realm) : base(connectionString)
         {
             m_Realm = realm;
 
@@ -52,7 +52,8 @@ namespace OpenSim.Data.MySQL
 
         public List<RegionData> Get(string regionName, UUID scopeID)
         {
-            string command = "select * from `"+m_Realm+"` where regionName like ?regionName";
+            string command = "select * from `" + m_Realm + "` where regionName like ?regionName";
+
             if (scopeID != UUID.Zero)
                 command += " and ScopeID = ?scopeID";
 
@@ -66,7 +67,8 @@ namespace OpenSim.Data.MySQL
 
         public RegionData Get(int posX, int posY, UUID scopeID)
         {
-            string command = "select * from `"+m_Realm+"` where locX = ?posX and locY = ?posY";
+            string command = "select * from `" + m_Realm + "` where locX = ?posX and locY = ?posY";
+
             if (scopeID != UUID.Zero)
                 command += " and ScopeID = ?scopeID";
 
@@ -77,6 +79,7 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("?scopeID", scopeID.ToString());
 
             List<RegionData> ret = RunCommand(cmd);
+
             if (ret.Count == 0)
                 return null;
 
@@ -85,7 +88,8 @@ namespace OpenSim.Data.MySQL
 
         public RegionData Get(UUID regionID, UUID scopeID)
         {
-            string command = "select * from `"+m_Realm+"` where uuid = ?regionID";
+            string command = "select * from `" + m_Realm + "` where uuid = ?regionID";
+
             if (scopeID != UUID.Zero)
                 command += " and ScopeID = ?scopeID";
 
@@ -95,6 +99,7 @@ namespace OpenSim.Data.MySQL
             cmd.Parameters.AddWithValue("?scopeID", scopeID.ToString());
 
             List<RegionData> ret = RunCommand(cmd);
+
             if (ret.Count == 0)
                 return null;
 
@@ -103,7 +108,8 @@ namespace OpenSim.Data.MySQL
 
         public List<RegionData> Get(int startX, int startY, int endX, int endY, UUID scopeID)
         {
-            string command = "select * from `"+m_Realm+"` where locX between ?startX and ?endX and locY between ?startY and ?endY";
+            string command = "select * from `" + m_Realm + "` where locX between ?startX and ?endX and locY between ?startY and ?endY";
+
             if (scopeID != UUID.Zero)
                 command += " and ScopeID = ?scopeID";
 
@@ -145,24 +151,29 @@ namespace OpenSim.Data.MySQL
                 {
                     m_ColumnNames = new List<string>();
 
-                        DataTable schemaTable = result.GetSchemaTable();
-                        foreach (DataRow row in schemaTable.Rows)
-                        {
-                            if (row["ColumnName"] != null)
-                                m_ColumnNames.Add(row["ColumnName"].ToString());
-                        }
+                    DataTable schemaTable = result.GetSchemaTable();
+
+                    foreach (DataRow row in schemaTable.Rows)
+                    {
+                        if (row["ColumnName"] != null)
+                            m_ColumnNames.Add(row["ColumnName"].ToString());
                     }
+                }
 
                 foreach (string s in m_ColumnNames)
                 {
                     if (s == "uuid")
                         continue;
+
                     if (s == "ScopeID")
                         continue;
+
                     if (s == "regionName")
                         continue;
+
                     if (s == "locX")
                         continue;
+
                     if (s == "locY")
                         continue;
 
@@ -182,20 +193,28 @@ namespace OpenSim.Data.MySQL
         {
             if (data.Data.ContainsKey("uuid"))
                 data.Data.Remove("uuid");
+
             if (data.Data.ContainsKey("ScopeID"))
                 data.Data.Remove("ScopeID");
+
             if (data.Data.ContainsKey("regionName"))
                 data.Data.Remove("regionName");
+
             if (data.Data.ContainsKey("posX"))
                 data.Data.Remove("posX");
+
             if (data.Data.ContainsKey("posY"))
                 data.Data.Remove("posY");
+
             if (data.Data.ContainsKey("sizeX"))
                 data.Data.Remove("sizeX");
+
             if (data.Data.ContainsKey("sizeY"))
                 data.Data.Remove("sizeY");
+
             if (data.Data.ContainsKey("locX"))
                 data.Data.Remove("locX");
+
             if (data.Data.ContainsKey("locY"))
                 data.Data.Remove("locY");
 
@@ -203,13 +222,13 @@ namespace OpenSim.Data.MySQL
 
             MySqlCommand cmd = new MySqlCommand();
 
-            string update = "update `"+m_Realm+"` set locX=?posX, locY=?posY, sizeX=?sizeX, sizeY=?sizeY";
+            string update = "update `" + m_Realm + "` set locX=?posX, locY=?posY, sizeX=?sizeX, sizeY=?sizeY";
             foreach (string field in fields)
             {
                 update += ", ";
-                update += "`" + field + "` = ?"+field;
+                update += "`" + field + "` = ?" + field;
 
-                cmd.Parameters.AddWithValue("?"+field, data.Data[field]);
+                cmd.Parameters.AddWithValue("?" + field, data.Data[field]);
             }
 
             update += " where uuid = ?regionID";
@@ -248,11 +267,9 @@ namespace OpenSim.Data.MySQL
 
         public bool SetDataItem(UUID regionID, string item, string value)
         {
-            MySqlCommand cmd = new MySqlCommand("update `" + m_Realm +
-                    "` set `" + item + "` = ?" + item + " where uuid = ?UUID");
+            MySqlCommand cmd = new MySqlCommand("update `" + m_Realm + "` set `" + item + "` = ?" + item + " where uuid = ?UUID");
 
-
-            cmd.Parameters.AddWithValue("?"+item, value);
+            cmd.Parameters.AddWithValue("?" + item, value);
             cmd.Parameters.AddWithValue("?UUID", regionID.ToString());
 
             if (ExecuteNonQuery(cmd) > 0)
@@ -263,9 +280,7 @@ namespace OpenSim.Data.MySQL
 
         public bool Delete(UUID regionID)
         {
-            MySqlCommand cmd = new MySqlCommand("delete from `" + m_Realm +
-                    "` where uuid = ?UUID");
-
+            MySqlCommand cmd = new MySqlCommand("delete from `" + m_Realm + "` where uuid = ?UUID");
 
             cmd.Parameters.AddWithValue("?UUID", regionID.ToString());
 

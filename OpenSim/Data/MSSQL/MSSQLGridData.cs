@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,16 +39,15 @@ using OpenSim.Framework;
 namespace OpenSim.Data.MSSQL
 {
     /// <summary>
-    /// A grid data interface for MSSQL Server
+    ///     A grid data interface for MSSQL Server
     /// </summary>
     public class MSSQLGridData : GridDataBase
     {
         private const string _migrationStore = "GridStore";
-
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Database manager
+        ///     Database manager
         /// </summary>
         private MSSQLManager database;
 
@@ -54,15 +55,14 @@ namespace OpenSim.Data.MSSQL
 
         #region IPlugin Members
 
-        // [Obsolete("Cannot be default-initialized!")]
         override public void Initialise()
         {
-            m_log.Info("[GRID DB]: " + Name + " cannot be default-initialized!");
+            m_log.Info("[Grid Database]: " + Name + " cannot be default-initialized!");
             throw new PluginNotInitialisedException(Name);
         }
 
         /// <summary>
-        /// Initialises the Grid Interface
+        ///     Initialises the Grid Interface
         /// </summary>
         /// <param name="connectionString">connect string</param>
         /// <remarks>use mssql_connection.ini</remarks>
@@ -84,14 +84,13 @@ namespace OpenSim.Data.MSSQL
                 string settingPassword = iniFile.ParseFileReadValue("password");
 
                 m_regionsTableName = iniFile.ParseFileReadValue("regionstablename");
+
                 if (m_regionsTableName == null)
                 {
                     m_regionsTableName = "regions";
                 }
 
-                database =
-                    new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId,
-                                     settingPassword);
+                database = new MSSQLManager(settingDataSource, settingInitialCatalog, settingPersistSecurityInfo, settingUserId, settingPassword);
             }
 
             //New migrations check of store
@@ -99,7 +98,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Shuts down the grid interface
+        ///     Shuts down the grid interface
         /// </summary>
         override public void Dispose()
         {
@@ -107,7 +106,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// The name of this DB provider.
+        ///     The name of this DB provider.
         /// </summary>
         /// <returns>A string containing the storage system name</returns>
         override public string Name
@@ -116,7 +115,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Database provider version.
+        ///     Database provider version.
         /// </summary>
         /// <returns>A string containing the storage system version</returns>
         override public string Version
@@ -129,7 +128,7 @@ namespace OpenSim.Data.MSSQL
         #region Public override GridDataBase methods
 
         /// <summary>
-        /// Returns a list of regions within the specified ranges
+        ///     Returns a list of regions within the specified ranges
         /// </summary>
         /// <param name="xmin">minimum X coordinate</param>
         /// <param name="ymin">minimum Y coordinate</param>
@@ -161,18 +160,18 @@ namespace OpenSim.Data.MSSQL
                     return rows.ToArray();
                 }
             }
-            m_log.Info("[GRID DB] : Found no regions within range.");
+
+            m_log.Info("[Grid Database] : Found no regions within range.");
             return null;
         }
 
-        
         /// <summary>
-        /// Returns up to maxNum profiles of regions that have a name starting with namePrefix
+        ///     Returns up to maxNum profiles of regions that have a name starting with namePrefix
         /// </summary>
         /// <param name="namePrefix">The name to match against</param>
         /// <param name="maxNum">Maximum number of profiles to return</param>
         /// <returns>A list of sim profiles</returns>
-        override public List<RegionProfileData> GetRegionsByName (string namePrefix, uint maxNum)
+        override public List<RegionProfileData> GetRegionsByName(string namePrefix, uint maxNum)
         {
             using (AutoClosingSqlCommand command = database.Query("SELECT * FROM regions WHERE regionName LIKE @name"))
             {
@@ -193,7 +192,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Returns a sim profile from its location
+        ///     Returns a sim profile from its location
         /// </summary>
         /// <param name="handle">Region location handle</param>
         /// <returns>Sim profile</returns>
@@ -211,12 +210,13 @@ namespace OpenSim.Data.MSSQL
                     }
                 }
             }
-            m_log.InfoFormat("[GRID DB] : No region found with handle : {0}", handle);
+
+            m_log.InfoFormat("[Grid Database] : No region found with handle : {0}", handle);
             return null;
         }
 
         /// <summary>
-        /// Returns a sim profile from its UUID
+        ///     Returns a sim profile from its UUID
         /// </summary>
         /// <param name="uuid">The region UUID</param>
         /// <returns>The sim profile</returns>
@@ -234,12 +234,13 @@ namespace OpenSim.Data.MSSQL
                     }
                 }
             }
-            m_log.InfoFormat("[GRID DB] : No region found with UUID : {0}", uuid);
+
+            m_log.InfoFormat("[Grid Database] : No region found with UUID : {0}", uuid);
             return null;
         }
 
         /// <summary>
-        /// Returns a sim profile from it's Region name string
+        ///     Returns a sim profile from it's Region name string
         /// </summary>
         /// <param name="regionName">The region name search query</param>
         /// <returns>The sim profile</returns>
@@ -259,16 +260,17 @@ namespace OpenSim.Data.MSSQL
                         }
                     }
                 }
-                m_log.InfoFormat("[GRID DB] : No region found with regionName : {0}", regionName);
+
+                m_log.InfoFormat("[Grid Database] : No region found with regionName : {0}", regionName);
                 return null;
             }
 
-            m_log.Error("[GRID DB]: Searched for a Region Name shorter then 3 characters");
+            m_log.Error("[Grid Database]: Searched for a Region Name shorter then 3 characters");
             return null;
         }
 
         /// <summary>
-        /// Adds a new specified region to the database
+        ///     Adds a new specified region to the database
         /// </summary>
         /// <param name="profile">The profile to add</param>
         /// <returns>A dataresponse enum indicating success</returns>
@@ -293,11 +295,10 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Deletes a sim profile from the database
+        ///     Deletes a sim profile from the database
         /// </summary>
         /// <param name="uuid">the sim UUID</param>
         /// <returns>Successful?</returns>
-        //public DataResponse DeleteProfile(RegionProfileData profile)
         override public DataResponse DeleteProfile(string uuid)
         {
             using (AutoClosingSqlCommand command = database.Query("DELETE FROM regions WHERE uuid = @uuid;"))
@@ -310,7 +311,7 @@ namespace OpenSim.Data.MSSQL
                 }
                 catch (Exception e)
                 {
-                    m_log.DebugFormat("[GRID DB] : Error deleting region info, error is : {0}", e.Message);
+                    m_log.DebugFormat("[Grid Database] : Error deleting region info, error is : {0}", e.Message);
                     return DataResponse.RESPONSE_ERROR;
                 }
             }
@@ -321,7 +322,7 @@ namespace OpenSim.Data.MSSQL
         #region Methods that are not used or deprecated (still needed because of base class)
 
         /// <summary>
-        /// DEPRECATED. Attempts to authenticate a region by comparing a shared secret.
+        ///     DEPRECATED. Attempts to authenticate a region by comparing a shared secret.
         /// </summary>
         /// <param name="uuid">The UUID of the challenger</param>
         /// <param name="handle">The attempted regionHandle of the challenger</param>
@@ -340,7 +341,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// NOT YET FUNCTIONAL. Provides a cryptographic authentication of a region
+        ///     NOT YET FUNCTIONAL. Provides a cryptographic authentication of a region
         /// </summary>
         /// <remarks>This requires a security audit.</remarks>
         /// <param name="uuid"></param>
@@ -350,17 +351,12 @@ namespace OpenSim.Data.MSSQL
         /// <returns></returns>
         public bool AuthenticateSim(UUID uuid, ulong handle, string authhash, string challenge)
         {
-            // SHA512Managed HashProvider = new SHA512Managed();
-            // Encoding TextProvider = new UTF8Encoding();
-
-            // byte[] stream = TextProvider.GetBytes(uuid.ToString() + ":" + handle.ToString() + ":" + challenge);
-            // byte[] hash = HashProvider.ComputeHash(stream);
             return false;
         }
 
         /// <summary>
-        /// NOT IMPLEMENTED
-        /// WHEN IS THIS GONNA BE IMPLEMENTED.
+        ///     NOT IMPLEMENTED
+        ///     WHEN IS THIS GONNA BE IMPLEMENTED.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -375,7 +371,7 @@ namespace OpenSim.Data.MSSQL
         #region private methods
 
         /// <summary>
-        /// Reads a region row from a database reader
+        ///     Reads a region row from a database reader
         /// </summary>
         /// <param name="reader">An active database reader</param>
         /// <returns>A region profile</returns>
@@ -385,18 +381,13 @@ namespace OpenSim.Data.MSSQL
 
             // Region Main gotta-have-or-we-return-null parts
             UInt64 tmp64;
+
             if (!UInt64.TryParse(reader["regionHandle"].ToString(), out tmp64))
             {
                 return null;
             }
 
             retval.regionHandle = tmp64;
-
-//            UUID tmp_uuid;
-//            if (!UUID.TryParse((string)reader["uuid"], out tmp_uuid))
-//            {
-//                return null;
-//            }
 
             retval.UUID = new UUID((Guid)reader["uuid"]); // tmp_uuid;
 
@@ -447,7 +438,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Update the specified region in the database
+        ///     Update the specified region in the database
         /// </summary>
         /// <param name="profile">The profile to update</param>
         /// <returns>success ?</returns>
@@ -508,7 +499,7 @@ namespace OpenSim.Data.MSSQL
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[GRID DB] : Error updating region, error: " + e.Message);
+                    m_log.Error("[Grid Database] : Error updating region, error: " + e.Message);
                 }
             }
 
@@ -516,7 +507,7 @@ namespace OpenSim.Data.MSSQL
         }
 
         /// <summary>
-        /// Creates a new region in the database
+        ///     Creates a new region in the database
         /// </summary>
         /// <param name="profile">The region profile to insert</param>
         /// <returns>Successful?</returns>
@@ -575,7 +566,7 @@ namespace OpenSim.Data.MSSQL
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[GRID DB] : Error inserting region, error: " + e.Message);
+                    m_log.Error("[Grid Database] : Error inserting region, error: " + e.Message);
                 }
             }
 

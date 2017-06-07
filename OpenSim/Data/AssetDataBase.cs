@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,12 +39,9 @@ namespace OpenSim.Data
     public abstract class AssetDataBase : IAssetDataPlugin
     {
         public abstract AssetBase GetAsset(UUID uuid);
-        
         public abstract void StoreAsset(AssetBase asset);
         public abstract bool ExistsAsset(UUID uuid);
-
         public abstract List<AssetMetadata> FetchAssetMetadataSet(int start, int count);
-
         public abstract string Version { get; }
         public abstract string Name { get; }
         public abstract void Initialise(string connect);

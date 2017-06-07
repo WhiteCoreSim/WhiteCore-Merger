@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,11 +39,9 @@ namespace OpenSim.Data
         public int reservationMinY = 0;
         public int reservationMaxX = 65536;
         public int reservationMaxY = 65536;
-
         public string reservationName = String.Empty;
         public string reservationCompany = String.Empty;
         public bool status = true;
-
         public string gridSendKey = String.Empty;
         public string gridRecvKey = String.Empty;
     }

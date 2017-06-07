@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -13,7 +15,7 @@
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ''AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
@@ -29,10 +31,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using OpenMetaverse;
-using OpenSim.Framework;
 using System.Data.SqlClient;
 using System.Text;
+using OpenMetaverse;
+using OpenSim.Framework;
 
 namespace OpenSim.Data.MSSQL
 {
@@ -68,6 +70,7 @@ namespace OpenSim.Data.MSSQL
             ret.Data = new Dictionary<string, object>();
 
             string sql = string.Format("select * from {0} where UUID = @principalID", m_Realm);
+
             if (scopeID != UUID.Zero)
                 sql += " and ScopeID = @scopeID";
 
@@ -76,7 +79,7 @@ namespace OpenSim.Data.MSSQL
             {
                 cmd.Parameters.Add(m_database.CreateParameter("@principalID", principalID));
                 cmd.Parameters.Add(m_database.CreateParameter("@scopeID", scopeID));
-                
+
                 conn.Open();
                 using (SqlDataReader result = cmd.ExecuteReader())
                 {
@@ -92,6 +95,7 @@ namespace OpenSim.Data.MSSQL
                             m_ColumnNames = new List<string>();
 
                             DataTable schemaTable = result.GetSchemaTable();
+
                             foreach (DataRow row in schemaTable.Rows)
                                 m_ColumnNames.Add(row["ColumnName"].ToString());
                         }
@@ -100,15 +104,18 @@ namespace OpenSim.Data.MSSQL
                         {
                             if (s == "UUID")
                                 continue;
+
                             if (s == "ScopeID")
                                 continue;
 
                             ret.Data[s] = result[s].ToString();
                         }
+
                         return ret;
                     }
                 }
             }
+
             return null;
         }
 
@@ -116,6 +123,7 @@ namespace OpenSim.Data.MSSQL
         {
             if (data.Data.ContainsKey("UUID"))
                 data.Data.Remove("UUID");
+
             if (data.Data.ContainsKey("ScopeID"))
                 data.Data.Remove("ScopeID");
 
@@ -127,10 +135,12 @@ namespace OpenSim.Data.MSSQL
                 StringBuilder updateBuilder = new StringBuilder();
                 updateBuilder.AppendFormat("update {0} set ", m_Realm);
                 bool first = true;
+
                 foreach (string field in fields)
                 {
                     if (!first)
                         updateBuilder.Append(", ");
+
                     updateBuilder.AppendFormat("{0} = @{0}", field);
 
                     first = false;
@@ -165,6 +175,7 @@ namespace OpenSim.Data.MSSQL
                     }
                 }
             }
+
             return true;
         }
 
@@ -182,6 +193,7 @@ namespace OpenSim.Data.MSSQL
                 if (cmd.ExecuteNonQuery() > 0)
                     return true;
             }
+
             return false;
         }
     }
