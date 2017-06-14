@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,8 +44,6 @@ namespace OpenSim.Framework.Servers.HttpServer
         private Thread m_watcherThread;
         private bool m_running = true;
 
-        
-
         public PollServiceRequestManager(BaseHttpServer pSrv, uint pWorkerThreadCount, int pTimeout)
         {
             m_server = pSrv;
@@ -52,16 +52,16 @@ namespace OpenSim.Framework.Servers.HttpServer
             m_PollServiceWorkerThreads = new PollServiceWorkerThread[m_WorkerThreadCount];
 
             //startup worker threads
-            for (uint i=0;i<m_WorkerThreadCount;i++)
+            for (uint i = 0; i < m_WorkerThreadCount; i++)
             {
                 m_PollServiceWorkerThreads[i] = new PollServiceWorkerThread(m_server, pTimeout);
                 m_PollServiceWorkerThreads[i].ReQueue += ReQueueEvent;
-               
+
                 m_workerThreads[i] = new Thread(m_PollServiceWorkerThreads[i].ThreadStart);
-                m_workerThreads[i].Name = String.Format("PollServiceWorkerThread{0}",i);
+                m_workerThreads[i].Name = String.Format("PollServiceWorkerThread{0}", i);
+
                 //Can't add to thread Tracker here Referencing OpenSim.Framework creates circular reference
                 m_workerThreads[i].Start();
-                
             }
 
             //start watcher threads
@@ -98,12 +98,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                 if (m_requests.Count == 0)
                     return;
 
-                int reqperthread = (int) (m_requests.Count/m_WorkerThreadCount) + 1;
+                int reqperthread = (int)(m_requests.Count / m_WorkerThreadCount) + 1;
+
                 // For Each WorkerThread
                 for (int tc = 0; tc < m_WorkerThreadCount && m_requests.Count > 0; tc++)
                 {
                     //Loop over number of requests each thread handles.
-                    for (int i=0;i<reqperthread && m_requests.Count > 0;i++)
+                    for (int i = 0; i < reqperthread && m_requests.Count > 0; i++)
                     {
                         try
                         {
@@ -114,20 +115,16 @@ namespace OpenSim.Framework.Servers.HttpServer
                             // The queue is empty, we did our calculations wrong!
                             return;
                         }
-                        
                     }
                 }
             }
-            
         }
 
-
-
-        ~PollServiceRequestManager()
+        PollServiceRequestManager()
         {
             foreach (object o in m_requests)
             {
-                PollServiceHttpRequest req = (PollServiceHttpRequest) o;
+                PollServiceHttpRequest req = (PollServiceHttpRequest)o;
                 m_server.DoHTTPGruntWork(req.PollServiceArgs.NoEvents(req.RequestID, req.PollServiceArgs.Id), new OSHttpResponse(new HttpResponse(req.HttpContext, req.Request), req.HttpContext));
             }
 
@@ -137,6 +134,7 @@ namespace OpenSim.Framework.Servers.HttpServer
             {
                 t.Abort();
             }
+
             m_running = false;
         }
     }

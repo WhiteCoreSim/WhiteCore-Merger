@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,13 +35,18 @@ using log4net;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Manages launching threads and keeping watch over them for timeouts
+    ///     Manages launching threads and keeping watch over them for timeouts
     /// </summary>
     public static class Watchdog
     {
-        /// <summary>Timer interval in milliseconds for the watchdog timer</summary>
+        /// <summary>
+        ///     Timer interval in milliseconds for the watchdog timer
+        /// </summary>
         const double WATCHDOG_INTERVAL_MS = 2500.0d;
-        /// <summary>Maximum timeout in milliseconds before a thread is considered dead</summary>
+
+        /// <summary>
+        ///     Maximum timeout in milliseconds before a thread is considered dead
+        /// </summary>
         const int WATCHDOG_TIMEOUT_MS = 5000;
 
         [System.Diagnostics.DebuggerDisplay("{Thread.Name}")]
@@ -56,15 +63,17 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// This event is called whenever a tracked thread is stopped or
-        /// has not called UpdateThread() in time
+        ///     This event is called whenever a tracked thread is stopped or
+        ///     has not called UpdateThread() in time
         /// </summary>
         /// <param name="thread">The thread that has been identified as dead</param>
         /// <param name="lastTick">The last time this thread called UpdateThread()</param>
         public delegate void WatchdogTimeout(Thread thread, int lastTick);
 
-        /// <summary>This event is called whenever a tracked thread is
-        /// stopped or has not called UpdateThread() in time</summary>
+        /// <summary>
+        ///     This event is called whenever a tracked thread is
+        ///     stopped or has not called UpdateThread() in time
+        /// </summary>
         public static event WatchdogTimeout OnWatchdogTimeout;
 
         private static readonly ILog m_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -81,14 +90,16 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Start a new thread that is tracked by the watchdog timer
+        ///     Start a new thread that is tracked by the watchdog timer
         /// </summary>
         /// <param name="start">The method that will be executed in a new thread</param>
         /// <param name="name">A name to give to the new thread</param>
         /// <param name="priority">Priority to run the thread at</param>
         /// <param name="isBackground">True to run this thread as a background
         /// thread, otherwise false</param>
-        /// <returns>The newly created Thread object</returns>
+        /// <returns>
+        ///     The newly created Thread object
+        /// </returns>
         public static Thread StartThread(ThreadStart start, string name, ThreadPriority priority, bool isBackground)
         {
             Thread thread = new Thread(start);
@@ -101,7 +112,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Marks the current thread as alive
+        ///     Marks the current thread as alive
         /// </summary>
         public static void UpdateThread()
         {
@@ -109,10 +120,12 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Stops watchdog tracking on the current thread
+        ///     Stops watchdog tracking on the current thread
         /// </summary>
-        /// <returns>True if the thread was removed from the list of tracked
-        /// threads, otherwise false</returns>
+        /// <returns>
+        ///     True if the thread was removed from the list of tracked
+        ///     threads, otherwise false
+        /// </returns>
         public static bool RemoveThread()
         {
             return RemoveThread(Thread.CurrentThread.ManagedThreadId);
@@ -120,7 +133,7 @@ namespace OpenSim.Framework
 
         private static void AddThread(ThreadWatchdogInfo threadInfo)
         {
-            m_log.Debug("[WATCHDOG]: Started tracking thread \"" + threadInfo.Thread.Name + "\" (ID " + threadInfo.Thread.ManagedThreadId + ")");
+            m_log.Debug("[Watch Dog]: Started tracking thread \"" + threadInfo.Thread.Name + "\" (ID " + threadInfo.Thread.ManagedThreadId + ")");
 
             lock (m_threads)
                 m_threads.Add(threadInfo.Thread.ManagedThreadId, threadInfo);

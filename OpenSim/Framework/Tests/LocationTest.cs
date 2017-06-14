@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,9 +37,6 @@ namespace OpenSim.Framework.Tests
         [Test]
         public void locationRegionHandleRegionHandle()
         {
-            //1099511628032000
-            // 256000
-            // 256000
             Location TestLocation1 = new Location(1099511628032000);
             Location TestLocation2 = new Location(1099511628032000);
             Assert.That(TestLocation1 == TestLocation2);
@@ -50,7 +49,7 @@ namespace OpenSim.Framework.Tests
         [Test]
         public void locationXYRegionHandle()
         {
-            Location TestLocation1 = new Location(256000,256000);
+            Location TestLocation1 = new Location(256000, 256000);
             Location TestLocation2 = new Location(1099511628032000);
             Assert.That(TestLocation1 == TestLocation2);
 
@@ -58,6 +57,5 @@ namespace OpenSim.Framework.Tests
             TestLocation2 = new Location(1099511628032000);
             Assert.That(TestLocation1 != TestLocation2);
         }
-        
     }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +41,7 @@ namespace OpenSim.Framework
     #region ACL Core Class
 
     /// <summary>
-    /// Access Control List Engine
+    ///     Access Control List Engine
     /// </summary>
     public class ACL
     {
@@ -47,7 +49,7 @@ namespace OpenSim.Framework
         private Dictionary<string, Role> Roles = new Dictionary<string, Role>();
 
         /// <summary>
-        /// Adds a new role
+        ///     Adds a new role
         /// </summary>
         /// <param name="role"></param>
         /// <returns></returns>
@@ -62,7 +64,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Adds a new resource
+        ///     Adds a new resource
         /// </summary>
         /// <param name="resource"></param>
         /// <returns></returns>
@@ -74,7 +76,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Permision for user/roll on a resource
+        ///     Permision for user/roll on a resource
         /// </summary>
         /// <param name="role"></param>
         /// <param name="resource"></param>
@@ -135,7 +137,7 @@ namespace OpenSim.Framework
     #region Exceptions
 
     /// <summary>
-    /// Thrown when an ACL attempts to add a duplicate role.
+    ///     Thrown when an ACL attempts to add a duplicate role.
     /// </summary>
     public class AlreadyContainsRoleException : Exception
     {
@@ -162,17 +164,17 @@ namespace OpenSim.Framework
     #region Roles and Resources
 
     /// <summary>
-    /// Does this Role have permission to access a specified Resource?
+    ///     Does this Role have permission to access a specified Resource?
     /// </summary>
     public enum Permission
     {
         Deny,
         None,
         Allow
-    } ;
+    }
 
     /// <summary>
-    /// A role class, for use with Users or Groups
+    ///     A role class, for use with Users or Groups
     /// </summary>
     public class Role
     {
@@ -248,5 +250,4 @@ namespace OpenSim.Framework
 
     #endregion
 
-   
 }

@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,10 +39,6 @@ namespace OpenSim.Framework.Communications.Clients
     {
         public static string GetNewKey(string authurl, UUID userID, UUID authToken)
         {
-            //Hashtable keyParams = new Hashtable();
-            //keyParams["user_id"] = userID;
-            //keyParams["auth_token"] = authKey;
-
             List<string> SendParams = new List<string>();
             SendParams.Add(userID.ToString());
             SendParams.Add(authToken.ToString());
@@ -60,6 +58,7 @@ namespace OpenSim.Framework.Communications.Clients
             if (!reply.IsFault)
             {
                 string newKey = string.Empty;
+
                 if (reply.Value != null)
                     newKey = (string)reply.Value;
 
@@ -70,7 +69,6 @@ namespace OpenSim.Framework.Communications.Clients
                 System.Console.WriteLine("[HGrid]: XmlRpc request to get auth key failed with message {0}" + reply.FaultString + ", code " + reply.FaultCode);
                 return string.Empty;
             }
-
         }
 
         public static bool VerifyKey(string authurl, UUID userID, string authKey)
@@ -98,6 +96,7 @@ namespace OpenSim.Framework.Communications.Clients
                 if (!reply.IsFault)
                 {
                     bool success = false;
+
                     if (reply.Value != null)
                         success = (bool)reply.Value;
 
@@ -131,19 +130,18 @@ namespace OpenSim.Framework.Communications.Clients
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("[Session Auth]: VerifySession XmlRpc: " + e.Message); 
+                System.Console.WriteLine("[Session Auth]: VerifySession XmlRpc: " + e.Message);
                 return false;
             }
 
             Hashtable responseData = (Hashtable)UserResp.Value;
+
             if (responseData.ContainsKey("auth_session") && responseData["auth_session"].ToString() == "TRUE")
             {
-                //System.Console.WriteLine("[Authorization]: userserver reported authorized session for user " + userID);
                 return true;
             }
             else
             {
-                //System.Console.WriteLine("[Authorization]: userserver reported unauthorized session for user " + userID);
                 return false;
             }
         }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,25 +35,25 @@ namespace OpenSim.Framework.Communications.XMPP
     public abstract class XmppStanza
     {
         /// <summary>
-        /// counter used for generating ID
+        ///     counter used for generating ID
         /// </summary>
         [XmlIgnore]
         private static ulong _ctr = 0;
 
         /// <summary>
-        /// recipient JID
+        ///     recipient JID
         /// </summary>
         [XmlAttribute("to")]
         public string ToJid;
 
         /// <summary>
-        /// sender JID
+        ///     sender JID
         /// </summary>
         [XmlAttribute("from")]
         public string FromJid;
 
         /// <summary>
-        /// unique ID.
+        ///     unique ID.
         /// </summary>
         [XmlAttribute("id")]
         public string MessageId;

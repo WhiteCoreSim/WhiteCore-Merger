@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,14 +35,12 @@ namespace OpenSim.Framework.Capabilities
     public class LLSDInventoryItem
     {
         public UUID parent_id;
-
         public UUID asset_id;
         public UUID item_id;
         public LLSDPermissions permissions;
         public string type;
         public string inv_type;
         public int flags;
-
         public LLSDSaleInfo sale_info;
         public string name;
         public string desc;
@@ -87,12 +87,12 @@ namespace OpenSim.Framework.Capabilities
     [OSDMap]
     public class LLSDInventoryFolderContents
     {
-        public UUID agent_id; 
+        public UUID agent_id;
         public int descendents;
-        public UUID folder_id; 
+        public UUID folder_id;
         public OSDArray categories = new OSDArray();
         public OSDArray items = new OSDArray();
-        public UUID owner_id; 
+        public UUID owner_id;
         public int version;
     }
 }

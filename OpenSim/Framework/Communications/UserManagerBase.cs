@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,24 +44,22 @@ using OpenSim.Services.Interfaces;
 namespace OpenSim.Framework.Communications
 {
     /// <summary>
-    /// Base class for user management (create, read, etc)
+    ///     Base class for user management (create, read, etc)
     /// </summary>
-    public abstract class UserManagerBase 
-        : IUserService, IUserAdminService, IAvatarService, IMessagingService, IAuthentication
+    public abstract class UserManagerBase : IUserService, IUserAdminService, IAvatarService, IMessagingService, IAuthentication
     {
-        private static readonly ILog m_log
-            = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <value>
-        /// List of plugins to search for user data
-        /// </value>
+        /// <summary>
+        ///     List of plugins to search for user data
+        /// </summary>
         private List<IUserDataPlugin> m_plugins = new List<IUserDataPlugin>();
 
         protected CommunicationsManager m_commsManager;
         protected IInventoryService m_InventoryService;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="commsManager"></param>
         public UserManagerBase(CommunicationsManager commsManager)
@@ -73,7 +73,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Add a new user data plugin - plugins will be requested in the order they were added.
+        ///     Add a new user data plugin - plugins will be requested in the order they were added.
         /// </summary>
         /// <param name="plugin">The plugin that will provide user data</param>
         public void AddPlugin(IUserDataPlugin plugin)
@@ -82,8 +82,8 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Adds a list of user data plugins, as described by `provider' and
-        /// `connect', to `_plugins'.
+        ///     Adds a list of user data plugins, as described by `provider' and
+        ///     `connect', to `_plugins'.
         /// </summary>
         /// <param name="provider">
         /// The filename of the inventory server plugin DLL.
@@ -97,7 +97,7 @@ namespace OpenSim.Framework.Communications
         }
 
         #region UserProfile
-        
+
         public virtual void AddTemporaryUserProfile(UserProfileData userProfile)
         {
             foreach (IUserDataPlugin plugin in m_plugins)
@@ -105,7 +105,7 @@ namespace OpenSim.Framework.Communications
                 plugin.AddTemporaryUserProfile(userProfile);
             }
         }
-        
+
         public virtual UserProfileData GetUserProfile(string fname, string lname)
         {
             foreach (IUserDataPlugin plugin in m_plugins)
@@ -191,29 +191,29 @@ namespace OpenSim.Framework.Communications
         public virtual List<AvatarPickerAvatar> GenerateAgentPickerRequestResponse(UUID queryID, string query)
         {
             List<AvatarPickerAvatar> allPickerList = new List<AvatarPickerAvatar>();
-            
+
             foreach (IUserDataPlugin plugin in m_plugins)
             {
                 try
                 {
                     List<AvatarPickerAvatar> pickerList = plugin.GeneratePickerResults(queryID, query);
+
                     if (pickerList != null)
                         allPickerList.AddRange(pickerList);
                 }
                 catch (Exception)
                 {
-                    m_log.Error(
-                        "[USERSTORAGE]: Unable to generate AgentPickerData via  " + plugin.Name + "(" + query + ")");
+                    m_log.Error("[User Storage]: Unable to generate AgentPickerData via  " + plugin.Name + "(" + query + ")");
                 }
             }
 
             return allPickerList;
         }
-        
+
         public virtual bool UpdateUserProfile(UserProfileData data)
         {
             bool result = false;
-            
+
             foreach (IUserDataPlugin plugin in m_plugins)
             {
                 try
@@ -223,12 +223,10 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat(
-                        "[USERSTORAGE]: Unable to set user {0} {1} via {2}: {3}", 
-                        data.FirstName, data.SurName, plugin.Name, e.ToString());
+                    m_log.ErrorFormat("[User Storage]: Unable to set user {0} {1} via {2}: {3}", data.FirstName, data.SurName, plugin.Name, e.ToString());
                 }
             }
-            
+
             return result;
         }
 
@@ -237,10 +235,12 @@ namespace OpenSim.Framework.Communications
         #region Get UserAgent
 
         /// <summary>
-        /// Loads a user agent by uuid (not called directly)
+        ///     Loads a user agent by uuid (not called directly)
         /// </summary>
         /// <param name="uuid">The agent's UUID</param>
-        /// <returns>Agent profiles</returns>
+        /// <returns>
+        ///     Agent profiles
+        /// </returns>
         public UserAgentData GetUserAgent(UUID uuid)
         {
             foreach (IUserDataPlugin plugin in m_plugins)
@@ -254,7 +254,7 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to find user via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to find user via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
 
@@ -262,10 +262,12 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Loads a user agent by name (not called directly)
+        ///     Loads a user agent by name (not called directly)
         /// </summary>
         /// <param name="name">The agent's name</param>
-        /// <returns>A user agent</returns>
+        /// <returns>
+        ///     A user agent
+        /// </returns>
         public UserAgentData GetUserAgent(string name)
         {
             foreach (IUserDataPlugin plugin in m_plugins)
@@ -273,13 +275,13 @@ namespace OpenSim.Framework.Communications
                 try
                 {
                     UserAgentData result = plugin.GetAgentByName(name);
-                    
+
                     if (result != null)
                         return result;
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to find user via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to find user via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
 
@@ -287,11 +289,13 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Loads a user agent by name (not called directly)
+        ///     Loads a user agent by name (not called directly)
         /// </summary>
         /// <param name="fname">The agent's firstname</param>
         /// <param name="lname">The agent's lastname</param>
-        /// <returns>A user agent</returns>
+        /// <returns>
+        ///     A user agent
+        /// </returns>
         public UserAgentData GetUserAgent(string fname, string lname)
         {
             foreach (IUserDataPlugin plugin in m_plugins)
@@ -299,13 +303,13 @@ namespace OpenSim.Framework.Communications
                 try
                 {
                     UserAgentData result = plugin.GetAgentByName(fname, lname);
-                    
+
                     if (result != null)
                         return result;
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to find user via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to find user via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
 
@@ -315,7 +319,7 @@ namespace OpenSim.Framework.Communications
         public virtual List<FriendListItem> GetUserFriendList(UUID ownerID)
         {
             List<FriendListItem> allFriends = new List<FriendListItem>();
-            
+
             foreach (IUserDataPlugin plugin in m_plugins)
             {
                 try
@@ -327,17 +331,15 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to GetUserFriendList via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to GetUserFriendList via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
 
             return allFriends;
         }
 
-        public virtual Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos (List<UUID> uuids)
+        public virtual Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos(List<UUID> uuids)
         {
-            //Dictionary<UUID, FriendRegionInfo> allFriendRegions = new Dictionary<UUID, FriendRegionInfo>();
-            
             foreach (IUserDataPlugin plugin in m_plugins)
             {
                 try
@@ -349,10 +351,10 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to GetFriendRegionInfos via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to GetFriendRegionInfos via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
-            
+
             return new Dictionary<UUID, FriendRegionInfo>();
         }
 
@@ -366,7 +368,7 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to Store WebLoginKey via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to Store WebLoginKey via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
         }
@@ -381,7 +383,7 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to AddNewUserFriend via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to AddNewUserFriend via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
         }
@@ -396,7 +398,7 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to RemoveUserFriend via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to RemoveUserFriend via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
         }
@@ -411,13 +413,13 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to UpdateUserFriendPerms via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to UpdateUserFriendPerms via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
         }
 
         /// <summary>
-        /// Resets the currentAgent in the user profile
+        ///     Resets the currentAgent in the user profile
         /// </summary>
         /// <param name="agentID">The agent's ID</param>
         public virtual void ClearUserAgent(UUID agentID)
@@ -439,14 +441,12 @@ namespace OpenSim.Framework.Communications
         #region CreateAgent
 
         /// <summary>
-        /// Creates and initialises a new user agent - make sure to use CommitAgent when done to submit to the DB
+        ///     Creates and initialises a new user agent - make sure to use CommitAgent when done to submit to the DB
         /// </summary>
         /// <param name="profile">The users profile</param>
         /// <param name="request">The users loginrequest</param>
         public void CreateAgent(UserProfileData profile, XmlRpcRequest request)
         {
-            //m_log.DebugFormat("[USER MANAGER]: Creating agent {0} {1}", profile.Name, profile.ID);
-            
             UserAgentData agent = new UserAgentData();
 
             // User connection
@@ -500,19 +500,10 @@ namespace OpenSim.Framework.Communications
 
         public void CreateAgent(UserProfileData profile, OSD request)
         {
-            //m_log.DebugFormat("[USER MANAGER]: Creating agent {0} {1}", profile.Name, profile.ID);
-            
             UserAgentData agent = new UserAgentData();
 
             // User connection
             agent.AgentOnline = true;
-
-            //if (request.Params.Count > 1)
-            //{
-            //    IPEndPoint RemoteIPEndPoint = (IPEndPoint)request.Params[1];
-            //    agent.AgentIP = RemoteIPEndPoint.Address.ToString();
-            //    agent.AgentPort = (uint)RemoteIPEndPoint.Port;
-            //}
 
             // Generate sessions
             RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider();
@@ -551,14 +542,14 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Saves a target agent to the database
+        ///     Saves a target agent to the database
         /// </summary>
         /// <param name="profile">The users profile</param>
-        /// <returns>Successful?</returns>
+        /// <returns>
+        ///     Successful?
+        /// </returns>
         public bool CommitAgent(ref UserProfileData profile)
         {
-            //m_log.DebugFormat("[USER MANAGER]: Committing agent {0} {1}", profile.Name, profile.ID);
-            
             // TODO: how is this function different from setUserProfile?  -> Add AddUserAgent() here and commit both tables "users" and "agents"
             // TODO: what is the logic should be?
             bool ret = false;
@@ -568,7 +559,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Process a user logoff from OpenSim.
+        ///     Process a user logoff from OpenSim.
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="regionid"></param>
@@ -585,19 +576,20 @@ namespace OpenSim.Framework.Communications
             if (userProfile != null)
             {
                 UserAgentData userAgent = userProfile.CurrentAgent;
+
                 if (userAgent != null)
                 {
                     userAgent.AgentOnline = false;
                     userAgent.LogoutTime = Util.UnixTimeSinceEpoch();
-                    //userAgent.sessionID = UUID.Zero;
+
                     if (regionid != UUID.Zero)
                     {
                         userAgent.Region = regionid;
                     }
+
                     userAgent.Handle = regionhandle;
                     userAgent.Position = position;
                     userAgent.LookAt = lookat;
-                    //userProfile.CurrentAgent = userAgent;
                     userProfile.LastLogin = userAgent.LogoutTime;
 
                     CommitAgent(ref userProfile);
@@ -605,12 +597,12 @@ namespace OpenSim.Framework.Communications
                 else
                 {
                     // If currentagent is null, we can't reference it here or the UserServer crashes!
-                    m_log.Info("[LOGOUT]: didn't save logout position: " + userid.ToString());
+                    m_log.Info("[Logout]: didn't save logout position: " + userid.ToString());
                 }
             }
             else
             {
-                m_log.Warn("[LOGOUT]: Unknown User logged out");
+                m_log.Warn("[Logout]: Unknown User logged out");
             }
         }
 
@@ -622,7 +614,7 @@ namespace OpenSim.Framework.Communications
         #endregion
 
         /// <summary>
-        /// Add a new user
+        ///     Add a new user
         /// </summary>
         /// <param name="firstName">first name</param>
         /// <param name="lastName">last name</param>
@@ -630,14 +622,16 @@ namespace OpenSim.Framework.Communications
         /// <param name="email">email</param>
         /// <param name="regX">location X</param>
         /// <param name="regY">location Y</param>
-        /// <returns>The UUID of the created user profile.  On failure, returns UUID.Zero</returns>
+        /// <returns>
+        ///     The UUID of the created user profile.  On failure, returns UUID.Zero
+        /// </returns>
         public virtual UUID AddUser(string firstName, string lastName, string password, string email, uint regX, uint regY)
         {
             return AddUser(firstName, lastName, password, email, regX, regY, UUID.Random());
         }
 
         /// <summary>
-        /// Add a new user
+        ///     Add a new user
         /// </summary>
         /// <param name="firstName">first name</param>
         /// <param name="lastName">last name</param>
@@ -646,11 +640,11 @@ namespace OpenSim.Framework.Communications
         /// <param name="regX">location X</param>
         /// <param name="regY">location Y</param>
         /// <param name="SetUUID">UUID of avatar.</param>
-        /// <returns>The UUID of the created user profile.  On failure, returns UUID.Zero</returns>
-        public virtual UUID AddUser(
-            string firstName, string lastName, string password, string email, uint regX, uint regY, UUID SetUUID)
+        /// <returns>
+        ///     The UUID of the created user profile.  On failure, returns UUID.Zero
+        /// </returns>
+        public virtual UUID AddUser(string firstName, string lastName, string password, string email, uint regX, uint regY, UUID SetUUID)
         {
-
             UserProfileData user = new UserProfileData();
 
             user.PasswordSalt = Util.Md5Hash(UUID.Random().ToString());
@@ -675,36 +669,36 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to add user via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to add user via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
 
             UserProfileData userProf = GetUserProfile(firstName, lastName);
+
             if (userProf == null)
             {
                 return UUID.Zero;
             }
             else
             {
-                //
                 // WARNING: This is a horrible hack
                 // The purpose here is to avoid touching the user server at this point.
                 // There are dragons there that I can't deal with right now.
                 // diva 06/09/09
-                //
                 if (m_InventoryService != null)
                 {
                     // local service (standalone)
-                    m_log.Debug("[USERSTORAGE]: using IInventoryService to create user's inventory");
+                    m_log.Debug("[User Storage]: using IInventoryService to create user's inventory");
                     m_InventoryService.CreateUserInventory(userProf.ID);
                     InventoryFolderBase rootfolder = m_InventoryService.GetRootFolder(userProf.ID);
+
                     if (rootfolder != null)
                         userProf.RootInventoryFolderID = rootfolder.ID;
                 }
                 else if (m_commsManager.InterServiceInventoryService != null)
                 {
                     // used by the user server
-                    m_log.Debug("[USERSTORAGE]: using m_commsManager.InterServiceInventoryService to create user's inventory");
+                    m_log.Debug("[User Storage]: using m_commsManager.InterServiceInventoryService to create user's inventory");
                     m_commsManager.InterServiceInventoryService.CreateNewUserInventory(userProf.ID);
                 }
 
@@ -713,12 +707,14 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Reset a user password.
+        ///     Reset a user password.
         /// </summary>
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="newPassword"></param>
-        /// <returns>true if the update was successful, false otherwise</returns>
+        /// <returns>
+        ///     true if the update was successful, false otherwise
+        /// </returns>
         public virtual bool ResetUserPassword(string firstName, string lastName, string newPassword)
         {
             string md5PasswdHash = Util.Md5Hash(Util.Md5Hash(newPassword) + ":" + String.Empty);
@@ -727,7 +723,7 @@ namespace OpenSim.Framework.Communications
 
             if (null == profile)
             {
-                m_log.ErrorFormat("[USERSTORAGE]: Could not find user {0} {1}", firstName, lastName);
+                m_log.ErrorFormat("[User Storage]: Could not find user {0} {1}", firstName, lastName);
                 return false;
             }
 
@@ -744,16 +740,16 @@ namespace OpenSim.Framework.Communications
         public abstract UserProfileData SetupMasterUser(UUID uuid);
 
         /// <summary>
-        /// Add an agent using data plugins.
+        ///     Add an agent using data plugins.
         /// </summary>
         /// <param name="agentdata">The agent data to be added</param>
         /// <returns>
-        /// true if at least one plugin added the user agent.  false if no plugin successfully added the agent
+        ///     true if at least one plugin added the user agent.  false if no plugin successfully added the agent
         /// </returns>
         public virtual bool AddUserAgent(UserAgentData agentdata)
         {
             bool result = false;
-            
+
             foreach (IUserDataPlugin plugin in m_plugins)
             {
                 try
@@ -763,15 +759,15 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[USERSTORAGE]: Unable to add agent via " + plugin.Name + "(" + e.ToString() + ")");
+                    m_log.Error("[User Storage]: Unable to add agent via " + plugin.Name + "(" + e.ToString() + ")");
                 }
             }
-            
+
             return result;
         }
 
         /// <summary>
-        /// Get avatar appearance information
+        ///     Get avatar appearance information
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -782,16 +778,16 @@ namespace OpenSim.Framework.Communications
                 try
                 {
                     AvatarAppearance appearance = plugin.GetUserAppearance(user);
-                    
+
                     if (appearance != null)
                         return appearance;
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat("[USERSTORAGE]: Unable to find user appearance {0} via {1} ({2})", user.ToString(), plugin.Name, e.ToString());
+                    m_log.ErrorFormat("[User Storage]: Unable to find user appearance {0} via {1} ({2})", user.ToString(), plugin.Name, e.ToString());
                 }
             }
-            
+
             return null;
         }
 
@@ -805,7 +801,7 @@ namespace OpenSim.Framework.Communications
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat("[USERSTORAGE]: Unable to update user appearance {0} via {1} ({2})", user.ToString(), plugin.Name, e.ToString());
+                    m_log.ErrorFormat("[User Storage]: Unable to update user appearance {0} via {1} ({2})", user.ToString(), plugin.Name, e.ToString());
                 }
             }
         }
@@ -815,9 +811,9 @@ namespace OpenSim.Framework.Communications
         protected Dictionary<UUID, List<string>> m_userKeys = new Dictionary<UUID, List<string>>();
 
         /// <summary>
-        /// This generates authorization keys in the form
-        /// http://userserver/uuid
-        /// after verifying that the caller is, indeed, authorized to request a key
+        ///     This generates authorization keys in the form
+        ///     http://userserver/uuid
+        ///     after verifying that the caller is, indeed, authorized to request a key
         /// </summary>
         /// <param name="url">URL of the user server</param>
         /// <param name="userID">The user ID requesting the new key</param>
@@ -827,6 +823,7 @@ namespace OpenSim.Framework.Communications
         {
             UserProfileData profile = GetUserProfile(userID);
             string newKey = string.Empty;
+
             if (!url.EndsWith("/"))
                 url = url + "/";
 
@@ -849,21 +846,23 @@ namespace OpenSim.Framework.Communications
                             keys = new List<string>();
                             m_userKeys.Add(userID, keys);
                         }
+
                         keys.Add(newKey);
                     }
-                    m_log.InfoFormat("[USERAUTH]: Successfully generated new auth key for user {0}", userID);
+
+                    m_log.InfoFormat("[User Authentication]: Successfully generated new auth key for user {0}", userID);
                 }
                 else
-                    m_log.Warn("[USERAUTH]: Unauthorized key generation request. Denying new key.");
+                    m_log.Warn("[User Authentication]: Unauthorized key generation request. Denying new key.");
             }
             else
-                m_log.Warn("[USERAUTH]: User not found.");
+                m_log.Warn("[User Authentication]: User not found.");
 
             return url + newKey;
         }
 
         /// <summary>
-        /// This verifies the uuid portion of the key given out by GenerateKey
+        ///     This verifies the uuid portion of the key given out by GenerateKey
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="key"></param>
@@ -881,46 +880,40 @@ namespace OpenSim.Framework.Communications
                         keys.Remove(key);
                         return true;
                     }
+
                     return false;
                 }
                 else
                     return false;
             }
         }
-        
+
         public virtual bool VerifySession(UUID userID, UUID sessionID)
         {
             UserProfileData userProfile = GetUserProfile(userID);
 
             if (userProfile != null && userProfile.CurrentAgent != null)
             {
-                m_log.DebugFormat(
-                    "[USER AUTH]: Verifying session {0} for {1}; current  session {2}", 
-                    sessionID, userID, userProfile.CurrentAgent.SessionID);
-                
+                m_log.DebugFormat("[User Authentication]: Verifying session {0} for {1}; current session {2}", sessionID, userID, userProfile.CurrentAgent.SessionID);
+
                 if (userProfile.CurrentAgent.SessionID == sessionID)
                 {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
         public virtual bool AuthenticateUserByPassword(UUID userID, string password)
         {
-//            m_log.DebugFormat("[USER AUTH]: Authenticating user {0} given password {1}", userID, password);
-            
             UserProfileData userProfile = GetUserProfile(userID);
 
             if (null == userProfile)
                 return false;
-      
+
             string md5PasswordHash = Util.Md5Hash(Util.Md5Hash(password) + ":" + userProfile.PasswordSalt);
 
-//            m_log.DebugFormat(
-//                "[USER AUTH]: Submitted hash {0}, stored hash {1}", md5PasswordHash, userProfile.PasswordHash);
-    
             if (md5PasswordHash == userProfile.PasswordHash)
                 return true;
             else

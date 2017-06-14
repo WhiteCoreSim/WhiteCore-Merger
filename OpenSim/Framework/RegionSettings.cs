@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,13 +36,11 @@ namespace OpenSim.Framework
     public class RegionSettings
     {
         private ConfigurationMember configMember;
-
         public delegate void SaveDelegate(RegionSettings rs);
-
         public event SaveDelegate OnSave;
-        
+
         /// <value>
-        /// These appear to be terrain textures that are shipped with the client.
+        ///     These appear to be terrain textures that are shipped with the client.
         /// </value>
         public static readonly UUID DEFAULT_TERRAIN_TEXTURE_1 = new UUID("b8d3965a-ad78-bf43-699b-bff8eca6c975");
         public static readonly UUID DEFAULT_TERRAIN_TEXTURE_2 = new UUID("abb783e6-3e93-26c0-248a-247666855da3");
@@ -64,180 +64,109 @@ namespace OpenSim.Framework
 
         public void LoadConfigurationOptions()
         {
-             configMember.addConfigurationOption("region_flags",
-                     ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                     String.Empty, "336723974", true);
-
-             configMember.addConfigurationOption("max_agents",
-                     ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                     String.Empty, "40", true);
-
-             configMember.addConfigurationOption("object_bonus_factor",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "1.0", true);
-
-             configMember.addConfigurationOption("sim_access",
-                     ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                     String.Empty, "21", true);
-
-             configMember.addConfigurationOption("terrain_base_0",
-                     ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                     String.Empty, DEFAULT_TERRAIN_TEXTURE_1.ToString(), true);
-
-             configMember.addConfigurationOption("terrain_base_1",
-                     ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                     String.Empty, DEFAULT_TERRAIN_TEXTURE_2.ToString(), true);
-
-             configMember.addConfigurationOption("terrain_base_2",
-                     ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                     String.Empty, DEFAULT_TERRAIN_TEXTURE_3.ToString(), true);
-
-             configMember.addConfigurationOption("terrain_base_3",
-                     ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                     String.Empty, DEFAULT_TERRAIN_TEXTURE_4.ToString(), true);
-
-             configMember.addConfigurationOption("terrain_start_height_0",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "10.0", true);
-
-             configMember.addConfigurationOption("terrain_start_height_1",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "10.0", true);
-
-             configMember.addConfigurationOption("terrain_start_height_2",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "10.0", true);
-
-             configMember.addConfigurationOption("terrain_start_height_3",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "10.0", true);
-
-             configMember.addConfigurationOption("terrain_height_range_0",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "60.0", true);
-
-             configMember.addConfigurationOption("terrain_height_range_1",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "60.0", true);
-
-             configMember.addConfigurationOption("terrain_height_range_2",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "60.0", true);
-
-             configMember.addConfigurationOption("terrain_height_range_3",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "60.0", true);
-
-             configMember.addConfigurationOption("region_water_height",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "20.0", true);
-
-             configMember.addConfigurationOption("terrain_raise_limit",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "100.0", true);
-
-             configMember.addConfigurationOption("terrain_lower_limit",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "-100.0", true);
-
-             configMember.addConfigurationOption("sun_hour",
-                     ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE,
-                     String.Empty, "0.0", true);
+            configMember.addConfigurationOption("region_flags", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, String.Empty, "336723974", true);
+            configMember.addConfigurationOption("max_agents", ConfigurationOption.ConfigurationTypes.TYPE_INT32, String.Empty, "40", true);
+            configMember.addConfigurationOption("object_bonus_factor", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "1.0", true);
+            configMember.addConfigurationOption("sim_access", ConfigurationOption.ConfigurationTypes.TYPE_INT32, String.Empty, "21", true);
+            configMember.addConfigurationOption("terrain_base_0", ConfigurationOption.ConfigurationTypes.TYPE_UUID, String.Empty, DEFAULT_TERRAIN_TEXTURE_1.ToString(), true);
+            configMember.addConfigurationOption("terrain_base_1", ConfigurationOption.ConfigurationTypes.TYPE_UUID, String.Empty, DEFAULT_TERRAIN_TEXTURE_2.ToString(), true);
+            configMember.addConfigurationOption("terrain_base_2", ConfigurationOption.ConfigurationTypes.TYPE_UUID, String.Empty, DEFAULT_TERRAIN_TEXTURE_3.ToString(), true);
+            configMember.addConfigurationOption("terrain_base_3", ConfigurationOption.ConfigurationTypes.TYPE_UUID, String.Empty, DEFAULT_TERRAIN_TEXTURE_4.ToString(), true);
+            configMember.addConfigurationOption("terrain_start_height_0", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "10.0", true);
+            configMember.addConfigurationOption("terrain_start_height_1", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "10.0", true);
+            configMember.addConfigurationOption("terrain_start_height_2", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "10.0", true);
+            configMember.addConfigurationOption("terrain_start_height_3", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "10.0", true);
+            configMember.addConfigurationOption("terrain_height_range_0", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "60.0", true);
+            configMember.addConfigurationOption("terrain_height_range_1", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "60.0", true);
+            configMember.addConfigurationOption("terrain_height_range_2", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "60.0", true);
+            configMember.addConfigurationOption("terrain_height_range_3", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "60.0", true);
+            configMember.addConfigurationOption("region_water_height", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "20.0", true);
+            configMember.addConfigurationOption("terrain_raise_limit", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "100.0", true);
+            configMember.addConfigurationOption("terrain_lower_limit", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "-100.0", true);
+            configMember.addConfigurationOption("sun_hour", ConfigurationOption.ConfigurationTypes.TYPE_DOUBLE, String.Empty, "0.0", true);
         }
 
         public bool HandleIncomingConfiguration(string key, object value)
         {
             switch (key)
             {
-            case "region_flags":
-                RegionFlags flags = (RegionFlags)(uint)value;
+                case "region_flags":
+                    RegionFlags flags = (RegionFlags)(uint)value;
+                    m_BlockTerraform = (flags & RegionFlags.BlockTerraform) != 0;
+                    m_BlockFly = (flags & RegionFlags.NoFly) != 0;
+                    m_AllowDamage = (flags & RegionFlags.AllowDamage) != 0;
+                    m_RestrictPushing = (flags & RegionFlags.RestrictPushObject) != 0;
+                    m_AllowLandResell = (flags & RegionFlags.BlockLandResell) == 0;
+                    m_AllowLandJoinDivide = (flags & RegionFlags.AllowParcelChanges) != 0;
+                    m_BlockShowInSearch = ((uint)flags & (1 << 29)) != 0;
+                    m_DisableScripts = (flags & RegionFlags.SkipScripts) != 0;
+                    m_DisableCollisions = (flags & RegionFlags.SkipCollisions) != 0;
+                    m_DisablePhysics = (flags & RegionFlags.SkipPhysics) != 0;
+                    m_FixedSun = (flags & RegionFlags.SunFixed) != 0;
+                    m_Sandbox = (flags & RegionFlags.Sandbox) != 0;
+                    break;
+                case "max_agents":
+                    m_AgentLimit = (int)value;
+                    break;
+                case "object_bonus_factor":
+                    m_ObjectBonus = (double)value;
+                    break;
+                case "sim_access":
+                    int access = (int)value;
 
-                m_BlockTerraform =
-                        (flags & RegionFlags.BlockTerraform) != 0;
-                m_BlockFly =
-                        (flags & RegionFlags.NoFly) != 0;
-                m_AllowDamage =
-                        (flags & RegionFlags.AllowDamage) != 0;
-                m_RestrictPushing =
-                        (flags & RegionFlags.RestrictPushObject) != 0;
-                m_AllowLandResell =
-                        (flags & RegionFlags.BlockLandResell) == 0;
-                m_AllowLandJoinDivide =
-                        (flags & RegionFlags.AllowParcelChanges) != 0;
-                m_BlockShowInSearch =
-                        ((uint)flags & (1 << 29)) != 0;
-                m_DisableScripts =
-                        (flags & RegionFlags.SkipScripts) != 0;
-                m_DisableCollisions =
-                        (flags & RegionFlags.SkipCollisions) != 0;
-                m_DisablePhysics =
-                        (flags & RegionFlags.SkipPhysics) != 0;
-                m_FixedSun =
-                        (flags & RegionFlags.SunFixed) != 0;
-                m_Sandbox =
-                        (flags & RegionFlags.Sandbox) != 0;
-                break;
-            case "max_agents":
-                m_AgentLimit = (int)value;
-                break;
-            case "object_bonus_factor":
-                m_ObjectBonus = (double)value;
-                break;
-            case "sim_access":
-                int access = (int)value;
-                if (access <= 13)
-                    m_Maturity = 0;
-                else
-                    m_Maturity = 1;
-                break;
-            case "terrain_base_0":
-                m_TerrainTexture1 = (UUID)value;
-                break;
-            case "terrain_base_1":
-                m_TerrainTexture2 = (UUID)value;
-                break;
-            case "terrain_base_2":
-                m_TerrainTexture3 = (UUID)value;
-                break;
-            case "terrain_base_3":
-                m_TerrainTexture4 = (UUID)value;
-                break;
-            case "terrain_start_height_0":
-                m_Elevation1SW = (double)value;
-                break;
-            case "terrain_start_height_1":
-                m_Elevation1NW = (double)value;
-                break;
-            case "terrain_start_height_2":
-                m_Elevation1SE = (double)value;
-                break;
-            case "terrain_start_height_3":
-                m_Elevation1NE = (double)value;
-                break;
-            case "terrain_height_range_0":
-                m_Elevation2SW = (double)value;
-                break;
-            case "terrain_height_range_1":
-                m_Elevation2NW = (double)value;
-                break;
-            case "terrain_height_range_2":
-                m_Elevation2SE = (double)value;
-                break;
-            case "terrain_height_range_3":
-                m_Elevation2NE = (double)value;
-                break;
-            case "region_water_height":
-                m_WaterHeight = (double)value;
-                break;
-            case "terrain_raise_limit":
-                m_TerrainRaiseLimit = (double)value;
-                break;
-            case "terrain_lower_limit":
-                m_TerrainLowerLimit = (double)value;
-                break;
-            case "sun_hour":
-                m_SunPosition = (double)value;
-                break;
+                    if (access <= 13)
+                        m_Maturity = 0;
+                    else
+                        m_Maturity = 1;
+                    break;
+                case "terrain_base_0":
+                    m_TerrainTexture1 = (UUID)value;
+                    break;
+                case "terrain_base_1":
+                    m_TerrainTexture2 = (UUID)value;
+                    break;
+                case "terrain_base_2":
+                    m_TerrainTexture3 = (UUID)value;
+                    break;
+                case "terrain_base_3":
+                    m_TerrainTexture4 = (UUID)value;
+                    break;
+                case "terrain_start_height_0":
+                    m_Elevation1SW = (double)value;
+                    break;
+                case "terrain_start_height_1":
+                    m_Elevation1NW = (double)value;
+                    break;
+                case "terrain_start_height_2":
+                    m_Elevation1SE = (double)value;
+                    break;
+                case "terrain_start_height_3":
+                    m_Elevation1NE = (double)value;
+                    break;
+                case "terrain_height_range_0":
+                    m_Elevation2SW = (double)value;
+                    break;
+                case "terrain_height_range_1":
+                    m_Elevation2NW = (double)value;
+                    break;
+                case "terrain_height_range_2":
+                    m_Elevation2SE = (double)value;
+                    break;
+                case "terrain_height_range_3":
+                    m_Elevation2NE = (double)value;
+                    break;
+                case "region_water_height":
+                    m_WaterHeight = (double)value;
+                    break;
+                case "terrain_raise_limit":
+                    m_TerrainRaiseLimit = (double)value;
+                    break;
+                case "terrain_lower_limit":
+                    m_TerrainLowerLimit = (double)value;
+                    break;
+                case "sun_hour":
+                    m_SunPosition = (double)value;
+                    break;
             }
 
             return true;
@@ -562,29 +491,30 @@ namespace OpenSim.Framework
         }
 
         private int m_LoadedCreationDateTime;
+
         public int LoadedCreationDateTime
         {
             get { return m_LoadedCreationDateTime; }
             set { m_LoadedCreationDateTime = value; }
         }
-        
+
         public String LoadedCreationDate
         {
-            get 
-            { 
+            get
+            {
                 TimeSpan ts = new TimeSpan(0, 0, LoadedCreationDateTime);
                 DateTime stamp = new DateTime(1970, 1, 1) + ts;
-                return stamp.ToLongDateString(); 
+                return stamp.ToLongDateString();
             }
         }
 
         public String LoadedCreationTime
         {
-            get 
-            { 
+            get
+            {
                 TimeSpan ts = new TimeSpan(0, 0, LoadedCreationDateTime);
                 DateTime stamp = new DateTime(1970, 1, 1) + ts;
-                return stamp.ToLongTimeString(); 
+                return stamp.ToLongTimeString();
             }
         }
 
@@ -594,6 +524,5 @@ namespace OpenSim.Framework
             get { return m_LoadedCreationID; }
             set { m_LoadedCreationID = value; }
         }
-
     }
 }

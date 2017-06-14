@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,7 +39,7 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// ChatFromViewer Arguments
+    ///     ChatFromViewer Arguments
     /// </summary>
     public class OSChatMessage : EventArgs, IEventArgs
     {
@@ -45,7 +47,6 @@ namespace OpenSim.Framework
         protected string m_from;
         protected string m_message;
         protected Vector3 m_position;
-
         protected IScene m_scene;
         protected IClientAPI m_sender;
         protected object m_senderObject;
@@ -58,7 +59,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// The message sent by the user
+        ///     The message sent by the user
         /// </summary>
         public string Message
         {
@@ -67,7 +68,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// The type of message, eg say, shout, broadcast.
+        ///     The type of message, eg say, shout, broadcast.
         /// </summary>
         public ChatTypeEnum Type
         {
@@ -76,7 +77,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Which channel was this message sent on? Different channels may have different listeners. Public chat is on channel zero.
+        ///     Which channel was this message sent on? Different channels may have different listeners. Public chat is on channel zero.
         /// </summary>
         public int Channel
         {
@@ -85,7 +86,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// The position of the sender at the time of the message broadcast.
+        ///     The position of the sender at the time of the message broadcast.
         /// </summary>
         public Vector3 Position
         {
@@ -94,7 +95,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// The name of the sender (needed for scripts)
+        ///     The name of the sender (needed for scripts)
         /// </summary>
         public string From
         {
@@ -108,7 +109,7 @@ namespace OpenSim.Framework
         /// type IChatSender
 
         /// <summary>
-        /// The client responsible for sending the message, or null.
+        ///     The client responsible for sending the message, or null.
         /// </summary>
         public IClientAPI Sender
         {
@@ -117,7 +118,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// The object responsible for sending the message, or null.
+        ///     The object responsible for sending the message, or null.
         /// </summary>
         public object SenderObject
         {
@@ -131,9 +132,6 @@ namespace OpenSim.Framework
             set { m_fromID = value; }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         public IScene Scene
         {
             get { return m_scene; }

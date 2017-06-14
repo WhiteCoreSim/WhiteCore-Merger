@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,11 +36,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly : AssemblyTitle("ServerConsole")]
-[assembly : AssemblyDescription("")]
+[assembly: AssemblyTitle("ServerConsole")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("http://whitecore-sim.org")]
-[assembly : AssemblyProduct("ServerConsole")]
+[assembly: AssemblyProduct("ServerConsole")]
 [assembly: AssemblyCopyright("Copyright (c) WhiteCore-Sim.org Developers 2007-2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -46,7 +48,7 @@ using System.Runtime.InteropServices;
 // This sets the default COM visibility of types in the assembly to invisible.
 // If you need to expose a type to COM, use [ComVisible(true)] on that type.
 
-[assembly : ComVisible(false)]
+[assembly: ComVisible(false)]
 
 // The assembly version has following format :
 //
@@ -55,4 +57,4 @@ using System.Runtime.InteropServices;
 // You can specify all values by your own or you can build default build and revision
 // numbers with the '*' character (the default):
 
-[assembly : AssemblyVersion("0.6.5.*")]
+[assembly: AssemblyVersion("0.6.5.*")]

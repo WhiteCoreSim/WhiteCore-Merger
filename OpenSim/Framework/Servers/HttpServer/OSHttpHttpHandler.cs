@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,7 +43,7 @@ namespace OpenSim.Framework.Servers.HttpServer
 {
     public delegate XmlRpcResponse OSHttpHttpProcessor(XmlRpcRequest request);
 
-    public class OSHttpHttpHandler: OSHttpHandler
+    public class OSHttpHttpHandler : OSHttpHandler
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -49,7 +51,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         private GenericHTTPMethod _handler;
 
         /// <summary>
-        /// Instantiate an HTTP handler.
+        ///     Instantiate an HTTP handler.
         /// </summary>
         /// <param name="handler">a GenericHTTPMethod</param>
         /// <param name="method">null or HTTP method regex</param>
@@ -58,26 +60,22 @@ namespace OpenSim.Framework.Servers.HttpServer
         /// <param name="headers">null or dictionary with header
         /// regexs</param>
         /// <param name="whitelist">null or IP address whitelist</param>
-        public OSHttpHttpHandler(GenericHTTPMethod handler, Regex method, Regex path,
-                                 Dictionary<string, Regex> query,
-                                 Dictionary<string, Regex> headers, Regex whitelist)
-            : base(method, path, query, headers, new Regex(@"^text/html", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-                   whitelist)
+        public OSHttpHttpHandler(GenericHTTPMethod handler, Regex method, Regex path, Dictionary<string, Regex> query, Dictionary<string, Regex> headers, Regex whitelist)
+            : base(method, path, query, headers, new Regex(@"^text/html", RegexOptions.IgnoreCase | RegexOptions.Compiled), whitelist)
         {
             _handler = handler;
         }
 
         /// <summary>
-        /// Instantiate an HTTP handler.
+        ///     Instantiate an HTTP handler.
         /// </summary>
         /// <param name="handler">a GenericHTTPMethod</param>
-        public OSHttpHttpHandler(GenericHTTPMethod handler)
-            : this(handler, new Regex(@"^GET$", RegexOptions.IgnoreCase | RegexOptions.Compiled), null, null, null, null)
+        public OSHttpHttpHandler(GenericHTTPMethod handler) : this(handler, new Regex(@"^GET$", RegexOptions.IgnoreCase | RegexOptions.Compiled), null, null, null, null)
         {
         }
 
         /// <summary>
-        /// Invoked by OSHttpRequestPump.
+        ///     Invoked by OSHttpRequestPump.
         /// </summary>
         public override OSHttpHandlerResult Process(OSHttpRequest request)
         {
@@ -90,7 +88,6 @@ namespace OpenSim.Framework.Servers.HttpServer
 
             //Even though only one other part of the entire code uses HTTPHandlers, we shouldn't expect this
             //and should check for NullReferenceExceptions
-
             if (string.IsNullOrEmpty(contentType))
             {
                 contentType = "text/html";
@@ -100,7 +97,6 @@ namespace OpenSim.Framework.Servers.HttpServer
 
             // We're forgoing the usual error status codes here because the client
             // ignores anything but 200 and 301
-
             response.StatusCode = (int)OSHttpStatusCode.SuccessOk;
 
             if (responseCode == (int)OSHttpStatusCode.RedirectMovedPermanently)

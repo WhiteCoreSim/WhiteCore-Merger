@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,8 +45,6 @@ namespace OpenSim.Framework
         public byte offline;
         public Vector3 Position;
         public byte[] binaryBucket;
-
-
         public uint ParentEstateID;
         public Guid RegionID;
         public uint timestamp;
@@ -54,11 +54,7 @@ namespace OpenSim.Framework
             binaryBucket = new byte[0];
         }
 
-        public GridInstantMessage(IScene scene, UUID _fromAgentID,
-                string _fromAgentName, UUID _toAgentID,
-                byte _dialog, bool _fromGroup, string _message,
-                UUID _imSessionID, bool _offline, Vector3 _position,
-                byte[] _binaryBucket)
+        public GridInstantMessage(IScene scene, UUID _fromAgentID, string _fromAgentName, UUID _toAgentID, byte _dialog, bool _fromGroup, string _message, UUID _imSessionID, bool _offline, Vector3 _position, byte[] _binaryBucket)
         {
             fromAgentID = _fromAgentID.Guid;
             fromAgentName = _fromAgentName;
@@ -67,10 +63,12 @@ namespace OpenSim.Framework
             fromGroup = _fromGroup;
             message = _message;
             imSessionID = _imSessionID.Guid;
+
             if (_offline)
                 offline = 1;
             else
                 offline = 0;
+
             Position = _position;
             binaryBucket = _binaryBucket;
 
@@ -79,15 +77,12 @@ namespace OpenSim.Framework
                 ParentEstateID = scene.RegionInfo.EstateSettings.ParentEstateID;
                 RegionID = scene.RegionInfo.RegionSettings.RegionUUID.Guid;
             }
+
             timestamp = (uint)Util.UnixTimeSinceEpoch();
         }
 
-        public GridInstantMessage(IScene scene, UUID _fromAgentID,
-                string _fromAgentName, UUID _toAgentID, byte _dialog,
-                string _message, bool _offline,
-                Vector3 _position) : this(scene, _fromAgentID, _fromAgentName,
-                _toAgentID, _dialog, false, _message,
-                _fromAgentID ^ _toAgentID, _offline, _position, new byte[0])
+        public GridInstantMessage(IScene scene, UUID _fromAgentID, string _fromAgentName, UUID _toAgentID, byte _dialog,
+                string _message, bool _offline, Vector3 _position) : this(scene, _fromAgentID, _fromAgentName, _toAgentID, _dialog, false, _message, _fromAgentID ^ _toAgentID, _offline, _position, new byte[0])
         {
         }
     }

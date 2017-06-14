@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -54,21 +56,20 @@ namespace OpenSim
         }
 
         public const int VERSIONINFO_VERSION_LENGTH = 27;
-        
-        /// <value>
-        /// This is the external interface version.  It is separate from the WhiteCore-Sim project version.
+
+        /// <summary>
+        ///     This is the external interface version.  It is separate from the WhiteCore-Sim project version.
         /// 
-        /// This version number should be 
-        /// increased by 1 every time a code change makes the previous WhiteCore-Sim revision incompatible
-        /// with the new revision.  This will usually be due to interregion or grid facing interface changes.
+        ///     This version number should be 
+        ///     increased by 1 every time a code change makes the previous WhiteCore-Sim revision incompatible
+        ///     with the new revision.  This will usually be due to interregion or grid facing interface changes.
         /// 
-        /// Changes which are compatible with an older revision (e.g. older revisions experience degraded functionality
-        /// but not outright failure) do not need a version number increment.
+        ///     Changes which are compatible with an older revision (e.g. older revisions experience degraded functionality
+        ///     but not outright failure) do not need a version number increment.
         /// 
-        /// Having this version number allows the grid service to reject connections from regions running a version
-        /// of the code that is too old. 
-        ///
-        /// </value>
+        ///     Having this version number allows the grid service to reject connections from regions running a version
+        ///     of the code that is too old. 
+        /// </summary>
         public readonly static int MajorInterfaceVersion = 6;
     }
 }

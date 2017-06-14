@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,8 +32,8 @@ using Nwc.XmlRpc;
 namespace OpenSim.Framework.Servers.HttpServer
 {
     /// <summary>
-    /// Interface to WhiteCore-Sim's built in HTTP server.  Use this to register handlers (http, llsd, xmlrpc, etc.)
-    /// for given URLs.
+    ///     Interface to WhiteCore-Sim's built in HTTP server.  Use this to register handlers (http, llsd, xmlrpc, etc.)
+    ///     for given URLs.
     /// </summary>
     public interface IHttpServer
     {
@@ -45,28 +47,26 @@ namespace OpenSim.Framework.Servers.HttpServer
         // the handlers - it is NOT required to be an actual agent header
         // value.
         bool AddAgentHandler(string agent, IHttpAgentHandler handler);
-        
+
         /// <summary>
-        /// Add a handler for an HTTP request
-        /// </summary>
+        ///     Add a handler for an HTTP request
+        ///     This handler can actually be invoked either as 
         /// 
-        /// This handler can actually be invoked either as 
+        ///     http://<hostname>:<port>/?method=<methodName> 
         /// 
-        /// http://<hostname>:<port>/?method=<methodName> 
+        ///     or
         /// 
-        /// or
+        ///     http://<hostname>:<port><method>
         /// 
-        /// http://<hostname>:<port><method>
+        ///     if the method name starts with a slash.  For example, AddHTTPHandler("/object/", ...) on a standalone region
+        ///     server will register a handler that can be invoked with either
         /// 
-        /// if the method name starts with a slash.  For example, AddHTTPHandler("/object/", ...) on a standalone region
-        /// server will register a handler that can be invoked with either
+        ///     http://localhost:9000/?method=/object/
         /// 
-        /// http://localhost:9000/?method=/object/
+        ///     or
         /// 
-        /// or
-        /// 
-        /// http://localhost:9000/object/
-        /// 
+        ///     http://localhost:9000/object/
+        /// </method>
         /// <param name="methodName"></param>
         /// <param name="handler"></param>
         /// <returns>
@@ -74,19 +74,18 @@ namespace OpenSim.Framework.Servers.HttpServer
         /// </returns>
         bool AddHTTPHandler(string methodName, GenericHTTPMethod handler);
 
-         
         bool AddPollServiceHTTPHandler(string methodName, GenericHTTPMethod handler, PollServiceEventArgs args);
 
         /// <summary>
-        /// Adds a LLSD handler, yay.
+        ///     Adds a LLSD handler, yay.
         /// </summary>
         /// <param name="path">/resource/ path</param>
         /// <param name="handler">handle the LLSD response</param>
         /// <returns></returns>
         bool AddLLSDHandler(string path, LLSDMethod handler);
-        
+
         /// <summary>
-        /// Add a stream handler to the http server.  If the handler already exists, then nothing happens.
+        ///     Add a stream handler to the http server.  If the handler already exists, then nothing happens.
         /// </summary>
         /// <param name="handler"></param>
         void AddStreamHandler(IRequestHandler handler);
@@ -95,7 +94,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         bool AddXmlRPCHandler(string method, XmlRpcMethod handler, bool keepAlive);
 
         /// <summary>
-        /// Gets the XML RPC handler for given method name
+        ///     Gets the XML RPC handler for given method name
         /// </summary>
         /// <param name="method">Name of the method</param>
         /// <returns>Returns null if not found</returns>
@@ -104,28 +103,28 @@ namespace OpenSim.Framework.Servers.HttpServer
         bool SetDefaultLLSDHandler(DefaultLLSDMethod handler);
 
         /// <summary>
-        /// Remove the agent if it is registered.
+        ///     Remove the agent if it is registered.
         /// </summary>
         /// <param name="agent"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
         bool RemoveAgentHandler(string agent, IHttpAgentHandler handler);
-        
+
         /// <summary>
-        /// Remove an HTTP handler
+        ///     Remove an HTTP handler
         /// </summary>
         /// <param name="httpMethod"></param>
         /// <param name="path"></param>
         void RemoveHTTPHandler(string httpMethod, string path);
 
         void RemovePollServiceHTTPHandler(string httpMethod, string path);
-        
+
         bool RemoveLLSDHandler(string path, LLSDMethod handler);
-        
+
         void RemoveStreamHandler(string httpMethod, string path);
 
         void RemoveXmlRPCHandler(string method);
-        
+
         string GetHTTP404(string host);
 
         string GetHTTP500();

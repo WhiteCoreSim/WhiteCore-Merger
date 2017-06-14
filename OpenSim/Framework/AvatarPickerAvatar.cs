@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,22 +32,22 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Avatar returned by the Avatar Picker request
+    ///     Avatar returned by the Avatar Picker request
     /// </summary>
     public class AvatarPickerAvatar
     {
         /// <summary>
-        /// Avatar's Unique ID
+        ///     Avatar's Unique ID
         /// </summary>
         public UUID AvatarID;
 
         /// <summary>
-        /// Avatar's Account first name
+        ///     Avatar's Account first name
         /// </summary>
         public string firstName;
 
         /// <summary>
-        /// Avatar's Account last name
+        ///     Avatar's Account last name
         /// </summary>
         public string lastName;
     }

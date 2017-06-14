@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,28 +32,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
-
 using log4net;
-using OpenMetaverse;
 using Nwc.XmlRpc;
+using OpenMetaverse;
 
 namespace OpenSim.Framework.Communications.Clients
 {
     public class GridClient
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
-        public bool RegisterRegion(
-            string gridServerURL, string sendKey, string receiveKey, RegionInfo regionInfo, out bool forcefulBanLines)
+
+        public bool RegisterRegion(string gridServerURL, string sendKey, string receiveKey, RegionInfo regionInfo, out bool forcefulBanLines)
         {
-            m_log.InfoFormat(
-                "[GRID CLIENT]: Registering region {0} with grid at {1}", regionInfo.RegionName, gridServerURL);
-            
+            m_log.InfoFormat("[Grid Client]: Registering region {0} with grid at {1}", regionInfo.RegionName, gridServerURL);
+
             forcefulBanLines = true;
 
             Hashtable GridParams = new Hashtable();
-            // Login / Authentication
 
+            // Login / Authentication
             GridParams["authkey"] = sendKey;
             GridParams["recvkey"] = receiveKey;
             GridParams["UUID"] = regionInfo.RegionID.ToString();
@@ -89,32 +88,24 @@ namespace OpenSim.Framework.Communications.Clients
             }
             catch (Exception e)
             {
-                Exception e2
-                    = new Exception(
-                        String.Format(
-                            "Unable to register region with grid at {0}. Grid service not running?",
-                            gridServerURL),
-                        e);
+                Exception e2 = new Exception(String.Format("Unable to register region with grid at {0}. Grid service not running?", gridServerURL), e);
 
                 throw e2;
             }
 
             Hashtable GridRespData = (Hashtable)GridResp.Value;
-            // Hashtable griddatahash = GridRespData;
 
             // Process Response
             if (GridRespData.ContainsKey("error"))
             {
                 string errorstring = (string)GridRespData["error"];
 
-                Exception e = new Exception(
-                    String.Format("Unable to connect to grid at {0}: {1}", gridServerURL, errorstring));
+                Exception e = new Exception(String.Format("Unable to connect to grid at {0}: {1}", gridServerURL, errorstring));
 
                 throw e;
             }
             else
             {
-                // m_knownRegions = RequestNeighbours(regionInfo.RegionLocX, regionInfo.RegionLocY);
                 if (GridRespData.ContainsKey("allow_forceful_banlines"))
                 {
                     if ((string)GridRespData["allow_forceful_banlines"] != "TRUE")
@@ -122,8 +113,8 @@ namespace OpenSim.Framework.Communications.Clients
                         forcefulBanLines = false;
                     }
                 }
-
             }
+
             return true;
         }
 
@@ -148,19 +139,12 @@ namespace OpenSim.Framework.Communications.Clients
             }
             catch (Exception e)
             {
-                Exception e2
-                    = new Exception(
-                        String.Format(
-                            "Unable to deregister region with grid at {0}. Grid service not running?",
-                            gridServerURL),
-                        e);
+                Exception e2 = new Exception(String.Format("Unable to deregister region with grid at {0}. Grid service not running?", gridServerURL), e);
 
                 throw e2;
             }
 
             Hashtable GridRespData = (Hashtable)GridResp.Value;
-
-            // Hashtable griddatahash = GridRespData;
 
             // Process Response
             if (GridRespData != null && GridRespData.ContainsKey("error"))
@@ -172,9 +156,7 @@ namespace OpenSim.Framework.Communications.Clients
             return true;
         }
 
-        public bool RequestNeighborInfo(
-            string gridServerURL, string sendKey, string receiveKey, UUID regionUUID,
-            out RegionInfo regionInfo, out string errorMsg)
+        public bool RequestNeighborInfo(string gridServerURL, string sendKey, string receiveKey, UUID regionUUID, out RegionInfo regionInfo, out string errorMsg)
         {
             // didn't find it so far, we have to go the long way
             regionInfo = null;
@@ -207,12 +189,10 @@ namespace OpenSim.Framework.Communications.Clients
 
             regionInfo = BuildRegionInfo(responseData, String.Empty);
 
-            return true; 
+            return true;
         }
 
-        public bool RequestNeighborInfo(
-            string gridServerURL, string sendKey, string receiveKey, ulong regionHandle, 
-            out RegionInfo regionInfo, out string errorMsg)
+        public bool RequestNeighborInfo(string gridServerURL, string sendKey, string receiveKey, ulong regionHandle, out RegionInfo regionInfo, out string errorMsg)
         {
             // didn't find it so far, we have to go the long way
             regionInfo = null;
@@ -243,20 +223,16 @@ namespace OpenSim.Framework.Communications.Clients
                 string regionName = (string)responseData["region_name"];
                 UUID regionID = new UUID((string)responseData["region_UUID"]);
                 uint remotingPort = Convert.ToUInt32((string)responseData["remoting_port"]);
-
                 uint httpPort = 9000;
+
                 if (responseData.ContainsKey("http_port"))
                 {
                     httpPort = Convert.ToUInt32((string)responseData["http_port"]);
                 }
 
                 // Ok, so this is definitively the wrong place to do this, way too hard coded, but it doesn't seem we GET this info?
-
                 string simURI = "http://" + externalHostName + ":" + simPort;
 
-                // string externalUri = (string) responseData["sim_uri"];
-
-                //IPEndPoint neighbourInternalEndPoint = new IPEndPoint(IPAddress.Parse(internalIpStr), (int) port);
                 regionInfo = RegionInfo.Create(regionID, regionName, regX, regY, externalHostName, httpPort, simPort, remotingPort, simURI);
             }
             catch (Exception e)
@@ -268,9 +244,7 @@ namespace OpenSim.Framework.Communications.Clients
             return true;
         }
 
-        public bool RequestClosestRegion(
-             string gridServerURL, string sendKey, string receiveKey, string regionName, 
-             out RegionInfo regionInfo, out string errorMsg)
+        public bool RequestClosestRegion(string gridServerURL, string sendKey, string receiveKey, string regionName, out RegionInfo regionInfo, out string errorMsg)
         {
             regionInfo = null;
             errorMsg = string.Empty;
@@ -293,27 +267,28 @@ namespace OpenSim.Framework.Communications.Clients
                 }
 
                 regionInfo = BuildRegionInfo(responseData, "");
-
             }
             catch (Exception e)
             {
                 errorMsg = e.Message;
                 return false;
             }
+
             return true;
         }
 
         /// <summary>
-        /// Performs a XML-RPC query against the grid server returning mapblock information in the specified coordinates
+        ///     Performs a XML-RPC query against the grid server returning mapblock information in the specified coordinates
         /// </summary>
-        /// <remarks>REDUNDANT - OGS1 is to be phased out in favour of OGS2</remarks>
+        /// <remarks>
+        ///     REDUNDANT - OGS1 is to be phased out in favour of OGS2
+        /// </remarks>
         /// <param name="minX">Minimum X value</param>
         /// <param name="minY">Minimum Y value</param>
         /// <param name="maxX">Maximum X value</param>
         /// <param name="maxY">Maximum Y value</param>
         /// <returns>Hashtable of hashtables containing map data elements</returns>
-        public bool MapBlockQuery(
-            string gridServerURL, int minX, int minY, int maxX, int maxY, out Hashtable respData, out string errorMsg)
+        public bool MapBlockQuery(string gridServerURL, int minX, int minY, int maxX, int maxY, out Hashtable respData, out string errorMsg)
         {
             respData = new Hashtable();
             errorMsg = string.Empty;
@@ -349,6 +324,7 @@ namespace OpenSim.Framework.Communications.Clients
                 XmlRpcRequest request = new XmlRpcRequest("search_for_region_by_name", parameters);
                 XmlRpcResponse resp = request.Send(gridServerURL, 10000);
                 respData = (Hashtable)resp.Value;
+
                 if (respData != null && respData.Contains("faultCode"))
                 {
                     errorMsg = (string)respData["faultString"];

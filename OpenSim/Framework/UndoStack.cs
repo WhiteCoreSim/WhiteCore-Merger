@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,7 +32,7 @@ using System;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Undo stack.  Deletes entries beyond a certain capacity
+    ///     Undo stack.  Deletes entries beyond a certain capacity
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
@@ -60,8 +62,10 @@ namespace OpenSim.Framework
             get
             {
                 int count = m_new - m_old - 1;
+
                 if (count < 0)
                     count += m_Undos.Length;
+
                 return count;
             }
         }
@@ -71,11 +75,14 @@ namespace OpenSim.Framework
             if (IsFull)
             {
                 m_old++;
+
                 if (m_old >= m_Undos.Length)
                     m_old -= m_Undos.Length;
             }
+
             if (++m_new >= m_Undos.Length)
                 m_new -= m_Undos.Length;
+
             m_Undos[m_new] = item;
         }
 
@@ -85,8 +92,10 @@ namespace OpenSim.Framework
             {
                 T deleted = m_Undos[m_new];
                 m_Undos[m_new--] = default(T);
+
                 if (m_new < 0)
                     m_new += m_Undos.Length;
+
                 return deleted;
             }
             else
@@ -106,6 +115,7 @@ namespace OpenSim.Framework
                 {
                     m_Undos[i] = default(T);
                 }
+
                 m_new = 1;
                 m_old = 0;
             }

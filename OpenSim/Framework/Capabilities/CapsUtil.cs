@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,12 +32,12 @@ using OpenMetaverse;
 namespace OpenSim.Framework.Capabilities
 {
     /// <summary>
-    /// Capabilities utility methods
+    ///     Capabilities utility methods
     /// </summary>
     public class CapsUtil
     {
         /// <summary>
-        /// Generate a CAPS seed path using a previously generated CAPS object path component
+        ///     Generate a CAPS seed path using a previously generated CAPS object path component
         /// </summary>
         /// <param name="capsKey"></param>
         /// <returns></returns>
@@ -43,19 +45,18 @@ namespace OpenSim.Framework.Capabilities
         {
             return "/CAPS/" + capsObjectPath + "0000/";
         }
-        
+
         /// <summary>
-        /// Get a random CAPS object path component that will be used as the identifying part of all future CAPS requests
+        ///     Get a random CAPS object path component that will be used as the identifying part of all future CAPS requests
         /// </summary>
         /// <returns></returns>
         public static string GetRandomCapsObjectPath()
         {
             UUID caps = UUID.Random();
             string capsPath = caps.ToString();
-            // I'm commenting this, rather than delete, to keep as historical record.
+
             // The caps seed is now a full UUID string that gets added four more digits
             // for producing certain CAPs URLs in OpenSim
-            //capsPath = capsPath.Remove(capsPath.Length - 4, 4);
             return capsPath;
         }
     }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,14 +40,13 @@ namespace OpenSim.Framework
         public bool m_allow_alternate_ports;
         protected string m_externalHostName;
 
-        /// <value>
-        /// The port by which http communication occurs with the region (most noticeably, CAPS communication)
+        /// <summary>
+        ///     The port by which http communication occurs with the region (most noticeably, CAPS communication)
         ///
-        /// FIXME: Defaulting to 9000 temporarily (on the basis that this is the http port most region
-        /// servers are running) until the revision in which this change is made propogates around grids.
-        /// </value>
+        ///     FIXME: Defaulting to 9000 temporarily (on the basis that this is the http port most region
+        ///     servers are running) until the revision in which this change is made propogates around grids.
+        /// </summary>
         protected uint m_httpPort = 9000;
-
         protected IPEndPoint m_internalEndPoint;
         protected Guid m_originRegionID = UUID.Zero.Guid;
         protected string m_proxyUrl;
@@ -58,7 +59,7 @@ namespace OpenSim.Framework
         public string RemotingAddress;
 
         /// <summary>
-        /// This is a serializable version of RegionInfo
+        ///     This is a serializable version of RegionInfo
         /// </summary>
         public SerializableRegionInfo()
         {
@@ -84,7 +85,6 @@ namespace OpenSim.Framework
         {
             m_regionLocX = regionLocX;
             m_regionLocY = regionLocY;
-
             m_internalEndPoint = internalEndPoint;
             m_externalHostName = externalUri;
         }
@@ -93,10 +93,8 @@ namespace OpenSim.Framework
         {
             m_regionLocX = regionLocX;
             m_regionLocY = regionLocY;
-
             m_externalHostName = externalUri;
-
-            m_internalEndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), (int) port);
+            m_internalEndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), (int)port);
         }
 
         public uint RemotingPort
@@ -115,17 +113,14 @@ namespace OpenSim.Framework
         {
             get
             {
-                // Old one defaults to IPv6
-                //return new IPEndPoint(Dns.GetHostAddresses(m_externalHostName)[0], m_internalEndPoint.Port);
-
                 IPAddress ia = null;
+
                 // If it is already an IP, don't resolve it - just return directly
                 if (IPAddress.TryParse(m_externalHostName, out ia))
                     return new IPEndPoint(ia, m_internalEndPoint.Port);
 
                 // Reset for next check
                 ia = null;
-
 
                 // New method favors IPv4
                 foreach (IPAddress Adr in Dns.GetHostAddresses(m_externalHostName))
@@ -172,7 +167,7 @@ namespace OpenSim.Framework
 
         public ulong RegionHandle
         {
-            get { return Util.UIntsToLong((RegionLocX * (uint) Constants.RegionSize), (RegionLocY * (uint) Constants.RegionSize)); }
+            get { return Util.UIntsToLong((RegionLocX * (uint)Constants.RegionSize), (RegionLocY * (uint)Constants.RegionSize)); }
         }
 
         public string ProxyUrl

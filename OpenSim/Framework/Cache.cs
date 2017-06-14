@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,7 +34,6 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     // The delegate we will use for performing fetch from backing store
-    //
     public delegate Object FetchDelegate(string index);
     public delegate bool ExpireDelegate(string index);
 
@@ -41,7 +42,6 @@ namespace OpenSim.Framework
     // Conservative = Minimize memory. Expire items quickly.
     // Balanced = Expire items with few hits quickly.
     // Aggressive = Keep cache full. Expire only when over 90% and adding
-    //
     public enum CacheStrategy
     {
         Conservative = 0,
@@ -50,7 +50,6 @@ namespace OpenSim.Framework
     }
 
     // Select classes to store data on different media
-    //
     public enum CacheMedium
     {
         Memory = 0,
@@ -68,7 +67,6 @@ namespace OpenSim.Framework
     //
     // This is not abstract because we need to instantiate it briefly as a
     // method parameter
-    //
     public class CacheItemBase : IEquatable<CacheItemBase>, IComparable<CacheItemBase>
     {
         public string uuid;
@@ -118,29 +116,24 @@ namespace OpenSim.Framework
     }
 
     // Simple in-memory storage. Boxes the object and stores it in a variable
-    //
     public class MemoryCacheItem : CacheItemBase
     {
         private Object m_Data;
 
-        public MemoryCacheItem(string index) :
-            base(index)
+        public MemoryCacheItem(string index) : base(index)
         {
         }
 
-        public MemoryCacheItem(string index, DateTime ttl) :
-            base(index, ttl)
+        public MemoryCacheItem(string index, DateTime ttl) : base(index, ttl)
         {
         }
 
-        public MemoryCacheItem(string index, Object data) :
-            base(index)
+        public MemoryCacheItem(string index, Object data) : base(index)
         {
             Store(data);
         }
 
-        public MemoryCacheItem(string index, DateTime ttl, Object data) :
-            base(index, ttl)
+        public MemoryCacheItem(string index, DateTime ttl, Object data) : base(index, ttl)
         {
             Store(data);
         }
@@ -157,27 +150,22 @@ namespace OpenSim.Framework
     }
 
     // Simple persistent file storage
-    //
     public class FileCacheItem : CacheItemBase
     {
-        public FileCacheItem(string index) :
-            base(index)
+        public FileCacheItem(string index) : base(index)
         {
         }
 
-        public FileCacheItem(string index, DateTime ttl) :
-            base(index, ttl)
+        public FileCacheItem(string index, DateTime ttl) : base(index, ttl)
         {
         }
 
-        public FileCacheItem(string index, Object data) :
-            base(index)
+        public FileCacheItem(string index, Object data) : base(index)
         {
             Store(data);
         }
 
-        public FileCacheItem(string index, DateTime ttl, Object data) :
-            base(index, ttl)
+        public FileCacheItem(string index, DateTime ttl, Object data) : base(index, ttl)
         {
             Store(data);
         }
@@ -194,15 +182,11 @@ namespace OpenSim.Framework
         }
     }
 
-    // The main cache class. This is the class you instantiate to create
-    // a cache
-    //
+    // The main cache class. This is the class you instantiate to create a cache
     public class Cache
     {
         private List<CacheItemBase> m_Index = new List<CacheItemBase>();
-        private Dictionary<string, CacheItemBase> m_Lookup =
-            new Dictionary<string, CacheItemBase>();
-
+        private Dictionary<string, CacheItemBase> m_Lookup = new Dictionary<string, CacheItemBase>();
         private CacheStrategy m_Strategy;
         private CacheMedium m_Medium;
         private CacheFlags m_Flags = 0;
@@ -211,24 +195,24 @@ namespace OpenSim.Framework
         public ExpireDelegate OnExpire;
 
         // Comparison interfaces
-        //
         private class SortLRU : IComparer<CacheItemBase>
         {
             public int Compare(CacheItemBase a, CacheItemBase b)
             {
                 if (a == null && b == null)
                     return 0;
+
                 if (a == null)
                     return -1;
+
                 if (b == null)
                     return 1;
 
-                return(a.lastUsed.CompareTo(b.lastUsed));
+                return (a.lastUsed.CompareTo(b.lastUsed));
             }
         }
 
         // Convenience constructors
-        //
         public Cache()
         {
             m_Strategy = CacheStrategy.Balanced;
@@ -236,33 +220,27 @@ namespace OpenSim.Framework
             m_Flags = 0;
         }
 
-        public Cache(CacheMedium medium) :
-            this(medium, CacheStrategy.Balanced)
+        public Cache(CacheMedium medium) : this(medium, CacheStrategy.Balanced)
         {
         }
 
-        public Cache(CacheMedium medium, CacheFlags flags) :
-            this(medium, CacheStrategy.Balanced, flags)
+        public Cache(CacheMedium medium, CacheFlags flags) : this(medium, CacheStrategy.Balanced, flags)
         {
         }
 
-        public Cache(CacheMedium medium, CacheStrategy strategy) :
-            this(medium, strategy, 0)
+        public Cache(CacheMedium medium, CacheStrategy strategy) : this(medium, strategy, 0)
         {
         }
 
-        public Cache(CacheStrategy strategy, CacheFlags flags) :
-            this(CacheMedium.Memory, strategy, flags)
+        public Cache(CacheStrategy strategy, CacheFlags flags) : this(CacheMedium.Memory, strategy, flags)
         {
         }
 
-        public Cache(CacheFlags flags) :
-            this(CacheMedium.Memory, CacheStrategy.Balanced, flags)
+        public Cache(CacheFlags flags) : this(CacheMedium.Memory, CacheStrategy.Balanced, flags)
         {
         }
 
-        public Cache(CacheMedium medium, CacheStrategy strategy,
-                CacheFlags flags)
+        public Cache(CacheMedium medium, CacheStrategy strategy, CacheFlags flags)
         {
             m_Strategy = strategy;
             m_Medium = medium;
@@ -270,14 +248,12 @@ namespace OpenSim.Framework
         }
 
         // Count of the items currently in cache
-        //
         public int Count
         {
             get { lock (m_Index) { return m_Index.Count; } }
         }
 
         // Maximum number of items this cache will hold
-        //
         public int Size
         {
             get { return m_Size; }
@@ -311,7 +287,6 @@ namespace OpenSim.Framework
         }
 
         // Get an item from cache. Return the raw item, not it's data
-        //
         protected virtual CacheItemBase GetItem(string index)
         {
             CacheItemBase item = null;
@@ -338,7 +313,6 @@ namespace OpenSim.Framework
 
         // Get an item from cache. Do not try to fetch from source if not
         // present. Just return null
-        //
         public virtual Object Get(string index)
         {
             CacheItemBase item = GetItem(index);
@@ -351,14 +325,15 @@ namespace OpenSim.Framework
 
         // Fetch an object from backing store if not cached, serve from
         // cache if it is.
-        //
         public virtual Object Get(string index, FetchDelegate fetch)
         {
             Object item = Get(index);
+
             if (item != null)
                 return item;
 
             Object data = fetch(index);
+
             if (data == null)
             {
                 if ((m_Flags & CacheFlags.CacheMissing) != 0)
@@ -366,6 +341,7 @@ namespace OpenSim.Framework
                     lock (m_Index)
                     {
                         CacheItemBase missing = new CacheItemBase(index);
+
                         if (!m_Index.Contains(missing))
                         {
                             m_Index.Add(missing);
@@ -373,6 +349,7 @@ namespace OpenSim.Framework
                         }
                     }
                 }
+
                 return null;
             }
 
@@ -382,7 +359,6 @@ namespace OpenSim.Framework
         }
 
         // Find an object in cache by delegate.
-        //
         public Object Find(Predicate<CacheItemBase> d)
         {
             CacheItemBase item = m_Index.Find(d);
@@ -399,13 +375,13 @@ namespace OpenSim.Framework
 
             switch (m_Medium)
             {
-            case CacheMedium.Memory:
-                container = typeof(MemoryCacheItem);
-                break;
-            case CacheMedium.File:
-                return;
-            default:
-                return;
+                case CacheMedium.Memory:
+                    container = typeof(MemoryCacheItem);
+                    break;
+                case CacheMedium.File:
+                    return;
+                default:
+                    return;
             }
 
             Store(index, data, container);
@@ -416,8 +392,7 @@ namespace OpenSim.Framework
             Store(index, data, container, new Object[] { index });
         }
 
-        public virtual void Store(string index, Object data, Type container,
-                Object[] parameters)
+        public virtual void Store(string index, Object data, Type container, Object[] parameters)
         {
             Expire(false);
 
@@ -433,16 +408,17 @@ namespace OpenSim.Framework
 
                         item.hits++;
                         item.lastUsed = DateTime.Now;
+
                         if (m_DefaultTTL.Ticks != 0)
                             item.expires = DateTime.Now + m_DefaultTTL;
 
                         item.Store(data);
                     }
+
                     return;
                 }
 
-                item = (CacheItemBase)Activator.CreateInstance(container,
-                        parameters);
+                item = (CacheItemBase)Activator.CreateInstance(container, parameters);
 
                 if (m_DefaultTTL.Ticks != 0)
                     item.expires = DateTime.Now + m_DefaultTTL;
@@ -450,6 +426,7 @@ namespace OpenSim.Framework
                 m_Index.Add(item);
                 m_Lookup[index] = item;
             }
+
             item.Store(data);
         }
 
@@ -460,12 +437,11 @@ namespace OpenSim.Framework
 
             if (m_DefaultTTL.Ticks != 0)
             {
-                DateTime now= DateTime.Now;
+                DateTime now = DateTime.Now;
 
                 foreach (CacheItemBase item in new List<CacheItemBase>(m_Index))
                 {
-                    if (item.expires.Ticks == 0 ||
-                            item.expires <= now)
+                    if (item.expires.Ticks == 0 || item.expires <= now)
                     {
                         m_Index.Remove(item);
                         m_Lookup.Remove(item.uuid);
@@ -475,48 +451,48 @@ namespace OpenSim.Framework
 
             switch (m_Strategy)
             {
-            case CacheStrategy.Aggressive:
-                if (Count < Size)
-                    return;
-
-                lock (m_Index)
-                {
-                    m_Index.Sort(new SortLRU());
-                    m_Index.Reverse();
-
-                    int target = (int)((float)Size * 0.9);
-                    if (target == Count) // Cover ridiculous cache sizes
+                case CacheStrategy.Aggressive:
+                    if (Count < Size)
                         return;
 
-                    ExpireDelegate doExpire = OnExpire;
-
-                if (doExpire != null)
+                    lock (m_Index)
                     {
-                        List<CacheItemBase> candidates =
-                                m_Index.GetRange(target, Count - target);
+                        m_Index.Sort(new SortLRU());
+                        m_Index.Reverse();
 
-                        foreach (CacheItemBase i in candidates)
+                        int target = (int)((float)Size * 0.9);
+
+                        if (target == Count) // Cover ridiculous cache sizes
+                            return;
+
+                        ExpireDelegate doExpire = OnExpire;
+
+                        if (doExpire != null)
                         {
-                            if (doExpire(i.uuid))
+                            List<CacheItemBase> candidates = m_Index.GetRange(target, Count - target);
+
+                            foreach (CacheItemBase i in candidates)
                             {
-                                m_Index.Remove(i);
-                                m_Lookup.Remove(i.uuid);
+                                if (doExpire(i.uuid))
+                                {
+                                    m_Index.Remove(i);
+                                    m_Lookup.Remove(i.uuid);
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        m_Index.RemoveRange(target, Count - target);
+                        else
+                        {
+                            m_Index.RemoveRange(target, Count - target);
 
-                        m_Lookup.Clear();
+                            m_Lookup.Clear();
 
-                        foreach (CacheItemBase item in m_Index)
-                            m_Lookup[item.uuid] = item;
+                            foreach (CacheItemBase item in m_Index)
+                                m_Lookup[item.uuid] = item;
+                        }
                     }
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
             }
         }
 

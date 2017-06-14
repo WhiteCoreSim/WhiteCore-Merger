@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -75,11 +77,8 @@ namespace OpenSim.Framework
     public class PrimitiveBaseShape
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static readonly byte[] DEFAULT_TEXTURE = new Primitive.TextureEntry(new UUID("89556747-24cb-43ed-920b-47caed15465f")).GetBytes();
-
         private byte[] m_textureEntry;
-
         private ushort _pathBegin;
         private byte _pathCurve;
         private ushort _pathEnd;
@@ -142,9 +141,7 @@ namespace OpenSim.Framework
 
                 if (!Enum.IsDefined(typeof(HollowShape), hollowShapeByte))
                 {
-                    m_log.WarnFormat(
-                        "[SHAPE]: Attempt to set a ProfileCurve with a hollow shape value of {0}, which isn't a valid enum.  Replacing with default shape.",
-                        hollowShapeByte);
+                    m_log.WarnFormat("[Shape]: Attempt to set a ProfileCurve with a hollow shape value of {0}, which isn't a valid enum.  Replacing with default shape.", hollowShapeByte);
 
                     this._hollowShape = HollowShape.Same;
                 }
@@ -158,9 +155,7 @@ namespace OpenSim.Framework
 
                 if (!Enum.IsDefined(typeof(ProfileShape), profileShapeByte))
                 {
-                    m_log.WarnFormat(
-                        "[SHAPE]: Attempt to set a ProfileCurve with a profile shape value of {0}, which isn't a valid enum.  Replacing with square.",
-                        profileShapeByte);
+                    m_log.WarnFormat("[Shape]: Attempt to set a ProfileCurve with a profile shape value of {0}, which isn't a valid enum.  Replacing with square.", profileShapeByte);
 
                     this._profileShape = ProfileShape.Square;
                 }
@@ -173,7 +168,7 @@ namespace OpenSim.Framework
 
         public PrimitiveBaseShape()
         {
-            PCode = (byte) PCodeEnum.Primitive;
+            PCode = (byte)PCodeEnum.Primitive;
             ExtraParams = new byte[1];
             m_textureEntry = DEFAULT_TEXTURE;
         }
@@ -193,17 +188,14 @@ namespace OpenSim.Framework
         {
             get
             {
-                //m_log.DebugFormat("[PRIMITIVE BASE SHAPE]: get m_textureEntry length {0}", m_textureEntry.Length);
                 return new Primitive.TextureEntry(m_textureEntry, 0, m_textureEntry.Length);
             }
-
             set { m_textureEntry = value.GetBytes(); }
         }
 
         public byte[] TextureEntry
         {
             get { return m_textureEntry; }
-
             set
             {
                 if (value == null)
@@ -235,7 +227,7 @@ namespace OpenSim.Framework
         {
             PrimitiveBaseShape shape = Create();
 
-            shape._pathCurve = (byte) Extrusion.Straight;
+            shape._pathCurve = (byte)Extrusion.Straight;
             shape._profileShape = ProfileShape.Square;
             shape._pathScaleX = 100;
             shape._pathScaleY = 100;
@@ -247,7 +239,7 @@ namespace OpenSim.Framework
         {
             PrimitiveBaseShape shape = Create();
 
-            shape._pathCurve = (byte) Extrusion.Curve1;
+            shape._pathCurve = (byte)Extrusion.Curve1;
             shape._profileShape = ProfileShape.HalfCircle;
             shape._pathScaleX = 100;
             shape._pathScaleY = 100;
@@ -259,7 +251,7 @@ namespace OpenSim.Framework
         {
             PrimitiveBaseShape shape = Create();
 
-            shape._pathCurve = (byte) Extrusion.Curve1;
+            shape._pathCurve = (byte)Extrusion.Curve1;
             shape._profileShape = ProfileShape.Square;
 
             shape._pathScaleX = 100;
@@ -290,7 +282,7 @@ namespace OpenSim.Framework
 
         public PrimitiveBaseShape Copy()
         {
-            return (PrimitiveBaseShape) MemberwiseClone();
+            return (PrimitiveBaseShape)MemberwiseClone();
         }
 
         public static PrimitiveBaseShape CreateCylinder(float radius, float heigth)
@@ -345,400 +337,268 @@ namespace OpenSim.Framework
             }
         }
 
-        public ushort PathBegin {
-            get {
-                return _pathBegin;
-            }
-            set {
-                _pathBegin = value;
-            }
+        public ushort PathBegin
+        {
+            get { return _pathBegin; }
+            set { _pathBegin = value; }
         }
 
-        public byte PathCurve {
-            get {
-                return _pathCurve;
-            }
-            set {
-                _pathCurve = value;
-            }
+        public byte PathCurve
+        {
+            get { return _pathCurve; }
+            set { _pathCurve = value; }
         }
 
-        public ushort PathEnd {
-            get {
-                return _pathEnd;
-            }
-            set {
-                _pathEnd = value;
-            }
+        public ushort PathEnd
+        {
+            get { return _pathEnd; }
+            set { _pathEnd = value; }
         }
 
-        public sbyte PathRadiusOffset {
-            get {
-                return _pathRadiusOffset;
-            }
-            set {
-                _pathRadiusOffset = value;
-            }
+        public sbyte PathRadiusOffset
+        {
+            get { return _pathRadiusOffset; }
+            set { _pathRadiusOffset = value; }
         }
 
-        public byte PathRevolutions {
-            get {
-                return _pathRevolutions;
-            }
-            set {
-                _pathRevolutions = value;
-            }
+        public byte PathRevolutions
+        {
+            get { return _pathRevolutions; }
+            set { _pathRevolutions = value; }
         }
 
-        public byte PathScaleX {
-            get {
-                return _pathScaleX;
-            }
-            set {
-                _pathScaleX = value;
-            }
+        public byte PathScaleX
+        {
+            get { return _pathScaleX; }
+            set { _pathScaleX = value; }
         }
 
-        public byte PathScaleY {
-            get {
-                return _pathScaleY;
-            }
-            set {
-                _pathScaleY = value;
-            }
+        public byte PathScaleY
+        {
+            get { return _pathScaleY; }
+            set { _pathScaleY = value; }
         }
 
-        public byte PathShearX {
-            get {
-                return _pathShearX;
-            }
-            set {
-                _pathShearX = value;
-            }
+        public byte PathShearX
+        {
+            get { return _pathShearX; }
+            set { _pathShearX = value; }
         }
 
-        public byte PathShearY {
-            get {
-                return _pathShearY;
-            }
-            set {
-                _pathShearY = value;
-            }
+        public byte PathShearY
+        {
+            get { return _pathShearY; }
+            set { _pathShearY = value; }
         }
 
-        public sbyte PathSkew {
-            get {
-                return _pathSkew;
-            }
-            set {
-                _pathSkew = value;
-            }
+        public sbyte PathSkew
+        {
+            get { return _pathSkew; }
+            set { _pathSkew = value; }
         }
 
-        public sbyte PathTaperX {
-            get {
-                return _pathTaperX;
-            }
-            set {
-                _pathTaperX = value;
-            }
+        public sbyte PathTaperX
+        {
+            get { return _pathTaperX; }
+            set { _pathTaperX = value; }
         }
 
-        public sbyte PathTaperY {
-            get {
-                return _pathTaperY;
-            }
-            set {
-                _pathTaperY = value;
-            }
+        public sbyte PathTaperY
+        {
+            get { return _pathTaperY; }
+            set { _pathTaperY = value; }
         }
 
-        public sbyte PathTwist {
-            get {
-                return _pathTwist;
-            }
-            set {
-                _pathTwist = value;
-            }
+        public sbyte PathTwist
+        {
+            get { return _pathTwist; }
+            set { _pathTwist = value; }
         }
 
-        public sbyte PathTwistBegin {
-            get {
-                return _pathTwistBegin;
-            }
-            set {
-                _pathTwistBegin = value;
-            }
+        public sbyte PathTwistBegin
+        {
+            get { return _pathTwistBegin; }
+            set { _pathTwistBegin = value; }
         }
 
-        public byte PCode {
-            get {
-                return _pCode;
-            }
-            set {
-                _pCode = value;
-            }
+        public byte PCode
+        {
+            get { return _pCode; }
+            set { _pCode = value; }
         }
 
-        public ushort ProfileBegin {
-            get {
-                return _profileBegin;
-            }
-            set {
-                _profileBegin = value;
-            }
+        public ushort ProfileBegin
+        {
+            get { return _profileBegin; }
+            set { _profileBegin = value; }
         }
 
-        public ushort ProfileEnd {
-            get {
-                return _profileEnd;
-            }
-            set {
-                _profileEnd = value;
-            }
+        public ushort ProfileEnd
+        {
+            get { return _profileEnd; }
+            set { _profileEnd = value; }
         }
 
-        public ushort ProfileHollow {
-            get {
-                return _profileHollow;
-            }
-            set {
-                _profileHollow = value;
-            }
+        public ushort ProfileHollow
+        {
+            get { return _profileHollow; }
+            set { _profileHollow = value; }
         }
 
-        public Vector3 Scale {
-            get {
-                return _scale;
-            }
-            set {
-                _scale = value;
-            }
+        public Vector3 Scale
+        {
+            get { return _scale; }
+            set { _scale = value; }
         }
 
-        public byte State {
-            get {
-                return _state;
-            }
-            set {
-                _state = value;
-            }
+        public byte State
+        {
+            get { return _state; }
+            set { _state = value; }
         }
 
-        public ProfileShape ProfileShape {
-            get {
-                return _profileShape;
-            }
-            set {
-                _profileShape = value;
-            }
+        public ProfileShape ProfileShape
+        {
+            get { return _profileShape; }
+            set { _profileShape = value; }
         }
 
-        public HollowShape HollowShape {
-            get {
-                return _hollowShape;
-            }
-            set {
-                _hollowShape = value;
-            }
+        public HollowShape HollowShape
+        {
+            get { return _hollowShape; }
+            set { _hollowShape = value; }
         }
 
-        public UUID SculptTexture {
-            get {
-                return _sculptTexture;
-            }
-            set {
-                _sculptTexture = value;
-            }
+        public UUID SculptTexture
+        {
+            get { return _sculptTexture; }
+            set { _sculptTexture = value; }
         }
 
-        public byte SculptType {
-            get {
-                return _sculptType;
-            }
-            set {
-                _sculptType = value;
-            }
+        public byte SculptType
+        {
+            get { return _sculptType; }
+            set { _sculptType = value; }
         }
 
-        public byte[] SculptData {
-            get {
-                return _sculptData;
-            }
-            set {
-                _sculptData = value;
-            }
+        public byte[] SculptData
+        {
+            get { return _sculptData; }
+            set { _sculptData = value; }
         }
 
-        public int FlexiSoftness {
-            get {
-                return _flexiSoftness;
-            }
-            set {
-                _flexiSoftness = value;
-            }
+        public int FlexiSoftness
+        {
+            get { return _flexiSoftness; }
+            set { _flexiSoftness = value; }
         }
 
-        public float FlexiTension {
-            get {
-                return _flexiTension;
-            }
-            set {
-                _flexiTension = value;
-            }
+        public float FlexiTension
+        {
+            get { return _flexiTension; }
+            set { _flexiTension = value; }
         }
 
-        public float FlexiDrag {
-            get {
-                return _flexiDrag;
-            }
-            set {
-                _flexiDrag = value;
-            }
+        public float FlexiDrag
+        {
+            get { return _flexiDrag; }
+            set { _flexiDrag = value; }
         }
 
-        public float FlexiGravity {
-            get {
-                return _flexiGravity;
-            }
-            set {
-                _flexiGravity = value;
-            }
+        public float FlexiGravity
+        {
+            get { return _flexiGravity; }
+            set { _flexiGravity = value; }
         }
 
-        public float FlexiWind {
-            get {
-                return _flexiWind;
-            }
-            set {
-                _flexiWind = value;
-            }
+        public float FlexiWind
+        {
+            get { return _flexiWind; }
+            set { _flexiWind = value; }
         }
 
-        public float FlexiForceX {
-            get {
-                return _flexiForceX;
-            }
-            set {
-                _flexiForceX = value;
-            }
+        public float FlexiForceX
+        {
+            get { return _flexiForceX; }
+            set { _flexiForceX = value; }
         }
 
-        public float FlexiForceY {
-            get {
-                return _flexiForceY;
-            }
-            set {
-                _flexiForceY = value;
-            }
+        public float FlexiForceY
+        {
+            get { return _flexiForceY; }
+            set { _flexiForceY = value; }
         }
 
-        public float FlexiForceZ {
-            get {
-                return _flexiForceZ;
-            }
-            set {
-                _flexiForceZ = value;
-            }
+        public float FlexiForceZ
+        {
+            get { return _flexiForceZ; }
+            set { _flexiForceZ = value; }
         }
 
-        public float LightColorR {
-            get {
-                return _lightColorR;
-            }
-            set {
-                _lightColorR = value;
-            }
+        public float LightColorR
+        {
+            get { return _lightColorR; }
+            set { _lightColorR = value; }
         }
 
-        public float LightColorG {
-            get {
-                return _lightColorG;
-            }
-            set {
-                _lightColorG = value;
-            }
+        public float LightColorG
+        {
+            get { return _lightColorG; }
+            set { _lightColorG = value; }
         }
 
-        public float LightColorB {
-            get {
-                return _lightColorB;
-            }
-            set {
-                _lightColorB = value;
-            }
+        public float LightColorB
+        {
+            get { return _lightColorB; }
+            set { _lightColorB = value; }
         }
 
-        public float LightColorA {
-            get {
-                return _lightColorA;
-            }
-            set {
-                _lightColorA = value;
-            }
+        public float LightColorA
+        {
+            get { return _lightColorA; }
+            set { _lightColorA = value; }
         }
 
-        public float LightRadius {
-            get {
-                return _lightRadius;
-            }
-            set {
-                _lightRadius = value;
-            }
+        public float LightRadius
+        {
+            get { return _lightRadius; }
+            set { _lightRadius = value; }
         }
 
-        public float LightCutoff {
-            get {
-                return _lightCutoff;
-            }
-            set {
-                _lightCutoff = value;
-            }
+        public float LightCutoff
+        {
+            get { return _lightCutoff; }
+            set { _lightCutoff = value; }
         }
 
-        public float LightFalloff {
-            get {
-                return _lightFalloff;
-            }
-            set {
-                _lightFalloff = value;
-            }
+        public float LightFalloff
+        {
+            get { return _lightFalloff; }
+            set { _lightFalloff = value; }
         }
 
-        public float LightIntensity {
-            get {
-                return _lightIntensity;
-            }
-            set {
-                _lightIntensity = value;
-            }
+        public float LightIntensity
+        {
+            get { return _lightIntensity; }
+            set { _lightIntensity = value; }
         }
 
-        public bool FlexiEntry {
-            get {
-                return _flexiEntry;
-            }
-            set {
-                _flexiEntry = value;
-            }
+        public bool FlexiEntry
+        {
+            get { return _flexiEntry; }
+            set { _flexiEntry = value; }
         }
 
-        public bool LightEntry {
-            get {
-                return _lightEntry;
-            }
-            set {
-                _lightEntry = value;
-            }
+        public bool LightEntry
+        {
+            get { return _lightEntry; }
+            set { _lightEntry = value; }
         }
 
-        public bool SculptEntry {
-            get {
-                return _sculptEntry;
-            }
-            set {
-                _sculptEntry = value;
-            }
+        public bool SculptEntry
+        {
+            get { return _sculptEntry; }
+            set { _sculptEntry = value; }
         }
 
         public byte[] ExtraParamsToBytes()
@@ -751,18 +611,21 @@ namespace OpenSim.Framework
             uint TotalBytesLength = 1; // ExtraParamsNum
 
             uint ExtraParamsNum = 0;
+
             if (_flexiEntry)
             {
                 ExtraParamsNum++;
                 TotalBytesLength += 16;// data
                 TotalBytesLength += 2 + 4; // type
             }
+
             if (_lightEntry)
             {
                 ExtraParamsNum++;
                 TotalBytesLength += 16;// data
                 TotalBytesLength += 2 + 4; // type
             }
+
             if (_sculptEntry)
             {
                 ExtraParamsNum++;
@@ -772,19 +635,14 @@ namespace OpenSim.Framework
 
             byte[] returnbytes = new byte[TotalBytesLength];
 
-
-            // uint paramlength = ExtraParamsNum;
-
             // Stick in the number of parameters
             returnbytes[i++] = (byte)ExtraParamsNum;
 
             if (_flexiEntry)
             {
                 byte[] FlexiData = GetFlexiBytes();
-
                 returnbytes[i++] = (byte)(FlexiEP % 256);
                 returnbytes[i++] = (byte)((FlexiEP >> 8) % 256);
-
                 returnbytes[i++] = (byte)(FlexiData.Length % 256);
                 returnbytes[i++] = (byte)((FlexiData.Length >> 8) % 256);
                 returnbytes[i++] = (byte)((FlexiData.Length >> 16) % 256);
@@ -792,13 +650,12 @@ namespace OpenSim.Framework
                 Array.Copy(FlexiData, 0, returnbytes, i, FlexiData.Length);
                 i += FlexiData.Length;
             }
+
             if (_lightEntry)
             {
                 byte[] LightData = GetLightBytes();
-
                 returnbytes[i++] = (byte)(LightEP % 256);
                 returnbytes[i++] = (byte)((LightEP >> 8) % 256);
-
                 returnbytes[i++] = (byte)(LightData.Length % 256);
                 returnbytes[i++] = (byte)((LightData.Length >> 8) % 256);
                 returnbytes[i++] = (byte)((LightData.Length >> 16) % 256);
@@ -806,13 +663,12 @@ namespace OpenSim.Framework
                 Array.Copy(LightData, 0, returnbytes, i, LightData.Length);
                 i += LightData.Length;
             }
+
             if (_sculptEntry)
             {
                 byte[] SculptData = GetSculptBytes();
-
                 returnbytes[i++] = (byte)(SculptEP % 256);
                 returnbytes[i++] = (byte)((SculptEP >> 8) % 256);
-
                 returnbytes[i++] = (byte)(SculptData.Length % 256);
                 returnbytes[i++] = (byte)((SculptData.Length >> 8) % 256);
                 returnbytes[i++] = (byte)((SculptData.Length >> 16) % 256);
@@ -828,10 +684,7 @@ namespace OpenSim.Framework
                 return returnbyte;
             }
 
-
             return returnbytes;
-            //m_log.Info("[EXTRAPARAMS]: Length = " + m_shape.ExtraParams.Length.ToString());
-
         }
 
         public void ReadInUpdateExtraParam(ushort type, bool inUse, byte[] data)
@@ -848,6 +701,7 @@ namespace OpenSim.Framework
                         _flexiEntry = false;
                         return;
                     }
+
                     ReadFlexiData(data, 0);
                     break;
 
@@ -857,6 +711,7 @@ namespace OpenSim.Framework
                         _lightEntry = false;
                         return;
                     }
+
                     ReadLightData(data, 0);
                     break;
 
@@ -866,6 +721,7 @@ namespace OpenSim.Framework
                         _sculptEntry = false;
                         return;
                     }
+
                     ReadSculptData(data, 0);
                     break;
             }
@@ -886,18 +742,17 @@ namespace OpenSim.Framework
 
             int i = 0;
             byte extraParamCount = 0;
+
             if (data.Length > 0)
             {
                 extraParamCount = data[i++];
             }
-
 
             for (int k = 0; k < extraParamCount; k++)
             {
                 ushort epType = Utils.BytesToUInt16(data, i);
 
                 i += 2;
-                // uint paramLength = Helpers.BytesToUIntBig(data, i);
 
                 i += 4;
                 switch (epType)
@@ -907,13 +762,11 @@ namespace OpenSim.Framework
                         i += 16;
                         lGotFlexi = true;
                         break;
-
                     case LightEP:
                         ReadLightData(data, i);
                         i += 16;
                         lGotLight = true;
                         break;
-
                     case SculptEP:
                         ReadSculptData(data, i);
                         i += 17;
@@ -924,25 +777,26 @@ namespace OpenSim.Framework
 
             if (!lGotFlexi)
                 _flexiEntry = false;
+
             if (!lGotLight)
                 _lightEntry = false;
+
             if (!lGotSculpt)
                 _sculptEntry = false;
-
         }
 
         public void ReadSculptData(byte[] data, int pos)
         {
             byte[] SculptTextureUUID = new byte[16];
             UUID SculptUUID = UUID.Zero;
-            byte SculptTypel = data[16+pos];
+            byte SculptTypel = data[16 + pos];
 
-            if (data.Length+pos >= 17)
+            if (data.Length + pos >= 17)
             {
                 _sculptEntry = true;
                 SculptTextureUUID = new byte[16];
                 SculptTypel = data[16 + pos];
-                Array.Copy(data, pos, SculptTextureUUID,0, 16);
+                Array.Copy(data, pos, SculptTextureUUID, 0, 16);
                 SculptUUID = new UUID(SculptTextureUUID, 0);
             }
             else
@@ -957,9 +811,9 @@ namespace OpenSim.Framework
                 if (_sculptType != (byte)1 && _sculptType != (byte)2 && _sculptType != (byte)3 && _sculptType != (byte)4)
                     _sculptType = 4;
             }
+
             _sculptTexture = SculptUUID;
             _sculptType = SculptTypel;
-            //m_log.Info("[SCULPT]:" + SculptUUID.ToString());
         }
 
         public byte[] GetSculptBytes()
@@ -974,7 +828,7 @@ namespace OpenSim.Framework
 
         public void ReadFlexiData(byte[] data, int pos)
         {
-            if (data.Length-pos >= 16)
+            if (data.Length - pos >= 16)
             {
                 _flexiEntry = true;
                 _flexiSoftness = ((data[pos] & 0x80) >> 6) | ((data[pos + 1] & 0x80) >> 7);
@@ -1057,7 +911,7 @@ namespace OpenSim.Framework
             byte[] data = new byte[16];
 
             // Alpha channel in color is intensity
-            Color4 tmpColor = new Color4(_lightColorR,_lightColorG,_lightColorB,_lightIntensity);
+            Color4 tmpColor = new Color4(_lightColorR, _lightColorG, _lightColorB, _lightIntensity);
 
             tmpColor.GetBytes().CopyTo(data, 0);
             Utils.FloatToBytes(_lightRadius).CopyTo(data, 4);
@@ -1067,21 +921,18 @@ namespace OpenSim.Framework
             return data;
         }
 
-
         /// <summary>
-        /// Creates a OpenMetaverse.Primitive and populates it with converted PrimitiveBaseShape values
+        ///     Creates a OpenMetaverse.Primitive and populates it with converted PrimitiveBaseShape values
         /// </summary>
         /// <returns></returns>
         public Primitive ToOmvPrimitive()
         {
             // position and rotation defaults here since they are not available in PrimitiveBaseShape
-            return ToOmvPrimitive(new Vector3(0.0f, 0.0f, 0.0f),
-                new Quaternion(0.0f, 0.0f, 0.0f, 1.0f));
+            return ToOmvPrimitive(new Vector3(0.0f, 0.0f, 0.0f), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
-
         /// <summary>
-        /// Creates a OpenMetaverse.Primitive and populates it with converted PrimitiveBaseShape values
+        ///     Creates a OpenMetaverse.Primitive and populates it with converted PrimitiveBaseShape values
         /// </summary>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
@@ -1162,7 +1013,7 @@ namespace OpenSim.Framework
             prim.Properties.Permissions = new Permissions();
             prim.Properties.SalePrice = 10;
             prim.Properties.SaleType = new SaleType();
-            
+
             return prim;
         }
     }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,17 +35,17 @@ namespace OpenSim.Framework.Capabilities
     public class LLSDTaskScriptUpdate
     {
         /// <summary>
-        /// The item containing the script to update
+        ///     The item containing the script to update
         /// </summary>
         public UUID item_id;
 
         /// <summary>
-        /// The task containing the script
+        ///     The task containing the script
         /// </summary>
         public UUID task_id;
 
         /// <summary>
-        /// Signals whether the script is currently active
+        ///     Signals whether the script is currently active
         /// </summary>
         public int is_script_running;
     }

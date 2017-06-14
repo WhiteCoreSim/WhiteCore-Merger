@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,9 +33,9 @@ using System.IO;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// UserConfig -- For User Server Configuration
+    ///     UserConfig - For User Server Configuration
     /// </summary>
-    public class UserConfig:ConfigBase
+    public class UserConfig : ConfigBase
     {
         public string DatabaseProvider = String.Empty;
         public string DatabaseConnect = String.Empty;
@@ -53,41 +55,23 @@ namespace OpenSim.Framework
 
         public Uri InventoryUrl
         {
-            get
-            {
-                return m_inventoryUrl;
-            }
-            set
-            {
-                m_inventoryUrl = value;
-            }
+            get { return m_inventoryUrl; }
+            set { m_inventoryUrl = value; }
         }
 
         private Uri m_authUrl;
         public Uri AuthUrl
         {
-            get
-            {
-                return m_authUrl;
-            }
-            set
-            {
-                m_authUrl = value;
-            }
+            get { return m_authUrl; }
+            set { m_authUrl = value; }
         }
 
         private Uri m_gridServerURL;
 
         public Uri GridServerURL
         {
-            get
-            {
-                return m_gridServerURL;
-            }
-            set
-            {
-                m_gridServerURL = value;
-            }
+            get { return m_gridServerURL; }
+            set { m_gridServerURL = value; }
         }
 
         public bool EnableLLSDLogin = true;
@@ -100,69 +84,30 @@ namespace OpenSim.Framework
         }
         public UserConfig(string description, string filename)
         {
-            m_configMember =
-                new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
+            m_configMember = new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
             m_configMember.performConfigurationRetrieve();
         }
 
         public void loadConfigurationOptions()
         {
-            m_configMember.addConfigurationOption("default_startup_message",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Default Startup Message", "Welcome to OGS", false);
-
-            m_configMember.addConfigurationOption("default_grid_server",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Default Grid Server URI",
-                                                "http://127.0.0.1:" + ConfigSettings.DefaultGridServerHttpPort + "/", false);
-            m_configMember.addConfigurationOption("grid_send_key", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Key to send to grid server", "null", false);
-            m_configMember.addConfigurationOption("grid_recv_key", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Key to expect from grid server", "null", false);
-
-            m_configMember.addConfigurationOption("default_inventory_server",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Default Inventory Server URI",
-                                                "http://127.0.0.1:" + ConfigSettings.DefaultInventoryServerHttpPort + "/",
-                                                false);
-            m_configMember.addConfigurationOption("default_authentication_server",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "User Server (this) External URI for authentication keys",
-                                                "http://localhost:" + ConfigSettings.DefaultUserServerHttpPort + "/",
-                                                false);
-            m_configMember.addConfigurationOption("library_location",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Path to library control file",
-                                                string.Format(".{0}inventory{0}Libraries.xml", Path.DirectorySeparatorChar), false);
-            
-            m_configMember.addConfigurationOption("database_provider", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "DLL for database provider", "OpenSim.Data.MySQL.dll", false);
-            m_configMember.addConfigurationOption("database_connect", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Connection String for Database", "", false);
-
-            m_configMember.addConfigurationOption("http_port", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Http Listener port", ConfigSettings.DefaultUserServerHttpPort.ToString(), false);
-            m_configMember.addConfigurationOption("http_ssl", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                                                "Use SSL? true/false", ConfigSettings.DefaultUserServerHttpSSL.ToString(), false);
-            m_configMember.addConfigurationOption("default_X", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Known good region X", "1000", false);
-            m_configMember.addConfigurationOption("default_Y", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Known good region Y", "1000", false);
-            m_configMember.addConfigurationOption("enable_llsd_login", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                    "Enable LLSD login support [Currently used by libsl based clients/bots]? true/false", true.ToString(), false);
-
-            m_configMember.addConfigurationOption("enable_hg_login", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                    "Enable Hypergrid login support [Currently used by GridSurfer-proxied clients]? true/false", true.ToString(), false);
-
-            m_configMember.addConfigurationOption("default_loginLevel", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Minimum Level a user should have to login [0 default]", "0", false);
-            
-            m_configMember.addConfigurationOption("console_user", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Remote console access user name [Default: disabled]", "", false);
-            
-            m_configMember.addConfigurationOption("console_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Remote console access password [Default: disabled]", "", false);
-            
+            m_configMember.addConfigurationOption("default_startup_message", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Default Startup Message", "Welcome to OGS", false);
+            m_configMember.addConfigurationOption("default_grid_server", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Default Grid Server URI", "http://127.0.0.1:" + ConfigSettings.DefaultGridServerHttpPort + "/", false);
+            m_configMember.addConfigurationOption("grid_send_key", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Key to send to grid server", "null", false);
+            m_configMember.addConfigurationOption("grid_recv_key", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Key to expect from grid server", "null", false);
+            m_configMember.addConfigurationOption("default_inventory_server", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Default Inventory Server URI", "http://127.0.0.1:" + ConfigSettings.DefaultInventoryServerHttpPort + "/", false);
+            m_configMember.addConfigurationOption("default_authentication_server", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "User Server (this) External URI for authentication keys", "http://localhost:" + ConfigSettings.DefaultUserServerHttpPort + "/", false);
+            m_configMember.addConfigurationOption("library_location", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Path to library control file", string.Format(".{0}inventory{0}Libraries.xml", Path.DirectorySeparatorChar), false);
+            m_configMember.addConfigurationOption("database_provider", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "DLL for database provider", "OpenSim.Data.MySQL.dll", false);
+            m_configMember.addConfigurationOption("database_connect", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Connection String for Database", "", false);
+            m_configMember.addConfigurationOption("http_port", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Http Listener port", ConfigSettings.DefaultUserServerHttpPort.ToString(), false);
+            m_configMember.addConfigurationOption("http_ssl", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Use SSL? true/false", ConfigSettings.DefaultUserServerHttpSSL.ToString(), false);
+            m_configMember.addConfigurationOption("default_X", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Known good region X", "1000", false);
+            m_configMember.addConfigurationOption("default_Y", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Known good region Y", "1000", false);
+            m_configMember.addConfigurationOption("enable_llsd_login", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Enable LLSD login support [Currently used by libsl based clients/bots]? true/false", true.ToString(), false);
+            m_configMember.addConfigurationOption("enable_hg_login", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Enable Hypergrid login support [Currently used by GridSurfer-proxied clients]? true/false", true.ToString(), false);
+            m_configMember.addConfigurationOption("default_loginLevel", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Minimum Level a user should have to login [0 default]", "0", false);
+            m_configMember.addConfigurationOption("console_user", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Remote console access user name [Default: disabled]", "", false);
+            m_configMember.addConfigurationOption("console_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Remote console access password [Default: disabled]", "", false);
         }
 
         public bool handleIncomingConfiguration(string configuration_key, object configuration_result)
@@ -170,40 +115,40 @@ namespace OpenSim.Framework
             switch (configuration_key)
             {
                 case "default_startup_message":
-                    DefaultStartupMsg = (string) configuration_result;
+                    DefaultStartupMsg = (string)configuration_result;
                     break;
                 case "default_grid_server":
-                    GridServerURL = new Uri((string) configuration_result);
+                    GridServerURL = new Uri((string)configuration_result);
                     break;
                 case "grid_send_key":
-                    GridSendKey = (string) configuration_result;
+                    GridSendKey = (string)configuration_result;
                     break;
                 case "grid_recv_key":
-                    GridRecvKey = (string) configuration_result;
+                    GridRecvKey = (string)configuration_result;
                     break;
                 case "default_inventory_server":
-                    InventoryUrl = new Uri((string) configuration_result);
+                    InventoryUrl = new Uri((string)configuration_result);
                     break;
                 case "default_authentication_server":
                     AuthUrl = new Uri((string)configuration_result);
                     break;
                 case "database_provider":
-                    DatabaseProvider = (string) configuration_result;
+                    DatabaseProvider = (string)configuration_result;
                     break;
                 case "database_connect":
-                    DatabaseConnect = (string) configuration_result;
+                    DatabaseConnect = (string)configuration_result;
                     break;
                 case "http_port":
-                    HttpPort = (uint) configuration_result;
+                    HttpPort = (uint)configuration_result;
                     break;
                 case "http_ssl":
-                    HttpSSL = (bool) configuration_result;
+                    HttpSSL = (bool)configuration_result;
                     break;
                 case "default_X":
-                    DefaultX = (uint) configuration_result;
+                    DefaultX = (uint)configuration_result;
                     break;
                 case "default_Y":
-                    DefaultY = (uint) configuration_result;
+                    DefaultY = (uint)configuration_result;
                     break;
                 case "enable_llsd_login":
                     EnableLLSDLogin = (bool)configuration_result;

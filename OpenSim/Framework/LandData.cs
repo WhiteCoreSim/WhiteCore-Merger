@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,21 +31,19 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
-
 using OpenMetaverse;
 
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Details of a Parcel of land
+    ///     Details of a Parcel of land
     /// </summary>
     public class LandData
     {
         // use only one serializer to give the runtime a chance to
         // optimize it (it won't do that if you use a new instance
         // every time)
-        private static XmlSerializer serializer = new XmlSerializer(typeof (LandData));
-        
+        private static XmlSerializer serializer = new XmlSerializer(typeof(LandData));
         private Vector3 _AABBMax = new Vector3();
         private Vector3 _AABBMin = new Vector3();
         private int _area = 0;
@@ -59,12 +59,11 @@ namespace OpenSim.Framework
         private byte[] _bitmap = new byte[512];
         private string _description = String.Empty;
 
-
-        private uint _flags = (uint) ParcelFlags.AllowFly | (uint) ParcelFlags.AllowLandmark |
-                                (uint) ParcelFlags.AllowAPrimitiveEntry |
-                                (uint) ParcelFlags.AllowDeedToGroup | (uint) ParcelFlags.AllowTerraform |
-                                (uint) ParcelFlags.CreateObjects | (uint) ParcelFlags.AllowOtherScripts |
-                                (uint) ParcelFlags.SoundLocal;
+        private uint _flags = (uint)ParcelFlags.AllowFly | (uint)ParcelFlags.AllowLandmark |
+                                (uint)ParcelFlags.AllowAPrimitiveEntry |
+                                (uint)ParcelFlags.AllowDeedToGroup | (uint)ParcelFlags.AllowTerraform |
+                                (uint)ParcelFlags.CreateObjects | (uint)ParcelFlags.AllowOtherScripts |
+                                (uint)ParcelFlags.SoundLocal;
 
         private byte _landingType = 0;
         private string _name = "Your Parcel";
@@ -92,474 +91,588 @@ namespace OpenSim.Framework
         private int _otherCleanTime = 0;
 
         /// <summary>
-        /// Upper corner of the AABB for the parcel
+        ///     Upper corner of the AABB for the parcel
         /// </summary>
         [XmlIgnore]
-        public Vector3 AABBMax {
-            get {
+        public Vector3 AABBMax
+        {
+            get
+            {
                 return _AABBMax;
             }
-            set {
+            set
+            {
                 _AABBMax = value;
             }
         }
+
         /// <summary>
-        /// Lower corner of the AABB for the parcel
+        ///     Lower corner of the AABB for the parcel
         /// </summary>
         [XmlIgnore]
-        public Vector3 AABBMin {
-            get {
+        public Vector3 AABBMin
+        {
+            get
+            {
                 return _AABBMin;
             }
-            set {
+            set
+            {
                 _AABBMin = value;
             }
         }
 
         /// <summary>
-        /// Area in meters^2 the parcel contains
+        ///     Area in meters^2 the parcel contains
         /// </summary>
-        public int Area {
-            get {
+        public int Area
+        {
+            get
+            {
                 return _area;
             }
-            set {
+            set
+            {
                 _area = value;
             }
         }
 
         /// <summary>
-        /// ID of auction (3rd Party Integration) when parcel is being auctioned
+        ///     ID of auction (3rd Party Integration) when parcel is being auctioned
         /// </summary>
-        public uint AuctionID {
-            get {
+        public uint AuctionID
+        {
+            get
+            {
                 return _auctionID;
             }
-            set {
+            set
+            {
                 _auctionID = value;
             }
         }
 
         /// <summary>
-        /// UUID of authorized buyer of parcel.  This is UUID.Zero if anyone can buy it.
+        ///     UUID of authorized buyer of parcel.  This is UUID.Zero if anyone can buy it.
         /// </summary>
-        public UUID AuthBuyerID {
-            get {
+        public UUID AuthBuyerID
+        {
+            get
+            {
                 return _authBuyerID;
             }
-            set {
+            set
+            {
                 _authBuyerID = value;
             }
         }
 
         /// <summary>
-        /// Category of parcel.  Used for classifying the parcel in classified listings
+        ///     Category of parcel.  Used for classifying the parcel in classified listings
         /// </summary>
-        public ParcelCategory Category {
-            get {
+        public ParcelCategory Category
+        {
+            get
+            {
                 return _category;
             }
-            set {
+            set
+            {
                 _category = value;
             }
         }
 
         /// <summary>
-        /// Date that the current owner purchased or claimed the parcel
+        ///     Date that the current owner purchased or claimed the parcel
         /// </summary>
-        public int ClaimDate {
-            get {
+        public int ClaimDate
+        {
+            get
+            {
                 return _claimDate;
             }
-            set {
+            set
+            {
                 _claimDate = value;
             }
         }
 
         /// <summary>
-        /// The last price that the parcel was sold at
+        ///     The last price that the parcel was sold at
         /// </summary>
-        public int ClaimPrice {
-            get {
+        public int ClaimPrice
+        {
+            get
+            {
                 return _claimPrice;
             }
-            set {
+            set
+            {
                 _claimPrice = value;
             }
         }
 
         /// <summary>
-        /// Global ID for the parcel.  (3rd Party Integration)
+        ///     Global ID for the parcel.  (3rd Party Integration)
         /// </summary>
-        public UUID GlobalID {
-            get {
+        public UUID GlobalID
+        {
+            get
+            {
                 return _globalID;
             }
-            set {
+            set
+            {
                 _globalID = value;
             }
         }
 
         /// <summary>
-        /// Unique ID of the Group that owns
+        ///     Unique ID of the Group that owns
         /// </summary>
-        public UUID GroupID {
-            get {
+        public UUID GroupID
+        {
+            get
+            {
                 return _groupID;
             }
-            set {
+            set
+            {
                 _groupID = value;
             }
         }
 
         /// <summary>
-        /// Number of SceneObjectPart that are owned by a Group
+        ///     Number of SceneObjectPart that are owned by a Group
         /// </summary>
         [XmlIgnore]
-        public int GroupPrims {
-            get {
+        public int GroupPrims
+        {
+            get
+            {
                 return _groupPrims;
             }
-            set {
+            set
+            {
                 _groupPrims = value;
             }
         }
 
         /// <summary>
-        /// Returns true if the Land Parcel is owned by a group
+        ///     Returns true if the Land Parcel is owned by a group
         /// </summary>
-        public bool IsGroupOwned {
-            get {
+        public bool IsGroupOwned
+        {
+            get
+            {
                 return _isGroupOwned;
             }
-            set {
+            set
+            {
                 _isGroupOwned = value;
             }
         }
 
         /// <summary>
-        /// jp2 data for the image representative of the parcel in the parcel dialog
+        ///     jp2 data for the image representative of the parcel in the parcel dialog
         /// </summary>
-        public byte[] Bitmap {
-            get {
+        public byte[] Bitmap
+        {
+            get
+            {
                 return _bitmap;
             }
-            set {
+            set
+            {
                 _bitmap = value;
             }
         }
 
         /// <summary>
-        /// Parcel Description
+        ///     Parcel Description
         /// </summary>
-        public string Description {
-            get {
+        public string Description
+        {
+            get
+            {
                 return _description;
             }
-            set {
+            set
+            {
                 _description = value;
             }
         }
 
         /// <summary>
-        /// Parcel settings.  Access flags, Fly, NoPush, Voice, Scripts allowed, etc.  ParcelFlags
+        ///     Parcel settings.  Access flags, Fly, NoPush, Voice, Scripts allowed, etc.  ParcelFlags
         /// </summary>
-        public uint Flags {
-            get {
+        public uint Flags
+        {
+            get
+            {
                 return _flags;
             }
-            set {
+            set
+            {
                 _flags = value;
             }
         }
 
         /// <summary>
-        /// Determines if people are able to teleport where they please on the parcel or if they 
-        /// get constrainted to a specific point on teleport within the parcel
+        ///     Determines if people are able to teleport where they please on the parcel or if they 
+        ///     get constrainted to a specific point on teleport within the parcel
         /// </summary>
-        public byte LandingType {
-            get {
+        public byte LandingType
+        {
+            get
+            {
                 return _landingType;
             }
-            set {
+            set
+            {
                 _landingType = value;
             }
         }
 
         /// <summary>
-        /// Parcel Name
+        ///     Parcel Name
         /// </summary>
-        public string Name {
-            get {
+        public string Name
+        {
+            get
+            {
                 return _name;
             }
-            set {
+            set
+            {
                 _name = value;
             }
         }
 
         /// <summary>
-        /// Status of Parcel, Leased, Abandoned, For Sale
+        ///     Status of Parcel, Leased, Abandoned, For Sale
         /// </summary>
-        public ParcelStatus Status {
-            get {
+        public ParcelStatus Status
+        {
+            get
+            {
                 return _status;
             }
-            set {
+            set
+            {
                 _status = value;
             }
         }
 
         /// <summary>
-        /// Internal ID of the parcel.  Sometimes the client will try to use this value
+        ///     Internal ID of the parcel.  Sometimes the client will try to use this value
         /// </summary>
-        public int LocalID {
-            get {
+        public int LocalID
+        {
+            get
+            {
                 return _localID;
             }
-            set {
+            set
+            {
                 _localID = value;
             }
         }
 
         /// <summary>
-        /// Determines if we scale the media based on the surface it's on
+        ///     Determines if we scale the media based on the surface it's on
         /// </summary>
-        public byte MediaAutoScale {
-            get {
+        public byte MediaAutoScale
+        {
+            get
+            {
                 return _mediaAutoScale;
             }
-            set {
+            set
+            {
                 _mediaAutoScale = value;
             }
         }
 
         /// <summary>
-        /// Texture Guid to replace with the output of the media stream
+        ///     Texture Guid to replace with the output of the media stream
         /// </summary>
-        public UUID MediaID {
-            get {
+        public UUID MediaID
+        {
+            get
+            {
                 return _mediaID;
             }
-            set {
+            set
+            {
                 _mediaID = value;
             }
         }
 
         /// <summary>
-        /// URL to the media file to display
+        ///     URL to the media file to display
         /// </summary>
-        public string MediaURL {
-            get {
+        public string MediaURL
+        {
+            get
+            {
                 return _mediaURL;
             }
-            set {
+            set
+            {
                 _mediaURL = value;
             }
         }
 
         /// <summary>
-        /// URL to the shoutcast music stream to play on the parcel
+        ///     URL to the shoutcast music stream to play on the parcel
         /// </summary>
-        public string MusicURL {
-            get {
+        public string MusicURL
+        {
+            get
+            {
                 return _musicURL;
             }
-            set {
+            set
+            {
                 _musicURL = value;
             }
         }
 
         /// <summary>
-        /// Number of SceneObjectPart that are owned by users who do not own the parcel
-        /// and don't have the 'group.  These are elegable for AutoReturn collection
+        ///     Number of SceneObjectPart that are owned by users who do not own the parcel
+        ///     and don't have the 'group.  These are elegable for AutoReturn collection
         /// </summary>
         [XmlIgnore]
-        public int OtherPrims {
-            get {
+        public int OtherPrims
+        {
+            get
+            {
                 return _otherPrims;
             }
-            set {
+            set
+            {
                 _otherPrims = value;
             }
         }
 
         /// <summary>
-        /// Owner Avatar or Group of the parcel.  Naturally, all land masses must be
-        /// owned by someone
+        ///     Owner Avatar or Group of the parcel.  Naturally, all land masses must be
+        ///     owned by someone
         /// </summary>
-        public UUID OwnerID {
-            get {
+        public UUID OwnerID
+        {
+            get
+            {
                 return _ownerID;
             }
-            set {
+            set
+            {
                 _ownerID = value;
             }
         }
 
         /// <summary>
-        /// Number of SceneObjectPart that are owned by the owner of the parcel
+        ///     Number of SceneObjectPart that are owned by the owner of the parcel
         /// </summary>
         [XmlIgnore]
-        public int OwnerPrims {
-            get {
+        public int OwnerPrims
+        {
+            get
+            {
                 return _ownerPrims;
             }
-            set {
+            set
+            {
                 _ownerPrims = value;
             }
         }
 
         /// <summary>
-        /// List of access data for the parcel.  User data, some bitflags, and a time
+        ///     List of access data for the parcel.  User data, some bitflags, and a time
         /// </summary>
-        public List<ParcelManager.ParcelAccessEntry> ParcelAccessList {
-            get {
+        public List<ParcelManager.ParcelAccessEntry> ParcelAccessList
+        {
+            get
+            {
                 return _parcelAccessList;
             }
-            set {
+            set
+            {
                 _parcelAccessList = value;
             }
         }
 
         /// <summary>
-        /// How long in hours a Pass to the parcel is given
+        ///     How long in hours a Pass to the parcel is given
         /// </summary>
-        public float PassHours {
-            get {
+        public float PassHours
+        {
+            get
+            {
                 return _passHours;
             }
-            set {
+            set
+            {
                 _passHours = value;
             }
         }
 
         /// <summary>
-        /// Price to purchase a Pass to a restricted parcel
+        ///     Price to purchase a Pass to a restricted parcel
         /// </summary>
-        public int PassPrice {
-            get {
+        public int PassPrice
+        {
+            get
+            {
                 return _passPrice;
             }
-            set {
+            set
+            {
                 _passPrice = value;
             }
         }
 
         /// <summary>
-        /// When the parcel is being sold, this is the price to purchase the parcel
+        ///     When the parcel is being sold, this is the price to purchase the parcel
         /// </summary>
-        public int SalePrice {
-            get {
+        public int SalePrice
+        {
+            get
+            {
                 return _salePrice;
             }
-            set {
+            set
+            {
                 _salePrice = value;
             }
         }
 
         /// <summary>
-        /// Number of SceneObjectPart that are currently selected by avatar
+        ///     Number of SceneObjectPart that are currently selected by avatar
         /// </summary>
         [XmlIgnore]
-        public int SelectedPrims {
-            get {
+        public int SelectedPrims
+        {
+            get
+            {
                 return _selectedPrims;
             }
-            set {
+            set
+            {
                 _selectedPrims = value;
             }
         }
 
         /// <summary>
-        /// Number of meters^2 in the Simulator
+        ///     Number of meters^2 in the Simulator
         /// </summary>
         [XmlIgnore]
-        public int SimwideArea {
-            get {
+        public int SimwideArea
+        {
+            get
+            {
                 return _simwideArea;
             }
-            set {
+            set
+            {
                 _simwideArea = value;
             }
         }
 
         /// <summary>
-        /// Number of SceneObjectPart in the Simulator
+        ///     Number of SceneObjectPart in the Simulator
         /// </summary>
         [XmlIgnore]
-        public int SimwidePrims {
-            get {
+        public int SimwidePrims
+        {
+            get
+            {
                 return _simwidePrims;
             }
-            set {
+            set
+            {
                 _simwidePrims = value;
             }
         }
 
         /// <summary>
-        /// ID of the snapshot used in the client parcel dialog of the parcel
+        ///     ID of the snapshot used in the client parcel dialog of the parcel
         /// </summary>
-        public UUID SnapshotID {
-            get {
+        public UUID SnapshotID
+        {
+            get
+            {
                 return _snapshotID;
             }
-            set {
+            set
+            {
                 _snapshotID = value;
             }
         }
 
         /// <summary>
-        /// When teleporting is restricted to a certain point, this is the location 
-        /// that the user will be redirected to
+        ///     When teleporting is restricted to a certain point, this is the location 
+        ///     that the user will be redirected to
         /// </summary>
-        public Vector3 UserLocation {
-            get {
+        public Vector3 UserLocation
+        {
+            get
+            {
                 return _userLocation;
             }
-            set {
+            set
+            {
                 _userLocation = value;
             }
         }
 
         /// <summary>
-        /// When teleporting is restricted to a certain point, this is the rotation 
-        /// that the user will be positioned
+        ///     When teleporting is restricted to a certain point, this is the rotation 
+        ///     that the user will be positioned
         /// </summary>
-        public Vector3 UserLookAt {
-            get {
+        public Vector3 UserLookAt
+        {
+            get
+            {
                 return _userLookAt;
             }
-            set {
+            set
+            {
                 _userLookAt = value;
             }
         }
 
         /// <summary>
-        /// Deprecated idea.  Number of visitors ~= free money
+        ///     Deprecated idea.  Number of visitors ~= free money
         /// </summary>
-        public int Dwell {
-            get {
+        public int Dwell
+        {
+            get
+            {
                 return _dwell;
             }
-            set {
+            set
+            {
                 _dwell = value;
             }
         }
 
         /// <summary>
-        /// Number of minutes to return SceneObjectGroup that are owned by someone who doesn't own 
-        /// the parcel and isn't set to the same 'group' as the parcel.
+        ///     Number of minutes to return SceneObjectGroup that are owned by someone who doesn't own 
+        ///     the parcel and isn't set to the same 'group' as the parcel.
         /// </summary>
-        public int OtherCleanTime {
-            get {
+        public int OtherCleanTime
+        {
+            get
+            {
                 return _otherCleanTime;
             }
-            set {
+            set
+            {
                 _otherCleanTime = value;
             }
         }
-
 
         public LandData()
         {
@@ -567,7 +680,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Make a new copy of the land data
+        ///     Make a new copy of the land data
         /// </summary>
         /// <returns></returns>
         public LandData Copy()
@@ -596,7 +709,7 @@ namespace OpenSim.Framework
             landData._mediaURL = _mediaURL;
             landData._musicURL = _musicURL;
             landData._ownerID = _ownerID;
-            landData._bitmap = (byte[]) _bitmap.Clone();
+            landData._bitmap = (byte[])_bitmap.Clone();
             landData._description = _description;
             landData._flags = _flags;
             landData._name = _name;
@@ -611,6 +724,7 @@ namespace OpenSim.Framework
             landData._dwell = _dwell;
 
             landData._parcelAccessList.Clear();
+
             foreach (ParcelManager.ParcelAccessEntry entry in _parcelAccessList)
             {
                 ParcelManager.ParcelAccessEntry newEntry = new ParcelManager.ParcelAccessEntry();
@@ -630,7 +744,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Restore a LandData object from the serialized xml representation.
+        ///     Restore a LandData object from the serialized xml representation.
         /// </summary>
         /// <param name="xmlReader"></param>
         /// <returns></returns>

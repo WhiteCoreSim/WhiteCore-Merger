@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,7 +30,7 @@
 namespace OpenSim.Framework.Statistics
 {
     /// <summary>
-    /// Singleton used to provide access to statistics reporters
+    ///     Singleton used to provide access to statistics reporters
     /// </summary>
     public class StatsManager
     {
@@ -40,11 +42,11 @@ namespace OpenSim.Framework.Statistics
         public static UserStatsCollector UserStats { get { return userStats; } }
         public static SimExtraStatsCollector SimExtraStats { get { return simExtraStats; } }
 
-        private StatsManager() {}
+        private StatsManager() { }
 
         /// <summary>
-        /// Start collecting statistics related to assets.
-        /// Should only be called once.
+        ///     Start collecting statistics related to assets.
+        ///     Should only be called once.
         /// </summary>
         public static AssetStatsCollector StartCollectingAssetStats()
         {
@@ -54,8 +56,8 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Start collecting statistics related to users.
-        /// Should only be called once.
+        ///     Start collecting statistics related to users.
+        ///     Should only be called once.
         /// </summary>
         public static UserStatsCollector StartCollectingUserStats()
         {
@@ -65,8 +67,8 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Start collecting extra sim statistics apart from those collected for the client.
-        /// Should only be called once.
+        ///     Start collecting extra sim statistics apart from those collected for the client.
+        ///     Should only be called once.
         /// </summary>
         public static SimExtraStatsCollector StartCollectingSimExtraStats()
         {

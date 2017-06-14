@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,25 +33,22 @@ using System.Runtime.InteropServices;
 // General information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-
-[assembly : AssemblyTitle("OpenSim.Framework")]
-[assembly : AssemblyDescription("")]
-[assembly : AssemblyConfiguration("")]
-[assembly : AssemblyCompany("http://whitecore-sim.org")]
-[assembly : AssemblyProduct("OpenSim.Framework")]
-[assembly : AssemblyCopyright("Copyright (c) WhiteCore-Sim.org Developers 2007-2009")]
-[assembly : AssemblyTrademark("")]
-[assembly : AssemblyCulture("")]
+[assembly: AssemblyTitle("OpenSim.Framework")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("http://whitecore-sim.org")]
+[assembly: AssemblyProduct("OpenSim.Framework")]
+[assembly: AssemblyCopyright("Copyright (c) WhiteCore-Sim.org Developers 2007-2009")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
-
-[assembly : ComVisible(false)]
+[assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly : Guid("a08e20c7-f191-4137-b1f0-9291408fa521")]
+[assembly: Guid("a08e20c7-f191-4137-b1f0-9291408fa521")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -57,7 +56,5 @@ using System.Runtime.InteropServices;
 //      Minor Version
 //      Build Number
 //      Revision
-//
-
-[assembly : AssemblyVersion("0.6.5.*")]
-[assembly : AssemblyFileVersion("0.6.5.0")]
+[assembly: AssemblyVersion("0.6.5.*")]
+[assembly: AssemblyFileVersion("0.6.5.0")]

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,82 +35,83 @@ using OpenSim.Framework.Communications.Cache;
 namespace OpenSim.Framework.Communications
 {
     /// <summary>
-    /// This class manages references to OpenSim non-region services (inventory, user, etc.)
+    ///     This class manages references to OpenSim non-region services (inventory, user, etc.)
+    ///     TODO: Service retrieval needs to be managed via plugin and interfaces requests, as happens for region
+    ///     modules from scene.  Among other things, this will allow this class to be used in many different contexts
+    ///     (from a grid service executable, to provide services on a region) without lots of messy nulls and confusion.
+    ///     Also, a post initialize step on the plugins will be needed so that we don't get tortuous problems with 
+    ///     circular dependencies between plugins.
     /// </summary>
-    /// 
-    /// TODO: Service retrieval needs to be managed via plugin and interfaces requests, as happens for region
-    /// modules from scene.  Among other things, this will allow this class to be used in many different contexts
-    /// (from a grid service executable, to provide services on a region) without lots of messy nulls and confusion.
-    /// Also, a post initialize step on the plugins will be needed so that we don't get tortuous problems with 
-    /// circular dependencies between plugins.
     public class CommunicationsManager
     {
-        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected Dictionary<UUID, string[]> m_nameRequestCache = new Dictionary<UUID, string[]>();
 
         public IUserService UserService
         {
             get { return m_userService; }
         }
+
         protected IUserService m_userService;
 
         public IMessagingService MessageService
         {
             get { return m_messageService; }
         }
-        protected IMessagingService m_messageService;
 
+        protected IMessagingService m_messageService;
 
         public UserProfileCacheService UserProfileCacheService
         {
             get { return m_userProfileCacheService; }
         }
+
         protected UserProfileCacheService m_userProfileCacheService;
 
         public IAvatarService AvatarService
         {
             get { return m_avatarService; }
         }
+
         protected IAvatarService m_avatarService;
 
         public IInterServiceInventoryServices InterServiceInventoryService
         {
             get { return m_interServiceInventoryService; }
         }
+
         protected IInterServiceInventoryServices m_interServiceInventoryService;
 
         public NetworkServersInfo NetworkServersInfo
         {
             get { return m_networkServersInfo; }
         }
+
         protected NetworkServersInfo m_networkServersInfo;
-             
+
         /// <summary>
-        /// Interface to user service for administrating users.
+        ///     Interface to user service for administrating users.
         /// </summary>
         public IUserAdminService UserAdminService
         {
             get { return m_userAdminService; }
         }
+
         protected IUserAdminService m_userAdminService;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="serversInfo"></param>
-        public CommunicationsManager(NetworkServersInfo serversInfo,
-                                     LibraryRootFolder libraryRootFolder)
+        public CommunicationsManager(NetworkServersInfo serversInfo, LibraryRootFolder libraryRootFolder)
         {
             m_networkServersInfo = serversInfo;
             m_userProfileCacheService = new UserProfileCacheService(this, libraryRootFolder);
         }
 
-
         #region Friend Methods
 
         /// <summary>
-        /// Adds a new friend to the database for XUser
+        ///     Adds a new friend to the database for XUser
         /// </summary>
         /// <param name="friendlistowner">The agent that who's friends list is being added to</param>
         /// <param name="friend">The agent that being added to the friends list of the friends list owner</param>
@@ -119,7 +122,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Logs off a user and does the appropriate communications
+        ///     Logs off a user and does the appropriate communications
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="regionid"></param>
@@ -132,7 +135,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Logs off a user and does the appropriate communications (deprecated as of 2008-08-27)
+        ///     Logs off a user and does the appropriate communications (deprecated as of 2008-08-27)
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="regionid"></param>
@@ -146,7 +149,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Delete friend on friendlistowner's friendlist.
+        ///     Delete friend on friendlistowner's friendlist.
         /// </summary>
         /// <param name="friendlistowner">The agent that who's friends list is being updated</param>
         /// <param name="friend">The Ex-friend agent</param>
@@ -156,7 +159,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Update permissions for friend on friendlistowner's friendlist.
+        ///     Update permissions for friend on friendlistowner's friendlist.
         /// </summary>
         /// <param name="friendlistowner">The agent that who's friends list is being updated</param>
         /// <param name="friend">The agent that is getting or loosing permissions</param>
@@ -167,7 +170,7 @@ namespace OpenSim.Framework.Communications
         }
 
         /// <summary>
-        /// Returns a list of FriendsListItems that describe the friends and permissions in the friend relationship for UUID friendslistowner
+        ///     Returns a list of FriendsListItems that describe the friends and permissions in the friend relationship for UUID friendslistowner
         /// </summary>
         /// <param name="friendlistowner">The agent that we're retreiving the friends Data.</param>
         public List<FriendListItem> GetUserFriendList(UUID friendlistowner)
@@ -199,11 +202,11 @@ namespace OpenSim.Framework.Communications
             else
             {
                 string[] names = doUUIDNameRequest(uuid);
+
                 if (names.Length == 2)
                 {
                     remote_client.SendNameReply(uuid, names[0], names[1]);
                 }
-
             }
         }
 
@@ -223,13 +226,14 @@ namespace OpenSim.Framework.Communications
                 returnstring = new string[2];
                 returnstring[0] = uinfo.UserProfile.FirstName;
                 returnstring[1] = uinfo.UserProfile.SurName;
+
                 lock (m_nameRequestCache)
                 {
                     if (!m_nameRequestCache.ContainsKey(uuid))
                         m_nameRequestCache.Add(uuid, returnstring);
                 }
             }
-            
+
             return returnstring;
         }
 
@@ -242,14 +246,15 @@ namespace OpenSim.Framework.Communications
         public string UUIDNameRequestString(UUID uuid)
         {
             string[] names = doUUIDNameRequest(uuid);
+
             if (names.Length == 2)
             {
                 string firstname = names[0];
                 string lastname = names[1];
 
                 return firstname + " " + lastname;
-
             }
+
             return "(hippos)";
         }
 

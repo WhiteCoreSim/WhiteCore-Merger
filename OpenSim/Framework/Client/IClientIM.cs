@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -53,11 +55,6 @@ namespace OpenSim.Framework.Client
     {
         public ClientInstantMessageSender senderInfo;
     }
-
-    // Porting Guide from old IM
-    // SendIM(...)
-    //      Loses FromAgentSession - this should be added by implementers manually.
-    //
 
     public interface IClientIM
     {

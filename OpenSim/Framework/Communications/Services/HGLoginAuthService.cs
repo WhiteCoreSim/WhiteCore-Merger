@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,16 +33,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using log4net;
+using Nini.Config;
+using Nwc.XmlRpc;
+using OpenMetaverse;
 using OpenSim.Framework;
 using OpenSim.Framework.Communications.Cache;
 using OpenSim.Framework.Capabilities;
 using OpenSim.Framework.Servers;
-
-using OpenMetaverse;
-
-using log4net;
-using Nini.Config;
-using Nwc.XmlRpc;
 
 namespace OpenSim.Framework.Communications.Services
 {
@@ -52,12 +52,12 @@ namespace OpenSim.Framework.Communications.Services
         protected bool m_authUsers = false;
 
         /// <summary>
-        /// Used by the login service to make requests to the inventory service.
+        ///     Used by the login service to make requests to the inventory service.
         /// </summary>
         protected IInterServiceInventoryServices m_interServiceInventoryService;
 
         /// <summary>
-        /// Used to make requests to the local regions.
+        ///     Used to make requests to the local regions.
         /// </summary>
         protected ILoginServiceToRegionsConnector m_regionsConnector;
 
@@ -69,13 +69,14 @@ namespace OpenSim.Framework.Communications.Services
             : base(userManager, libraryRootFolder, welcomeMess)
         {
             this.m_serversInfo = serversInfo;
+
             if (m_serversInfo != null)
             {
                 m_defaultHomeX = this.m_serversInfo.DefaultHomeLocX;
                 m_defaultHomeY = this.m_serversInfo.DefaultHomeLocY;
             }
-            m_authUsers = authenticate;
 
+            m_authUsers = authenticate;
             m_interServiceInventoryService = interServiceInventoryService;
             m_regionsConnector = regionsConnector;
             m_interInventoryService = interServiceInventoryService;
@@ -88,7 +89,7 @@ namespace OpenSim.Framework.Communications.Services
 
         public override XmlRpcResponse XmlRpcLoginMethod(XmlRpcRequest request, IPEndPoint remoteClient)
         {
-            m_log.Info("[HGLOGIN]: HGLogin called " + request.MethodName);
+            m_log.Info("[HG Login]: HGLogin called " + request.MethodName);
             XmlRpcResponse response = base.XmlRpcLoginMethod(request, remoteClient);
             Hashtable responseData = (Hashtable)response.Value;
 
@@ -104,16 +105,14 @@ namespace OpenSim.Framework.Communications.Services
             ulong regionHandle = Util.UIntsToLong(ux, uy);
             responseData["region_handle"] = regionHandle.ToString();
 
-            // Let's remove the seed cap from the login
-            //responseData.Remove("seed_capability");
-
             // Let's add the appearance
             UUID userID = UUID.Zero;
             UUID.TryParse((string)responseData["agent_id"], out userID);
             AvatarAppearance appearance = m_userManager.GetUserAppearance(userID);
+
             if (appearance == null)
             {
-                m_log.WarnFormat("[INTER]: Appearance not found for {0}. Creating default.", userID);
+                m_log.WarnFormat("[Inter]: Appearance not found for {0}. Creating default.", userID);
                 appearance = new AvatarAppearance();
             }
 
@@ -123,13 +122,14 @@ namespace OpenSim.Framework.Communications.Services
             UUID token = UUID.Random();
             responseData["auth_token"] = token.ToString();
             UserProfileData userProfile = m_userManager.GetUserProfile(userID);
+
             if (userProfile != null)
             {
                 userProfile.WebLoginKey = token;
                 m_userManager.CommitAgent(ref userProfile);
             }
-            m_log.Warn("[HGLOGIN]: Auth token: " + token);
 
+            m_log.Warn("[HG Login]: Auth token: " + token);
 
             return response;
         }
@@ -138,16 +138,16 @@ namespace OpenSim.Framework.Communications.Services
         {
             // Verify the key of who's calling
             UUID userID = UUID.Zero;
-            UUID authKey = UUID.Zero; 
+            UUID authKey = UUID.Zero;
             UUID.TryParse((string)request.Params[0], out userID);
             UUID.TryParse((string)request.Params[1], out authKey);
 
-            m_log.InfoFormat("[HGLOGIN] HGGenerateKey called with authToken ", authKey);
+            m_log.InfoFormat("[HG Login] HGGenerateKey called with authToken ", authKey);
             string newKey = string.Empty;
 
             if (!(m_userManager is IAuthentication))
             {
-                m_log.Debug("[HGLOGIN]: UserManager is not IAuthentication service. Returning empty key.");
+                m_log.Debug("[HG Login]: UserManager is not IAuthentication service. Returning empty key.");
             }
             else
             {
@@ -155,7 +155,7 @@ namespace OpenSim.Framework.Communications.Services
             }
 
             XmlRpcResponse response = new XmlRpcResponse();
-            response.Value = (string) newKey;
+            response.Value = (string)newKey;
             return response;
         }
 
@@ -168,15 +168,16 @@ namespace OpenSim.Framework.Communications.Services
                 // Verify the key of who's calling
                 UUID userID = UUID.Zero;
                 string authKey = string.Empty;
+
                 if (UUID.TryParse((string)request.Params[0], out userID))
                 {
                     authKey = (string)request.Params[1];
 
-                    m_log.InfoFormat("[HGLOGIN] HGVerifyKey called with key {0}", authKey);
+                    m_log.InfoFormat("[HG Login] HGVerifyKey called with key {0}", authKey);
 
                     if (!(m_userManager is IAuthentication))
                     {
-                        m_log.Debug("[HGLOGIN]: UserManager is not IAuthentication service. Denying.");
+                        m_log.Debug("[HG Login]: UserManager is not IAuthentication service. Denying.");
                     }
                     else
                     {
@@ -185,7 +186,7 @@ namespace OpenSim.Framework.Communications.Services
                 }
             }
 
-            m_log.DebugFormat("[HGLOGIN]: Response to VerifyKey is {0}", success);
+            m_log.DebugFormat("[HG Login]: Response to VerifyKey is {0}", success);
             XmlRpcResponse response = new XmlRpcResponse();
             response.Value = success;
             return response;
@@ -194,6 +195,7 @@ namespace OpenSim.Framework.Communications.Services
         public override UserProfileData GetTheUser(string firstname, string lastname)
         {
             UserProfileData profile = m_userManager.GetUserProfile(firstname, lastname);
+
             if (profile != null)
             {
                 return profile;
@@ -202,7 +204,7 @@ namespace OpenSim.Framework.Communications.Services
             if (!m_authUsers)
             {
                 //no current user account so make one
-                m_log.Info("[LOGIN]: No user account found so creating a new one.");
+                m_log.Info("[Login]: No user account found so creating a new one.");
 
                 m_userManager.AddUser(firstname, lastname, "test", "", m_defaultHomeX, m_defaultHomeY);
 
@@ -217,14 +219,13 @@ namespace OpenSim.Framework.Communications.Services
             if (!m_authUsers)
             {
                 //for now we will accept any password in sandbox mode
-                m_log.Info("[LOGIN]: Authorising user (no actual password check)");
+                m_log.Info("[Login]: Authorising user (no actual password check)");
 
                 return true;
             }
             else
             {
-                m_log.Info(
-                    "[LOGIN]: Authenticating " + profile.FirstName + " " + profile.SurName);
+                m_log.Info("[Login]: Authenticating " + profile.FirstName + " " + profile.SurName);
 
                 if (!password.StartsWith("$1$"))
                     password = "$1$" + Util.Md5Hash(password);
@@ -233,8 +234,7 @@ namespace OpenSim.Framework.Communications.Services
 
                 string s = Util.Md5Hash(password + ":" + profile.PasswordSalt);
 
-                bool loginresult = (profile.PasswordHash.Equals(s.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                            || profile.PasswordHash.Equals(password, StringComparison.InvariantCulture));
+                bool loginresult = (profile.PasswordHash.Equals(s.ToString(), StringComparison.InvariantCultureIgnoreCase) || profile.PasswordHash.Equals(password, StringComparison.InvariantCulture));
                 return loginresult;
             }
         }
@@ -255,7 +255,7 @@ namespace OpenSim.Framework.Communications.Services
         }
 
         /// <summary>
-        /// Not really informing the region. Just filling out the response fields related to the region. 
+        ///     Not really informing the region. Just filling out the response fields related to the region. 
         /// </summary>
         /// <param name="sim"></param>
         /// <param name="user"></param>
@@ -272,11 +272,6 @@ namespace OpenSim.Framework.Communications.Services
 
             string capsPath = CapsUtil.GetRandomCapsObjectPath();
             string capsSeedPath = CapsUtil.GetCapsSeedPath(capsPath);
-
-            // Don't use the following!  It Fails for logging into any region not on the same port as the http server!
-            // Kept here so it doesn't happen again!
-            // response.SeedCapability = regionInfo.ServerURI + capsSeedPath;
-
             string seedcap = "http://";
 
             if (m_serversInfo.HttpUsesSSL)
@@ -297,9 +292,7 @@ namespace OpenSim.Framework.Communications.Services
             response.SeedCapability = seedcap;
 
             // Notify the target of an incoming user
-            m_log.InfoFormat(
-                "[LOGIN]: Telling {0} @ {1},{2} ({3}) to prepare for client connection",
-                regionInfo.RegionName, response.RegionX, response.RegionY, regionInfo.ServerURI);
+            m_log.InfoFormat("[Login]: Telling {0} @ {1},{2} ({3}) to prepare for client connection", regionInfo.RegionName, response.RegionX, response.RegionY, regionInfo.ServerURI);
 
             // Update agent with target sim
             user.CurrentAgent.Region = regionInfo.RegionID;
@@ -317,13 +310,13 @@ namespace OpenSim.Framework.Communications.Services
 
                 if (SimInfo == null)
                 {
-                    m_log.Error("[LOCAL LOGIN]: Region user was in isn't currently logged in");
+                    m_log.Error("[Local Login]: Region user was in isn't currently logged in");
                     return;
                 }
             }
             catch (Exception)
             {
-                m_log.Error("[LOCAL LOGIN]: Unable to look up region to log user off");
+                m_log.Error("[Local Login]: Unable to look up region to log user off");
                 return;
             }
 
@@ -334,6 +327,5 @@ namespace OpenSim.Framework.Communications.Services
         {
             return true;
         }
-
     }
 }

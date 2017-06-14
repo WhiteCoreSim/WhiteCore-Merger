@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,16 +37,19 @@ namespace OpenSim.Framework.Communications
         private readonly AsyncCallback m_callback;
 
         /// <summary>
-        /// Is process completed?
+        ///     Is process completed?
         /// </summary>
-        /// <remarks>Should really be boolean, but VolatileRead has no boolean method</remarks>
+        /// <remarks>
+        ///     Should really be boolean, but VolatileRead has no boolean method
+        /// </remarks>
         private byte m_completed;
 
         /// <summary>
-        /// Did process complete synchronously?
+        ///     Did process complete synchronously?
         /// </summary>
-        /// <remarks>I have a hard time imagining a scenario where this is the case, again, same issue about
-        /// booleans and VolatileRead as m_completed
+        /// <remarks>
+        ///     I have a hard time imagining a scenario where this is the case, again, same issue about
+        ///     booleans and VolatileRead as m_completed
         /// </remarks>
         private byte m_completedSynchronously;
 
@@ -75,6 +80,7 @@ namespace OpenSim.Framework.Communications
                 {
                     bool done = IsCompleted;
                     ManualResetEvent mre = new ManualResetEvent(done);
+
                     if (Interlocked.CompareExchange(ref m_waitHandle, mre, null) != null)
                     {
                         mre.Close();
@@ -87,17 +93,15 @@ namespace OpenSim.Framework.Communications
                         }
                     }
                 }
-                
+
                 return m_waitHandle;
             }
         }
-
 
         public bool CompletedSynchronously
         {
             get { return Thread.VolatileRead(ref m_completedSynchronously) == 1; }
         }
-
 
         public bool IsCompleted
         {
@@ -111,6 +115,7 @@ namespace OpenSim.Framework.Communications
         internal void SetAsCompleted(bool completedSynchronously)
         {
             m_completed = 1;
+
             if (completedSynchronously)
                 m_completedSynchronously = 1;
             else
@@ -122,10 +127,12 @@ namespace OpenSim.Framework.Communications
         internal void HandleException(Exception e, bool completedSynchronously)
         {
             m_completed = 1;
+
             if (completedSynchronously)
                 m_completedSynchronously = 1;
             else
                 m_completedSynchronously = 0;
+
             m_exception = e;
 
             SignalCompletion();
@@ -133,9 +140,11 @@ namespace OpenSim.Framework.Communications
 
         private void SignalCompletion()
         {
-            if (m_waitHandle != null) m_waitHandle.Set();
+            if (m_waitHandle != null)
+                m_waitHandle.Set();
 
-            if (m_callback != null) m_callback(this);
+            if (m_callback != null)
+                m_callback(this);
         }
 
         public void EndInvoke()
@@ -161,8 +170,7 @@ namespace OpenSim.Framework.Communications
     {
         private T m_result = default(T);
 
-        public AsyncResult(AsyncCallback asyncCallback, Object state) :
-            base(asyncCallback, state)
+        public AsyncResult(AsyncCallback asyncCallback, Object state) : base(asyncCallback, state)
         {
         }
 

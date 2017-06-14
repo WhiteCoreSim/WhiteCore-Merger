@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -47,10 +49,12 @@ namespace OpenSim.Framework.Configuration.XML
         private void LoadDataToClass()
         {
             rootNode = doc.SelectSingleNode("Root");
+
             if (null == rootNode)
                 throw new Exception("Error: Invalid .xml File. Missing <Root>");
 
             configNode = rootNode.SelectSingleNode("Config");
+
             if (null == configNode)
                 throw new Exception("Error: Invalid .xml File. <Root> should contain a <Config>");
         }
@@ -60,6 +64,7 @@ namespace OpenSim.Framework.Configuration.XML
             lock (this)
             {
                 doc = new XmlDocument();
+
                 if (File.Exists(fileName))
                 {
                     XmlTextReader reader = new XmlTextReader(fileName);
@@ -96,10 +101,12 @@ namespace OpenSim.Framework.Configuration.XML
         public string GetAttribute(string attributeName)
         {
             string result = null;
+
             if (configNode.Attributes[attributeName] != null)
             {
-                result = ((XmlAttribute) configNode.Attributes.GetNamedItem(attributeName)).Value;
+                result = ((XmlAttribute)configNode.Attributes.GetNamedItem(attributeName)).Value;
             }
+
             return result;
         }
 
@@ -107,7 +114,7 @@ namespace OpenSim.Framework.Configuration.XML
         {
             if (configNode.Attributes[attributeName] != null)
             {
-                ((XmlAttribute) configNode.Attributes.GetNamedItem(attributeName)).Value = attributeValue;
+                ((XmlAttribute)configNode.Attributes.GetNamedItem(attributeName)).Value = attributeValue;
             }
             else
             {
@@ -116,6 +123,7 @@ namespace OpenSim.Framework.Configuration.XML
                 attri.Value = attributeValue;
                 configNode.Attributes.Append(attri);
             }
+
             return true;
         }
 
@@ -128,6 +136,7 @@ namespace OpenSim.Framework.Configuration.XML
             {
                 Directory.CreateDirectory(Util.configDir());
             }
+
             doc.Save(fileName);
         }
 

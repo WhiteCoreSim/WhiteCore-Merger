@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,9 +28,8 @@
  */
 
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
-
+using NUnit.Framework;
 
 namespace OpenSim.Framework.Tests
 {
@@ -38,7 +39,7 @@ namespace OpenSim.Framework.Tests
         #region Tests
 
         /// <summary>
-        /// ACL Test class
+        ///     ACL Test class
         /// </summary>
         [Test]
         public void ACLTest01()
@@ -57,7 +58,6 @@ namespace OpenSim.Framework.Tests
             Resource CanBuild = new Resource("CanBuild");
             acl.AddResource(CanBuild);
 
-
             acl.GrantPermission("Guests", "CanBuild");
 
             Permission perm = acl.HasPermission("JoeGuest", "CanBuild");
@@ -66,19 +66,17 @@ namespace OpenSim.Framework.Tests
             try
             {
                 perm = acl.HasPermission("unknownGuest", "CanBuild");
-                
+
             }
             catch (KeyNotFoundException)
             {
-                
-               
             }
             catch (Exception)
             {
-                Assert.That(false,"Exception thrown should have been KeyNotFoundException");
+                Assert.That(false, "Exception thrown should have been KeyNotFoundException");
             }
-            Assert.That(perm == Permission.None,"Permission None should be set because exception should have been thrown");
-            
+
+            Assert.That(perm == Permission.None, "Permission None should be set because exception should have been thrown");
         }
 
         [Test]
@@ -116,8 +114,7 @@ namespace OpenSim.Framework.Tests
             acl.GrantPermission("Administrators", "CanRestart");
             Permission setPermission = acl.HasPermission("JoeGuest", "CanRestart");
             Assert.That(setPermission == Permission.Deny, "Guests Should not be able to restart");
-            Assert.That(acl.HasPermission("JoeGuest", "CanScript") == Permission.None,
-                        "No Explicit Permissions set so should be Permission.None");
+            Assert.That(acl.HasPermission("JoeGuest", "CanScript") == Permission.None, "No Explicit Permissions set so should be Permission.None");
         }
 
         #endregion

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,13 +39,8 @@ using log4net;
 namespace OpenSim.Framework.Console
 {
     // A console that uses cursor control and color
-    //
     public class LocalConsole : CommandConsole
     {
-//        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        // private readonly object m_syncRoot = new object();
-
         private int y = -1;
         private int cp = 0;
         private int h = 1;
@@ -122,18 +119,20 @@ namespace OpenSim.Framework.Console
                 int new_x = xc % System.Console.BufferWidth;
                 int new_y = y + xc / System.Console.BufferWidth;
                 int end_y = y + (cmdline.Length + prompt.Length) / System.Console.BufferWidth;
+
                 if (end_y / System.Console.BufferWidth >= h)
                     h++;
+
                 if (end_y >= System.Console.BufferHeight) // wrap
                 {
                     y--;
                     new_y--;
                     System.Console.CursorLeft = 0;
-                    System.Console.CursorTop = System.Console.BufferHeight-1;
+                    System.Console.CursorTop = System.Console.BufferHeight - 1;
                     System.Console.WriteLine(" ");
                 }
 
-                y=SetCursorTop(y);
+                y = SetCursorTop(y);
                 System.Console.CursorLeft = 0;
 
                 if (echo)
@@ -178,6 +177,7 @@ namespace OpenSim.Framework.Console
                 y = System.Console.CursorTop;
                 Show();
             }
+
             Monitor.Exit(cmdline);
         }
 
@@ -220,8 +220,7 @@ namespace OpenSim.Framework.Console
                 System.Console.Write(matches[0].Groups["Front"].Value);
 
                 System.Console.Write("[");
-                WriteColorText(DeriveColor(matches[0].Groups["Category"].Value),
-                        matches[0].Groups["Category"].Value);
+                WriteColorText(DeriveColor(matches[0].Groups["Category"].Value), matches[0].Groups["Category"].Value);
                 System.Console.Write("]:");
             }
 
@@ -231,7 +230,7 @@ namespace OpenSim.Framework.Console
                 WriteColorText(ConsoleColor.Yellow, outText);
             else
                 System.Console.Write(outText);
-        
+
             System.Console.WriteLine();
         }
 
@@ -277,8 +276,7 @@ namespace OpenSim.Framework.Console
             bool trailingSpace = cmdline.ToString().EndsWith(" ");
 
             // Allow ? through while typing a URI
-            //
-            if (words.Length > 0 && words[words.Length-1].StartsWith("http") && !trailingSpace)
+            if (words.Length > 0 && words[words.Length - 1].StartsWith("http") && !trailingSpace)
                 return false;
 
             string[] opts = Commands.FindNextOption(words, trailingSpace);
@@ -333,92 +331,93 @@ namespace OpenSim.Framework.Console
                 {
                     switch (key.Key)
                     {
-                    case ConsoleKey.Backspace:
-                        if (cp == 0)
-                            break;
-                        cmdline.Remove(cp-1, 1);
-                        cp--;
+                        case ConsoleKey.Backspace:
+                            if (cp == 0)
+                                break;
+                            cmdline.Remove(cp - 1, 1);
+                            cp--;
 
-                        System.Console.CursorLeft = 0;
-                        y = SetCursorTop(y);
+                            System.Console.CursorLeft = 0;
+                            y = SetCursorTop(y);
 
-                        System.Console.Write("{0}{1} ", prompt, cmdline);
+                            System.Console.Write("{0}{1} ", prompt, cmdline);
 
-                        break;
-                    case ConsoleKey.End:
-                        cp = cmdline.Length;
-                        break;
-                    case ConsoleKey.Home:
-                        cp = 0;
-                        break;
-                    case ConsoleKey.UpArrow:
-                        if (historyLine < 1)
                             break;
-                        historyLine--;
-                        LockOutput();
-                        cmdline.Remove(0, cmdline.Length);
-                        cmdline.Append(history[historyLine]);
-                        cp = cmdline.Length;
-                        UnlockOutput();
-                        break;
-                    case ConsoleKey.DownArrow:
-                        if (historyLine >= history.Count)
+                        case ConsoleKey.End:
+                            cp = cmdline.Length;
                             break;
-                        historyLine++;
-                        LockOutput();
-                        if (historyLine == history.Count)
-                        {
-                            cmdline.Remove(0, cmdline.Length);
-                        }
-                        else
-                        {
+                        case ConsoleKey.Home:
+                            cp = 0;
+                            break;
+                        case ConsoleKey.UpArrow:
+                            if (historyLine < 1)
+                                break;
+                            historyLine--;
+                            LockOutput();
                             cmdline.Remove(0, cmdline.Length);
                             cmdline.Append(history[historyLine]);
-                        }
-                        cp = cmdline.Length;
-                        UnlockOutput();
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        if (cp > 0)
-                            cp--;
-                        break;
-                    case ConsoleKey.RightArrow:
-                        if (cp < cmdline.Length)
-                            cp++;
-                        break;
-                    case ConsoleKey.Enter:
-                        System.Console.CursorLeft = 0;
-                        y = SetCursorTop(y);
-
-                        System.Console.WriteLine("{0}{1}", prompt, cmdline);
-
-                        lock (cmdline)
-                        {
-                            y = -1;
-                        }
-
-                        if (isCommand)
-                        {
-                            string[] cmd = Commands.Resolve(Parser.Parse(cmdline.ToString()));
-
-                            if (cmd.Length != 0)
+                            cp = cmdline.Length;
+                            UnlockOutput();
+                            break;
+                        case ConsoleKey.DownArrow:
+                            if (historyLine >= history.Count)
+                                break;
+                            historyLine++;
+                            LockOutput();
+                            if (historyLine == history.Count)
                             {
-                                int i;
-
-                                for (i=0 ; i < cmd.Length ; i++)
-                                {
-                                    if (cmd[i].Contains(" "))
-                                        cmd[i] = "\"" + cmd[i] + "\"";
-                                }
-                                AddToHistory(String.Join(" ", cmd));
-                                return String.Empty;
+                                cmdline.Remove(0, cmdline.Length);
                             }
-                        }
+                            else
+                            {
+                                cmdline.Remove(0, cmdline.Length);
+                                cmdline.Append(history[historyLine]);
+                            }
+                            cp = cmdline.Length;
+                            UnlockOutput();
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            if (cp > 0)
+                                cp--;
+                            break;
+                        case ConsoleKey.RightArrow:
+                            if (cp < cmdline.Length)
+                                cp++;
+                            break;
+                        case ConsoleKey.Enter:
+                            System.Console.CursorLeft = 0;
+                            y = SetCursorTop(y);
 
-                        AddToHistory(cmdline.ToString());
-                        return cmdline.ToString();
-                    default:
-                        break;
+                            System.Console.WriteLine("{0}{1}", prompt, cmdline);
+
+                            lock (cmdline)
+                            {
+                                y = -1;
+                            }
+
+                            if (isCommand)
+                            {
+                                string[] cmd = Commands.Resolve(Parser.Parse(cmdline.ToString()));
+
+                                if (cmd.Length != 0)
+                                {
+                                    int i;
+
+                                    for (i = 0; i < cmd.Length; i++)
+                                    {
+                                        if (cmd[i].Contains(" "))
+                                            cmd[i] = "\"" + cmd[i] + "\"";
+                                    }
+
+                                    AddToHistory(String.Join(" ", cmd));
+                                    return String.Empty;
+                                }
+                            }
+
+                            AddToHistory(cmdline.ToString());
+                            return cmdline.ToString();
+                        default:
+                            break;
                     }
                 }
             }

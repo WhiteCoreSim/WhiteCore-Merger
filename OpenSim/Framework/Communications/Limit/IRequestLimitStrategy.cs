@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,36 +30,38 @@
 namespace OpenSim.Framework.Communications.Limit
 {
     /// <summary>
-    /// Interface for strategies that can limit requests from the client.  Currently only used in the
-    /// texture modules to deal with repeated requests for certain textures.  However, limiting strategies
-    /// could be used with other requests.
+    ///     Interface for strategies that can limit requests from the client.  Currently only used in the
+    ///     texture modules to deal with repeated requests for certain textures.  However, limiting strategies
+    ///     could be used with other requests.
     /// </summary>
     public interface IRequestLimitStrategy<TId>
     {
         /// <summary>
-        /// Should the request be allowed?  If the id is not monitored, then the request is always allowed.
-        /// Otherwise, the strategy criteria will be applied.
+        ///     Should the request be allowed?  If the id is not monitored, then the request is always allowed.
+        ///     Otherwise, the strategy criteria will be applied.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         bool AllowRequest(TId id);
 
         /// <summary>
-        /// Has the request been refused just once?
+        ///     Has the request been refused just once?
         /// </summary>
-        /// <returns>False if the request has not yet been refused, or if the request has been refused more
-        /// than once.</returns>
+        /// <returns>
+        ///     False if the request has not yet been refused, or if the request has been refused more
+        ///     than once.
+        /// </returns>
         bool IsFirstRefusal(TId id);
 
         /// <summary>
-        /// Start monitoring for future AllowRequest calls.  If the id is already monitored, then monitoring
-        /// continues.
+        ///     Start monitoring for future AllowRequest calls.  If the id is already monitored, then monitoring
+        ///     continues.
         /// </summary>
         /// <param name="id"></param>
         void MonitorRequests(TId id);
 
         /// <summary>
-        /// Is the id being monitored?
+        ///     Is the id being monitored?
         /// </summary>
         /// <param name="uuid"> </param>
         /// <returns></returns>

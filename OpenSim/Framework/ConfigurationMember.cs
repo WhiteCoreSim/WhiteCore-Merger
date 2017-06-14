@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,7 +44,6 @@ namespace OpenSim.Framework
         #region Delegates
 
         public delegate bool ConfigurationOptionResult(string configuration_key, object configuration_result);
-
         public delegate void ConfigurationOptionsLoad();
 
         #endregion
@@ -57,7 +58,7 @@ namespace OpenSim.Framework
         private IGenericConfig configurationPlugin = null;
 
         /// <summary>
-        /// This is the default configuration DLL loaded
+        ///     This is the default configuration DLL loaded
         /// </summary>
         private string configurationPluginFilename = "OpenSim.Framework.Configuration.XML.dll";
 
@@ -66,8 +67,7 @@ namespace OpenSim.Framework
 
         private bool useConsoleToPromptOnError = true;
 
-        public ConfigurationMember(string configuration_filename, string configuration_description,
-                                   ConfigurationOptionsLoad load_function, ConfigurationOptionResult result_function, bool use_console_to_prompt_on_error)
+        public ConfigurationMember(string configuration_filename, string configuration_description, ConfigurationOptionsLoad load_function, ConfigurationOptionResult result_function, bool use_console_to_prompt_on_error)
         {
             configurationFilename = configuration_filename;
             configurationDescription = configuration_description;
@@ -76,8 +76,7 @@ namespace OpenSim.Framework
             useConsoleToPromptOnError = use_console_to_prompt_on_error;
         }
 
-        public ConfigurationMember(XmlNode configuration_xml, string configuration_description,
-                                   ConfigurationOptionsLoad load_function, ConfigurationOptionResult result_function, bool use_console_to_prompt_on_error)
+        public ConfigurationMember(XmlNode configuration_xml, string configuration_description, ConfigurationOptionsLoad load_function, ConfigurationOptionResult result_function, bool use_console_to_prompt_on_error)
         {
             configurationFilename = String.Empty;
             configurationFromXMLNode = configuration_xml;
@@ -119,16 +118,11 @@ namespace OpenSim.Framework
             }
             else
             {
-                m_log.Info(
-                    "Required fields for adding a configuration option is invalid. Will not add this option (" +
-                    option.configurationKey + ")");
+                m_log.Info("Required fields for adding a configuration option is invalid. Will not add this option (" + option.configurationKey + ")");
             }
         }
 
-        public void addConfigurationOption(string configuration_key,
-                                           ConfigurationOption.ConfigurationTypes configuration_type,
-                                           string configuration_question, string configuration_default,
-                                           bool use_default_no_prompt)
+        public void addConfigurationOption(string configuration_key, ConfigurationOption.ConfigurationTypes configuration_type, string configuration_question, string configuration_default, bool use_default_no_prompt)
         {
             ConfigurationOption configOption = new ConfigurationOption();
             configOption.configurationKey = configuration_key;
@@ -140,11 +134,7 @@ namespace OpenSim.Framework
             checkAndAddConfigOption(configOption);
         }
 
-        public void addConfigurationOption(string configuration_key,
-                                           ConfigurationOption.ConfigurationTypes configuration_type,
-                                           string configuration_question, string configuration_default,
-                                           bool use_default_no_prompt,
-                                           ConfigurationOption.ConfigurationOptionShouldBeAsked shouldIBeAskedDelegate)
+        public void addConfigurationOption(string configuration_key, ConfigurationOption.ConfigurationTypes configuration_type, string configuration_question, string configuration_default, bool use_default_no_prompt, ConfigurationOption.ConfigurationOptionShouldBeAsked shouldIBeAskedDelegate)
         {
             ConfigurationOption configOption = new ConfigurationOption();
             configOption.configurationKey = configuration_key;
@@ -167,32 +157,29 @@ namespace OpenSim.Framework
             configurationOptions.Clear();
             if (loadFunction == null)
             {
-                m_log.Error("Load Function for '" + configurationDescription +
-                            "' is null. Refusing to run configuration.");
+                m_log.Error("Load Function for '" + configurationDescription + "' is null. Refusing to run configuration.");
                 return;
             }
 
             if (resultFunction == null)
             {
-                m_log.Error("Result Function for '" + configurationDescription +
-                            "' is null. Refusing to run configuration.");
+                m_log.Error("Result Function for '" + configurationDescription + "' is null. Refusing to run configuration.");
                 return;
             }
 
-            //m_log.Debug("[CONFIG]: Calling Configuration Load Function...");
             loadFunction();
 
             if (configurationOptions.Count <= 0)
             {
-                m_log.Error("[CONFIG]: No configuration options were specified for '" + configurationOptions +
-                            "'. Refusing to continue configuration.");
+                m_log.Error("[Configuration]: No configuration options were specified for '" + configurationOptions + "'. Refusing to continue configuration.");
                 return;
             }
 
             bool useFile = true;
+
             if (configurationPlugin == null)
             {
-                m_log.Error("[CONFIG]: Configuration Plugin NOT LOADED!");
+                m_log.Error("[Configuration]: Configuration Plugin NOT LOADED!");
                 return;
             }
 
@@ -206,10 +193,7 @@ namespace OpenSim.Framework
                 }
                 catch (XmlException e)
                 {
-                    m_log.WarnFormat("[CONFIG] Not using {0}: {1}",
-                            configurationFilename,
-                            e.Message.ToString());
-                    //m_log.Error("Error loading " + configurationFilename + ": " + e.ToString());
+                    m_log.WarnFormat("[Configuration] Not using {0}: {1}", configurationFilename, e.Message.ToString());
                     useFile = false;
                 }
             }
@@ -231,10 +215,12 @@ namespace OpenSim.Framework
                 object return_result = null;
                 string errorMessage = String.Empty;
                 bool ignoreNextFromConfig = false;
+
                 while (convertSuccess == false)
                 {
                     string console_result = String.Empty;
                     string attribute = null;
+
                     if (useFile || configurationFromXMLNode != null)
                     {
                         if (!ignoreNextFromConfig)
@@ -255,22 +241,15 @@ namespace OpenSim.Framework
                         }
                         else
                         {
-                            if ((configOption.shouldIBeAsked != null &&
-                                 configOption.shouldIBeAsked(configOption.configurationKey)) ||
-                                configOption.shouldIBeAsked == null)
+                            if ((configOption.shouldIBeAsked != null && configOption.shouldIBeAsked(configOption.configurationKey)) || configOption.shouldIBeAsked == null)
                             {
                                 if (configurationDescription.Trim() != String.Empty)
                                 {
-                                    console_result =
-                                        MainConsole.Instance.CmdPrompt(
-                                            configurationDescription + ": " + configOption.configurationQuestion,
-                                            configOption.configurationDefault);
+                                    console_result = MainConsole.Instance.CmdPrompt(configurationDescription + ": " + configOption.configurationQuestion, configOption.configurationDefault);
                                 }
                                 else
                                 {
-                                    console_result =
-                                        MainConsole.Instance.CmdPrompt(configOption.configurationQuestion,
-                                                                       configOption.configurationDefault);
+                                    console_result = MainConsole.Instance.CmdPrompt(configOption.configurationQuestion, configOption.configurationDefault);
                                 }
                             }
                             else
@@ -458,8 +437,7 @@ namespace OpenSim.Framework
 
                         if (!resultFunction(configOption.configurationKey, return_result))
                         {
-                            m_log.Info(
-                                "The handler for the last configuration option denied that input, please try again.");
+                            m_log.Info("The handler for the last configuration option denied that input, please try again.");
                             convertSuccess = false;
                             ignoreNextFromConfig = true;
                         }
@@ -469,7 +447,7 @@ namespace OpenSim.Framework
                         if (configOption.configurationUseDefaultNoPrompt)
                         {
                             m_log.Error(string.Format(
-                                            "[CONFIG]: [{3}]:[{1}] is not valid default for parameter [{0}].\nThe configuration result must be parsable to {2}.\n",
+                                            "[Configuration]: [{3}]:[{1}] is not valid default for parameter [{0}].\nThe configuration result must be parsable to {2}.\n",
                                             configOption.configurationKey, console_result, errorMessage,
                                             configurationFilename));
                             convertSuccess = true;
@@ -477,7 +455,7 @@ namespace OpenSim.Framework
                         else
                         {
                             m_log.Warn(string.Format(
-                                           "[CONFIG]: [{3}]:[{1}] is not a valid value [{0}].\nThe configuration result must be parsable to {2}.\n",
+                                           "[Configuration]: [{3}]:[{1}] is not a valid value [{0}].\nThe configuration result must be parsable to {2}.\n",
                                            configOption.configurationKey, console_result, errorMessage,
                                            configurationFilename));
                             ignoreNextFromConfig = true;
@@ -508,8 +486,7 @@ namespace OpenSim.Framework
 
                         if (typeInterface != null)
                         {
-                            plug =
-                                (IGenericConfig) Activator.CreateInstance(pluginAssembly.GetType(pluginType.ToString()));
+                            plug = (IGenericConfig)Activator.CreateInstance(pluginAssembly.GetType(pluginType.ToString()));
                         }
                     }
                 }

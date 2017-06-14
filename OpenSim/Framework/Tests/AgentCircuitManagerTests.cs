@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -24,10 +26,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+using System;
 using System.Collections.Generic;
 using OpenMetaverse;
 using NUnit.Framework;
-using System;
 
 namespace OpenSim.Framework.Tests
 {
@@ -48,23 +51,21 @@ namespace OpenSim.Framework.Tests
         [SetUp]
         public void setup()
         {
-
             AgentId1 = UUID.Random();
             AgentId2 = UUID.Random();
-            circuitcode1 = (uint) rnd.Next((int)uint.MinValue, int.MaxValue);
-            circuitcode2 = (uint) rnd.Next((int)uint.MinValue, int.MaxValue);
+            circuitcode1 = (uint)rnd.Next((int)uint.MinValue, int.MaxValue);
+            circuitcode2 = (uint)rnd.Next((int)uint.MinValue, int.MaxValue);
             SessionId1 = UUID.Random();
             SessionId2 = UUID.Random();
             UUID BaseFolder = UUID.Random();
             string CapsPath = "http://www.opensimulator.org/Caps/Foo";
-            Dictionary<ulong,string> ChildrenCapsPaths = new Dictionary<ulong, string>();
+            Dictionary<ulong, string> ChildrenCapsPaths = new Dictionary<ulong, string>();
             ChildrenCapsPaths.Add(ulong.MaxValue, "http://www.opensimulator.org/Caps/Foo2");
             string firstname = "CoolAvatarTest";
             string lastname = "test";
             Vector3 StartPos = new Vector3(5, 23, 125);
 
             UUID SecureSessionId = UUID.Random();
-            // TODO: unused: UUID SessionId = UUID.Random();
 
             m_agentCircuitData1 = new AgentCircuitData();
             m_agentCircuitData1.AgentID = AgentId1;
@@ -98,13 +99,13 @@ namespace OpenSim.Framework.Tests
         }
 
         /// <summary>
-        /// Validate that adding the circuit works appropriately
+        ///     Validate that adding the circuit works appropriately
         /// </summary>
         [Test]
         public void AddAgentCircuitTest()
         {
             AgentCircuitManager agentCircuitManager = new AgentCircuitManager();
-            agentCircuitManager.AddNewCircuit(circuitcode1,m_agentCircuitData1);
+            agentCircuitManager.AddNewCircuit(circuitcode1, m_agentCircuitData1);
             agentCircuitManager.AddNewCircuit(circuitcode2, m_agentCircuitData2);
             AgentCircuitData agent = agentCircuitManager.GetAgentCircuitData(circuitcode1);
 
@@ -124,7 +125,7 @@ namespace OpenSim.Framework.Tests
         }
 
         /// <summary>
-        /// Validate that removing the circuit code removes it appropriately
+        ///     Validate that removing the circuit code removes it appropriately
         /// </summary>
         [Test]
         public void RemoveAgentCircuitTest()
@@ -136,11 +137,10 @@ namespace OpenSim.Framework.Tests
 
             AgentCircuitData agent = agentCircuitManager.GetAgentCircuitData(circuitcode2);
             Assert.That(agent == null);
-
         }
 
         /// <summary>
-        /// Validate that changing the circuit code works
+        ///     Validate that changing the circuit code works
         /// </summary>
         [Test]
         public void ChangeAgentCircuitCodeTest()
@@ -157,13 +157,12 @@ namespace OpenSim.Framework.Tests
             Assert.That(agent != null);
             Assert.That(agent2 == null);
             Assert.That(result);
-
         }
 
         /// <summary>
-        /// Validates that the login authentication scheme is working
-        /// First one should be authorized
-        /// Rest should not be authorized
+        ///     Validates that the login authentication scheme is working
+        ///     First one should be authorized
+        ///     Rest should not be authorized
         /// </summary>
         [Test]
         public void ValidateLoginTest()
@@ -176,14 +175,13 @@ namespace OpenSim.Framework.Tests
             AuthenticateResponse resp = agentCircuitManager.AuthenticateSession(SessionId1, AgentId1, circuitcode1);
             Assert.That(resp.Authorised);
 
-
             //should not be authorized
             resp = agentCircuitManager.AuthenticateSession(SessionId1, UUID.Random(), circuitcode1);
             Assert.That(!resp.Authorised);
 
             resp = agentCircuitManager.AuthenticateSession(UUID.Random(), AgentId1, circuitcode1);
             Assert.That(!resp.Authorised);
-            
+
             resp = agentCircuitManager.AuthenticateSession(SessionId1, AgentId1, circuitcode2);
             Assert.That(!resp.Authorised);
 
@@ -194,8 +192,6 @@ namespace OpenSim.Framework.Tests
 
             resp = agentCircuitManager.AuthenticateSession(SessionId2, AgentId2, circuitcode2);
             Assert.That(!resp.Authorised);
-
         }
-
     }
 }

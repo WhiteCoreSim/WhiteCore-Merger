@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,7 +32,7 @@ using System.Timers;
 namespace OpenSim.Framework.Statistics
 {
     /// <summary>
-    /// Collects user service statistics
+    ///     Collects user service statistics
     /// </summary>
     public class UserStatsCollector : BaseStatsCollector
     {
@@ -64,7 +66,7 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Record a successful login
+        ///     Record a successful login
         /// </summary>
         public void AddSuccessfulLogin()
         {
@@ -78,15 +80,12 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Report back collected statistical information.
+        ///     Report back collected statistical information.
         /// </summary>
         /// <returns></returns>
         override public string Report()
         {
-            return string.Format(
-@"Successful logins total : {0}, today : {1}, yesterday : {2}
-          Logouts total : {3}",
-                SuccessfulLogins, SuccessfulLoginsToday, SuccessfulLoginsYesterday, Logouts);
+            return string.Format(@"Successful logins total : {0}, today : {1}, yesterday : {2} Logouts total : {3}", SuccessfulLogins, SuccessfulLoginsToday, SuccessfulLoginsYesterday, Logouts);
         }
     }
 }

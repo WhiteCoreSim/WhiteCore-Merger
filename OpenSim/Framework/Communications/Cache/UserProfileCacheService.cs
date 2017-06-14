@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,43 +36,41 @@ using OpenSim.Services.Interfaces;
 namespace OpenSim.Framework.Communications.Cache
 {
     /// <summary>
-    /// Holds user profile information and retrieves it from backend services.
+    ///     Holds user profile information and retrieves it from backend services.
     /// </summary>
     public class UserProfileCacheService
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <value>
-        /// Standard format for names.
+        ///     Standard format for names.
         /// </value>
         public const string NAME_FORMAT = "{0} {1}";
-        
+
         /// <summary>
-        /// The comms manager holds references to services (user, grid, inventory, etc.)
+        ///     The comms manager holds references to services (user, grid, inventory, etc.)
         /// </summary>
         private readonly CommunicationsManager m_commsManager;
 
         /// <summary>
-        /// User profiles indexed by UUID
+        ///     User profiles indexed by UUID
         /// </summary>
-        private readonly Dictionary<UUID, CachedUserInfo> m_userProfilesById 
-            = new Dictionary<UUID, CachedUserInfo>();
-        
+        private readonly Dictionary<UUID, CachedUserInfo> m_userProfilesById = new Dictionary<UUID, CachedUserInfo>();
+
         /// <summary>
-        /// User profiles indexed by name
+        ///     User profiles indexed by name
         /// </summary>
-        private readonly Dictionary<string, CachedUserInfo> m_userProfilesByName 
-            = new Dictionary<string, CachedUserInfo>();
-        
+        private readonly Dictionary<string, CachedUserInfo> m_userProfilesByName = new Dictionary<string, CachedUserInfo>();
+
         /// <summary>
-        /// The root library folder.
+        ///     The root library folder.
         /// </summary>
         public readonly InventoryFolderImpl LibraryRoot;
 
         private IInventoryService m_InventoryService;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="commsManager"></param>
         /// <param name="libraryRootFolder"></param>
@@ -86,24 +86,21 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// A new user has moved into a region in this instance so retrieve their profile from the user service.
+        ///     A new user has moved into a region in this instance so retrieve their profile from the user service.
+        ///     It isn't strictly necessary to make this call since user data can be lazily requested later on.  However, 
+        ///     it might be helpful in order to avoid an initial response delay later on
         /// </summary>
-        /// 
-        /// It isn't strictly necessary to make this call since user data can be lazily requested later on.  However, 
-        /// it might be helpful in order to avoid an initial response delay later on
-        /// 
         /// <param name="userID"></param>
         public void AddNewUser(UUID userID)
         {
             if (userID == UUID.Zero)
                 return;
-            
-            //m_log.DebugFormat("[USER CACHE]: Adding user profile for {0}", userID);
+
             GetUserDetails(userID);
         }
 
         /// <summary>
-        /// Remove this user's profile cache.
+        ///     Remove this user's profile cache.
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>true if the user was successfully removed, false otherwise</returns>
@@ -111,9 +108,8 @@ namespace OpenSim.Framework.Communications.Cache
         {
             if (!RemoveFromCaches(userId))
             {
-                m_log.WarnFormat(
-                    "[USER CACHE]: Tried to remove the profile of user {0}, but this was not in the scene", userId);
-                
+                m_log.WarnFormat("[User Cache]: Tried to remove the profile of user {0}, but this was not in the scene", userId);
+
                 return false;
             }
 
@@ -121,9 +117,9 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Get details of the given user.
+        ///     Get details of the given user.
+        ///     If the user isn't in cache then the user is requested from the profile service.
         /// </summary>
-        /// If the user isn't in cache then the user is requested from the profile service.
         /// <param name="userID"></param>
         /// <returns>null if no user details are found</returns>
         public CachedUserInfo GetUserDetails(string fname, string lname)
@@ -131,7 +127,7 @@ namespace OpenSim.Framework.Communications.Cache
             lock (m_userProfilesByName)
             {
                 CachedUserInfo userInfo;
-                
+
                 if (m_userProfilesByName.TryGetValue(string.Format(NAME_FORMAT, fname, lname), out userInfo))
                 {
                     return userInfo;
@@ -144,6 +140,7 @@ namespace OpenSim.Framework.Communications.Cache
                     {
                         if ((userProfile.UserAssetURI == null || userProfile.UserAssetURI == "") && m_commsManager.NetworkServersInfo != null)
                             userProfile.UserAssetURI = m_commsManager.NetworkServersInfo.AssetURL;
+
                         if ((userProfile.UserInventoryURI == null || userProfile.UserInventoryURI == "") && m_commsManager.NetworkServersInfo != null)
                             userProfile.UserInventoryURI = m_commsManager.NetworkServersInfo.InventoryURL;
 
@@ -154,11 +151,11 @@ namespace OpenSim.Framework.Communications.Cache
                 }
             }
         }
-        
+
         /// <summary>
-        /// Get details of the given user.
+        ///     Get details of the given user.
+        ///     If the user isn't in cache then the user is requested from the profile service.
         /// </summary>
-        /// If the user isn't in cache then the user is requested from the profile service.
         /// <param name="userID"></param>
         /// <returns>null if no user details are found</returns>
         public CachedUserInfo GetUserDetails(UUID userID)
@@ -175,10 +172,12 @@ namespace OpenSim.Framework.Communications.Cache
                 else
                 {
                     UserProfileData userProfile = m_commsManager.UserService.GetUserProfile(userID);
+
                     if (userProfile != null)
                     {
                         if ((userProfile.UserAssetURI == null || userProfile.UserAssetURI == "") && m_commsManager.NetworkServersInfo != null)
                             userProfile.UserAssetURI = m_commsManager.NetworkServersInfo.AssetURL;
+
                         if ((userProfile.UserInventoryURI == null || userProfile.UserInventoryURI == "") && m_commsManager.NetworkServersInfo != null)
                             userProfile.UserInventoryURI = m_commsManager.NetworkServersInfo.InventoryURL;
 
@@ -189,56 +188,30 @@ namespace OpenSim.Framework.Communications.Cache
                 }
             }
         }
-        
+
         /// <summary>
-        /// Update an existing profile
-        /// </summary>
-        /// <param name="userProfile"></param>
-        /// <returns>true if a user profile was found to update, false otherwise</returns>
-        // Commented out for now.  The implementation needs to be improved by protecting against race conditions,
-        // probably by making sure that the update doesn't use the UserCacheInfo.UserProfile directly (possibly via
-        // returning a read only class from the cache).
-//        public bool StoreProfile(UserProfileData userProfile)
-//        {
-//            lock (m_userProfilesById)
-//            {
-//                CachedUserInfo userInfo = GetUserDetails(userProfile.ID);
-//
-//                if (userInfo != null)
-//                {
-//                    userInfo.m_userProfile = userProfile;
-//                    m_commsManager.UserService.UpdateUserProfile(userProfile);
-//
-//                    return true;
-//                }
-//            }
-//
-//            return false;
-//        }
-        
-        /// <summary>
-        /// Populate caches with the given user profile
+        ///     Populate caches with the given user profile
         /// </summary>
         /// <param name="userProfile"></param>
         protected CachedUserInfo AddToCaches(UserProfileData userProfile)
         {
             CachedUserInfo createdUserInfo = new CachedUserInfo(m_InventoryService, userProfile);
-            
+
             lock (m_userProfilesById)
             {
                 m_userProfilesById[createdUserInfo.UserProfile.ID] = createdUserInfo;
-                
+
                 lock (m_userProfilesByName)
                 {
                     m_userProfilesByName[createdUserInfo.UserProfile.Name] = createdUserInfo;
                 }
             }
-            
+
             return createdUserInfo;
         }
-        
+
         /// <summary>
-        /// Remove profile belong to the given uuid from the caches
+        ///     Remove profile belong to the given uuid from the caches
         /// </summary>
         /// <param name="userUuid"></param>
         /// <returns>true if there was a profile to remove, false otherwise</returns>
@@ -250,21 +223,21 @@ namespace OpenSim.Framework.Communications.Cache
                 {
                     CachedUserInfo userInfo = m_userProfilesById[userId];
                     m_userProfilesById.Remove(userId);
-                    
+
                     lock (m_userProfilesByName)
                     {
                         m_userProfilesByName.Remove(userInfo.UserProfile.Name);
                     }
-                    
+
                     return true;
                 }
             }
-            
+
             return false;
         }
 
         /// <summary>
-        /// Preloads User data into the region cache. Modules may use this service to add non-standard clients
+        ///     Preloads User data into the region cache. Modules may use this service to add non-standard clients
         /// </summary>
         /// <param name="userData"></param>
         public void PreloadUserCache(UserProfileData userData)

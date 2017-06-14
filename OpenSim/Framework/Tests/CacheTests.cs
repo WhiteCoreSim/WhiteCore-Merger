@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,22 +38,24 @@ namespace OpenSim.Framework.Tests
     {
         private Cache cache;
         private UUID cacheItemUUID;
+
         [SetUp]
         public void Build()
         {
             cache = new Cache();
             cacheItemUUID = UUID.Random();
-            MemoryCacheItem cachedItem = new MemoryCacheItem(cacheItemUUID.ToString(),DateTime.Now + TimeSpan.FromDays(1));
+            MemoryCacheItem cachedItem = new MemoryCacheItem(cacheItemUUID.ToString(), DateTime.Now + TimeSpan.FromDays(1));
             byte[] foo = new byte[1];
             foo[0] = 255;
             cachedItem.Store(foo);
             cache.Store(cacheItemUUID.ToString(), cachedItem);
         }
+
         [Test]
         public void TestRetreive()
         {
             CacheItemBase citem = (CacheItemBase)cache.Get(cacheItemUUID.ToString());
-            byte[] data = (byte[]) citem.Retrieve();
+            byte[] data = (byte[])citem.Retrieve();
             Assert.That(data.Length == 1, "Cached Item should have one byte element");
             Assert.That(data[0] == 255, "Cached Item element should be 255");
         }
@@ -60,10 +64,12 @@ namespace OpenSim.Framework.Tests
         public void TestNotInCache()
         {
             UUID randomNotIn = UUID.Random();
+
             while (randomNotIn == cacheItemUUID)
             {
                 randomNotIn = UUID.Random();
             }
+
             object citem = cache.Get(randomNotIn.ToString());
             Assert.That(citem == null, "Item should not be in Cache");
         }
@@ -80,8 +86,6 @@ namespace OpenSim.Framework.Tests
             cache.Store(cacheItemUUID.ToString(), cachedItem);
 
             cache.Get(cacheItemUUID.ToString());
-            //object citem = cache.Get(cacheItemUUID.ToString());
-            //Assert.That(citem == null, "Item should not be in Cache because the expiry time was before now");
         }
 
         //NOTE: Test Case disabled until Cache is fixed
@@ -96,9 +100,6 @@ namespace OpenSim.Framework.Tests
             cache.Store(cacheItemUUID.ToString(), cachedItem);
             cache.Invalidate(ImmediateExpiryUUID.ToString());
             cache.Get(cacheItemUUID.ToString());
-            //object citem = cache.Get(cacheItemUUID.ToString());
-            //Assert.That(citem == null, "Item should not be in Cache because we manually invalidated it");
         }
-
     }
 }

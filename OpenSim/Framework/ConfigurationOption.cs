@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -58,15 +60,13 @@ namespace OpenSim.Framework
             TYPE_Vector3,
             TYPE_FLOAT,
             TYPE_DOUBLE
-        } ;
+        };
 
         #endregion
 
         public string configurationDefault = String.Empty;
-
         public string configurationKey = String.Empty;
         public string configurationQuestion = String.Empty;
-
         public ConfigurationTypes configurationType = ConfigurationTypes.TYPE_STRING;
         public bool configurationUseDefaultNoPrompt = false;
         public ConfigurationOptionShouldBeAsked shouldIBeAsked; //Should I be asked now? Based on previous answers

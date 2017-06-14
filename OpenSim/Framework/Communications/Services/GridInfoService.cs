@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -45,15 +47,15 @@ namespace OpenSim.Framework.Communications.Services
         private Hashtable _info = new Hashtable();
 
         /// <summary>
-        /// Instantiate a GridInfoService object.
+        ///     Instantiate a GridInfoService object.
         /// </summary>
         /// <param name="configPath">path to config path containing
         /// grid information</param>
         /// <remarks>
-        /// GridInfoService uses the [GridInfo] section of the
-        /// standard OpenSim.ini file --- which is not optimal, but
-        /// anything else requires a general redesign of the config
-        /// system.
+        ///     GridInfoService uses the [GridInfo] section of the
+        ///     standard OpenSim.ini file --- which is not optimal, but
+        ///     anything else requires a general redesign of the config
+        ///     system.
         /// </remarks>
         public GridInfoService(IConfigSource configSource)
         {
@@ -61,7 +63,7 @@ namespace OpenSim.Framework.Communications.Services
         }
 
         /// <summary>
-        /// Default constructor, uses OpenSim.ini.
+        ///     Default constructor, uses OpenSim.ini.
         /// </summary>
         public GridInfoService()
         {
@@ -72,8 +74,7 @@ namespace OpenSim.Framework.Communications.Services
             }
             catch (FileNotFoundException)
             {
-                _log.Warn(
-                    "[GRID INFO SERVICE]: No OpenSim.ini file found --- GridInfoServices WILL NOT BE AVAILABLE to your users");
+                _log.Warn("[Grid Info Service]: No OpenSim.ini file found --- GridInfoServices WILL NOT BE AVAILABLE to your users");
             }
         }
 
@@ -93,7 +94,6 @@ namespace OpenSim.Framework.Communications.Services
                 else
                     _info["mode"] = "standalone";
 
-
                 if (null != gridCfg)
                 {
                     foreach (string k in gridCfg.GetKeys())
@@ -104,16 +104,10 @@ namespace OpenSim.Framework.Communications.Services
                 else if (null != netCfg)
                 {
                     if (grid)
-                        _info["login"] 
-                            = netCfg.GetString(
-                                "user_server_url", "http://127.0.0.1:" + ConfigSettings.DefaultUserServerHttpPort.ToString());
+                        _info["login"] = netCfg.GetString("user_server_url", "http://127.0.0.1:" + ConfigSettings.DefaultUserServerHttpPort.ToString());
                     else
-                        _info["login"] 
-                            = String.Format(
-                                "http://127.0.0.1:{0}/", 
-                                netCfg.GetString(
-                                    "http_listener_port", ConfigSettings.DefaultRegionHttpPort.ToString()));
-                    
+                        _info["login"] = String.Format("http://127.0.0.1:{0}/", netCfg.GetString("http_listener_port", ConfigSettings.DefaultRegionHttpPort.ToString()));
+
                     IssueWarning();
                 }
                 else
@@ -124,21 +118,20 @@ namespace OpenSim.Framework.Communications.Services
             }
             catch (Exception)
             {
-                _log.Debug("[GRID INFO SERVICE]: Cannot get grid info from config source, using minimal defaults");
+                _log.Debug("[Grid Info Service]: Cannot get grid info from config source, using minimal defaults");
             }
-            
-            _log.DebugFormat("[GRID INFO SERVICE]: Grid info service initialized with {0} keys", _info.Count);
 
+            _log.DebugFormat("[Grid Info Service]: Grid info service initialized with {0} keys", _info.Count);
         }
 
         private void IssueWarning()
         {
-            _log.Warn("[GRID INFO SERVICE]: found no [GridInfo] section in your OpenSim.ini");
-            _log.Warn("[GRID INFO SERVICE]: trying to guess sensible defaults, you might want to provide better ones:");
-            
+            _log.Warn("[Grid Info Service]: found no [GridInfo] section in your OpenSim.ini");
+            _log.Warn("[Grid Info Service]: trying to guess sensible defaults, you might want to provide better ones:");
+
             foreach (string k in _info.Keys)
             {
-                _log.WarnFormat("[GRID INFO SERVICE]: {0}: {1}", k, _info[k]);
+                _log.WarnFormat("[Grid Info Service]: {0}: {1}", k, _info[k]);
             }
         }
 
@@ -147,27 +140,29 @@ namespace OpenSim.Framework.Communications.Services
             XmlRpcResponse response = new XmlRpcResponse();
             Hashtable responseData = new Hashtable();
 
-            _log.Info("[GRID INFO SERVICE]: Request for grid info");
+            _log.Info("[Grid Info Service]: Request for grid info");
 
             foreach (string k in _info.Keys)
             {
                 responseData[k] = _info[k];
             }
+
             response.Value = responseData;
 
             return response;
         }
 
-        public string RestGetGridInfoMethod(string request, string path, string param,
-                                            OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        public string RestGetGridInfoMethod(string request, string path, string param, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
         {
             StringBuilder sb = new StringBuilder();
 
             sb.Append("<gridinfo>\n");
+
             foreach (string k in _info.Keys)
             {
                 sb.AppendFormat("<{0}>{1}</{0}>\n", k, _info[k]);
             }
+
             sb.Append("</gridinfo>\n");
 
             return sb.ToString();

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,51 +32,54 @@ using System;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Exception thrown if Initialise has been called, but failed.
+    ///     Exception thrown if Initialise has been called, but failed.
     /// </summary>
     public class PluginNotInitialisedException : Exception
     {
-        public PluginNotInitialisedException () : base() {}
-        public PluginNotInitialisedException (string msg) : base(msg) {}
-        public PluginNotInitialisedException (string msg, Exception e) : base(msg, e) {}
+        public PluginNotInitialisedException() : base() { }
+        public PluginNotInitialisedException(string msg) : base(msg) { }
+        public PluginNotInitialisedException(string msg, Exception e) : base(msg, e) { }
     }
 
     /// <summary>
-    /// This interface, describes a generic plugin
+    ///     This interface, describes a generic plugin
     /// </summary>
     public interface IPlugin : IDisposable
     {
         /// <summary>
-        /// Returns the plugin version
+        ///     Returns the plugin version
         /// </summary>
-        /// <returns>Plugin version in MAJOR.MINOR.REVISION.BUILD format</returns>
+        /// <returns>
+        ///     Plugin version in MAJOR.MINOR.REVISION.BUILD format
+        /// </returns>
         string Version { get; }
 
         /// <summary>
-        /// Returns the plugin name
+        ///     Returns the plugin name
         /// </summary>
-        /// <returns>Plugin name, eg MySQL User Provider</returns>
+        /// <returns>
+        ///     Plugin name, eg MySQL User Provider
+        /// </returns>
         string Name { get; }
 
         /// <summary>
-        /// Default-initialises the plugin
+        ///     Default-initialises the plugin
         /// </summary>
         void Initialise();
     }
 
     /// <summary>
-    /// Any plugins which need to pass parameters to their initialisers must
-    /// inherit this class and use it to set the PluginLoader Initialiser property
+    ///     Any plugins which need to pass parameters to their initialisers must
+    ///     inherit this class and use it to set the PluginLoader Initialiser property
     /// </summary>
     public class PluginInitialiserBase
     {
         // this would be a lot simpler if C# supported currying or typedefs
 
         // default initialisation
-        public virtual void Initialise (IPlugin plugin)
+        public virtual void Initialise(IPlugin plugin)
         {
             plugin.Initialise();
         }
     }
-
 }

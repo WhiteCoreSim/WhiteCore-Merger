@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,9 +30,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using log4net;
 using OpenMetaverse;
 using OpenMetaverse.Packets;
-using log4net;
 
 namespace OpenSim.Framework
 {
@@ -38,16 +40,11 @@ namespace OpenSim.Framework
     public sealed class PacketPool
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static readonly PacketPool instance = new PacketPool();
-
         private bool packetPoolEnabled = true;
         private bool dataBlockPoolEnabled = true;
-
         private readonly Dictionary<PacketType, Stack<Packet>> pool = new Dictionary<PacketType, Stack<Packet>>();
-
-        private static Dictionary<Type, Stack<Object>> DataBlocks =
-                new Dictionary<Type, Stack<Object>>();
+        private static Dictionary<Type, Stack<Object>> DataBlocks = new Dictionary<Type, Stack<Object>>();
 
         static PacketPool()
         {
@@ -94,7 +91,6 @@ namespace OpenSim.Framework
             return packet;
         }
 
-        // private byte[] decoded_header = new byte[10];
         private static PacketType GetType(byte[] bytes)
         {
             byte[] decoded_header = new byte[10 + 8];
@@ -114,7 +110,7 @@ namespace OpenSim.Framework
             {
                 if (decoded_header[7] == 0xFF)
                 {
-                    id = (ushort) ((decoded_header[8] << 8) + decoded_header[9]);
+                    id = (ushort)((decoded_header[8] << 8) + decoded_header[9]);
                     freq = PacketFrequency.Low;
                 }
                 else
@@ -140,15 +136,17 @@ namespace OpenSim.Framework
 
             int i = 0;
             Packet packet = GetPacket(type);
+
             if (packet == null)
                 m_log.WarnFormat("[PACKETPOOL]: Failed to get packet of type {0}", type);
             else
                 packet.FromBytes(bytes, ref i, ref packetEnd, zeroBuffer);
+
             return packet;
         }
 
         /// <summary>
-        /// Return a packet to the packet pool
+        ///     Return a packet to the packet pool
         /// </summary>
         /// <param name="packet"></param>
         public void ReturnPacket(Packet packet)
@@ -160,18 +158,16 @@ namespace OpenSim.Framework
                     case PacketType.ObjectUpdate:
                         ObjectUpdatePacket oup = (ObjectUpdatePacket)packet;
 
-                        foreach (ObjectUpdatePacket.ObjectDataBlock oupod in
-                                oup.ObjectData)
+                        foreach (ObjectUpdatePacket.ObjectDataBlock oupod in oup.ObjectData)
                             ReturnDataBlock<ObjectUpdatePacket.ObjectDataBlock>(oupod);
+
                         oup.ObjectData = null;
                         break;
 
                     case PacketType.ImprovedTerseObjectUpdate:
-                        ImprovedTerseObjectUpdatePacket itoup =
-                                (ImprovedTerseObjectUpdatePacket)packet;
+                        ImprovedTerseObjectUpdatePacket itoup = (ImprovedTerseObjectUpdatePacket)packet;
 
-                        foreach (ImprovedTerseObjectUpdatePacket.ObjectDataBlock
-                                itoupod in itoup.ObjectData)
+                        foreach (ImprovedTerseObjectUpdatePacket.ObjectDataBlock itoupod in itoup.ObjectData)
                             ReturnDataBlock<ImprovedTerseObjectUpdatePacket.ObjectDataBlock>(itoupod);
                         itoup.ObjectData = null;
                         break;
@@ -194,13 +190,14 @@ namespace OpenSim.Framework
                             {
                                 pool[type] = new Stack<Packet>();
                             }
+
                             if ((pool[type]).Count < 50)
                             {
                                 (pool[type]).Push(packet);
                             }
                         }
                         break;
-                    
+
                     // Other packets wont pool
                     default:
                         return;
@@ -208,7 +205,7 @@ namespace OpenSim.Framework
             }
         }
 
-        public static T GetDataBlock<T>() where T: new()
+        public static T GetDataBlock<T>() where T : new()
         {
             lock (DataBlocks)
             {
@@ -223,11 +220,12 @@ namespace OpenSim.Framework
                 {
                     DataBlocks[typeof(T)] = new Stack<Object>();
                 }
+
                 return new T();
             }
         }
 
-        public static void ReturnDataBlock<T>(T block) where T: new()
+        public static void ReturnDataBlock<T>(T block) where T : new()
         {
             if (block == null)
                 return;

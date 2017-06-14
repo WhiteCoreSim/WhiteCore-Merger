@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,12 +38,12 @@ using log4net;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Handles NAT translation in a 'manner of speaking'
-    /// Allows you to return multiple different external
-    /// hostnames depending on the requestors network
+    ///     Handles NAT translation in a 'manner of speaking'
+    ///     Allows you to return multiple different external
+    ///     hostnames depending on the requestors network
     /// 
-    /// This enables standard port forwarding techniques
-    /// to work correctly with OpenSim.
+    ///     This enables standard port forwarding techniques
+    ///     to work correctly with OpenSim.
     /// </summary>
     public static class NetworkUtil
     {
@@ -57,7 +59,7 @@ namespace OpenSim.Framework
         }
 
         // IPv4Address, Subnet
-        static readonly Dictionary<IPAddress,IPAddress> m_subnets = new Dictionary<IPAddress, IPAddress>();
+        static readonly Dictionary<IPAddress, IPAddress> m_subnets = new Dictionary<IPAddress, IPAddress>();
 
         public static IPAddress GetIPFor(IPAddress user, IPAddress simulator)
         {
@@ -69,7 +71,7 @@ namespace OpenSim.Framework
             {
                 if (host.Equals(user) && host.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    m_log.Info("[NetworkUtil] Localhost user detected, sending them '" + host + "' instead of '" + simulator + "'");
+                    m_log.Info("[Network Util] Localhost user detected, sending them '" + host + "' instead of '" + simulator + "'");
                     return host;
                 }
             }
@@ -100,7 +102,7 @@ namespace OpenSim.Framework
 
                 if (valid)
                 {
-                    m_log.Info("[NetworkUtil] Local LAN user detected, sending them '" + subnet.Key + "' instead of '" + simulator + "'");
+                    m_log.Info("[Network Util] Local LAN user detected, sending them '" + subnet.Key + "' instead of '" + simulator + "'");
                     return subnet.Key;
                 }
             }
@@ -118,7 +120,7 @@ namespace OpenSim.Framework
                 {
                     if (host.AddressFamily == AddressFamily.InterNetworkV6)
                     {
-                        m_log.Info("[NetworkUtil] Localhost user detected, sending them '" + host + "' instead of '" + defaultHostname + "'");
+                        m_log.Info("[Network Util] Localhost user detected, sending them '" + host + "' instead of '" + defaultHostname + "'");
                         return host;
                     }
                 }
@@ -131,9 +133,10 @@ namespace OpenSim.Framework
             foreach (KeyValuePair<IPAddress, IPAddress> pair in m_subnets)
             {
                 IPAddress host = pair.Value;
+
                 if (host.Equals(destination) && host.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    m_log.Info("[NATROUTING] Localhost user detected, sending them '" + host + "' instead of '" + defaultHostname + "'");
+                    m_log.Info("[NAT ROUTING] Localhost user detected, sending them '" + host + "' instead of '" + defaultHostname + "'");
                     return destination;
                 }
             }
@@ -144,13 +147,13 @@ namespace OpenSim.Framework
                 byte[] subnetBytes = subnet.Value.GetAddressBytes();
                 byte[] localBytes = subnet.Key.GetAddressBytes();
                 byte[] destBytes = destination.GetAddressBytes();
-                
+
                 if (subnetBytes.Length != destBytes.Length || subnetBytes.Length != localBytes.Length)
                     return null;
 
                 bool valid = true;
 
-                for (int i=0;i<subnetBytes.Length;i++)
+                for (int i = 0; i < subnetBytes.Length; i++)
                 {
                     if ((localBytes[i] & subnetBytes[i]) != (destBytes[i] & subnetBytes[i]))
                     {
@@ -164,7 +167,7 @@ namespace OpenSim.Framework
 
                 if (valid)
                 {
-                    m_log.Info("[NetworkUtil] Local LAN user detected, sending them '" + subnet.Key + "' instead of '" + defaultHostname + "'");
+                    m_log.Info("[Network Util] Local LAN user detected, sending them '" + subnet.Key + "' instead of '" + defaultHostname + "'");
                     return subnet.Key;
                 }
             }
@@ -210,6 +213,7 @@ namespace OpenSim.Framework
             {
                 // Try subnet matching
                 IPAddress rtn = GetExternalIPFor(user.Address, defaultHostname);
+
                 if (rtn != null)
                     return rtn;
             }
@@ -239,9 +243,11 @@ namespace OpenSim.Framework
             if (!m_disabled)
             {
                 IPAddress rtn = GetExternalIPFor(user, defaultHostname);
+
                 if (rtn != null)
                     return rtn.ToString();
             }
+
             return defaultHostname;
         }
     }

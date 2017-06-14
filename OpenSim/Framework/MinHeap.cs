@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -64,6 +66,7 @@ namespace OpenSim.Framework
             internal void Clear()
             {
                 this.value = default(T);
+
                 if (this.handle != null)
                 {
                     this.handle.Clear();
@@ -84,9 +87,9 @@ namespace OpenSim.Framework
         public MinHeap() : this(DEFAULT_CAPACITY, Comparer<T>.Default) { }
         public MinHeap(int capacity) : this(capacity, Comparer<T>.Default) { }
         public MinHeap(IComparer<T> comparer) : this(DEFAULT_CAPACITY, comparer) { }
-        public MinHeap(int capacity, IComparer<T> comparer) :
-            this(capacity, new Comparison<T>(comparer.Compare)) { }
+        public MinHeap(int capacity, IComparer<T> comparer) : this(capacity, new Comparison<T>(comparer.Compare)) { }
         public MinHeap(Comparison<T> comparison) : this(DEFAULT_CAPACITY, comparison) { }
+
         public MinHeap(int capacity, Comparison<T> comparison)
         {
             this.items = new HeapItem[capacity];
@@ -112,6 +115,7 @@ namespace OpenSim.Framework
             {
                 Handle handle = ValidateThisHandle(key);
                 this.items[handle.index].value = value;
+
                 if (!BubbleUp(handle.index))
                     BubbleDown(handle.index);
             }
@@ -123,6 +127,7 @@ namespace OpenSim.Framework
             {
                 if (this.sync_root == null)
                     Interlocked.CompareExchange<object>(ref this.sync_root, new object(), null);
+
                 return this.sync_root;
             }
         }
@@ -131,25 +136,32 @@ namespace OpenSim.Framework
         {
             if (ihandle == null)
                 throw new ArgumentNullException("handle");
+
             Handle handle = ihandle as Handle;
+
             if (handle == null)
                 throw new InvalidOperationException("handle is not valid");
+
             return handle;
         }
 
         private Handle ValidateThisHandle(IHandle ihandle)
         {
             Handle handle = ValidateHandle(ihandle);
+
             if (!object.ReferenceEquals(handle.heap, this))
                 throw new InvalidOperationException("handle is not valid for this heap");
+
             if (handle.index < 0)
                 throw new InvalidOperationException("handle is not associated to a value");
+
             return handle;
         }
 
         private void Set(HeapItem item, int index)
         {
             this.items[index] = item;
+
             if (item.handle != null)
                 item.handle.index = index;
         }
@@ -172,6 +184,7 @@ namespace OpenSim.Framework
                 ++this.version;
                 return true;
             }
+
             return false;
         }
 
@@ -186,8 +199,10 @@ namespace OpenSim.Framework
             {
                 if ((child < this.size - 1) && this.comparison(this.items[child].value, this.items[child + 1].value) > 0)
                     ++child;
+
                 if (this.comparison(this.items[child].value, item.value) >= 0)
                     break;
+
                 Set(this.items[child], current);
             }
 
@@ -201,12 +216,15 @@ namespace OpenSim.Framework
         public bool TryGetValue(IHandle key, out T value)
         {
             Handle handle = ValidateHandle(key);
+
             if (handle.index > -1)
             {
                 value = this.items[handle.index].value;
                 return true;
             }
+
             value = default(T);
+
             return false;
         }
 
@@ -220,6 +238,7 @@ namespace OpenSim.Framework
         {
             if (handle == null)
                 handle = new Handle();
+
             Add(value, handle);
         }
 
@@ -228,12 +247,15 @@ namespace OpenSim.Framework
             if (this.size == this.items.Length)
             {
                 int capacity = (int)((this.items.Length * 200L) / 100L);
+
                 if (capacity < (this.items.Length + DEFAULT_CAPACITY))
                     capacity = this.items.Length + DEFAULT_CAPACITY;
+
                 Array.Resize<HeapItem>(ref this.items, capacity);
             }
 
             Handle handle = null;
+
             if (ihandle != null)
             {
                 handle = ValidateHandle(ihandle);
@@ -263,6 +285,7 @@ namespace OpenSim.Framework
         {
             for (int index = 0; index < this.size; ++index)
                 this.items[index].Clear();
+
             this.size = 0;
             ++this.version;
         }
@@ -270,6 +293,7 @@ namespace OpenSim.Framework
         public void TrimExcess()
         {
             int length = (int)(this.items.Length * 0.9);
+
             if (this.size < length)
                 Array.Resize<HeapItem>(ref this.items, Math.Min(this.size, DEFAULT_CAPACITY));
         }
@@ -278,13 +302,16 @@ namespace OpenSim.Framework
         {
             if (this.size == 0)
                 throw new InvalidOperationException("Heap is empty");
+
             if (index >= this.size)
                 throw new ArgumentOutOfRangeException("index");
 
             this.items[index].Clear();
+
             if (--this.size > 0 && index != this.size)
             {
                 Set(this.items[this.size], index);
+
                 if (!BubbleUp(index))
                     BubbleDown(index);
             }
@@ -318,6 +345,7 @@ namespace OpenSim.Framework
                 if (comparer.Equals(this.items[index].value, value))
                     return index;
             }
+
             return -1;
         }
 
@@ -329,11 +357,13 @@ namespace OpenSim.Framework
         public bool Remove(T value)
         {
             int index = GetIndex(value);
+
             if (index != -1)
             {
                 RemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -341,14 +371,18 @@ namespace OpenSim.Framework
         {
             if (array == null)
                 throw new ArgumentNullException("array");
+
             if (array.Rank != 1)
                 throw new ArgumentException("Multidimensional array not supported");
+
             if (array.GetLowerBound(0) != 0)
                 throw new ArgumentException("Non-zero lower bound array not supported");
 
             int length = array.Length;
+
             if ((index < 0) || (index > length))
                 throw new ArgumentOutOfRangeException("index");
+
             if ((length - index) < this.size)
                 throw new ArgumentException("Not enough space available in array starting at index");
 
@@ -360,14 +394,18 @@ namespace OpenSim.Framework
         {
             if (array == null)
                 throw new ArgumentNullException("array");
+
             if (array.Rank != 1)
                 throw new ArgumentException("Multidimensional array not supported");
+
             if (array.GetLowerBound(0) != 0)
                 throw new ArgumentException("Non-zero lower bound array not supported");
 
             int length = array.Length;
+
             if ((index < 0) || (index > length))
                 throw new ArgumentOutOfRangeException("index");
+
             if ((length - index) < this.size)
                 throw new ArgumentException("Not enough space available in array starting at index");
 
@@ -390,6 +428,7 @@ namespace OpenSim.Framework
             {
                 if (version != this.version)
                     throw new InvalidOperationException("Heap was modified while enumerating");
+
                 yield return this.items[index].value;
             }
         }

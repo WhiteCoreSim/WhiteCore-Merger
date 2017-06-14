@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,20 +39,19 @@ namespace OpenSim.Framework.Console
 {
     public class ConsoleBase
     {
-//        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected string prompt = "# ";
 
         public object ConsoleScene = null;
 
         /// <summary>
-        /// The default prompt text.
+        ///     The default prompt text.
         /// </summary>
         public string DefaultPrompt
         {
             set { m_defaultPrompt = value; }
             get { return m_defaultPrompt; }
         }
+
         protected string m_defaultPrompt;
 
         public ConsoleBase(string defaultPrompt)
@@ -84,6 +85,7 @@ namespace OpenSim.Framework.Console
         public string CmdPrompt(string p, string def)
         {
             string ret = ReadLine(String.Format("{0} [{1}]: ", p, def), false, true);
+
             if (ret == String.Empty)
                 ret = def;
 
@@ -95,6 +97,7 @@ namespace OpenSim.Framework.Console
         {
             bool itisdone = false;
             string optstr = String.Empty;
+
             foreach (string s in options)
                 optstr += " " + s;
 
@@ -111,6 +114,7 @@ namespace OpenSim.Framework.Console
                     temp = CmdPrompt(prompt, defaultresponse);
                 }
             }
+
             return temp;
         }
 

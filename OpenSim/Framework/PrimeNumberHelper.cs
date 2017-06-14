@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,12 +32,12 @@ using System;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Utility class that is used to find small prime numbers and test is number prime number.
+    ///     Utility class that is used to find small prime numbers and test is number prime number.
     /// </summary>
     public static class PrimeNumberHelper
     {
         /// <summary>
-        /// Precalculated prime numbers. 
+        ///     Precalculated prime numbers. 
         /// </summary>
         private static readonly int[] Primes = new int[]
                                                    {
@@ -50,22 +52,22 @@ namespace OpenSim.Framework
                                                    };
 
         /// <summary>
-        /// Get prime number that is equal or larger than <see cref="min"/>.
+        ///     Get prime number that is equal or larger than <see cref="min"/>.
         /// </summary>
         /// <param name="min">
-        /// Minimal returned prime number.
+        ///     Minimal returned prime number.
         /// </param>
         /// <returns>
-        /// Primer number that is equal or larger than <see cref="min"/>. If <see cref="min"/> is too large, return -1.
+        ///     Primer number that is equal or larger than <see cref="min"/>. If <see cref="min"/> is too large, return -1.
         /// </returns>
         public static int GetPrime(int min)
         {
             if (min <= 2)
                 return 2;
 
-            if (Primes[ Primes.Length - 1 ] < min)
+            if (Primes[Primes.Length - 1] < min)
             {
-                for (int i = min | 1 ; i < 0x7FFFFFFF ; i += 2)
+                for (int i = min | 1; i < 0x7FFFFFFF; i += 2)
                 {
                     if (IsPrime(i))
                         return i;
@@ -74,26 +76,26 @@ namespace OpenSim.Framework
                 return -1;
             }
 
-            for (int i = Primes.Length - 2 ; i >= 0 ; i--)
+            for (int i = Primes.Length - 2; i >= 0; i--)
             {
-                if (min == Primes[ i ])
+                if (min == Primes[i])
                     return min;
 
-                if (min > Primes[ i ])
-                    return Primes[ i + 1 ];
+                if (min > Primes[i])
+                    return Primes[i + 1];
             }
 
             return 2;
         }
 
         /// <summary>
-        /// Just basic Sieve of Eratosthenes prime number test.
+        ///     Just basic Sieve of Eratosthenes prime number test.
         /// </summary>
         /// <param name="candinate">
-        /// Number that is tested.
+        ///     Number that is tested.
         /// </param>
         /// <returns>
-        /// true, if <see cref="candinate"/> is prime number; otherwise false.
+        ///     true, if <see cref="candinate"/> is prime number; otherwise false.
         /// </returns>
         public static bool IsPrime(int candinate)
         {
@@ -102,8 +104,9 @@ namespace OpenSim.Framework
                 // Even number - only prime if 2
                 return candinate == 2;
 
-            int upperBound = (int) Math.Sqrt(candinate);
-            for (int i = 3 ; i < upperBound ; i += 2)
+            int upperBound = (int)Math.Sqrt(candinate);
+
+            for (int i = 3; i < upperBound; i += 2)
             {
                 if (candinate % i == 0)
                     return false;

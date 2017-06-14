@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -45,9 +47,6 @@ namespace OpenSim.Framework
             set { m_priority = value; }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         public uint PacketNumber
         {
             get { return m_packetNumber; }
@@ -60,18 +59,12 @@ namespace OpenSim.Framework
             set { m_requestsequence = value; }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         public sbyte DiscardLevel
         {
             get { return m_discardLevel; }
             set { m_discardLevel = value; }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         public UUID RequestedAssetID
         {
             get { return m_requestedAssetID; }
@@ -86,9 +79,7 @@ namespace OpenSim.Framework
 
         public override string ToString()
         {
-            return String.Format("DiscardLevel: {0}, Priority: {1}, PacketNumber: {2}, AssetId:{3}, RequestType:{4}",
-                                 m_discardLevel,
-                                 m_priority, m_packetNumber, m_requestedAssetID, m_requestType);
+            return String.Format("DiscardLevel: {0}, Priority: {1}, PacketNumber: {2}, AssetId:{3}, RequestType:{4}", m_discardLevel, m_priority, m_packetNumber, m_requestedAssetID, m_requestType);
         }
     }
 }

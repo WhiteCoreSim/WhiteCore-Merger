@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,9 +36,6 @@ namespace OpenSim.Framework.Communications.XMPP
 {
     public class XmppSerializer
     {
-        // private static readonly ILog _log = 
-        //     LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         // need to do it this way, as XmlSerializer(type, extratypes)
         // does not work on mono (at least).
         private Dictionary<Type, XmlSerializer> _serializerForType = new Dictionary<Type, XmlSerializer>();
@@ -48,19 +47,19 @@ namespace OpenSim.Framework.Communications.XMPP
         {
             _xmlNs = new XmlSerializerNamespaces();
             _xmlNs.Add(String.Empty, String.Empty);
-            if (server) 
+
+            if (server)
                 _defaultNS = "jabber:server";
             else
                 _defaultNS = "jabber:client";
 
             // TODO: do this via reflection
-            _serializerForType[typeof(XmppMessageStanza)] = _serializerForName["message"] = 
-                new XmlSerializer(typeof(XmppMessageStanza), _defaultNS);
+            _serializerForType[typeof(XmppMessageStanza)] = _serializerForName["message"] = new XmlSerializer(typeof(XmppMessageStanza), _defaultNS);
         }
 
         public void Serialize(XmlWriter xw, object o)
         {
-            if (!_serializerForType.ContainsKey(o.GetType())) 
+            if (!_serializerForType.ContainsKey(o.GetType()))
                 throw new ArgumentException(String.Format("no serializer available for type {0}", o.GetType()));
 
             _serializerForType[o.GetType()].Serialize(xw, o, _xmlNs);
@@ -70,6 +69,7 @@ namespace OpenSim.Framework.Communications.XMPP
         {
             // position on next element
             xr.Read();
+
             if (!_serializerForName.ContainsKey(xr.LocalName))
                 throw new ArgumentException(String.Format("no serializer available for name {0}", xr.LocalName));
 

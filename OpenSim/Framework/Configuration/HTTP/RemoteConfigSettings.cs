@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,25 +39,21 @@ namespace OpenSim.Framework.Configuration.HTTP
 
         public RemoteConfigSettings(string filename)
         {
-            configMember =
-                new ConfigurationMember(filename, "REMOTE CONFIG SETTINGS", loadConfigurationOptions,
-                                        handleIncomingConfiguration,true);
+            configMember = new ConfigurationMember(filename, "REMOTE CONFIG SETTINGS", loadConfigurationOptions, handleIncomingConfiguration, true);
             configMember.forceConfigurationPluginLibrary("OpenSim.Framework.Configuration.XML.dll");
             configMember.performConfigurationRetrieve();
         }
 
         public void loadConfigurationOptions()
         {
-            configMember.addConfigurationOption("base_config_url",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "URL Containing Configuration Files", "http://localhost/", false);
+            configMember.addConfigurationOption("base_config_url", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "URL Containing Configuration Files", "http://localhost/", false);
         }
 
         public bool handleIncomingConfiguration(string configuration_key, object configuration_result)
         {
             if (configuration_key == "base_config_url")
             {
-                baseConfigURL = (string) configuration_result;
+                baseConfigURL = (string)configuration_result;
             }
             return true;
         }

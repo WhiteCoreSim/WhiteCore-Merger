@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -98,6 +100,7 @@ namespace OpenSim.Framework.Servers.HttpServer
             requestStream.Close();
 
             TResponse deserial = default(TResponse);
+
             using (WebResponse resp = request.GetResponse())
             {
                 XmlSerializer deserializer = new XmlSerializer(typeof(TResponse));
@@ -107,14 +110,17 @@ namespace OpenSim.Framework.Servers.HttpServer
                     respStream = resp.GetResponseStream();
                     deserial = (TResponse)deserializer.Deserialize(respStream);
                 }
+
                 catch { }
                 finally
                 {
                     if (respStream != null)
                         respStream.Close();
+
                     resp.Close();
                 }
             }
+
             return deserial;
         }
     }
@@ -153,6 +159,7 @@ namespace OpenSim.Framework.Servers.HttpServer
                 serializer.Serialize(writer, sobj);
                 writer.Flush();
             }
+
             buffer.Close();
 
             int length = (int)buffer.Length;
@@ -161,24 +168,21 @@ namespace OpenSim.Framework.Servers.HttpServer
             Stream requestStream = request.GetRequestStream();
             requestStream.Write(buffer.ToArray(), 0, length);
             requestStream.Close();
-            // IAsyncResult result = request.BeginGetResponse(AsyncCallback, request);
             request.BeginGetResponse(AsyncCallback, request);
         }
 
         private void AsyncCallback(IAsyncResult result)
         {
             WebRequest request = (WebRequest)result.AsyncState;
+
             using (WebResponse resp = request.EndGetResponse(result))
             {
                 TResponse deserial;
                 XmlSerializer deserializer = new XmlSerializer(typeof(TResponse));
                 Stream stream = resp.GetResponseStream();
 
-                // This is currently a bad debug stanza since it gobbles us the response...
-                //                StreamReader reader = new StreamReader(stream);
-                //                m_log.DebugFormat("[REST OBJECT POSTER RESPONSE]: Received {0}", reader.ReadToEnd());
-
                 deserial = (TResponse)deserializer.Deserialize(stream);
+
                 if (stream != null)
                     stream.Close();
 
@@ -192,26 +196,20 @@ namespace OpenSim.Framework.Servers.HttpServer
 
     public delegate bool CheckIdentityMethod(string sid, string aid);
 
-    public class RestDeserialiseSecureHandler<TRequest, TResponse> : BaseRequestHandler, IStreamHandler
-        where TRequest : new()
+    public class RestDeserialiseSecureHandler<TRequest, TResponse> : BaseRequestHandler, IStreamHandler where TRequest : new()
     {
-        private static readonly ILog m_log
-            = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private RestDeserialiseMethod<TRequest, TResponse> m_method;
         private CheckIdentityMethod m_smethod;
 
-        public RestDeserialiseSecureHandler(
-             string httpMethod, string path,
-             RestDeserialiseMethod<TRequest, TResponse> method, CheckIdentityMethod smethod)
-            : base(httpMethod, path)
+        public RestDeserialiseSecureHandler(string httpMethod, string path, RestDeserialiseMethod<TRequest, TResponse> method, CheckIdentityMethod smethod) : base(httpMethod, path)
         {
             m_smethod = smethod;
             m_method = method;
         }
 
-        public void Handle(string path, Stream request, Stream responseStream,
-                           OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        public void Handle(string path, Stream request, Stream responseStream, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
         {
             RestSessionObject<TRequest> deserial = default(RestSessionObject<TRequest>);
             bool fail = false;
@@ -225,12 +223,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[REST]: Deserialization problem. Ignoring request. " + e);
+                    m_log.Error("[Rest]: Deserialization problem. Ignoring request. " + e);
                     fail = true;
                 }
             }
 
             TResponse response = default(TResponse);
+
             if (!fail && m_smethod(deserial.SessionID, deserial.AvatarID))
             {
                 response = m_method(deserial.Body);
@@ -246,31 +245,27 @@ namespace OpenSim.Framework.Servers.HttpServer
 
     public delegate bool CheckTrustedSourceMethod(IPEndPoint peer);
 
-    public class RestDeserialiseTrustedHandler<TRequest, TResponse> : BaseRequestHandler, IStreamHandler
-        where TRequest : new()
+    public class RestDeserialiseTrustedHandler<TRequest, TResponse> : BaseRequestHandler, IStreamHandler where TRequest : new()
     {
-        private static readonly ILog m_log
-            = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// The operation to perform once trust has been established.
+        ///     The operation to perform once trust has been established.
         /// </summary>
         private RestDeserialiseMethod<TRequest, TResponse> m_method;
 
         /// <summary>
-        /// The method used to check whether a request is trusted.
+        ///     The method used to check whether a request is trusted.
         /// </summary>
         private CheckTrustedSourceMethod m_tmethod;
 
-        public RestDeserialiseTrustedHandler(string httpMethod, string path, RestDeserialiseMethod<TRequest, TResponse> method, CheckTrustedSourceMethod tmethod)
-            : base(httpMethod, path)
+        public RestDeserialiseTrustedHandler(string httpMethod, string path, RestDeserialiseMethod<TRequest, TResponse> method, CheckTrustedSourceMethod tmethod) : base(httpMethod, path)
         {
             m_tmethod = tmethod;
             m_method = method;
         }
 
-        public void Handle(string path, Stream request, Stream responseStream,
-                           OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        public void Handle(string path, Stream request, Stream responseStream, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
         {
             TRequest deserial = default(TRequest);
             bool fail = false;
@@ -284,12 +279,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[REST]: Deserialization problem. Ignoring request. " + e);
+                    m_log.Error("[Rest]: Deserialization problem. Ignoring request. " + e);
                     fail = true;
                 }
             }
 
             TResponse response = default(TResponse);
+
             if (!fail && m_tmethod(httpRequest.RemoteIPEndPoint))
             {
                 response = m_method(deserial);
@@ -302,5 +298,4 @@ namespace OpenSim.Framework.Servers.HttpServer
             }
         }
     }
-
 }

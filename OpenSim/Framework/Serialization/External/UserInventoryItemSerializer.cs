@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,17 +33,16 @@ using System.Text;
 using System.Xml;
 using OpenMetaverse;
 using OpenSim.Framework;
-    
+
 namespace OpenSim.Framework.Serialization.External
-{        
+{
     /// <summary>
-    /// Serialize and deserialize user inventory items as an external format.
+    ///     Serialize and deserialize user inventory items as an external format.
     /// </summary> 
-    /// XXX: Please do not use yet.
     public class UserInventoryItemSerializer
     {
         /// <summary>
-        /// Deserialize item
+        ///     Deserialize item
         /// </summary>
         /// <param name="serializedSettings"></param>
         /// <returns></returns>
@@ -50,9 +51,9 @@ namespace OpenSim.Framework.Serialization.External
         {
             return Deserialize(Encoding.ASCII.GetString(serialization, 0, serialization.Length));
         }
-        
+
         /// <summary>
-        /// Deserialize settings
+        ///     Deserialize settings
         /// </summary>
         /// <param name="serializedSettings"></param>
         /// <returns></returns>
@@ -60,39 +61,39 @@ namespace OpenSim.Framework.Serialization.External
         public static InventoryItemBase Deserialize(string serialization)
         {
             InventoryItemBase item = new InventoryItemBase();
-            
+
             StringReader sr = new StringReader(serialization);
             XmlTextReader xtr = new XmlTextReader(sr);
-            
+
             xtr.ReadStartElement("InventoryItem");
-            
-            item.Name                   =                   xtr.ReadElementString("Name");
-            item.ID                     = UUID.Parse(       xtr.ReadElementString("ID"));
-            item.InvType                = Convert.ToInt32(  xtr.ReadElementString("InvType"));            
-            item.CreatorId              =                   xtr.ReadElementString("CreatorUUID");
-            item.CreationDate           = Convert.ToInt32(  xtr.ReadElementString("CreationDate"));
-            item.Owner                  = UUID.Parse(       xtr.ReadElementString("Owner"));
-            item.Description            =                   xtr.ReadElementString("Description");
-            item.AssetType              = Convert.ToInt32(  xtr.ReadElementString("AssetType"));
-            item.AssetID                = UUID.Parse(       xtr.ReadElementString("AssetID"));
-            item.SaleType               = Convert.ToByte(   xtr.ReadElementString("SaleType"));
-            item.SalePrice              = Convert.ToInt32(  xtr.ReadElementString("SalePrice"));
-            item.BasePermissions        = Convert.ToUInt32( xtr.ReadElementString("BasePermissions"));
-            item.CurrentPermissions     = Convert.ToUInt32( xtr.ReadElementString("CurrentPermissions"));
-            item.EveryOnePermissions    = Convert.ToUInt32( xtr.ReadElementString("EveryOnePermissions"));
-            item.NextPermissions        = Convert.ToUInt32( xtr.ReadElementString("NextPermissions"));
-            item.Flags                  = Convert.ToUInt32( xtr.ReadElementString("Flags"));
-            item.GroupID                = UUID.Parse(       xtr.ReadElementString("GroupID"));
-            item.GroupOwned             = Convert.ToBoolean(xtr.ReadElementString("GroupOwned"));
-            
+
+            item.Name = xtr.ReadElementString("Name");
+            item.ID = UUID.Parse(xtr.ReadElementString("ID"));
+            item.InvType = Convert.ToInt32(xtr.ReadElementString("InvType"));
+            item.CreatorId = xtr.ReadElementString("CreatorUUID");
+            item.CreationDate = Convert.ToInt32(xtr.ReadElementString("CreationDate"));
+            item.Owner = UUID.Parse(xtr.ReadElementString("Owner"));
+            item.Description = xtr.ReadElementString("Description");
+            item.AssetType = Convert.ToInt32(xtr.ReadElementString("AssetType"));
+            item.AssetID = UUID.Parse(xtr.ReadElementString("AssetID"));
+            item.SaleType = Convert.ToByte(xtr.ReadElementString("SaleType"));
+            item.SalePrice = Convert.ToInt32(xtr.ReadElementString("SalePrice"));
+            item.BasePermissions = Convert.ToUInt32(xtr.ReadElementString("BasePermissions"));
+            item.CurrentPermissions = Convert.ToUInt32(xtr.ReadElementString("CurrentPermissions"));
+            item.EveryOnePermissions = Convert.ToUInt32(xtr.ReadElementString("EveryOnePermissions"));
+            item.NextPermissions = Convert.ToUInt32(xtr.ReadElementString("NextPermissions"));
+            item.Flags = Convert.ToUInt32(xtr.ReadElementString("Flags"));
+            item.GroupID = UUID.Parse(xtr.ReadElementString("GroupID"));
+            item.GroupOwned = Convert.ToBoolean(xtr.ReadElementString("GroupOwned"));
+
             xtr.ReadEndElement();
-            
+
             xtr.Close();
             sr.Close();
-            
+
             return item;
-        }      
-        
+        }
+
         public static string Serialize(InventoryItemBase inventoryItem)
         {
             StringWriter sw = new StringWriter();
@@ -158,11 +159,11 @@ namespace OpenSim.Framework.Serialization.External
             writer.WriteEndElement();
 
             writer.WriteEndElement();
-            
+
             writer.Close();
             sw.Close();
-            
+
             return sw.ToString();
-        }        
+        }
     }
 }

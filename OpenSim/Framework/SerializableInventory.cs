@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,11 +48,8 @@ namespace OpenSim.Framework
         [XmlRoot(ElementName = "folder", IsNullable = true)]
         public class SerializableFolder : InventoryFolderBase
         {
-            [XmlArray(ElementName = "items", IsNullable = true)] [XmlArrayItem(ElementName = "item", IsNullable = true, Type = typeof (InventoryItemBase))] public ArrayList
-                Items;
-
-            [XmlArray(ElementName = "folders", IsNullable = true)] [XmlArrayItem(ElementName = "folder", IsNullable = true, Type = typeof (SerializableFolder))] public
-                ArrayList SubFolders;
+            [XmlArray(ElementName = "items", IsNullable = true)] [XmlArrayItem(ElementName = "item", IsNullable = true, Type = typeof(InventoryItemBase))] public ArrayList Items;
+            [XmlArray(ElementName = "folders", IsNullable = true)] [XmlArrayItem(ElementName = "folder", IsNullable = true, Type = typeof(SerializableFolder))] public ArrayList SubFolders;
         }
 
         #endregion

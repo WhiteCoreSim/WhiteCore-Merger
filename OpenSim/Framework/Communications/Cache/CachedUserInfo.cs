@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,37 +41,34 @@ namespace OpenSim.Framework.Communications.Cache
     internal delegate void DeleteItemDelegate(UUID itemID);
     internal delegate void QueryItemDelegate(UUID itemID);
     internal delegate void QueryFolderDelegate(UUID folderID);
-
     internal delegate void CreateFolderDelegate(string folderName, UUID folderID, ushort folderType, UUID parentID);
     internal delegate void MoveFolderDelegate(UUID folderID, UUID parentID);
     internal delegate void PurgeFolderDelegate(UUID folderID);
     internal delegate void UpdateFolderDelegate(string name, UUID folderID, ushort type, UUID parentID);
-
-    internal delegate void SendInventoryDescendentsDelegate(
-        IClientAPI client, UUID folderID, bool fetchFolders, bool fetchItems);
+    internal delegate void SendInventoryDescendentsDelegate(IClientAPI client, UUID folderID, bool fetchFolders, bool fetchItems);
 
     public delegate void OnItemReceivedDelegate(UUID itemID);
     public delegate void OnInventoryReceivedDelegate(UUID userID);
 
     /// <summary>
-    /// Stores user profile and inventory data received from backend services for a particular user.
+    ///     Stores user profile and inventory data received from backend services for a particular user.
     /// </summary>
     public class CachedUserInfo
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
-        //// <value>
-        /// Fired when a particular item has been received from the inventory service
-        /// </value>
+
+        /// <summary>
+        ///     Fired when a particular item has been received from the inventory service
+        /// </summary>
         public event OnItemReceivedDelegate OnItemReceived;
 
-        /// <value>
-        /// Fired once the entire inventory has been received for the user
-        /// </value>
+        /// <summary>
+        ///     Fired once the entire inventory has been received for the user
+        /// </summary>
         public event OnInventoryReceivedDelegate OnInventoryReceived;
 
         /// <summary>
-        /// The comms manager holds references to services (user, grid, inventory, etc.)
+        ///     The comms manager holds references to services (user, grid, inventory, etc.)
         /// </summary>
         private readonly IInventoryService m_InventoryService;
 
@@ -77,18 +76,18 @@ namespace OpenSim.Framework.Communications.Cache
         private UserProfileData m_userProfile;
 
         /// <summary>
-        /// Have we received the user's inventory from the inventory service?
+        ///     Have we received the user's inventory from the inventory service?
         /// </summary>
         public bool HasReceivedInventory { get { return m_hasReceivedInventory; } }
         private bool m_hasReceivedInventory;
 
         /// <summary>
-        /// Inventory requests waiting for receipt of this user's inventory from the inventory service.
+        ///     Inventory requests waiting for receipt of this user's inventory from the inventory service.
         /// </summary>
         private readonly IList<IInventoryRequest> m_pendingRequests = new List<IInventoryRequest>();
 
         /// <summary>
-        /// The root folder of this user's inventory.  Returns null if the root folder has not yet been received.
+        ///     The root folder of this user's inventory.  Returns null if the root folder has not yet been received.
         /// </summary>
         public InventoryFolderImpl RootFolder { get { return m_rootFolder; } }
         private InventoryFolderImpl m_rootFolder;
@@ -98,10 +97,11 @@ namespace OpenSim.Framework.Communications.Cache
             get { return m_session_id; }
             set { m_session_id = value; }
         }
+
         private UUID m_session_id = UUID.Zero;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="commsManager"></param>
         /// <param name="userProfile"></param>
@@ -112,9 +112,9 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// This allows a request to be added to be processed once we receive a user's inventory
-        /// from the inventory service.  If we already have the inventory, the request
-        /// is executed immediately instead.
+        ///     This allows a request to be added to be processed once we receive a user's inventory
+        ///     from the inventory service.  If we already have the inventory, the request
+        ///     is executed immediately instead.
         /// </summary>
         /// <param name="parent"></param>
         protected void AddRequest(IInventoryRequest request)
@@ -133,7 +133,7 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Helper function for InventoryReceive() - Store a folder temporarily until we've received entire folder list
+        ///     Helper function for InventoryReceive() - Store a folder temporarily until we've received entire folder list
         /// </summary>
         /// <param name="folder"></param>
         private void AddFolderToDictionary(InventoryFolderImpl folder, IDictionary<UUID, IList<InventoryFolderImpl>> dictionary)
@@ -153,18 +153,16 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Recursively, in depth-first order, add all the folders we've received (stored 
-        /// in a dictionary indexed by parent ID) into the tree that describes user folder
-        /// heirarchy
-        /// Any folder that is resolved into the tree is also added to resolvedFolderDictionary,
-        /// indexed by folder ID.
+        ///     Recursively, in depth-first order, add all the folders we've received (stored 
+        ///     in a dictionary indexed by parent ID) into the tree that describes user folder
+        ///     heirarchy
+        ///     Any folder that is resolved into the tree is also added to resolvedFolderDictionary,
+        ///     indexed by folder ID.
         /// </summary>
         /// <param name="parentId">
         /// A <see cref="UUID"/>
         /// </param>
-        private void ResolveReceivedFolders(InventoryFolderImpl parentFolder, 
-                                            IDictionary<UUID, IList<InventoryFolderImpl>> receivedFolderDictionary, 
-                                            IDictionary<UUID, InventoryFolderImpl> resolvedFolderDictionary)
+        private void ResolveReceivedFolders(InventoryFolderImpl parentFolder, IDictionary<UUID, IList<InventoryFolderImpl>> receivedFolderDictionary, IDictionary<UUID, InventoryFolderImpl> resolvedFolderDictionary)
         {
             if (receivedFolderDictionary.ContainsKey(parentFolder.ID))
             {
@@ -173,17 +171,13 @@ namespace OpenSim.Framework.Communications.Cache
                 {
                     if (parentFolder.ContainsChildFolder(folder.ID))
                     {
-                        m_log.WarnFormat(
-                            "[INVENTORY CACHE]: Received folder {0} {1} from inventory service which has already been received",
-                            folder.Name, folder.ID);
+                        m_log.WarnFormat("[Inventory Cache]: Received folder {0} {1} from inventory service which has already been received", folder.Name, folder.ID);
                     }
                     else
                     {
-                        if (resolvedFolderDictionary.ContainsKey(folder.ID)) 
+                        if (resolvedFolderDictionary.ContainsKey(folder.ID))
                         {
-                            m_log.WarnFormat(
-                                "[INVENTORY CACHE]: Received folder {0} {1} from inventory service has already been received but with different parent",
-                                folder.Name, folder.ID);
+                            m_log.WarnFormat("[Inventory Cache]: Received folder {0} {1} from inventory service has already been received but with different parent", folder.Name, folder.ID);
                         }
                         else
                         {
@@ -192,20 +186,22 @@ namespace OpenSim.Framework.Communications.Cache
                             parentFolder.AddChildFolder(folder);
                         }
                     }
-                } // foreach (folder in pendingCategorizationFolders[parentFolder.ID])
+                }
 
                 receivedFolderDictionary.Remove(parentFolder.ID);
+
                 foreach (InventoryFolderImpl folder in resolvedFolders)
                     ResolveReceivedFolders(folder, receivedFolderDictionary, resolvedFolderDictionary);
-            } // if (receivedFolderDictionary.ContainsKey(parentFolder.ID))
+            }
         }
 
         /// <summary>
-        /// Drop all cached inventory.
+        ///     Drop all cached inventory.
         /// </summary>
         public void DropInventory()
         {
-            m_log.Debug("[INVENTORY CACHE]: DropInventory called");
+            m_log.Debug("[Inventory Cache]: DropInventory called");
+
             // Make sure there aren't pending requests around when we do this
             // FIXME: There is still a race condition where an inventory operation can be requested (since these aren't being locked).
             // Will have to extend locking to exclude this very soon.
@@ -215,20 +211,20 @@ namespace OpenSim.Framework.Communications.Cache
                 m_rootFolder = null;
             }
         }
-        
+
         /// <summary>
-        /// Fetch inventory for this user.
+        ///     Fetch inventory for this user.
+        ///     This has to be executed as a separate step once user information is retreived.
+        ///     This will occur synchronously if the inventory service is in the same process as this class, and
+        ///     asynchronously otherwise.
         /// </summary>
-        /// This has to be executed as a separate step once user information is retreived.
-        /// This will occur synchronously if the inventory service is in the same process as this class, and
-        /// asynchronously otherwise.
         public void FetchInventory()
         {
             m_InventoryService.GetUserInventory(UserProfile.ID, InventoryReceive);
         }
 
         /// <summary>
-        /// Callback invoked when the inventory is received from an async request to the inventory service
+        ///     Callback invoked when the inventory is received from an async request to the inventory service
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="inventoryCollection"></param>
@@ -236,19 +232,16 @@ namespace OpenSim.Framework.Communications.Cache
         {
             // FIXME: Exceptions thrown upwards never appear on the console.  Could fix further up if these
             // are simply being swallowed
-
             try
             {
                 // collection of all received folders, indexed by their parent ID
-                IDictionary<UUID, IList<InventoryFolderImpl>> receivedFolders =
-                    new Dictionary<UUID, IList<InventoryFolderImpl>>();
+                IDictionary<UUID, IList<InventoryFolderImpl>> receivedFolders = new Dictionary<UUID, IList<InventoryFolderImpl>>();
 
                 // collection of all folders that have been placed into the folder heirarchy starting at m_rootFolder
                 // This dictonary exists so we don't have to do an InventoryFolderImpl.FindFolder(), which is O(n) on the
                 // number of folders in our inventory. 
                 // Maybe we should make this structure a member so we can skip InventoryFolderImpl.FindFolder() calls later too?
-                IDictionary<UUID, InventoryFolderImpl> resolvedFolders =
-                    new Dictionary<UUID, InventoryFolderImpl>();
+                IDictionary<UUID, InventoryFolderImpl> resolvedFolders = new Dictionary<UUID, InventoryFolderImpl>();
 
                 // Take all received folders, find the root folder, and put ther rest into
                 // the pendingCategorizationFolders collection
@@ -262,15 +255,16 @@ namespace OpenSim.Framework.Communications.Cache
                     IList<InventoryFolderImpl> rootFolderList = receivedFolders[UUID.Zero];
                     m_rootFolder = rootFolderList[0];
                     resolvedFolders[m_rootFolder.ID] = m_rootFolder;
+
                     if (rootFolderList.Count > 1)
                     {
                         for (int i = 1; i < rootFolderList.Count; i++)
                         {
                             m_log.WarnFormat(
-                                "[INVENTORY CACHE]: Discarding extra root folder {0}. Using previously received root folder {1}",
-                                rootFolderList[i].ID, RootFolder.ID);
+                                "[Inventory Cache]: Discarding extra root folder {0}. Using previously received root folder {1}", rootFolderList[i].ID, RootFolder.ID);
                         }
                     }
+
                     receivedFolders.Remove(UUID.Zero);
                 }
 
@@ -283,18 +277,19 @@ namespace OpenSim.Framework.Communications.Cache
                 foreach (KeyValuePair<UUID, IList<InventoryFolderImpl>> folderList in receivedFolders)
                 {
                     foreach (InventoryFolderImpl folder in folderList.Value)
-                        m_log.WarnFormat("[INVENTORY CACHE]: Malformed Database: Unresolved Pending Folder {0}", folder.Name);
+                        m_log.WarnFormat("[Inventory Cache]: Malformed Database: Unresolved Pending Folder {0}", folder.Name);
                 }
 
                 // Take all ther received items and put them into the folder tree heirarchy
-                foreach (InventoryItemBase item in items) {
+                foreach (InventoryItemBase item in items)
+                {
                     InventoryFolderImpl folder = resolvedFolders.ContainsKey(item.Folder) ? resolvedFolders[item.Folder] : null;
                     ItemReceive(item, folder);
                 }
             }
             catch (Exception e)
             {
-                m_log.ErrorFormat("[INVENTORY CACHE]: Error processing inventory received from inventory service, {0}", e);
+                m_log.ErrorFormat("[Inventory Cache]: Error processing inventory received from inventory service, {0}", e);
             }
 
             // Deal with pending requests
@@ -315,28 +310,21 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Callback invoked when an item is received from an async request to the inventory service.
-        ///
-        /// We're assuming here that items are always received after all the folders
-        /// received.
-        /// If folder is null, we will search for it starting from RootFolder (an O(n) operation),
-        /// otherwise we'll just put it into folder
+        ///     Callback invoked when an item is received from an async request to the inventory service.
+        ///     We're assuming here that items are always received after all the folders
+        ///     received.
+        ///     If folder is null, we will search for it starting from RootFolder (an O(n) operation),
+        ///     otherwise we'll just put it into folder
         /// </summary>
         /// <param name="folderInfo"></param>
         private void ItemReceive(InventoryItemBase itemInfo, InventoryFolderImpl folder)
         {
-            //            m_log.DebugFormat(
-            //                "[INVENTORY CACHE]: Received item {0} {1} for user {2}",
-            //                itemInfo.Name, itemInfo.ID, userID);
-
             if (folder == null && RootFolder != null)
                 folder = RootFolder.FindFolder(itemInfo.Folder);
 
             if (null == folder)
             {
-                m_log.WarnFormat(
-                    "Received item {0} {1} but its folder {2} does not exist",
-                    itemInfo.Name, itemInfo.ID, itemInfo.Folder);
+                m_log.WarnFormat("[Agent Inventory]: Received item {0} {1} but its folder {2} does not exist", itemInfo.Name, itemInfo.ID, itemInfo.Folder);
 
                 return;
             }
@@ -351,28 +339,21 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Create a folder in this agent's inventory.
+        ///     Create a folder in this agent's inventory.
+        ///     If the inventory service has not yet delievered the inventory
+        ///     for this user then the request will be queued.
         /// </summary>
-        ///
-        /// If the inventory service has not yet delievered the inventory
-        /// for this user then the request will be queued.
-        /// 
         /// <param name="parentID"></param>
         /// <returns></returns>
         public bool CreateFolder(string folderName, UUID folderID, ushort folderType, UUID parentID)
         {
-            //            m_log.DebugFormat(
-            //                "[AGENT INVENTORY]: Creating inventory folder {0} {1} for {2} {3}", folderID, folderName, remoteClient.Name, remoteClient.AgentId);
-
             if (m_hasReceivedInventory)
             {
                 InventoryFolderImpl parentFolder = RootFolder.FindFolder(parentID);
 
                 if (null == parentFolder)
                 {
-                    m_log.WarnFormat(
-                        "[AGENT INVENTORY]: Tried to create folder {0} {1} but the parent {2} does not exist",
-                        folderName, folderID, parentID);
+                    m_log.WarnFormat("[Agent Inventory]: Tried to create folder {0} {1} but the parent {2} does not exist", folderName, folderID, parentID);
 
                     return false;
                 }
@@ -395,52 +376,42 @@ namespace OpenSim.Framework.Communications.Cache
                 }
                 else
                 {
-                    m_log.WarnFormat(
-                         "[AGENT INVENTORY]: Tried to create folder {0} {1} but the folder already exists",
-                         folderName, folderID);
+                    m_log.WarnFormat("[Agent Inventory]: Tried to create folder {0} {1} but the folder already exists", folderName, folderID);
 
                     return false;
                 }
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(CreateFolderDelegate), this, "CreateFolder"),
-                        new object[] { folderName, folderID, folderType, parentID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(CreateFolderDelegate), this, "CreateFolder"), new object[] { folderName, folderID, folderType, parentID }));
 
                 return true;
             }
         }
 
         /// <summary>
-        /// Handle a client request to update the inventory folder
+        ///     Handle a client request to update the inventory folder
+        ///     If the inventory service has not yet delievered the inventory
+        ///     for this user then the request will be queued.
+        ///
+        ///     FIXME: We call add new inventory folder because in the data layer, we happen to use an SQL REPLACE
+        ///     so this will work to rename an existing folder.  Needless to say, to rely on this is very confusing,
+        ///     and needs to be changed.
         /// </summary>
-        ///
-        /// If the inventory service has not yet delievered the inventory
-        /// for this user then the request will be queued.
-        ///
-        /// FIXME: We call add new inventory folder because in the data layer, we happen to use an SQL REPLACE
-        /// so this will work to rename an existing folder.  Needless to say, to rely on this is very confusing,
-        /// and needs to be changed.
-        ///
         /// <param name="folderID"></param>
         /// <param name="type"></param>
         /// <param name="name"></param>
         /// <param name="parentID"></param>
         public bool UpdateFolder(string name, UUID folderID, ushort type, UUID parentID)
         {
-            //            m_log.DebugFormat(
-            //                "[AGENT INVENTORY]: Updating inventory folder {0} {1} for {2} {3}", folderID, name, remoteClient.Name, remoteClient.AgentId);
-
             if (m_hasReceivedInventory)
             {
                 InventoryFolderImpl folder = RootFolder.FindFolder(folderID);
-                
+
                 // Delegate movement if updated parent id isn't the same as the existing parentId
                 if (folder.ParentID != parentID)
                     MoveFolder(folderID, parentID);
-                
+
                 InventoryFolderBase baseFolder = new InventoryFolderBase();
                 baseFolder.Owner = m_userProfile.ID;
                 baseFolder.ID = folderID;
@@ -456,34 +427,25 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(UpdateFolderDelegate), this, "UpdateFolder"),
-                        new object[] { name, folderID, type, parentID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(UpdateFolderDelegate), this, "UpdateFolder"), new object[] { name, folderID, type, parentID }));
             }
 
             return true;
         }
 
         /// <summary>
-        /// Handle an inventory folder move request from the client.
-        ///
-        /// If the inventory service has not yet delievered the inventory
-        /// for this user then the request will be queued.
+        ///     Handle an inventory folder move request from the client.
+        ///     If the inventory service has not yet delievered the inventory
+        ///     for this user then the request will be queued.
         /// </summary>
-        ///
         /// <param name="folderID"></param>
         /// <param name="parentID"></param>
         /// <returns>
-        /// true if the delete was successful, or if it was queued pending folder receipt
-        /// false if the folder to be deleted did not exist.
+        ///     true if the delete was successful, or if it was queued pending folder receipt
+        ///     false if the folder to be deleted did not exist.
         /// </returns>
         public bool MoveFolder(UUID folderID, UUID parentID)
         {
-            //            m_log.DebugFormat(
-            //                "[AGENT INVENTORY]: Moving inventory folder {0} into folder {1} for {2} {3}",
-            //                parentID, remoteClient.Name, remoteClient.Name, remoteClient.AgentId);
-
             if (m_hasReceivedInventory)
             {
                 InventoryFolderBase baseFolder = new InventoryFolderBase();
@@ -492,9 +454,10 @@ namespace OpenSim.Framework.Communications.Cache
                 baseFolder.ParentID = parentID;
 
                 m_InventoryService.MoveFolder(baseFolder);
-                
+
                 InventoryFolderImpl folder = RootFolder.FindFolder(folderID);
                 InventoryFolderImpl parentFolder = RootFolder.FindFolder(parentID);
+
                 if (parentFolder != null && folder != null)
                 {
                     InventoryFolderImpl oldParentFolder = RootFolder.FindFolder(folder.ParentID);
@@ -510,7 +473,7 @@ namespace OpenSim.Framework.Communications.Cache
                     }
                 }
                 else
-                { 
+                {
                     return false;
                 }
 
@@ -518,27 +481,20 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(MoveFolderDelegate), this, "MoveFolder"),
-                        new object[] { folderID, parentID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(MoveFolderDelegate), this, "MoveFolder"), new object[] { folderID, parentID }));
 
                 return true;
             }
         }
 
         /// <summary>
-        /// This method will delete all the items and folders in the given folder.
+        ///     This method will delete all the items and folders in the given folder.
+        ///     If the inventory service has not yet delievered the inventory
+        ///     for this user then the request will be queued.
         /// </summary>
-        /// If the inventory service has not yet delievered the inventory
-        /// for this user then the request will be queued.
-        ///
         /// <param name="folderID"></param>
         public bool PurgeFolder(UUID folderID)
         {
-            //            m_log.InfoFormat("[AGENT INVENTORY]: Purging folder {0} for {1} uuid {2}",
-            //                folderID, remoteClient.Name, remoteClient.AgentId);
-
             if (m_hasReceivedInventory)
             {
                 InventoryFolderImpl purgedFolder = RootFolder.FindFolder(folderID);
@@ -563,10 +519,7 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(PurgeFolderDelegate), this, "PurgeFolder"),
-                        new object[] { folderID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(PurgeFolderDelegate), this, "PurgeFolder"), new object[] { folderID }));
 
                 return true;
             }
@@ -575,10 +528,10 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Add an item to the user's inventory.
+        ///     Add an item to the user's inventory.
+        ///     If the item has no folder set (i.e. it is UUID.Zero), then it is placed in the most appropriate folder
+        ///     for that type.
         /// </summary>
-        /// If the item has no folder set (i.e. it is UUID.Zero), then it is placed in the most appropriate folder
-        /// for that type.
         /// <param name="itemInfo"></param>
         public void AddItem(InventoryItemBase item)
         {
@@ -587,26 +540,25 @@ namespace OpenSim.Framework.Communications.Cache
                 if (item.Folder == UUID.Zero)
                 {
                     InventoryFolderImpl f = FindFolderForType(item.AssetType);
+
                     if (f != null)
                         item.Folder = f.ID;
                     else
                         item.Folder = RootFolder.ID;
                 }
+
                 ItemReceive(item, null);
-                
+
                 m_InventoryService.AddItem(item);
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(AddItemDelegate), this, "AddItem"),
-                        new object[] { item }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(AddItemDelegate), this, "AddItem"), new object[] { item }));
             }
         }
 
         /// <summary>
-        /// Update an item in the user's inventory
+        ///     Update an item in the user's inventory
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="itemInfo"></param>
@@ -618,23 +570,19 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(UpdateItemDelegate), this, "UpdateItem"),
-                        new object[] { item }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(UpdateItemDelegate), this, "UpdateItem"), new object[] { item }));
             }
         }
 
         /// <summary>
-        /// Delete an item from the user's inventory
-        ///
-        /// If the inventory service has not yet delievered the inventory
-        /// for this user then the request will be queued.
+        ///     Delete an item from the user's inventory
+        ///     If the inventory service has not yet delievered the inventory
+        ///     for this user then the request will be queued.
         /// </summary>
         /// <param name="itemID"></param>
         /// <returns>
-        /// true on a successful delete or a if the request is queued.
-        /// Returns false on an immediate failure
+        ///     true on a successful delete or a if the request is queued.
+        ///     Returns false on an immediate failure
         /// </returns>
         public bool DeleteItem(UUID itemID)
         {
@@ -646,7 +594,7 @@ namespace OpenSim.Framework.Communications.Cache
 
                 if (null == item)
                 {
-                    m_log.WarnFormat("[AGENT INVENTORY]: Tried to delete item {0} which does not exist", itemID);
+                    m_log.WarnFormat("[Agent Inventory]: Tried to delete item {0} which does not exist", itemID);
 
                     return false;
                 }
@@ -660,10 +608,7 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(DeleteItemDelegate), this, "DeleteItem"),
-                        new object[] { itemID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(DeleteItemDelegate), this, "DeleteItem"), new object[] { itemID }));
 
                 return true;
             }
@@ -672,7 +617,7 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Send details of the inventory items and/or folders in a given folder to the client.
+        ///     Send details of the inventory items and/or folders in a given folder to the client.
         /// </summary>
         /// <param name="client"></param>
         /// <param name="folderID"></param>
@@ -687,38 +632,27 @@ namespace OpenSim.Framework.Communications.Cache
 
                 if ((folder = RootFolder.FindFolder(folderID)) != null)
                 {
-                    //                            m_log.DebugFormat(
-                    //                                "[AGENT INVENTORY]: Found folder {0} for client {1}",
-                    //                                folderID, remoteClient.AgentId);
-
-                    client.SendInventoryFolderDetails(
-                        client.AgentId, folderID, folder.RequestListOfItems(),
-                        folder.RequestListOfFolders(), version, fetchFolders, fetchItems);
+                    client.SendInventoryFolderDetails(client.AgentId, folderID, folder.RequestListOfItems(), folder.RequestListOfFolders(), version, fetchFolders, fetchItems);
 
                     return true;
                 }
                 else
                 {
-                    m_log.WarnFormat(
-                        "[AGENT INVENTORY]: Could not find folder {0} requested by user {1} {2}",
-                        folderID, client.Name, client.AgentId);
+                    m_log.WarnFormat("[Agent Inventory]: Could not find folder {0} requested by user {1} {2}", folderID, client.Name, client.AgentId);
 
                     return false;
                 }
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(SendInventoryDescendentsDelegate), this, "SendInventoryDecendents", false, false),
-                        new object[] { client, folderID, fetchFolders, fetchItems }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(SendInventoryDescendentsDelegate), this, "SendInventoryDecendents", false, false), new object[] { client, folderID, fetchFolders, fetchItems }));
 
                 return true;
             }
         }
 
         /// <summary>
-        /// Find an appropriate folder for the given asset type
+        ///     Find an appropriate folder for the given asset type
         /// </summary>
         /// <param name="type"></param>
         /// <returns>null if no appropriate folder exists</returns>
@@ -733,7 +667,6 @@ namespace OpenSim.Framework.Communications.Cache
         // Load additional items that other regions have put into the database
         // The item will be added tot he local cache. Returns true if the item
         // was found and can be sent to the client
-        //
         public bool QueryItem(InventoryItemBase item)
         {
             if (m_hasReceivedInventory)
@@ -743,7 +676,6 @@ namespace OpenSim.Framework.Communications.Cache
                 if (invItem != null)
                 {
                     // Item is in local cache, just update client
-                    //
                     return true;
                 }
 
@@ -762,10 +694,7 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(QueryItemDelegate), this, "QueryItem"),
-                        new object[] { item.ID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(QueryItemDelegate), this, "QueryItem"), new object[] { item.ID }));
 
                 return true;
             }
@@ -780,7 +709,6 @@ namespace OpenSim.Framework.Communications.Cache
                 if (invFolder != null)
                 {
                     // Folder is in local cache, just update client
-                    //
                     return true;
                 }
 
@@ -803,10 +731,7 @@ namespace OpenSim.Framework.Communications.Cache
             }
             else
             {
-                AddRequest(
-                    new InventoryRequest(
-                        Delegate.CreateDelegate(typeof(QueryFolderDelegate), this, "QueryFolder"),
-                        new object[] { folder.ID }));
+                AddRequest(new InventoryRequest(Delegate.CreateDelegate(typeof(QueryFolderDelegate), this, "QueryFolder"), new object[] { folder.ID }));
 
                 return true;
             }
@@ -814,18 +739,18 @@ namespace OpenSim.Framework.Communications.Cache
     }
 
     /// <summary>
-    /// Should be implemented by callers which require a callback when the user's inventory is received
+    ///     Should be implemented by callers which require a callback when the user's inventory is received
     /// </summary>
     public interface IInventoryRequest
     {
         /// <summary>
-        /// This is the method executed once we have received the user's inventory by which the request can be fulfilled.
+        ///     This is the method executed once we have received the user's inventory by which the request can be fulfilled.
         /// </summary>
         void Execute();
     }
 
     /// <summary>
-    /// Generic inventory request
+    ///     Generic inventory request
     /// </summary>
     class InventoryRequest : IInventoryRequest
     {

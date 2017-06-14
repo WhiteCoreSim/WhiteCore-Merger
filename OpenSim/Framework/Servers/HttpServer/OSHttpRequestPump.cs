@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,17 +38,17 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
-using log4net;
 using HttpServer;
+using log4net;
 
 namespace OpenSim.Framework.Servers.HttpServer
 {
     /// <summary>
-    /// An OSHttpRequestPump fetches incoming OSHttpRequest objects
-    /// from the OSHttpRequestQueue and feeds them to all subscribed
-    /// parties. Each OSHttpRequestPump encapsulates one thread to do
-    /// the work and there is a fixed number of pumps for each
-    /// OSHttpServer object.
+    ///     An OSHttpRequestPump fetches incoming OSHttpRequest objects
+    ///     from the OSHttpRequestQueue and feeds them to all subscribed
+    ///     parties. Each OSHttpRequestPump encapsulates one thread to do
+    ///     the work and there is a fixed number of pumps for each
+    ///     OSHttpServer object.
     /// </summary>
     public class OSHttpRequestPump
     {
@@ -80,6 +82,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         public static OSHttpRequestPump[] Pumps(OSHttpServer server, OSHttpRequestQueue queue, int poolSize)
         {
             OSHttpRequestPump[] pumps = new OSHttpRequestPump[poolSize];
+
             for (int i = 0; i < pumps.Length; i++)
             {
                 pumps[i] = new OSHttpRequestPump(server, queue, i);
@@ -183,11 +186,12 @@ namespace OpenSim.Framework.Servers.HttpServer
                 {
                     // TODO: following code requires code changes to
                     // HttpServer.HttpRequest to become functional
-
                     IPEndPoint remote = req.RemoteIPEndPoint;
+
                     if (null != remote)
                     {
                         Match epm = h.IPEndPointWhitelist.Match(remote.ToString());
+
                         if (!epm.Success)
                         {
                             scoredHandlers.Remove(h);
@@ -199,11 +203,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                 if (null != h.Method)
                 {
                     Match m = h.Method.Match(req.HttpMethod);
+
                     if (!m.Success)
                     {
                         scoredHandlers.Remove(h);
                         continue;
                     }
+
                     scoredHandlers[h]++;
                 }
 
@@ -211,11 +217,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                 if (null != h.Path)
                 {
                     Match m = h.Path.Match(req.RawUrl);
+
                     if (!m.Success)
                     {
                         scoredHandlers.Remove(h);
                         continue;
                     }
+
                     scoredHandlers[h] += m.ToString().Length;
                 }
 
@@ -223,6 +231,7 @@ namespace OpenSim.Framework.Servers.HttpServer
                 if (null != h.Query)
                 {
                     int queriesMatch = MatchOnNameValueCollection(req.QueryString, h.Query);
+
                     if (0 == queriesMatch)
                     {
                         _log.DebugFormat("[{0}] request {1}", EngineID, req);
@@ -231,13 +240,15 @@ namespace OpenSim.Framework.Servers.HttpServer
                         scoredHandlers.Remove(h);
                         continue;
                     }
-                    scoredHandlers[h] +=  queriesMatch;
+
+                    scoredHandlers[h] += queriesMatch;
                 }
 
                 // whitelist, path, query string ok, now check headers
                 if (null != h.Headers)
                 {
                     int headersMatch = MatchOnNameValueCollection(req.Headers, h.Headers);
+
                     if (0 == headersMatch)
                     {
                         _log.DebugFormat("[{0}] request {1}", EngineID, req);
@@ -246,12 +257,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                         scoredHandlers.Remove(h);
                         continue;
                     }
-                    scoredHandlers[h] +=  headersMatch;
+
+                    scoredHandlers[h] += headersMatch;
                 }
             }
 
             List<OSHttpHandler> matchingHandlers = new List<OSHttpHandler>(scoredHandlers.Keys);
-            matchingHandlers.Sort(delegate(OSHttpHandler x, OSHttpHandler y)
+            matchingHandlers.Sort(delegate (OSHttpHandler x, OSHttpHandler y)
                                   {
                                       return scoredHandlers[x] - scoredHandlers[y];
                                   });

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,21 +34,22 @@ namespace OpenSim.Framework
     public class ForeignUserProfileData : UserProfileData
     {
         /// <summary>
-        /// The address of the users home sim, used for foreigners.
+        ///     The address of the users home sim, used for foreigners.
         /// </summary>
         private string _userUserServerURI = String.Empty;
 
         /// <summary>
-        /// The address of the users home sim, used for foreigners.
+        ///     The address of the users home sim, used for foreigners.
         /// </summary>
         private string _userHomeAddress = String.Empty;
 
         /// <summary>
-        /// The port of the users home sim, used for foreigners.
+        ///     The port of the users home sim, used for foreigners.
         /// </summary>
         private string _userHomePort = String.Empty;
+
         /// <summary>
-        /// The remoting port of the users home sim, used for foreigners.
+        ///     The remoting port of the users home sim, used for foreigners.
         /// </summary>
         private string _userHomeRemotingPort = String.Empty;
 

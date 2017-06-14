@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,16 +27,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using OpenSim.Framework.Servers.HttpServer;
 using System.Collections.Generic;
+using OpenSim.Framework.Servers.HttpServer;
 
 namespace OpenSim.Framework
 {
     public class MainServer
     {
         private static BaseHttpServer instance;
-        private static Dictionary<uint, BaseHttpServer> m_Servers =
-                new Dictionary<uint, BaseHttpServer>();
+        private static Dictionary<uint, BaseHttpServer> m_Servers = new Dictionary<uint, BaseHttpServer>();
 
         public static BaseHttpServer Instance
         {
@@ -46,6 +47,7 @@ namespace OpenSim.Framework
         {
             if (port == 0)
                 return Instance;
+
             if (port == Instance.Port)
                 return Instance;
 

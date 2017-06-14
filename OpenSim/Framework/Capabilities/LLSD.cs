@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,7 +39,7 @@ using OpenMetaverse;
 namespace OpenSim.Framework.Capabilities
 {
     /// <summary>
-    /// Borrowed from (a older version of) libsl for now, as their new llsd code doesn't work we our decoding code.
+    ///     Borrowed from (a older version of) libsl for now, as their new llsd code doesn't work we our decoding code.
     /// </summary>
     public static class LLSD
     {
@@ -105,13 +107,10 @@ namespace OpenSim.Framework.Capabilities
             StringWriter sw = new StringWriter();
             XmlTextWriter writer = new XmlTextWriter(sw);
             writer.Formatting = Formatting.None;
-
             writer.WriteStartElement(String.Empty, "llsd", String.Empty);
             LLSDWriteOne(writer, obj);
             writer.WriteEndElement();
-
             writer.Close();
-
             return Util.UTF8.GetBytes(sw.ToString());
         }
 
@@ -132,7 +131,7 @@ namespace OpenSim.Framework.Capabilities
             if (obj is string)
             {
                 writer.WriteStartElement(String.Empty, "string", String.Empty);
-                writer.WriteString((string) obj);
+                writer.WriteString((string)obj);
                 writer.WriteEndElement();
             }
             else if (obj is int)
@@ -149,7 +148,7 @@ namespace OpenSim.Framework.Capabilities
             }
             else if (obj is bool)
             {
-                bool b = (bool) obj;
+                bool b = (bool)obj;
                 writer.WriteStartElement(String.Empty, "boolean", String.Empty);
                 writer.WriteString(b ? "1" : "0");
                 writer.WriteEndElement();
@@ -160,7 +159,7 @@ namespace OpenSim.Framework.Capabilities
             }
             else if (obj is UUID)
             {
-                UUID u = (UUID) obj;
+                UUID u = (UUID)obj;
                 writer.WriteStartElement(String.Empty, "uuid", String.Empty);
                 writer.WriteString(u.ToString());
                 writer.WriteEndElement();
@@ -176,6 +175,7 @@ namespace OpenSim.Framework.Capabilities
                     writer.WriteEndElement();
                     LLSDWriteOne(writer, h[key]);
                 }
+
                 writer.WriteEndElement();
             }
             else if (obj is ArrayList)
@@ -186,27 +186,16 @@ namespace OpenSim.Framework.Capabilities
                 {
                     LLSDWriteOne(writer, item);
                 }
+
                 writer.WriteEndElement();
             }
             else if (obj is byte[])
             {
                 byte[] b = obj as byte[];
                 writer.WriteStartElement(String.Empty, "binary", String.Empty);
-
                 writer.WriteStartAttribute(String.Empty, "encoding", String.Empty);
                 writer.WriteString("base64");
                 writer.WriteEndAttribute();
-
-                //// Calculate the length of the base64 output
-                //long length = (long)(4.0d * b.Length / 3.0d);
-                //if (length % 4 != 0) length += 4 - (length % 4);
-
-                //// Create the char[] for base64 output and fill it
-                //char[] tmp = new char[length];
-                //int i = Convert.ToBase64CharArray(b, 0, b.Length, tmp, 0);
-
-                //writer.WriteString(new String(tmp));
-
                 writer.WriteString(Convert.ToBase64String(b));
                 writer.WriteEndElement();
             }
@@ -224,6 +213,7 @@ namespace OpenSim.Framework.Capabilities
         public static object LLSDParseOne(XmlTextReader reader)
         {
             SkipWS(reader);
+
             if (reader.NodeType != XmlNodeType.Element)
                 throw new LLSDParseException("Expected an element");
 
@@ -382,6 +372,7 @@ namespace OpenSim.Framework.Capabilities
             while (true)
             {
                 SkipWS(reader);
+
                 if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "map")
                 {
                     reader.Read();
@@ -466,7 +457,7 @@ namespace OpenSim.Framework.Capabilities
             }
             else if (obj is string)
             {
-                return GetSpaces(indent) + "- string \"" + (string) obj + "\"\n";
+                return GetSpaces(indent) + "- string \"" + (string)obj + "\"\n";
             }
             else if (obj is int)
             {
@@ -478,13 +469,13 @@ namespace OpenSim.Framework.Capabilities
             }
             else if (obj is UUID)
             {
-                return GetSpaces(indent) + "- uuid " + ((UUID) obj).ToString() + Environment.NewLine;
+                return GetSpaces(indent) + "- uuid " + ((UUID)obj).ToString() + Environment.NewLine;
             }
             else if (obj is Hashtable)
             {
                 StringBuilder ret = new StringBuilder();
                 ret.Append(GetSpaces(indent) + "- map" + Environment.NewLine);
-                Hashtable map = (Hashtable) obj;
+                Hashtable map = (Hashtable)obj;
 
                 foreach (string key in map.Keys)
                 {
@@ -498,7 +489,7 @@ namespace OpenSim.Framework.Capabilities
             {
                 StringBuilder ret = new StringBuilder();
                 ret.Append(GetSpaces(indent) + "- array\n");
-                ArrayList list = (ArrayList) obj;
+                ArrayList list = (ArrayList)obj;
 
                 foreach (object item in list)
                 {
@@ -509,8 +500,7 @@ namespace OpenSim.Framework.Capabilities
             }
             else if (obj is byte[])
             {
-                return GetSpaces(indent) + "- binary\n" + Utils.BytesToHexString((byte[]) obj, GetSpaces(indent)) +
-                       Environment.NewLine;
+                return GetSpaces(indent) + "- binary\n" + Utils.BytesToHexString((byte[])obj, GetSpaces(indent)) + Environment.NewLine;
             }
             else
             {
@@ -545,7 +535,9 @@ namespace OpenSim.Framework.Capabilities
                     return false;
                 case 'i':
                     {
-                        if (llsd.Length < 2) throw new LLSDParseException("Integer value type with no value");
+                        if (llsd.Length < 2)
+                            throw new LLSDParseException("Integer value type with no value");
+
                         int value;
                         endPos = FindEnd(llsd, 1);
 
@@ -556,19 +548,22 @@ namespace OpenSim.Framework.Capabilities
                     }
                 case 'r':
                     {
-                        if (llsd.Length < 2) throw new LLSDParseException("Real value type with no value");
+                        if (llsd.Length < 2)
+                            throw new LLSDParseException("Real value type with no value");
+
                         double value;
                         endPos = FindEnd(llsd, 1);
 
-                        if (Double.TryParse(llsd.Substring(1, endPos - 1), NumberStyles.Float,
-                                            Utils.EnUsCulture.NumberFormat, out value))
+                        if (Double.TryParse(llsd.Substring(1, endPos - 1), NumberStyles.Float, Utils.EnUsCulture.NumberFormat, out value))
                             return value;
                         else
                             throw new LLSDParseException("Failed to parse double value type");
                     }
                 case 'u':
                     {
-                        if (llsd.Length < 17) throw new LLSDParseException("UUID value type with no value");
+                        if (llsd.Length < 17)
+                            throw new LLSDParseException("UUID value type with no value");
+
                         UUID value;
                         endPos = FindEnd(llsd, 1);
 
@@ -578,13 +573,14 @@ namespace OpenSim.Framework.Capabilities
                             throw new LLSDParseException("Failed to parse UUID value type");
                     }
                 case 'b':
-                    //byte[] value = new byte[llsd.Length - 1];
                     // This isn't the actual binary LLSD format, just the terse format sent
                     // at login so I don't even know if there is a binary type
                     throw new LLSDParseException("Binary value type is unimplemented");
                 case 's':
                 case 'l':
-                    if (llsd.Length < 2) throw new LLSDParseException("String value type with no value");
+                    if (llsd.Length < 2)
+                        throw new LLSDParseException("String value type with no value");
+
                     endPos = FindEnd(llsd, 1);
                     return llsd.Substring(1, endPos - 1);
                 case 'd':
@@ -592,7 +588,8 @@ namespace OpenSim.Framework.Capabilities
                     throw new LLSDParseException("Date value type is unimplemented");
                 case '[':
                     {
-                        if (llsd.IndexOf(']') == -1) throw new LLSDParseException("Invalid array");
+                        if (llsd.IndexOf(']') == -1)
+                            throw new LLSDParseException("Invalid array");
 
                         int pos = 0;
                         ArrayList array = new ArrayList();
@@ -602,10 +599,12 @@ namespace OpenSim.Framework.Capabilities
                             ++pos;
 
                             // Advance past comma if need be
-                            if (llsd[pos] == ',') ++pos;
+                            if (llsd[pos] == ',')
+                                ++pos;
 
                             // Allow a single whitespace character
-                            if (pos < llsd.Length && llsd[pos] == ' ') ++pos;
+                            if (pos < llsd.Length && llsd[pos] == ' ')
+                                ++pos;
 
                             int end;
                             array.Add(ParseTerseLLSD(llsd.Substring(pos), out end));
@@ -617,7 +616,8 @@ namespace OpenSim.Framework.Capabilities
                     }
                 case '{':
                     {
-                        if (llsd.IndexOf('}') == -1) throw new LLSDParseException("Invalid map");
+                        if (llsd.IndexOf('}') == -1)
+                            throw new LLSDParseException("Invalid map");
 
                         int pos = 0;
                         Hashtable hashtable = new Hashtable();
@@ -627,15 +627,21 @@ namespace OpenSim.Framework.Capabilities
                             ++pos;
 
                             // Advance past comma if need be
-                            if (llsd[pos] == ',') ++pos;
+                            if (llsd[pos] == ',')
+                                ++pos;
 
                             // Allow a single whitespace character
-                            if (pos < llsd.Length && llsd[pos] == ' ') ++pos;
+                            if (pos < llsd.Length && llsd[pos] == ' ')
+                                ++pos;
 
-                            if (llsd[pos] != '\'') throw new LLSDParseException("Expected a map key");
+                            if (llsd[pos] != '\'')
+                                throw new LLSDParseException("Expected a map key");
+
                             int endquote = llsd.IndexOf('\'', pos + 1);
+
                             if (endquote == -1 || (endquote + 1) >= llsd.Length || llsd[endquote + 1] != ':')
                                 throw new LLSDParseException("Invalid map format");
+
                             string key = llsd.Substring(pos, endquote - pos);
                             key = key.Replace("'", String.Empty);
                             pos += (endquote - pos) + 2;
@@ -655,8 +661,11 @@ namespace OpenSim.Framework.Capabilities
 
         private static int FindEnd(string llsd, int start)
         {
-            int end = llsd.IndexOfAny(new char[] {',', ']', '}'});
-            if (end == -1) end = llsd.Length - 1;
+            int end = llsd.IndexOfAny(new char[] { ',', ']', '}' });
+
+            if (end == -1)
+                end = llsd.Length - 1;
+
             return end;
         }
 

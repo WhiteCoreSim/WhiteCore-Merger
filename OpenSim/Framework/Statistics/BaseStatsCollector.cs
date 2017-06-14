@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,15 +29,13 @@
 
 using System;
 using System.Text;
-
 using OpenMetaverse;
 using OpenMetaverse.StructuredData;
-
 
 namespace OpenSim.Framework.Statistics
 {
     /// <summary>
-    /// Statistics which all collectors are interested in reporting
+    ///     Statistics which all collectors are interested in reporting
     /// </summary>
     public class BaseStatsCollector : IStatsCollector
     {
@@ -44,17 +44,14 @@ namespace OpenSim.Framework.Statistics
             StringBuilder sb = new StringBuilder(Environment.NewLine);
             sb.Append("MEMORY STATISTICS");
             sb.Append(Environment.NewLine);
-            sb.Append(
-                string.Format(
-                    "Allocated to OpenSim : {0} MB" + Environment.NewLine,
-                    Math.Round(GC.GetTotalMemory(false) / 1024.0 / 1024.0)));
+            sb.Append(string.Format("Allocated to OpenSim : {0} MB" + Environment.NewLine, Math.Round(GC.GetTotalMemory(false) / 1024.0 / 1024.0)));
 
             return sb.ToString();
         }
-        
+
         public virtual string XReport(string uptime, string version)
         {
-            return (string) Math.Round(GC.GetTotalMemory(false) / 1024.0 / 1024.0).ToString() ;
+            return (string)Math.Round(GC.GetTotalMemory(false) / 1024.0 / 1024.0).ToString();
         }
     }
 }

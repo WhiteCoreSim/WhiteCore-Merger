@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -55,6 +57,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         {
             get { return _contentEncoding; }
         }
+
         private Encoding _contentEncoding;
 
         public long ContentLength
@@ -71,6 +74,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         {
             get { return _contentType; }
         }
+
         private string _contentType;
 
         public HttpCookieCollection Cookies
@@ -79,8 +83,10 @@ namespace OpenSim.Framework.Servers.HttpServer
             {
                 RequestCookies cookies = _request.Cookies;
                 HttpCookieCollection httpCookies = new HttpCookieCollection();
+
                 foreach (RequestCookie cookie in cookies)
                     httpCookies.Add(new HttpCookie(cookie.Name, cookie.Value));
+
                 return httpCookies;
             }
         }
@@ -119,12 +125,14 @@ namespace OpenSim.Framework.Servers.HttpServer
         {
             get { return _queryString; }
         }
+
         private NameValueCollection _queryString;
 
         public Hashtable Query
         {
             get { return _query; }
         }
+
         private Hashtable _query;
 
         public string RawUrl
@@ -136,6 +144,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         {
             get { return _remoteIPEndPoint; }
         }
+
         private IPEndPoint _remoteIPEndPoint;
 
         public Uri Url
@@ -147,30 +156,31 @@ namespace OpenSim.Framework.Servers.HttpServer
         {
             get { return _userAgent; }
         }
+
         private string _userAgent;
 
         internal IHttpRequest IHttpRequest
-        { 
+        {
             get { return _request; }
         }
 
-        internal IHttpClientContext IHttpClientContext 
+        internal IHttpClientContext IHttpClientContext
         {
             get { return _context; }
         }
 
         /// <summary>
-        /// Internal whiteboard for handlers to store temporary stuff
-        /// into.
+        ///     Internal whiteboard for handlers to store temporary stuff
+        ///     into.
         /// </summary>
         internal Dictionary<string, object> Whiteboard
         {
             get { return _whiteboard; }
         }
+
         private Dictionary<string, object> _whiteboard = new Dictionary<string, object>();
 
-
-        public OSHttpRequest() {}
+        public OSHttpRequest() { }
 
         public OSHttpRequest(IHttpClientContext context, IHttpRequest req)
         {
@@ -179,10 +189,13 @@ namespace OpenSim.Framework.Servers.HttpServer
 
             if (null != req.Headers["content-encoding"])
                 _contentEncoding = Encoding.GetEncoding(_request.Headers["content-encoding"]);
+
             if (null != req.Headers["content-type"])
                 _contentType = _request.Headers["content-type"];
+
             if (null != req.Headers["user-agent"])
                 _userAgent = req.Headers["user-agent"];
+
             if (null != req.Headers["remote_addr"])
             {
                 try
@@ -193,8 +206,7 @@ namespace OpenSim.Framework.Servers.HttpServer
                 }
                 catch (FormatException)
                 {
-                    _log.ErrorFormat("[OSHttpRequest]: format exception on addr/port {0}:{1}, ignoring", 
-                                     req.Headers["remote_addr"], req.Headers["remote_port"]);
+                    _log.ErrorFormat("[OSHttpRequest]: format exception on addr/port {0}:{1}, ignoring", req.Headers["remote_addr"], req.Headers["remote_port"]);
                 }
             }
 
@@ -226,10 +238,12 @@ namespace OpenSim.Framework.Servers.HttpServer
         {
             StringBuilder me = new StringBuilder();
             me.Append(String.Format("OSHttpRequest: {0} {1}\n", HttpMethod, RawUrl));
+
             foreach (string k in Headers.AllKeys)
             {
                 me.Append(String.Format("    {0}: {1}\n", k, Headers[k]));
             }
+
             if (null != RemoteIPEndPoint)
             {
                 me.Append(String.Format("    IP: {0}\n", RemoteIPEndPoint));

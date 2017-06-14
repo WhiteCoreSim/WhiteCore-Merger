@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,9 +33,9 @@ using System.IO;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// AssetConfig -- For Asset Server Configuration
+    ///     AssetConfig -- For Asset Server Configuration
     /// </summary>
-    public class AssetConfig:ConfigBase
+    public class AssetConfig : ConfigBase
     {
         public string DatabaseConnect = String.Empty;
         public string DatabaseProvider = String.Empty;
@@ -42,25 +44,16 @@ namespace OpenSim.Framework
 
         public AssetConfig(string description, string filename)
         {
-            m_configMember =
-                new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
+            m_configMember = new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
             m_configMember.performConfigurationRetrieve();
         }
 
         public void loadConfigurationOptions()
         {
-            m_configMember.addConfigurationOption("database_provider", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "DLL for database provider", "OpenSim.Data.MySQL.dll", false);
-
-            m_configMember.addConfigurationOption("database_connect", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Database connection string", "", false);
-
-            m_configMember.addConfigurationOption("http_port", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Http Listener port", ConfigSettings.DefaultAssetServerHttpPort.ToString(), false);
-
-            m_configMember.addConfigurationOption("assetset_location", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                        "Location of 'AssetSets.xml'",
-                                        string.Format(".{0}assets{0}AssetSets.xml", Path.DirectorySeparatorChar), false);
+            m_configMember.addConfigurationOption("database_provider", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "DLL for database provider", "OpenSim.Data.MySQL.dll", false);
+            m_configMember.addConfigurationOption("database_connect", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Database connection string", "", false);
+            m_configMember.addConfigurationOption("http_port", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Http Listener port", ConfigSettings.DefaultAssetServerHttpPort.ToString(), false);
+            m_configMember.addConfigurationOption("assetset_location", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Location of 'AssetSets.xml'", string.Format(".{0}assets{0}AssetSets.xml", Path.DirectorySeparatorChar), false);
         }
 
         public bool handleIncomingConfiguration(string configuration_key, object configuration_result)
@@ -68,16 +61,16 @@ namespace OpenSim.Framework
             switch (configuration_key)
             {
                 case "database_provider":
-                    DatabaseProvider = (string) configuration_result;
+                    DatabaseProvider = (string)configuration_result;
                     break;
                 case "database_connect":
-                    DatabaseConnect = (string) configuration_result;
+                    DatabaseConnect = (string)configuration_result;
                     break;
                 case "assetset_location":
-                    AssetSetsLocation = (string) configuration_result;
+                    AssetSetsLocation = (string)configuration_result;
                     break;
                 case "http_port":
-                    HttpPort = (uint) configuration_result;
+                    HttpPort = (uint)configuration_result;
                     break;
             }
 

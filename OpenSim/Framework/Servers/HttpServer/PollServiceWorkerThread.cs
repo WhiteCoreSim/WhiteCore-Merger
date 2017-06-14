@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,21 +31,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using HttpServer;
-using OpenMetaverse;
-using System.Reflection;
 using log4net;
+using OpenMetaverse;
 
 namespace OpenSim.Framework.Servers.HttpServer
 {
     public delegate void ReQueuePollServiceItem(PollServiceHttpRequest req);
-    
+
     public class PollServiceWorkerThread
     {
-        private static readonly ILog m_log =
-                LogManager.GetLogger(
-                MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public event ReQueuePollServiceItem ReQueue;
 
@@ -76,19 +76,18 @@ namespace OpenSim.Framework.Servers.HttpServer
                         StreamReader str = new StreamReader(req.Request.Body);
 
                         Hashtable responsedata = req.PollServiceArgs.GetEvents(req.RequestID, req.PollServiceArgs.Id, str.ReadToEnd());
-                        m_server.DoHTTPGruntWork(responsedata,
-                                                 new OSHttpResponse(new HttpResponse(req.HttpContext, req.Request),req.HttpContext));
+                        m_server.DoHTTPGruntWork(responsedata, new OSHttpResponse(new HttpResponse(req.HttpContext, req.Request), req.HttpContext));
                     }
                     else
                     {
                         if ((Environment.TickCount - req.RequestTime) > m_timeout)
                         {
-                            m_server.DoHTTPGruntWork(req.PollServiceArgs.NoEvents(req.RequestID, req.PollServiceArgs.Id),
-                                                     new OSHttpResponse(new HttpResponse(req.HttpContext, req.Request),req.HttpContext));
+                            m_server.DoHTTPGruntWork(req.PollServiceArgs.NoEvents(req.RequestID, req.PollServiceArgs.Id), new OSHttpResponse(new HttpResponse(req.HttpContext, req.Request), req.HttpContext));
                         }
                         else
                         {
                             ReQueuePollServiceItem reQueueItem = ReQueue;
+
                             if (reQueueItem != null)
                                 reQueueItem(req);
                         }

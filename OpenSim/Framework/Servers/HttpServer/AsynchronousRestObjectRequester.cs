@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,31 +41,26 @@ namespace OpenSim.Framework.Servers.HttpServer
     public class AsynchronousRestObjectRequester
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+
         /// <summary>
-        /// Perform an asynchronous REST request.
+        ///     Perform an asynchronous REST request.
         /// </summary>
         /// <param name="verb">GET or POST</param>
         /// <param name="requestUrl"></param>
         /// <param name="obj"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        ///
         /// <exception cref="System.Net.WebException">Thrown if we encounter a
         /// network issue while posting the request.  You'll want to make
         /// sure you deal with this as they're not uncommon</exception>
-        //
-        public static void MakeRequest<TRequest, TResponse>(string verb,
-                string requestUrl, TRequest obj, Action<TResponse> action)
+        public static void MakeRequest<TRequest, TResponse>(string verb, string requestUrl, TRequest obj, Action<TResponse> action)
         {
-//            m_log.DebugFormat("[ASYNC REQUEST]: Starting {0} {1}", verb, requestUrl);
-            
-            Type type = typeof (TRequest);
+            Type type = typeof(TRequest);
 
             WebRequest request = WebRequest.Create(requestUrl);
             WebResponse response = null;
             TResponse deserial = default(TResponse);
-            XmlSerializer deserializer = new XmlSerializer(typeof (TResponse));
+            XmlSerializer deserializer = new XmlSerializer(typeof(TResponse));
 
             request.Method = verb;
 
@@ -83,25 +80,24 @@ namespace OpenSim.Framework.Servers.HttpServer
                     writer.Flush();
                 }
 
-                int length = (int) buffer.Length;
+                int length = (int)buffer.Length;
                 request.ContentLength = length;
 
-                request.BeginGetRequestStream(delegate(IAsyncResult res)
+                request.BeginGetRequestStream(delegate (IAsyncResult res)
                 {
                     Stream requestStream = request.EndGetRequestStream(res);
 
                     requestStream.Write(buffer.ToArray(), 0, length);
                     requestStream.Close();
 
-                    request.BeginGetResponse(delegate(IAsyncResult ar)
+                    request.BeginGetResponse(delegate (IAsyncResult ar)
                     {
                         response = request.EndGetResponse(ar);
                         Stream respStream = null;
                         try
                         {
                             respStream = response.GetResponseStream();
-                            deserial = (TResponse)deserializer.Deserialize(
-                                    respStream);
+                            deserial = (TResponse)deserializer.Deserialize(respStream);
                         }
                         catch (System.InvalidOperationException)
                         {
@@ -109,7 +105,6 @@ namespace OpenSim.Framework.Servers.HttpServer
                         finally
                         {
                             // Let's not close this
-                            //buffer.Close();
                             respStream.Close();
                             response.Close();
                         }
@@ -119,11 +114,11 @@ namespace OpenSim.Framework.Servers.HttpServer
                     }, null);
                 }, null);
 
-                
+
                 return;
             }
 
-            request.BeginGetResponse(delegate(IAsyncResult res2)
+            request.BeginGetResponse(delegate (IAsyncResult res2)
             {
                 try
                 {
@@ -153,39 +148,32 @@ namespace OpenSim.Framework.Servers.HttpServer
                         if (e.Response is HttpWebResponse)
                         {
                             HttpWebResponse httpResponse = (HttpWebResponse)e.Response;
-                        
+
                             if (httpResponse.StatusCode != HttpStatusCode.NotFound)
                             {
                                 // We don't appear to be handling any other status codes, so log these feailures to that
                                 // people don't spend unnecessary hours hunting phantom bugs.
-                                m_log.DebugFormat(
-                                    "[ASYNC REQUEST]: Request {0} {1} failed with unexpected status code {2}", 
-                                    verb, requestUrl, httpResponse.StatusCode);
+                                m_log.DebugFormat("[Async Request]: Request {0} {1} failed with unexpected status code {2}", verb, requestUrl, httpResponse.StatusCode);
                             }
                         }
                     }
                     else
                     {
-                        m_log.ErrorFormat("[ASYNC REQUEST]: Request {0} {1} failed with status {2} and message {3}", verb, requestUrl, e.Status, e.Message);
+                        m_log.ErrorFormat("[Async Request]: Request {0} {1} failed with status {2} and message {3}", verb, requestUrl, e.Status, e.Message);
                     }
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat("[ASYNC REQUEST]: Request {0} {1} failed with exception {2}", verb, requestUrl, e);
+                    m_log.ErrorFormat("[Async Request]: Request {0} {1} failed with exception {2}", verb, requestUrl, e);
                 }
-
-                //  m_log.DebugFormat("[ASYNC REQUEST]: Received {0}", deserial.ToString());
-
                 try
                 {
                     action(deserial);
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat(
-                        "[ASYNC REQUEST]: Request {0} {1} callback failed with exception {2}", verb, requestUrl, e);
+                    m_log.ErrorFormat("[Async Request]: Request {0} {1} callback failed with exception {2}", verb, requestUrl, e);
                 }
-                    
             }, null);
         }
     }

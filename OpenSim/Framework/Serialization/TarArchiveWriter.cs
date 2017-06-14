@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,17 +35,15 @@ using System.Text;
 namespace OpenSim.Framework.Serialization
 {
     /// <summary>
-    /// Temporary code to produce a tar archive in tar v7 format
+    ///     Temporary code to produce a tar archive in tar v7 format
     /// </summary>
     public class TarArchiveWriter
     {
-        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected static ASCIIEncoding m_asciiEncoding = new ASCIIEncoding();
         protected static UTF8Encoding m_utf8Encoding = new UTF8Encoding();
 
         /// <summary>
-        /// Binary writer for the underlying stream
+        ///     Binary writer for the underlying stream
         /// </summary>
         protected BinaryWriter m_bw;
 
@@ -53,7 +53,7 @@ namespace OpenSim.Framework.Serialization
         }
 
         /// <summary>
-        /// Write a directory entry to the tar archive.  We can only handle one path level right now!
+        ///     Write a directory entry to the tar archive.  We can only handle one path level right now!
         /// </summary>
         /// <param name="dirName"></param>
         public void WriteDir(string dirName)
@@ -66,7 +66,7 @@ namespace OpenSim.Framework.Serialization
         }
 
         /// <summary>
-        /// Write a file to the tar archive
+        ///     Write a file to the tar archive
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="data"></param>
@@ -76,7 +76,7 @@ namespace OpenSim.Framework.Serialization
         }
 
         /// <summary>
-        /// Write a file to the tar archive
+        ///     Write a file to the tar archive
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="data"></param>
@@ -100,21 +100,19 @@ namespace OpenSim.Framework.Serialization
         }
 
         /// <summary>
-        /// Finish writing the raw tar archive data to a stream.  The stream will be closed on completion.
+        ///     Finish writing the raw tar archive data to a stream.  The stream will be closed on completion.
         /// </summary>
         /// <param name="s">Stream to which to write the data</param>
         /// <returns></returns>
         public void Close()
         {
-            //m_log.Debug("[TAR ARCHIVE WRITER]: Writing final consecutive 0 blocks");
-
             // Write two consecutive 0 blocks to end the archive
             byte[] finalZeroPadding = new byte[1024];
 
             lock (m_bw)
             {
                 m_bw.Write(finalZeroPadding);
-    
+
                 m_bw.Flush();
                 m_bw.Close();
             }
@@ -141,7 +139,7 @@ namespace OpenSim.Framework.Serialization
         }
 
         /// <summary>
-        /// Write a particular entry
+        ///     Write a particular entry
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="data"></param>
@@ -169,7 +167,6 @@ namespace OpenSim.Framework.Serialization
 
             // file size in bytes (12)
             int fileSize = data.Length;
-            //m_log.DebugFormat("[TAR ARCHIVE WRITER]: File size of {0} is {1}", filePath, fileSize);
 
             byte[] fileSizeBytes = ConvertDecimalToPaddedOctalBytes(fileSize, 11);
 
@@ -194,8 +191,6 @@ namespace OpenSim.Framework.Serialization
                 checksum += b;
             }
 
-            //m_log.DebugFormat("[TAR ARCHIVE WRITER]: Decimal header checksum is {0}", checksum);
-
             byte[] checkSumBytes = ConvertDecimalToPaddedOctalBytes(checksum, 6);
 
             Array.Copy(checkSumBytes, 0, header, 148, 6);
@@ -206,16 +201,14 @@ namespace OpenSim.Framework.Serialization
             {
                 // Write out header
                 m_bw.Write(header);
-    
+
                 // Write out data
                 m_bw.Write(data);
-    
+
                 if (data.Length % 512 != 0)
                 {
                     int paddingRequired = 512 - (data.Length % 512);
-    
-                    //m_log.DebugFormat("[TAR ARCHIVE WRITER]: Padding data with {0} bytes", paddingRequired);
-    
+
                     byte[] padding = new byte[paddingRequired];
                     m_bw.Write(padding);
                 }

@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,14 +34,14 @@ using System.Threading;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Provides helper methods for parallelizing loops
+    ///     Provides helper methods for parallelizing loops
     /// </summary>
     public static class Parallel
     {
         public static readonly int ProcessorCount = System.Environment.ProcessorCount;
 
         /// <summary>
-        /// Executes a for loop in which iterations may run in parallel
+        ///     Executes a for loop in which iterations may run in parallel
         /// </summary>
         /// <param name="fromInclusive">The loop will be started at this index</param>
         /// <param name="toExclusive">The loop will be terminated before this index is reached</param>
@@ -50,7 +52,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Executes a for loop in which iterations may run in parallel
+        ///     Executes a for loop in which iterations may run in parallel
         /// </summary>
         /// <param name="threadCount">The number of concurrent execution threads to run</param>
         /// <param name="fromInclusive">The loop will be started at this index</param>
@@ -67,9 +69,9 @@ namespace OpenSim.Framework
             for (int i = 0; i < threadCount; i++)
             {
                 Util.FireAndForget(
-                    delegate(object o)
+                    delegate (object o)
                     {
-//                        int threadIndex = (int)o;
+                        //                        int threadIndex = (int)o;
 
                         while (exception == null)
                         {
@@ -96,7 +98,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Executes a foreach loop in which iterations may run in parallel
+        ///     Executes a foreach loop in which iterations may run in parallel
         /// </summary>
         /// <typeparam name="T">Object type that the collection wraps</typeparam>
         /// <param name="enumerable">An enumerable collection to iterate over</param>
@@ -107,7 +109,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Executes a foreach loop in which iterations may run in parallel
+        ///     Executes a foreach loop in which iterations may run in parallel
         /// </summary>
         /// <typeparam name="T">Object type that the collection wraps</typeparam>
         /// <param name="threadCount">The number of concurrent execution threads to run</param>
@@ -123,11 +125,8 @@ namespace OpenSim.Framework
 
             for (int i = 0; i < threadCount; i++)
             {
-                Util.FireAndForget(
-                    delegate(object o)
+                Util.FireAndForget(delegate (object o)
                     {
-//                        int threadIndex = (int)o;
-
                         while (exception == null)
                         {
                             T entry;
@@ -136,6 +135,7 @@ namespace OpenSim.Framework
                             {
                                 if (!enumerator.MoveNext())
                                     break;
+
                                 entry = (T)enumerator.Current; // Explicit typecast for Mono's sake
                             }
 
@@ -157,7 +157,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Executes a series of tasks in parallel
+        ///     Executes a series of tasks in parallel
         /// </summary>
         /// <param name="actions">A series of method bodies to execute</param>
         public static void Invoke(params Action[] actions)
@@ -166,7 +166,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Executes a series of tasks in parallel
+        ///     Executes a series of tasks in parallel
         /// </summary>
         /// <param name="threadCount">The number of concurrent execution threads to run</param>
         /// <param name="actions">A series of method bodies to execute</param>
@@ -179,11 +179,8 @@ namespace OpenSim.Framework
 
             for (int i = 0; i < threadCount; i++)
             {
-                Util.FireAndForget(
-                    delegate(object o)
+                Util.FireAndForget(delegate (object o)
                     {
-//                        int threadIndex = (int)o;
-
                         while (exception == null)
                         {
                             int currentIndex = Interlocked.Increment(ref index);

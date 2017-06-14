@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,7 +36,6 @@ namespace OpenSim.Framework
     {
         public string AssetSendKey = String.Empty;
         public string AssetURL = "http://127.0.0.1:" + ConfigSettings.DefaultAssetServerHttpPort.ToString() + "/";
-
         public string GridRecvKey = String.Empty;
         public string GridSendKey = String.Empty;
         public string GridURL = String.Empty;
@@ -75,33 +76,22 @@ namespace OpenSim.Framework
 
         public void loadFromConfiguration(IConfigSource config)
         {
-            m_defaultHomeLocX = (uint) config.Configs["StandAlone"].GetInt("default_location_x", 1000);
-            m_defaultHomeLocY = (uint) config.Configs["StandAlone"].GetInt("default_location_y", 1000);
-
-            HttpListenerPort =
-                (uint) config.Configs["Network"].GetInt("http_listener_port", (int) ConfigSettings.DefaultRegionHttpPort);
-            httpSSLPort =
-                (uint)config.Configs["Network"].GetInt("http_listener_sslport", ((int)ConfigSettings.DefaultRegionHttpPort+1));
+            m_defaultHomeLocX = (uint)config.Configs["StandAlone"].GetInt("default_location_x", 1000);
+            m_defaultHomeLocY = (uint)config.Configs["StandAlone"].GetInt("default_location_y", 1000);
+            HttpListenerPort = (uint)config.Configs["Network"].GetInt("http_listener_port", (int)ConfigSettings.DefaultRegionHttpPort);
+            httpSSLPort = (uint)config.Configs["Network"].GetInt("http_listener_sslport", ((int)ConfigSettings.DefaultRegionHttpPort + 1));
             HttpUsesSSL = config.Configs["Network"].GetBoolean("http_listener_ssl", false);
             HttpSSLCN = config.Configs["Network"].GetString("http_listener_cn", "localhost");
-            ConfigSettings.DefaultRegionRemotingPort =
-                (uint) config.Configs["Network"].GetInt("remoting_listener_port", (int) ConfigSettings.DefaultRegionRemotingPort);
-            GridURL =
-                config.Configs["Network"].GetString("grid_server_url",
-                                                    "http://127.0.0.1:" + ConfigSettings.DefaultGridServerHttpPort.ToString());
+            ConfigSettings.DefaultRegionRemotingPort = (uint)config.Configs["Network"].GetInt("remoting_listener_port", (int)ConfigSettings.DefaultRegionRemotingPort);
+            GridURL = config.Configs["Network"].GetString("grid_server_url", "http://127.0.0.1:" + ConfigSettings.DefaultGridServerHttpPort.ToString());
             GridSendKey = config.Configs["Network"].GetString("grid_send_key", "null");
             GridRecvKey = config.Configs["Network"].GetString("grid_recv_key", "null");
-            UserURL =
-                config.Configs["Network"].GetString("user_server_url",
-                                                    "http://127.0.0.1:" + ConfigSettings.DefaultUserServerHttpPort.ToString());
+            UserURL = config.Configs["Network"].GetString("user_server_url", "http://127.0.0.1:" + ConfigSettings.DefaultUserServerHttpPort.ToString());
             UserSendKey = config.Configs["Network"].GetString("user_send_key", "null");
             UserRecvKey = config.Configs["Network"].GetString("user_recv_key", "null");
             AssetURL = config.Configs["Network"].GetString("asset_server_url", AssetURL);
-            InventoryURL = config.Configs["Network"].GetString("inventory_server_url",
-                                                               "http://127.0.0.1:" +
-                                                               ConfigSettings.DefaultInventoryServerHttpPort.ToString());
+            InventoryURL = config.Configs["Network"].GetString("inventory_server_url", "http://127.0.0.1:" + ConfigSettings.DefaultInventoryServerHttpPort.ToString());
             secureInventoryServer = config.Configs["Network"].GetBoolean("secure_inventory_server", true);
-
             MessagingURL = config.Configs["Network"].GetString("messaging_server_url", string.Empty);
         }
     }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,11 +41,11 @@ namespace OpenSim.Framework
                 throw new Exception("ERROR: No space to encode the proxy EP");
             }
 
-            ushort port = (ushort) ((IPEndPoint) trueEP).Port;
-            bytes[numBytes++] = (byte) (port % 256);
-            bytes[numBytes++] = (byte) (port / 256);
+            ushort port = (ushort)((IPEndPoint)trueEP).Port;
+            bytes[numBytes++] = (byte)(port % 256);
+            bytes[numBytes++] = (byte)(port / 256);
 
-            foreach (byte b in ((IPEndPoint) trueEP).Address.GetAddressBytes())
+            foreach (byte b in ((IPEndPoint)trueEP).Address.GetAddressBytes())
             {
                 bytes[numBytes++] = b;
             }
@@ -59,10 +61,10 @@ namespace OpenSim.Framework
             addr[1] = bytes[--numBytes];
             addr[0] = bytes[--numBytes];
 
-            ushort port = (ushort) (bytes[--numBytes] * 256);
-            port += (ushort) bytes[--numBytes];
+            ushort port = (ushort)(bytes[--numBytes] * 256);
+            port += (ushort)bytes[--numBytes];
 
-            return new IPEndPoint(new IPAddress(addr), (int) port);
+            return new IPEndPoint(new IPAddress(addr), (int)port);
         }
     }
 }

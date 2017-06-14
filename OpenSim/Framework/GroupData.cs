@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,7 +27,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 using OpenMetaverse;
 
 namespace OpenSim.Framework
@@ -48,7 +49,6 @@ namespace OpenSim.Framework
     public class GroupMembershipData
     {
         // Group base data
-        //
         public UUID GroupID;
         public string GroupName;
         public bool AllowPublish = true;
@@ -61,7 +61,6 @@ namespace OpenSim.Framework
         public bool ShowInList = true;
 
         // Per user data
-        //
         public bool AcceptNotices = true;
         public int Contribution = 0;
         public ulong GroupPowers = 0;

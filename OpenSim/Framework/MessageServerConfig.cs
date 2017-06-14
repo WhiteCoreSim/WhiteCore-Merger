@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,9 +32,9 @@ using System;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Message Server Config - Configuration of the Message Server
+    ///     Message Server Config - Configuration of the Message Server
     /// </summary>
-    public class MessageServerConfig:ConfigBase
+    public class MessageServerConfig : ConfigBase
     {
         public string DatabaseProvider = String.Empty;
         public string DatabaseConnect = String.Empty;
@@ -51,8 +53,7 @@ namespace OpenSim.Framework
 
         public MessageServerConfig(string description, string filename)
         {
-            m_configMember =
-                new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
+            m_configMember = new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
             m_configMember.performConfigurationRetrieve();
         }
 
@@ -95,7 +96,6 @@ namespace OpenSim.Framework
 
             m_configMember.addConfigurationOption("console_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
                                                 "Remote console access password [Default: disabled]", "", false);
-
         }
 
         public bool handleIncomingConfiguration(string configuration_key, object configuration_result)
@@ -103,40 +103,40 @@ namespace OpenSim.Framework
             switch (configuration_key)
             {
                 case "default_user_server":
-                    UserServerURL = (string) configuration_result;
+                    UserServerURL = (string)configuration_result;
                     break;
                 case "user_send_key":
-                    UserSendKey = (string) configuration_result;
+                    UserSendKey = (string)configuration_result;
                     break;
                 case "user_recv_key":
-                    UserRecvKey = (string) configuration_result;
+                    UserRecvKey = (string)configuration_result;
                     break;
                 case "default_grid_server":
-                    GridServerURL = (string) configuration_result;
+                    GridServerURL = (string)configuration_result;
                     break;
                 case "grid_send_key":
-                    GridSendKey = (string) configuration_result;
+                    GridSendKey = (string)configuration_result;
                     break;
                 case "grid_recv_key":
-                    GridRecvKey = (string) configuration_result;
+                    GridRecvKey = (string)configuration_result;
                     break;
                 case "database_provider":
-                    DatabaseProvider = (string) configuration_result;
+                    DatabaseProvider = (string)configuration_result;
                     break;
                 case "database_connect":
                     DatabaseConnect = (string)configuration_result;
                     break;
                 case "http_port":
-                    HttpPort = (uint) configuration_result;
+                    HttpPort = (uint)configuration_result;
                     break;
                 case "http_ssl":
-                    HttpSSL = (bool) configuration_result;
+                    HttpSSL = (bool)configuration_result;
                     break;
                 case "region_comms_provider":
-                    GridCommsProvider = (string) configuration_result;
+                    GridCommsProvider = (string)configuration_result;
                     break;
                 case "published_ip":
-                    MessageServerIP = (string) configuration_result;
+                    MessageServerIP = (string)configuration_result;
                     break;
                 case "console_user":
                     ConsoleUser = (string)configuration_result;

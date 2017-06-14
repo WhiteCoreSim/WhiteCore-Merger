@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,7 +38,6 @@ namespace OpenSim.Framework.Capabilities
         public string new_asset = String.Empty;
         public UUID new_inventory_item = UUID.Zero;
         public string state = String.Empty;
-        //public bool success = false;
 
         public LLSDAssetUploadComplete()
         {

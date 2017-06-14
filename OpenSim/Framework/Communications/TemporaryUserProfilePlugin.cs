@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,24 +37,20 @@ using OpenSim.Data;
 namespace OpenSim.Framework.Communications
 {
     /// <summary>
-    /// Plugin for managing temporary user profiles.
+    ///     Plugin for managing temporary user profiles.
     /// </summary>
     public class TemporaryUserProfilePlugin : IUserDataPlugin
     {
-        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
         protected Dictionary<UUID, UserProfileData> m_profiles = new Dictionary<UUID, UserProfileData>();
-        
+
         public string Name { get { return "TemporaryUserProfilePlugin"; } }
         public string Version { get { return "0.1"; } }
-        public void Initialise() {}
-        public void Initialise(string connect) {}
-        public void Dispose() {}
-        
+        public void Initialise() { }
+        public void Initialise(string connect) { }
+        public void Dispose() { }
+
         public UserProfileData GetUserByUUID(UUID user)
         {
-            //m_log.DebugFormat("[TEMP USER PROFILE]: Received request for {0}", user);
-            
             lock (m_profiles)
             {
                 if (m_profiles.ContainsKey(user))
@@ -61,44 +59,41 @@ namespace OpenSim.Framework.Communications
                     return null;
             }
         }
-        
+
         public UserProfileData GetUserByName(string fname, string lname)
         {
             // We deliberately don't look up a temporary profile by name so that we don't obscure non-temporary 
-            // profiles.
-            
+            // profiles.   
             return null;
         }
-        
+
         public virtual void AddTemporaryUserProfile(UserProfileData userProfile)
         {
-            //m_log.DebugFormat("[TEMP USER PROFILE]: Adding {0} {1}", userProfile.Name, userProfile.ID);
-            
             lock (m_profiles)
             {
                 m_profiles[userProfile.ID] = userProfile;
             }
         }
-        
+
         public UserProfileData GetUserByUri(Uri uri) { return null; }
         public List<AvatarPickerAvatar> GeneratePickerResults(UUID queryID, string query) { return null; }
         public UserAgentData GetAgentByUUID(UUID user) { return null; }
         public UserAgentData GetAgentByName(string name) { return null; }
         public UserAgentData GetAgentByName(string fname, string lname) { return null; }
-        public void StoreWebLoginKey(UUID agentID, UUID webLoginKey) {}
-        public void AddNewUserProfile(UserProfileData user) {}
+        public void StoreWebLoginKey(UUID agentID, UUID webLoginKey) { }
+        public void AddNewUserProfile(UserProfileData user) { }
         public bool UpdateUserProfile(UserProfileData user) { return false; }
-        public void AddNewUserAgent(UserAgentData agent) {}
-        public void AddNewUserFriend(UUID friendlistowner, UUID friend, uint perms) {}
-        public void RemoveUserFriend(UUID friendlistowner, UUID friend) {}
-        public void UpdateUserFriendPerms(UUID friendlistowner, UUID friend, uint perms) {}
+        public void AddNewUserAgent(UserAgentData agent) { }
+        public void AddNewUserFriend(UUID friendlistowner, UUID friend, uint perms) { }
+        public void RemoveUserFriend(UUID friendlistowner, UUID friend) { }
+        public void UpdateUserFriendPerms(UUID friendlistowner, UUID friend, uint perms) { }
         public List<FriendListItem> GetUserFriendList(UUID friendlistowner) { return null; }
         public Dictionary<UUID, FriendRegionInfo> GetFriendRegionInfos(List<UUID> uuids) { return null; }
         public bool MoneyTransferRequest(UUID from, UUID to, uint amount) { return false; }
         public bool InventoryTransferRequest(UUID from, UUID to, UUID inventory) { return false; }
         public AvatarAppearance GetUserAppearance(UUID user) { return null; }
-        public void UpdateUserAppearance(UUID user, AvatarAppearance appearance) {}
-        public void ResetAttachments(UUID userID) {}
-        public void LogoutUsers(UUID regionID) {}
+        public void UpdateUserAppearance(UUID user, AvatarAppearance appearance) { }
+        public void ResetAttachments(UUID userID) { }
+        public void LogoutUsers(UUID regionID) { }
     }
 }

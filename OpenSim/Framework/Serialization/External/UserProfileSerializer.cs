@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,37 +35,33 @@ using OpenSim.Framework;
 namespace OpenSim.Framework.Serialization.External
 {
     /// <summary>
-    /// Serialize and deserialize region settings as an external format.
+    ///     Serialize and deserialize region settings as an external format.
     /// </summary>
     public class UserProfileSerializer
     {
         public const int MAJOR_VERSION = 0;
         public const int MINOR_VERSION = 1;
-        
+
         public static string Serialize(UserProfileData profile)
         {
             StringWriter sw = new StringWriter();
             XmlTextWriter xtw = new XmlTextWriter(sw);
             xtw.Formatting = Formatting.Indented;
             xtw.WriteStartDocument();
-            
+
             xtw.WriteStartElement("user_profile");
             xtw.WriteAttributeString("major_version", MAJOR_VERSION.ToString());
             xtw.WriteAttributeString("minor_version", MINOR_VERSION.ToString());
-                       
+
             xtw.WriteElementString("name", profile.Name);
             xtw.WriteElementString("id", profile.ID.ToString());
             xtw.WriteElementString("about", profile.AboutText);
-  
-            // Not sure if we're storing this yet, need to take a look
-//            xtw.WriteElementString("Url", profile.Url);
-            // or, indeed, interests
 
             xtw.WriteEndElement();
-            
+
             xtw.Close();
             sw.Close();
-            
+
             return sw.ToString();
         }
     }

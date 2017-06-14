@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,9 +37,6 @@ namespace OpenSim.Framework.Capabilities
 {
     public class LLSDHelpers
     {
-//        private static readonly log4net.ILog m_log
-//            = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static string SerialiseLLSDReply(object obj)
         {
             StringWriter sw = new StringWriter();
@@ -47,16 +46,14 @@ namespace OpenSim.Framework.Capabilities
             SerializeOSDType(writer, obj);
             writer.WriteEndElement();
             writer.Close();
-
-            //m_log.DebugFormat("[LLSD Helpers]: Generated serialized LLSD reply {0}", sw.ToString());
-
             return sw.ToString();
         }
 
         private static void SerializeOSDType(XmlTextWriter writer, object obj)
         {
             Type myType = obj.GetType();
-            LLSDType[] llsdattributes = (LLSDType[]) myType.GetCustomAttributes(typeof (LLSDType), false);
+            LLSDType[] llsdattributes = (LLSDType[])myType.GetCustomAttributes(typeof(LLSDType), false);
+
             if (llsdattributes.Length > 0)
             {
                 switch (llsdattributes[0].ObjectType)
@@ -64,13 +61,14 @@ namespace OpenSim.Framework.Capabilities
                     case "MAP":
                         writer.WriteStartElement(String.Empty, "map", String.Empty);
                         FieldInfo[] fields = myType.GetFields();
+
                         for (int i = 0; i < fields.Length; i++)
                         {
                             if (fields[i] != null && fields[i].GetValue(obj) != null)
                             {
                                 object fieldValue = fields[i].GetValue(obj);
-                                LLSDType[] fieldAttributes =
-                                    (LLSDType[]) fieldValue.GetType().GetCustomAttributes(typeof (LLSDType), false);
+                                LLSDType[] fieldAttributes = (LLSDType[])fieldValue.GetType().GetCustomAttributes(typeof(LLSDType), false);
+
                                 if (fieldAttributes.Length > 0)
                                 {
                                     writer.WriteStartElement(String.Empty, "key", String.Empty);
@@ -88,8 +86,6 @@ namespace OpenSim.Framework.Capabilities
                                     writer.WriteString(fieldName);
                                     writer.WriteEndElement();
                                     LLSD.LLSDWriteOne(writer, fieldValue);
-                                    // OpenMetaverse.StructuredData.LLSDParser.SerializeXmlElement(
-                                    //    writer, OpenMetaverse.StructuredData.OSD.FromObject(fieldValue));
                                 }
                             }
                             else
@@ -99,12 +95,12 @@ namespace OpenSim.Framework.Capabilities
                                 // if sdague could take a look at this.
                             }
                         }
+
                         writer.WriteEndElement();
                         break;
                     case "ARRAY":
-                        // OSDArray arrayObject = obj as OSDArray;
-                        // ArrayList a = arrayObject.Array;
-                        ArrayList a = (ArrayList) obj.GetType().GetField("Array").GetValue(obj);
+                        ArrayList a = (ArrayList)obj.GetType().GetField("Array").GetValue(obj);
+
                         if (a != null)
                         {
                             writer.WriteStartElement(String.Empty, "array", String.Empty);
@@ -112,6 +108,7 @@ namespace OpenSim.Framework.Capabilities
                             {
                                 SerializeOSDType(writer, item);
                             }
+
                             writer.WriteEndElement();
                         }
                         break;
@@ -120,15 +117,14 @@ namespace OpenSim.Framework.Capabilities
             else
             {
                 LLSD.LLSDWriteOne(writer, obj);
-                //OpenMetaverse.StructuredData.LLSDParser.SerializeXmlElement(
-                //    writer, OpenMetaverse.StructuredData.OSD.FromObject(obj));
             }
         }
 
         public static object DeserialiseOSDMap(Hashtable llsd, object obj)
         {
             Type myType = obj.GetType();
-            LLSDType[] llsdattributes = (LLSDType[]) myType.GetCustomAttributes(typeof (LLSDType), false);
+            LLSDType[] llsdattributes = (LLSDType[])myType.GetCustomAttributes(typeof(LLSDType), false);
+
             if (llsdattributes.Length > 0)
             {
                 switch (llsdattributes[0].ObjectType)
@@ -138,16 +134,15 @@ namespace OpenSim.Framework.Capabilities
                         while (enumerator.MoveNext())
                         {
                             string keyName = (string)enumerator.Key;
-                            keyName = keyName.Replace("-","_");
+                            keyName = keyName.Replace("-", "_");
                             FieldInfo field = myType.GetField(keyName);
+
                             if (field != null)
                             {
-                                // if (enumerator.Value is OpenMetaverse.StructuredData.OSDMap)
                                 if (enumerator.Value is Hashtable)
                                 {
                                     object fieldValue = field.GetValue(obj);
-                                    DeserialiseOSDMap((Hashtable) enumerator.Value, fieldValue);
-                                    //  DeserialiseOSDMap((OpenMetaverse.StructuredData.OSDMap) enumerator.Value, fieldValue);
+                                    DeserialiseOSDMap((Hashtable)enumerator.Value, fieldValue);
                                 }
                                 else if (enumerator.Value is ArrayList)
                                 {
@@ -163,9 +158,11 @@ namespace OpenSim.Framework.Capabilities
                                 }
                             }
                         }
+
                         break;
                 }
             }
+
             return obj;
         }
     }

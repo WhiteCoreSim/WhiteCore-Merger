@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,71 +35,71 @@ using OpenMetaverse.StructuredData;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Circuit data for an agent.  Connection information shared between
-    /// regions that accept UDP connections from a client
+    ///     Circuit data for an agent.  Connection information shared between
+    ///     regions that accept UDP connections from a client
     /// </summary>
     public class AgentCircuitData
     {
         /// <summary>
-        /// Avatar Unique Agent Identifier
+        ///     Avatar Unique Agent Identifier
         /// </summary>
         public UUID AgentID;
 
         /// <summary>
-        /// Avatar's Appearance
+        ///     Avatar's Appearance
         /// </summary>
         public AvatarAppearance Appearance;
 
         /// <summary>
-        /// Agent's root inventory folder
+        ///     Agent's root inventory folder
         /// </summary>
         public UUID BaseFolder;
 
         /// <summary>
-        /// Base Caps path for user
+        ///     Base Caps path for user
         /// </summary>
         public string CapsPath = String.Empty;
 
         /// <summary>
-        /// Seed caps for neighbor regions that the user can see into
+        ///     Seed caps for neighbor regions that the user can see into
         /// </summary>
         public Dictionary<ulong, string> ChildrenCapSeeds;
 
         /// <summary>
-        /// Root agent, or Child agent
+        ///     Root agent, or Child agent
         /// </summary>
         public bool child;
 
         /// <summary>
-        /// Number given to the client when they log-in that they provide 
-        /// as credentials to the UDP server
+        ///     Number given to the client when they log-in that they provide 
+        ///     as credentials to the UDP server
         /// </summary>
         public uint circuitcode;
 
         /// <summary>
-        /// Agent's account first name
+        ///     Agent's account first name
         /// </summary>
         public string firstname;
         public UUID InventoryFolder;
 
         /// <summary>
-        /// Agent's account last name
+        ///     Agent's account last name
         /// </summary>
         public string lastname;
 
         /// <summary>
-        /// Random Unique GUID for this session.  Client gets this at login and it's
-        /// only supposed to be disclosed over secure channels
+        ///     Random Unique GUID for this session.  Client gets this at login and it's
+        ///     only supposed to be disclosed over secure channels
         /// </summary>
         public UUID SecureSessionID;
 
         /// <summary>
-        /// Non secure Session ID
+        ///     Non secure Session ID
         /// </summary>
         public UUID SessionID;
 
         /// <summary>
-        /// Position the Agent's Avatar starts in the region
+        ///     Position the Agent's Avatar starts in the region
         /// </summary>
         public Vector3 startpos;
 
@@ -106,7 +108,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Create AgentCircuitData from a Serializable AgentCircuitData
+        ///     Create AgentCircuitData from a Serializable AgentCircuitData
         /// </summary>
         /// <param name="cAgent"></param>
         public AgentCircuitData(sAgentCircuitData cAgent)
@@ -126,9 +128,11 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Pack AgentCircuitData into an OSDMap for transmission over LLSD XML or LLSD json
+        ///     Pack AgentCircuitData into an OSDMap for transmission over LLSD XML or LLSD json
         /// </summary>
-        /// <returns>map of the agent circuit data</returns>
+        /// <returns>
+        ///     map of the agent circuit data
+        /// </returns>
         public OSDMap PackAgentCircuitData()
         {
             OSDMap args = new OSDMap();
@@ -137,6 +141,7 @@ namespace OpenSim.Framework
             args["caps_path"] = OSD.FromString(CapsPath);
 
             OSDArray childrenSeeds = new OSDArray(ChildrenCapSeeds.Count);
+
             foreach (KeyValuePair<ulong, string> kvp in ChildrenCapSeeds)
             {
                 OSDMap pair = new OSDMap();
@@ -144,6 +149,7 @@ namespace OpenSim.Framework
                 pair["seed"] = OSD.FromString(kvp.Value);
                 childrenSeeds.Add(pair);
             }
+
             if (ChildrenCapSeeds.Count > 0)
                 args["children_seeds"] = childrenSeeds;
 
@@ -160,15 +166,17 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Unpack agent circuit data map into an AgentCiruitData object
+        ///     Unpack agent circuit data map into an AgentCiruitData object
         /// </summary>
         /// <param name="args"></param>
         public void UnpackAgentCircuitData(OSDMap args)
         {
             if (args["agent_id"] != null)
                 AgentID = args["agent_id"].AsUUID();
+
             if (args["base_folder"] != null)
                 BaseFolder = args["base_folder"].AsUUID();
+
             if (args["caps_path"] != null)
                 CapsPath = args["caps_path"].AsString();
 
@@ -176,6 +184,7 @@ namespace OpenSim.Framework
             {
                 OSDArray childrenSeeds = (OSDArray)(args["children_seeds"]);
                 ChildrenCapSeeds = new Dictionary<ulong, string>();
+
                 foreach (OSD o in childrenSeeds)
                 {
                     if (o.Type == OSDType.Map)
@@ -183,11 +192,14 @@ namespace OpenSim.Framework
                         ulong handle = 0;
                         string seed = "";
                         OSDMap pair = (OSDMap)o;
+
                         if (pair["handle"] != null)
                             if (!UInt64.TryParse(pair["handle"].AsString(), out handle))
                                 continue;
+
                         if (pair["seed"] != null)
                             seed = pair["seed"].AsString();
+
                         if (!ChildrenCapSeeds.ContainsKey(handle))
                             ChildrenCapSeeds.Add(handle, seed);
                     }
@@ -196,28 +208,32 @@ namespace OpenSim.Framework
 
             if (args["child"] != null)
                 child = args["child"].AsBoolean();
+
             if (args["circuit_code"] != null)
                 UInt32.TryParse(args["circuit_code"].AsString(), out circuitcode);
+
             if (args["first_name"] != null)
                 firstname = args["first_name"].AsString();
+
             if (args["last_name"] != null)
                 lastname = args["last_name"].AsString();
+
             if (args["inventory_folder"] != null)
                 InventoryFolder = args["inventory_folder"].AsUUID();
+
             if (args["secure_session_id"] != null)
                 SecureSessionID = args["secure_session_id"].AsUUID();
+
             if (args["session_id"] != null)
                 SessionID = args["session_id"].AsUUID();
+
             if (args["start_pos"] != null)
-                Vector3.TryParse(args["start_pos"].AsString(), out startpos); 
-
-
+                Vector3.TryParse(args["start_pos"].AsString(), out startpos);
         }
     }
 
-
     /// <summary>
-    /// Serializable Agent Circuit Data
+    ///     Serializable Agent Circuit Data
     /// </summary>
     [Serializable]
     public class sAgentCircuitData

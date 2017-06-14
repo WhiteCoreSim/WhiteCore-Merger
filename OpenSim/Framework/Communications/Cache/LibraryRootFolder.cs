@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,38 +39,33 @@ using OpenMetaverse;
 namespace OpenSim.Framework.Communications.Cache
 {
     /// <summary>
-    /// Basically a hack to give us a Inventory library while we don't have a inventory server
-    /// once the server is fully implemented then should read the data from that
+    ///     Basically a hack to give us a Inventory library while we don't have a inventory server
+    ///     once the server is fully implemented then should read the data from that
     /// </summary>
     public class LibraryRootFolder : InventoryFolderImpl
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private UUID libOwner = new UUID("11111111-1111-0000-0000-000100bba000");
 
         /// <summary>
-        /// Holds the root library folder and all its descendents.  This is really only used during inventory
-        /// setup so that we don't have to repeatedly search the tree of library folders.
+        ///     Holds the root library folder and all its descendents.  This is really only used during inventory
+        ///     setup so that we don't have to repeatedly search the tree of library folders.
         /// </summary>
-        protected Dictionary<UUID, InventoryFolderImpl> libraryFolders
-            = new Dictionary<UUID, InventoryFolderImpl>();
-        
+        protected Dictionary<UUID, InventoryFolderImpl> libraryFolders = new Dictionary<UUID, InventoryFolderImpl>();
+
         public LibraryRootFolder(string pLibrariesLocation)
         {
             Owner = libOwner;
             ID = new UUID("00000112-000f-0000-0000-000100bba000");
             Name = "OpenSim Library";
             ParentID = UUID.Zero;
-            Type = (short) 8;
-            Version = (ushort) 1;
-
+            Type = (short)8;
+            Version = (ushort)1;
             libraryFolders.Add(ID, this);
-
             LoadLibraries(pLibrariesLocation);
         }
 
-        public InventoryItemBase CreateItem(UUID inventoryID, UUID assetID, string name, string description,
-                                            int assetType, int invType, UUID parentFolderID)
+        public InventoryItemBase CreateItem(UUID inventoryID, UUID assetID, string name, string description, int assetType, int invType, UUID parentFolderID)
         {
             InventoryItemBase item = new InventoryItemBase();
             item.Owner = libOwner;
@@ -88,38 +85,31 @@ namespace OpenSim.Framework.Communications.Cache
         }
 
         /// <summary>
-        /// Use the asset set information at path to load assets
+        ///     Use the asset set information at path to load assets
         /// </summary>
         /// <param name="path"></param>
         /// <param name="assets"></param>
         protected void LoadLibraries(string librariesControlPath)
         {
-            m_log.InfoFormat("[LIBRARY INVENTORY]: Loading library control file {0}", librariesControlPath);
+            m_log.InfoFormat("[Library Inventory]: Loading library control file {0}", librariesControlPath);
             LoadFromFile(librariesControlPath, "Libraries control", ReadLibraryFromConfig);
         }
 
         /// <summary>
-        /// Read a library set from config
+        ///     Read a library set from config
         /// </summary>
         /// <param name="config"></param>
         protected void ReadLibraryFromConfig(IConfig config, string path)
         {
             string basePath = Path.GetDirectoryName(path);
-            string foldersPath
-                = Path.Combine(
-                    basePath, config.GetString("foldersFile", String.Empty));
-
+            string foldersPath = Path.Combine(basePath, config.GetString("foldersFile", String.Empty));
             LoadFromFile(foldersPath, "Library folders", ReadFolderFromConfig);
-
-            string itemsPath
-                = Path.Combine(
-                    basePath, config.GetString("itemsFile", String.Empty));
-
+            string itemsPath = Path.Combine(basePath, config.GetString("itemsFile", String.Empty));
             LoadFromFile(itemsPath, "Library items", ReadItemFromConfig);
         }
 
         /// <summary>
-        /// Read a library inventory folder from a loaded configuration
+        ///     Read a library inventory folder from a loaded configuration
         /// </summary>
         /// <param name="source"></param>
         private void ReadFolderFromConfig(IConfig config, string path)
@@ -140,19 +130,15 @@ namespace OpenSim.Framework.Communications.Cache
 
                 libraryFolders.Add(folderInfo.ID, folderInfo);
                 parentFolder.AddChildFolder(folderInfo);
-
-//                 m_log.InfoFormat("[LIBRARY INVENTORY]: Adding folder {0} ({1})", folderInfo.name, folderInfo.folderID);
             }
             else
             {
-                m_log.WarnFormat(
-                    "[LIBRARY INVENTORY]: Couldn't add folder {0} ({1}) since parent folder with ID {2} does not exist!",
-                    folderInfo.Name, folderInfo.ID, folderInfo.ParentID);
+                m_log.WarnFormat("[Library Inventory]: Couldn't add folder {0} ({1}) since parent folder with ID {2} does not exist!", folderInfo.Name, folderInfo.ID, folderInfo.ParentID);
             }
         }
 
         /// <summary>
-        /// Read a library inventory item metadata from a loaded configuration
+        ///     Read a library inventory item metadata from a loaded configuration
         /// </summary>
         /// <param name="source"></param>
         private void ReadItemFromConfig(IConfig config, string path)
@@ -181,21 +167,19 @@ namespace OpenSim.Framework.Communications.Cache
                 }
                 catch (Exception)
                 {
-                    m_log.WarnFormat("[LIBRARY INVENTORY] Item {1} [{0}] not added, duplicate item", item.ID, item.Name);
+                    m_log.WarnFormat("[Library Inventory] Item {1} [{0}] not added, duplicate item", item.ID, item.Name);
                 }
             }
             else
             {
-                m_log.WarnFormat(
-                    "[LIBRARY INVENTORY]: Couldn't add item {0} ({1}) since parent folder with ID {2} does not exist!",
-                    item.Name, item.ID, item.Folder);
+                m_log.WarnFormat("[Library Inventory]: Couldn't add item {0} ({1}) since parent folder with ID {2} does not exist!", item.Name, item.ID, item.Folder);
             }
         }
 
         private delegate void ConfigAction(IConfig config, string path);
 
         /// <summary>
-        /// Load the given configuration at a path and perform an action on each Config contained within it
+        ///     Load the given configuration at a path and perform an action on each Config contained within it
         /// </summary>
         /// <param name="path"></param>
         /// <param name="fileDescription"></param>
@@ -215,18 +199,18 @@ namespace OpenSim.Framework.Communications.Cache
                 }
                 catch (XmlException e)
                 {
-                    m_log.ErrorFormat("[LIBRARY INVENTORY]: Error loading {0} : {1}", path, e);
+                    m_log.ErrorFormat("[Library Inventory]: Error loading {0} : {1}", path, e);
                 }
             }
             else
             {
-                m_log.ErrorFormat("[LIBRARY INVENTORY]: {0} file {1} does not exist!", fileDescription, path);
+                m_log.ErrorFormat("[Library Inventory]: {0} file {1} does not exist!", fileDescription, path);
             }
         }
 
         /// <summary>
-        /// Looks like a simple getter, but is written like this for some consistency with the other Request
-        /// methods in the superclass
+        ///     Looks like a simple getter, but is written like this for some consistency with the other Request
+        ///     methods in the superclass
         /// </summary>
         /// <returns></returns>
         public Dictionary<UUID, InventoryFolderImpl> RequestSelfAndDescendentFolders()

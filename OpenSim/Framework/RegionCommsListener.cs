@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,21 +34,21 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Sandbox mode region comms listener.  There is one of these per region
+    ///     Sandbox mode region comms listener.  There is one of these per region
     /// </summary>
     public class RegionCommsListener : IRegionCommsListener
     {
         public string debugRegionName = String.Empty;
-        private AcknowledgeAgentCross handlerAcknowledgeAgentCrossed = null; // OnAcknowledgeAgentCrossed;
-        private AcknowledgePrimCross handlerAcknowledgePrimCrossed = null; // OnAcknowledgePrimCrossed;
-        private AgentCrossing handlerAvatarCrossingIntoRegion = null; // OnAvatarCrossingIntoRegion;
-        private ChildAgentUpdate handlerChildAgentUpdate = null; // OnChildAgentUpdate;
-        private CloseAgentConnection handlerCloseAgentConnection = null; // OnCloseAgentConnection;
-        private GenericCall2 handlerExpectChildAgent = null; // OnExpectChildAgent;
-        private ExpectPrimDelegate handlerExpectPrim = null; // OnExpectPrim;
-        private ExpectUserDelegate handlerExpectUser = null; // OnExpectUser
-        private UpdateNeighbours handlerNeighboursUpdate = null; // OnNeighboursUpdate;
-        private PrimCrossing handlerPrimCrossingIntoRegion = null; // OnPrimCrossingIntoRegion;
+        private AcknowledgeAgentCross handlerAcknowledgeAgentCrossed = null;
+        private AcknowledgePrimCross handlerAcknowledgePrimCrossed = null;
+        private AgentCrossing handlerAvatarCrossingIntoRegion = null;
+        private ChildAgentUpdate handlerChildAgentUpdate = null;
+        private CloseAgentConnection handlerCloseAgentConnection = null;
+        private GenericCall2 handlerExpectChildAgent = null;
+        private ExpectPrimDelegate handlerExpectPrim = null;
+        private ExpectUserDelegate handlerExpectUser = null;
+        private UpdateNeighbours handlerNeighboursUpdate = null;
+        private PrimCrossing handlerPrimCrossingIntoRegion = null;
         private LogOffUser handlerLogOffUser = null;
         private GetLandData handlerGetLandData = null;
 
@@ -75,6 +77,7 @@ namespace OpenSim.Framework
         public virtual bool TriggerExpectUser(AgentCircuitData agent)
         {
             handlerExpectUser = OnExpectUser;
+
             if (handlerExpectUser != null)
             {
                 handlerExpectUser(agent);
@@ -88,88 +91,101 @@ namespace OpenSim.Framework
         public virtual void TriggerLogOffUser(UUID agentID, UUID RegionSecret, string message)
         {
             handlerLogOffUser = OnLogOffUser;
+
             if (handlerLogOffUser != null)
             {
                 handlerLogOffUser(agentID, RegionSecret, message);
             }
-
         }
 
         public virtual bool TriggerExpectPrim(UUID primID, string objData, int XMLMethod)
         {
             handlerExpectPrim = OnExpectPrim;
+
             if (handlerExpectPrim != null)
             {
                 handlerExpectPrim(primID, objData, XMLMethod);
                 return true;
             }
+
             return false;
         }
 
         public virtual bool TriggerChildAgentUpdate(ChildAgentDataUpdate cAgentData)
         {
             handlerChildAgentUpdate = OnChildAgentUpdate;
+
             if (handlerChildAgentUpdate != null)
             {
                 handlerChildAgentUpdate(cAgentData);
                 return true;
             }
+
             return false;
         }
 
         public virtual bool TriggerExpectAvatarCrossing(UUID agentID, Vector3 position, bool isFlying)
         {
             handlerAvatarCrossingIntoRegion = OnAvatarCrossingIntoRegion;
+
             if (handlerAvatarCrossingIntoRegion != null)
             {
                 handlerAvatarCrossingIntoRegion(agentID, position, isFlying);
                 return true;
             }
+
             return false;
         }
 
-        public virtual bool TriggerExpectPrimCrossing(UUID primID, Vector3 position,
-                                                      bool isPhysical)
+        public virtual bool TriggerExpectPrimCrossing(UUID primID, Vector3 position, bool isPhysical)
         {
             handlerPrimCrossingIntoRegion = OnPrimCrossingIntoRegion;
+
             if (handlerPrimCrossingIntoRegion != null)
             {
                 handlerPrimCrossingIntoRegion(primID, position, isPhysical);
                 return true;
             }
+
             return false;
         }
 
         public virtual bool TriggerAcknowledgeAgentCrossed(UUID agentID)
         {
             handlerAcknowledgeAgentCrossed = OnAcknowledgeAgentCrossed;
+
             if (handlerAcknowledgeAgentCrossed != null)
             {
                 handlerAcknowledgeAgentCrossed(agentID);
                 return true;
             }
+
             return false;
         }
 
         public virtual bool TriggerAcknowledgePrimCrossed(UUID primID)
         {
             handlerAcknowledgePrimCrossed = OnAcknowledgePrimCrossed;
+
             if (handlerAcknowledgePrimCrossed != null)
             {
                 handlerAcknowledgePrimCrossed(primID);
                 return true;
             }
+
             return false;
         }
 
         public virtual bool TriggerCloseAgentConnection(UUID agentID)
         {
             handlerCloseAgentConnection = OnCloseAgentConnection;
+
             if (handlerCloseAgentConnection != null)
             {
                 handlerCloseAgentConnection(agentID);
                 return true;
             }
+
             return false;
         }
 
@@ -181,6 +197,7 @@ namespace OpenSim.Framework
         public virtual bool TriggerExpectChildAgent()
         {
             handlerExpectChildAgent = OnExpectChildAgent;
+
             if (handlerExpectChildAgent != null)
             {
                 handlerExpectChildAgent();
@@ -199,6 +216,7 @@ namespace OpenSim.Framework
         public virtual bool TriggerOnNeighboursUpdate(List<RegionInfo> neighbours)
         {
             handlerNeighboursUpdate = OnNeighboursUpdate;
+
             if (handlerNeighboursUpdate != null)
             {
                 handlerNeighboursUpdate(neighbours);
@@ -211,6 +229,7 @@ namespace OpenSim.Framework
         public bool TriggerTellRegionToCloseChildConnection(UUID agentID)
         {
             handlerCloseAgentConnection = OnCloseAgentConnection;
+
             if (handlerCloseAgentConnection != null)
                 return handlerCloseAgentConnection(agentID);
 
@@ -220,6 +239,7 @@ namespace OpenSim.Framework
         public LandData TriggerGetLandData(uint x, uint y)
         {
             handlerGetLandData = OnGetLandData;
+
             if (handlerGetLandData != null)
                 return handlerGetLandData(x, y);
 

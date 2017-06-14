@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,12 +43,10 @@ namespace OpenSim.Framework.Servers.HttpServer
             byte[] data = ReadFully(request);
             string param = GetParam(path);
             string responseString = m_method(data, path, param);
-
             return Encoding.UTF8.GetBytes(responseString);
         }
 
-        public BinaryStreamHandler(string httpMethod, string path, BinaryMethod binaryMethod)
-            : base(httpMethod, path)
+        public BinaryStreamHandler(string httpMethod, string path, BinaryMethod binaryMethod) : base(httpMethod, path)
         {
             m_method = binaryMethod;
         }

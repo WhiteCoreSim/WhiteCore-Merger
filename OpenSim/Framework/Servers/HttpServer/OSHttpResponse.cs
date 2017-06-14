@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,17 +35,17 @@ using HttpServer;
 namespace OpenSim.Framework.Servers.HttpServer
 {
     /// <summary>
-    /// OSHttpResponse is the OpenSim representation of an HTTP
-    /// response.
+    ///     OSHttpResponse is the OpenSim representation of an HTTP
+    ///     response.
     /// </summary>
     public class OSHttpResponse
     {
         /// <summary>
-        /// Content type property.
+        ///     Content type property.
         /// </summary>
         /// <remarks>
-        /// Setting this property will also set IsContentTypeSet to
-        /// true.
+        ///     Setting this property will also set IsContentTypeSet to
+        ///     true.
         /// </remarks>
         public virtual string ContentType
         {
@@ -59,21 +61,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Boolean property indicating whether the content type
-        /// property actively has been set.
-        /// </summary>
-        /// <remarks>
-        /// IsContentTypeSet will go away together with .NET base.
-        /// </remarks>
-        // public bool IsContentTypeSet
-        // {
-        //     get { return _contentTypeSet; }
-        // }
-        // private bool _contentTypeSet;
-
-
-        /// <summary>
-        /// Length of the body content; 0 if there is no body.
+        ///     Length of the body content; 0 if there is no body.
         /// </summary>
         public long ContentLength
         {
@@ -89,7 +77,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Alias for ContentLength.
+        ///     Alias for ContentLength.
         /// </summary>
         public long ContentLength64
         {
@@ -98,7 +86,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Encoding of the body content.
+        ///     Encoding of the body content.
         /// </summary>
         public Encoding ContentEncoding
         {
@@ -115,7 +103,7 @@ namespace OpenSim.Framework.Servers.HttpServer
 
         public bool KeepAlive
         {
-            get 
+            get
             {
                 return _httpResponse.Connection == ConnectionType.KeepAlive;
             }
@@ -130,9 +118,9 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Get or set the keep alive timeout property (default is
-        /// 20). Setting this to 0 also disables KeepAlive. Setting
-        /// this to something else but 0 also enable KeepAlive.
+        ///     Get or set the keep alive timeout property (default is
+        ///     20). Setting this to 0 also disables KeepAlive. Setting
+        ///     this to something else but 0 also enable KeepAlive.
         /// </summary>
         public int KeepAliveTimeout
         {
@@ -157,10 +145,10 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Return the output stream feeding the body.
+        ///     Return the output stream feeding the body.
         /// </summary>
         /// <remarks>
-        /// On its way out...
+        ///     On its way out...
         /// </remarks>
         public Stream OutputStream
         {
@@ -184,7 +172,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Return the output stream feeding the body.
+        ///     Return the output stream feeding the body.
         /// </summary>
         public Stream Body
         {
@@ -195,11 +183,10 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Set a redirct location.
+        ///     Set a redirct location.
         /// </summary>
         public string RedirectLocation
         {
-            // get { return _redirectLocation; }
             set
             {
                 _httpResponse.Redirect(value);
@@ -208,13 +195,13 @@ namespace OpenSim.Framework.Servers.HttpServer
 
 
         /// <summary>
-        /// Chunk transfers.
+        ///     Chunk transfers.
         /// </summary>
         public bool SendChunked
         {
             get
             {
-                    return _httpResponse.Chunked;
+                return _httpResponse.Chunked;
             }
 
             set
@@ -224,7 +211,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// HTTP status code.
+        ///     HTTP status code.
         /// </summary>
         public virtual int StatusCode
         {
@@ -239,9 +226,8 @@ namespace OpenSim.Framework.Servers.HttpServer
             }
         }
 
-
         /// <summary>
-        /// HTTP status description.
+        ///     HTTP status description.
         /// </summary>
         public string StatusDescription
         {
@@ -264,6 +250,7 @@ namespace OpenSim.Framework.Servers.HttpServer
                 {
                     return !_httpClientContext.EndWhenDone;
                 }
+
                 return true;
             }
             set
@@ -275,11 +262,10 @@ namespace OpenSim.Framework.Servers.HttpServer
             }
         }
 
-
         protected IHttpResponse _httpResponse;
         private IHttpClientContext _httpClientContext;
 
-        public OSHttpResponse() {}
+        public OSHttpResponse() { }
 
         public OSHttpResponse(IHttpResponse resp)
         {
@@ -287,8 +273,8 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Instantiate an OSHttpResponse object from an OSHttpRequest
-        /// object.
+        ///     Instantiate an OSHttpResponse object from an OSHttpRequest
+        ///     object.
         /// </summary
         /// <param name="req">Incoming OSHttpRequest to which we are
         /// replying</param>
@@ -297,6 +283,7 @@ namespace OpenSim.Framework.Servers.HttpServer
             _httpResponse = new HttpResponse(req.IHttpClientContext, req.IHttpRequest);
             _httpClientContext = req.IHttpClientContext;
         }
+
         public OSHttpResponse(HttpResponse resp, IHttpClientContext clientContext)
         {
             _httpResponse = resp;
@@ -304,7 +291,7 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Add a header field and content to the response.
+        ///     Add a header field and content to the response.
         /// </summary>
         /// <param name="key">string containing the header field
         /// name</param>
@@ -316,19 +303,18 @@ namespace OpenSim.Framework.Servers.HttpServer
         }
 
         /// <summary>
-        /// Send the response back to the remote client
+        ///     Send the response back to the remote client
         /// </summary>
         public void Send()
         {
             _httpResponse.Body.Flush();
             _httpResponse.Send();
-            
         }
+
         public void FreeContext()
         {
             if (_httpClientContext != null)
                 _httpClientContext.Close();
         }
-        
     }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,12 +33,11 @@ using System.Text;
 
 namespace OpenSim.Framework
 {
-    public interface IRegistryCore 
+    public interface IRegistryCore
     {
         T Get<T>();
         void RegisterInterface<T>(T iface);
         bool TryGet<T>(out T iface);
-
         void StackModuleInterface<M>(M mod);
         T[] RequestModuleInterfaces<T>();
     }

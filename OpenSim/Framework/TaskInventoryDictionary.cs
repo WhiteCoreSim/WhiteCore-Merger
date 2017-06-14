@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,16 +37,14 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// A dictionary for task inventory.
-    /// </summary>
+    ///     A dictionary for task inventory.
+    ///
     /// This class is not thread safe.  Callers must synchronize on Dictionary methods or Clone() this object before
     /// iterating over it.
-    public class TaskInventoryDictionary : Dictionary<UUID, TaskInventoryItem>,
-                                           ICloneable, IXmlSerializable
+    /// </summary>
+    public class TaskInventoryDictionary : Dictionary<UUID, TaskInventoryItem>, ICloneable, IXmlSerializable
     {
-        // private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private static XmlSerializer tiiSerializer = new XmlSerializer(typeof (TaskInventoryItem));
+        private static XmlSerializer tiiSerializer = new XmlSerializer(typeof(TaskInventoryItem));
 
         #region ICloneable Members
 
@@ -56,7 +56,7 @@ namespace OpenSim.Framework
             {
                 foreach (UUID uuid in Keys)
                 {
-                    clone.Add(uuid, (TaskInventoryItem) this[uuid].Clone());
+                    clone.Add(uuid, (TaskInventoryItem)this[uuid].Clone());
                 }
             }
 
@@ -72,10 +72,6 @@ namespace OpenSim.Framework
         // Parameter name: length
         //   at System.String.Substring (Int32 startIndex, Int32 length) [0x00088] in /build/buildd/mono-1.2.4/mcs/class/corlib/System/String.cs:381
         //   at System.Xml.Serialization.TypeTranslator.GetTypeData (System.Type runtimeType, System.String xmlDataType) [0x001f6] in /build/buildd/mono-1.2.4/mcs/class/System.XML/System.Xml.Serialization/TypeTranslator.cs:217
-        // ...
-//        private static XmlSerializer tiiSerializer
-//            = new XmlSerializer(typeof(Dictionary<UUID, TaskInventoryItem>.ValueCollection));
-
         // see IXmlSerializable
 
         #region IXmlSerializable Members
@@ -88,31 +84,19 @@ namespace OpenSim.Framework
         // see IXmlSerializable
         public void ReadXml(XmlReader reader)
         {
-            // m_log.DebugFormat("[TASK INVENTORY]: ReadXml current node before actions, {0}", reader.Name);
-
             if (!reader.IsEmptyElement)
             {
                 reader.Read();
                 while (tiiSerializer.CanDeserialize(reader))
                 {
-                    TaskInventoryItem item = (TaskInventoryItem) tiiSerializer.Deserialize(reader);
+                    TaskInventoryItem item = (TaskInventoryItem)tiiSerializer.Deserialize(reader);
                     Add(item.ItemID, item);
-
-                    //m_log.DebugFormat("[TASK INVENTORY]: Instanted prim item {0}, {1} from xml", item.Name, item.ItemID);
                 }
-
-               // m_log.DebugFormat("[TASK INVENTORY]: Instantiated {0} prim items in total from xml", Count);
             }
-            // else
-            // {
-            //     m_log.DebugFormat("[TASK INVENTORY]: Skipping empty element {0}", reader.Name);
-            // }
 
             // For some .net implementations, this last read is necessary so that we advance beyond the end tag
             // of the element wrapping this object so that the rest of the serialization can complete normally.
             reader.Read();
-
-            // m_log.DebugFormat("[TASK INVENTORY]: ReadXml current node after actions, {0}", reader.Name);
         }
 
         // see IXmlSerializable
@@ -125,8 +109,6 @@ namespace OpenSim.Framework
                     tiiSerializer.Serialize(writer, item);
                 }
             }
-
-            //tiiSerializer.Serialize(writer, Values);
         }
 
         #endregion

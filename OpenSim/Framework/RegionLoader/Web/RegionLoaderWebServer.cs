@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -50,50 +52,54 @@ namespace OpenSim.Framework.RegionLoader.Web
         {
             if (m_configSource == null)
             {
-                m_log.Error("[WEBLOADER]: Unable to load configuration source!");
+                m_log.Error("[Web Loader]: Unable to load configuration source!");
                 return null;
             }
             else
             {
-                IConfig startupConfig = (IConfig) m_configSource.Configs["Startup"];
+                IConfig startupConfig = (IConfig)m_configSource.Configs["Startup"];
                 string url = startupConfig.GetString("regionload_webserver_url", String.Empty).Trim();
+
                 if (url == String.Empty)
                 {
-                    m_log.Error("[WEBLOADER]: Unable to load webserver URL - URL was empty.");
+                    m_log.Error("[Web Loader]: Unable to load webserver URL - URL was empty.");
                     return null;
                 }
                 else
                 {
-                    HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(url);
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                     webRequest.Timeout = 30000; //30 Second Timeout
-                    m_log.Debug("[WEBLOADER]: Sending Download Request...");
-                    HttpWebResponse webResponse = (HttpWebResponse) webRequest.GetResponse();
-                    m_log.Debug("[WEBLOADER]: Downloading Region Information From Remote Server...");
+                    m_log.Debug("[Web Loader]: Sending Download Request...");
+                    HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                    m_log.Debug("[Web Loader]: Downloading Region Information From Remote Server...");
                     StreamReader reader = new StreamReader(webResponse.GetResponseStream());
                     string xmlSource = String.Empty;
                     string tempStr = reader.ReadLine();
+
                     while (tempStr != null)
                     {
                         xmlSource = xmlSource + tempStr;
                         tempStr = reader.ReadLine();
                     }
-                    m_log.Debug("[WEBLOADER]: Done downloading region information from server. Total Bytes: " +
-                                xmlSource.Length);
+
+                    m_log.Debug("[Web Loader]: Done downloading region information from server. Total Bytes: " + xmlSource.Length);
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.LoadXml(xmlSource);
+
                     if (xmlDoc.FirstChild.Name == "Regions")
                     {
                         RegionInfo[] regionInfos = new RegionInfo[xmlDoc.FirstChild.ChildNodes.Count];
                         int i;
+
                         for (i = 0; i < xmlDoc.FirstChild.ChildNodes.Count; i++)
                         {
                             m_log.Debug(xmlDoc.FirstChild.ChildNodes[i].OuterXml);
-                            regionInfos[i] =
-                                new RegionInfo("REGION CONFIG #" + (i + 1), xmlDoc.FirstChild.ChildNodes[i],false,m_configSource);
+                            regionInfos[i] = new RegionInfo("REGION CONFIG #" + (i + 1), xmlDoc.FirstChild.ChildNodes[i], false, m_configSource);
                         }
 
                         return regionInfos;
                     }
+
                     return null;
                 }
             }

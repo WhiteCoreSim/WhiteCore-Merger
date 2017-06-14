@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,9 +32,9 @@ using System;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Defines and handles inventory grid server configuration
+    ///     Defines and handles inventory grid server configuration
     /// </summary>
-    public class InventoryConfig:ConfigBase
+    public class InventoryConfig : ConfigBase
     {
         public string DatabaseConnect = String.Empty;
         public string DatabaseProvider = String.Empty;
@@ -46,8 +48,7 @@ namespace OpenSim.Framework
 
         public InventoryConfig(string description, string filename)
         {
-            m_configMember =
-                new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
+            m_configMember = new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
             m_configMember.performConfigurationRetrieve();
         }
 
@@ -85,19 +86,19 @@ namespace OpenSim.Framework
                     InventoryServerURL = (string)configuration_result;
                     break;
                 case "default_user_server":
-                    UserServerURL = (string) configuration_result;
+                    UserServerURL = (string)configuration_result;
                     break;
                 case "default_asset_server":
                     AssetServerURL = (string)configuration_result;
                     break;
                 case "database_provider":
-                    DatabaseProvider = (string) configuration_result;
+                    DatabaseProvider = (string)configuration_result;
                     break;
                 case "database_connect":
-                    DatabaseConnect = (string) configuration_result;
+                    DatabaseConnect = (string)configuration_result;
                     break;
                 case "http_port":
-                    HttpPort = (uint) configuration_result;
+                    HttpPort = (uint)configuration_result;
                     break;
                 case "session_lookup":
                     SessionLookUp = (bool)configuration_result;

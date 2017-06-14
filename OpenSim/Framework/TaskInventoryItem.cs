@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,17 +33,17 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Represents an item in a task inventory
+    ///     Represents an item in a task inventory
     /// </summary>
     public class TaskInventoryItem : ICloneable
     {
         /// <summary>
-        /// XXX This should really be factored out into some constants class.
+        ///     This should really be factored out into some constants class.
         /// </summary>
         private const uint FULL_MASK_PERMISSIONS_GENERAL = 2147483647;
 
         /// <summary>
-        /// Inventory types
+        ///     Inventory types
         /// </summary>
         public static string[] InvTypes = new string[]
             {
@@ -69,7 +71,7 @@ namespace OpenSim.Framework
             };
 
         /// <summary>
-        /// Asset types
+        ///     Asset types
         /// </summary>
         public static string[] Types = new string[]
             {
@@ -98,7 +100,6 @@ namespace OpenSim.Framework
             };
 
         private UUID _assetID = UUID.Zero;
-
         private uint _baseMask = FULL_MASK_PERMISSIONS_GENERAL;
         private uint _creationDate = 0;
         private UUID _creatorID = UUID.Zero;
@@ -107,7 +108,6 @@ namespace OpenSim.Framework
         private uint _flags = 0;
         private UUID _groupID = UUID.Zero;
         private uint _groupMask = FULL_MASK_PERMISSIONS_GENERAL;
-
         private int _invType = 0;
         private UUID _itemID = UUID.Zero;
         private UUID _lastOwnerID = UUID.Zero;
@@ -122,202 +122,136 @@ namespace OpenSim.Framework
         private int _type = 0;
         private UUID _oldID;
 
-        public UUID AssetID {
-            get {
-                return _assetID;
-            }
-            set {
-                _assetID = value;
-            }
+        public UUID AssetID
+        {
+            get { return _assetID; }
+            set { _assetID = value; }
         }
 
-        public uint BasePermissions {
-            get {
-                return _baseMask;
-            }
-            set {
-                _baseMask = value;
-            }
+        public uint BasePermissions
+        {
+            get { return _baseMask; }
+            set { _baseMask = value; }
         }
 
-        public uint CreationDate {
-            get {
-                return _creationDate;
-            }
-            set {
-                _creationDate = value;
-            }
+        public uint CreationDate
+        {
+            get { return _creationDate; }
+            set { _creationDate = value; }
         }
 
-        public UUID CreatorID {
-            get {
-                return _creatorID;
-            }
-            set {
-                _creatorID = value;
-            }
+        public UUID CreatorID
+        {
+            get { return _creatorID; }
+            set { _creatorID = value; }
         }
 
-        public string Description {
-            get {
-                return _description;
-            }
-            set {
-                _description = value;
-            }
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
         }
 
-        public uint EveryonePermissions {
-            get {
-                return _everyoneMask;
-            }
-            set {
-                _everyoneMask = value;
-            }
+        public uint EveryonePermissions
+        {
+            get { return _everyoneMask; }
+            set { _everyoneMask = value; }
         }
 
-        public uint Flags {
-            get {
-                return _flags;
-            }
-            set {
-                _flags = value;
-            }
+        public uint Flags
+        {
+            get { return _flags; }
+            set { _flags = value; }
         }
 
-        public UUID GroupID {
-            get {
-                return _groupID;
-            }
-            set {
-                _groupID = value;
-            }
+        public UUID GroupID
+        {
+            get { return _groupID; }
+            set { _groupID = value; }
         }
 
-        public uint GroupPermissions {
-            get {
-                return _groupMask;
-            }
-            set {
-                _groupMask = value;
-            }
+        public uint GroupPermissions
+        {
+            get { return _groupMask; }
+            set { _groupMask = value; }
         }
 
-        public int InvType {
-            get {
-                return _invType;
-            }
-            set {
-                _invType = value;
-            }
+        public int InvType
+        {
+            get { return _invType; }
+            set { _invType = value; }
         }
 
-        public UUID ItemID {
-            get {
-                return _itemID;
-            }
-            set {
-                _itemID = value;
-            }
+        public UUID ItemID
+        {
+            get { return _itemID; }
+            set { _itemID = value; }
         }
 
-        public UUID OldItemID {
-            get {
-                return _oldID;
-            }
-            set {
-                _oldID = value;
-            }
+        public UUID OldItemID
+        {
+            get { return _oldID; }
+            set { _oldID = value; }
         }
 
-        public UUID LastOwnerID {
-            get {
-                return _lastOwnerID;
-            }
-            set {
-                _lastOwnerID = value;
-            }
+        public UUID LastOwnerID
+        {
+            get { return _lastOwnerID; }
+            set { _lastOwnerID = value; }
         }
 
-        public string Name {
-            get {
-                return _name;
-            }
-            set {
-                _name = value;
-            }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
-        public uint NextPermissions {
-            get {
-                return _nextOwnerMask;
-            }
-            set {
-                _nextOwnerMask = value;
-            }
+        public uint NextPermissions
+        {
+            get { return _nextOwnerMask; }
+            set { _nextOwnerMask = value; }
         }
 
-        public UUID OwnerID {
-            get {
-                return _ownerID;
-            }
-            set {
-                _ownerID = value;
-            }
+        public UUID OwnerID
+        {
+            get { return _ownerID; }
+            set { _ownerID = value; }
         }
 
-        public uint CurrentPermissions {
-            get {
-                return _ownerMask;
-            }
-            set {
-                _ownerMask = value;
-            }
+        public uint CurrentPermissions
+        {
+            get { return _ownerMask; }
+            set { _ownerMask = value; }
         }
 
-        public UUID ParentID {
-            get {
-                return _parentID;
-            }
-            set {
-                _parentID = value;
-            }
+        public UUID ParentID
+        {
+            get { return _parentID; }
+            set { _parentID = value; }
         }
 
-        public UUID ParentPartID {
-            get {
-                return _parentPartID;
-            }
-            set {
-                _parentPartID = value;
-            }
+        public UUID ParentPartID
+        {
+            get { return _parentPartID; }
+            set { _parentPartID = value; }
         }
 
-        public UUID PermsGranter {
-            get {
-                return _permsGranter;
-            }
-            set {
-                _permsGranter = value;
-            }
+        public UUID PermsGranter
+        {
+            get { return _permsGranter; }
+            set { _permsGranter = value; }
         }
 
-        public int PermsMask {
-            get {
-                return _permsMask;
-            }
-            set {
-                _permsMask = value;
-            }
+        public int PermsMask
+        {
+            get { return _permsMask; }
+            set { _permsMask = value; }
         }
 
-        public int Type {
-            get {
-                return _type;
-            }
-            set {
-                _type = value;
-            }
+        public int Type
+        {
+            get { return _type; }
+            set { _type = value; }
         }
 
         // See ICloneable
@@ -332,12 +266,12 @@ namespace OpenSim.Framework
         #endregion
 
         /// <summary>
-        /// Reset the UUIDs for this item.
+        ///     Reset the UUIDs for this item.
         /// </summary>
         /// <param name="partID">The new part ID to which this item belongs</param>
         public void ResetIDs(UUID partID)
         {
-            _oldID  = _itemID;
+            _oldID = _itemID;
             _itemID = UUID.Random();
             _parentPartID = partID;
             _parentID = partID;

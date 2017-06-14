@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,27 +43,26 @@ namespace OpenSim.Framework
     [Serializable]
     public class SimpleRegionInfo
     {
-        // private static readonly log4net.ILog m_log
-        //     = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
-        /// The port by which http communication occurs with the region (most noticeably, CAPS communication)
+        ///     The port by which http communication occurs with the region (most noticeably, CAPS communication)
         /// </summary>
         public uint HttpPort
         {
             get { return m_httpPort; }
             set { m_httpPort = value; }
         }
+
         protected uint m_httpPort;
 
         /// <summary>
-        /// A well-formed URI for the host region server (namely "http://" + ExternalHostName)
+        ///     A well-formed URI for the host region server (namely "http://" + ExternalHostName)
         /// </summary>
         public string ServerURI
         {
             get { return m_serverURI; }
             set { m_serverURI = value; }
         }
+
         protected string m_serverURI;
 
         public string RegionName
@@ -69,6 +70,7 @@ namespace OpenSim.Framework
             get { return m_regionName; }
             set { m_regionName = value; }
         }
+
         protected string m_regionName = String.Empty;
 
         protected bool Allow_Alternate_Ports;
@@ -91,7 +93,6 @@ namespace OpenSim.Framework
         {
             m_regionLocX = regionLocX;
             m_regionLocY = regionLocY;
-
             m_internalEndPoint = internalEndPoint;
             m_externalHostName = externalUri;
         }
@@ -100,10 +101,8 @@ namespace OpenSim.Framework
         {
             m_regionLocX = regionLocX;
             m_regionLocY = regionLocY;
-
             m_externalHostName = externalUri;
-
-            m_internalEndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), (int) port);
+            m_internalEndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), (int)port);
         }
 
         public SimpleRegionInfo(RegionInfo ConvertFrom)
@@ -127,19 +126,17 @@ namespace OpenSim.Framework
             set { m_remotingPort = value; }
         }
 
-        /// <value>
-        /// This accessor can throw all the exceptions that Dns.GetHostAddresses can throw.
-        ///
-        /// XXX Isn't this really doing too much to be a simple getter, rather than an explict method?
-        /// </value>
+        /// <summary>
+        ///     This accessor can throw all the exceptions that Dns.GetHostAddresses can throw.
+        ///     Isn't this really doing too much to be a simple getter, rather than an explict method?
+        /// </summary>
         public IPEndPoint ExternalEndPoint
         {
             get
             {
                 // Old one defaults to IPv6
-                //return new IPEndPoint(Dns.GetHostAddresses(m_externalHostName)[0], m_internalEndPoint.Port);
-
                 IPAddress ia = null;
+
                 // If it is already an IP, don't resolve it - just return directly
                 if (IPAddress.TryParse(m_externalHostName, out ia))
                     return new IPEndPoint(ia, m_internalEndPoint.Port);
@@ -162,9 +159,7 @@ namespace OpenSim.Framework
                 }
                 catch (SocketException e)
                 {
-                    throw new Exception(
-                        "Unable to resolve local hostname " + m_externalHostName + " innerException of type '" +
-                        e + "' attached to this exception", e);
+                    throw new Exception("Unable to resolve local hostname " + m_externalHostName + " innerException of type '" + e + "' attached to this exception", e);
                 }
 
                 return new IPEndPoint(ia, m_internalEndPoint.Port);
@@ -199,7 +194,7 @@ namespace OpenSim.Framework
 
         public ulong RegionHandle
         {
-            get { return Util.UIntsToLong((RegionLocX * (uint) Constants.RegionSize), (RegionLocY * (uint) Constants.RegionSize)); }
+            get { return Util.UIntsToLong((RegionLocX * (uint)Constants.RegionSize), (RegionLocY * (uint)Constants.RegionSize)); }
         }
 
         public int getInternalEndPointPort()
@@ -271,9 +266,6 @@ namespace OpenSim.Framework
 
     public class RegionInfo : SimpleRegionInfo
     {
-        // private static readonly log4net.ILog m_log
-        //     = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public bool commFailTF = false;
         public ConfigurationMember configMember;
         public string DataStore = String.Empty;
@@ -283,7 +275,6 @@ namespace OpenSim.Framework
 
         private EstateSettings m_estateSettings;
         private RegionSettings m_regionSettings;
-        // private IConfigSource m_configSource = null;
 
         public UUID MasterAvatarAssignedUUID = UUID.Zero;
         public string MasterAvatarFirstName = String.Empty;
@@ -293,7 +284,7 @@ namespace OpenSim.Framework
         public string proxyUrl = "";
         public int ProxyOffset = 0;
         public string regionSecret = UUID.Random().ToString();
-        
+
         public string osSecret;
 
         public UUID lastMapUUID = UUID.Zero;
@@ -305,7 +296,6 @@ namespace OpenSim.Framework
         private int m_objectCapacity = 0;
         private string m_regionType = String.Empty;
 
-
         // Apparently, we're applying the same estatesettings regardless of whether it's local or remote.
 
         // MT: Yes. Estates can't span trust boundaries. Therefore, it can be
@@ -314,15 +304,12 @@ namespace OpenSim.Framework
         // from there, that should be sufficient for full remote administration
 
         // File based loading
-        //
         public RegionInfo(string description, string filename, bool skipConsoleConfig, IConfigSource configSource) : this(description, filename, skipConsoleConfig, configSource, String.Empty)
         {
         }
 
         public RegionInfo(string description, string filename, bool skipConsoleConfig, IConfigSource configSource, string configName)
         {
-            // m_configSource = configSource;
-
             if (filename.ToLower().EndsWith(".ini"))
             {
                 if (!File.Exists(filename)) // New region config request
@@ -340,6 +327,7 @@ namespace OpenSim.Framework
                 IniConfigSource source = new IniConfigSource(filename);
 
                 bool saveFile = false;
+
                 if (source.Configs[configName] == null)
                     saveFile = true;
 
@@ -357,7 +345,6 @@ namespace OpenSim.Framework
             {
                 // This will throw if it's not legal Nini XML format
                 // and thereby toss it to the legacy loader
-                //
                 IConfigSource xmlsource = new XmlConfigSource(filename);
 
                 ReadNiniConfig(xmlsource, configName);
@@ -370,24 +357,19 @@ namespace OpenSim.Framework
             {
             }
 
-            configMember =
-                new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, !skipConsoleConfig);
+            configMember = new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, !skipConsoleConfig);
             configMember.performConfigurationRetrieve();
             RegionFile = filename;
         }
 
         // The web loader uses this
-        //
         public RegionInfo(string description, XmlNode xmlNode, bool skipConsoleConfig, IConfigSource configSource)
         {
-            // m_configSource = configSource;
-            configMember =
-                new ConfigurationMember(xmlNode, description, loadConfigurationOptions, handleIncomingConfiguration, !skipConsoleConfig);
+            configMember = new ConfigurationMember(xmlNode, description, loadConfigurationOptions, handleIncomingConfiguration, !skipConsoleConfig);
             configMember.performConfigurationRetrieve();
         }
 
-        public RegionInfo(uint regionLocX, uint regionLocY, IPEndPoint internalEndPoint, string externalUri) :
-            base(regionLocX, regionLocY, internalEndPoint, externalUri)
+        public RegionInfo(uint regionLocX, uint regionLocY, IPEndPoint internalEndPoint, string externalUri) : base(regionLocX, regionLocY, internalEndPoint, externalUri)
         {
         }
 
@@ -505,6 +487,7 @@ namespace OpenSim.Framework
 
                 if (name == String.Empty)
                     name = MainConsole.Instance.CmdPrompt("New region name", name);
+
                 if (name == String.Empty)
                     throw new Exception("Cannot interactively create region with no name");
 
@@ -526,7 +509,6 @@ namespace OpenSim.Framework
             IConfig config = source.Configs[name];
 
             // UUID
-            //
             string regionUUID = config.GetString("RegionUUID", string.Empty);
 
             if (regionUUID == String.Empty)
@@ -540,14 +522,10 @@ namespace OpenSim.Framework
             RegionID = new UUID(regionUUID);
             originRegionID = RegionID; // What IS this?!
 
-            
             // Region name
-            //
             RegionName = name;
 
-            
             // Region location
-            //
             string location = config.GetString("Location", String.Empty);
 
             if (location == String.Empty)
@@ -556,21 +534,17 @@ namespace OpenSim.Framework
                 config.Set("Location", location);
             }
 
-            string[] locationElements = location.Split(new char[] {','});
+            string[] locationElements = location.Split(new char[] { ',' });
 
             m_regionLocX = Convert.ToUInt32(locationElements[0]);
             m_regionLocY = Convert.ToUInt32(locationElements[1]);
 
-
             // Datastore (is this implemented? Omitted from example!)
-            //
             DataStore = config.GetString("Datastore", String.Empty);
 
-
             // Internal IP
-            //
             IPAddress address;
-            
+
             if (config.Contains("InternalAddress"))
             {
                 address = IPAddress.Parse(config.GetString("InternalAddress", String.Empty));
@@ -607,7 +581,6 @@ namespace OpenSim.Framework
             }
 
             // External IP
-            //
             string externalName;
 
             if (config.Contains("ExternalHostName"))
@@ -625,10 +598,9 @@ namespace OpenSim.Framework
             else
                 m_externalHostName = externalName;
 
-
             // Master avatar cruft
-            //
             string masterAvatarUUID;
+
             if (!creatingNew)
             {
                 masterAvatarUUID = config.GetString("MasterAvatarUUID", UUID.Zero.ToString());
@@ -639,6 +611,7 @@ namespace OpenSim.Framework
             else
             {
                 masterAvatarUUID = MainConsole.Instance.CmdPrompt("Master Avatar UUID", UUID.Zero.ToString());
+
                 if (masterAvatarUUID != UUID.Zero.ToString())
                 {
                     config.Set("MasterAvatarUUID", masterAvatarUUID);
@@ -646,11 +619,11 @@ namespace OpenSim.Framework
                 else
                 {
                     MasterAvatarFirstName = MainConsole.Instance.CmdPrompt("Master Avatar first name (enter for no master avatar)", String.Empty);
+
                     if (MasterAvatarFirstName != String.Empty)
                     {
                         MasterAvatarLastName = MainConsole.Instance.CmdPrompt("Master Avatar last name", String.Empty);
                         MasterAvatarSandboxPassword = MainConsole.Instance.CmdPrompt("Master Avatar sandbox password", String.Empty);
-                        
                         config.Set("MasterAvatarFirstName", MasterAvatarFirstName);
                         config.Set("MasterAvatarLastName", MasterAvatarLastName);
                         config.Set("MasterAvatarSandboxPassword", MasterAvatarSandboxPassword);
@@ -663,18 +636,12 @@ namespace OpenSim.Framework
             m_regionType = config.GetString("RegionType", String.Empty);
 
             // Prim stuff
-            //
             m_nonphysPrimMax = config.GetInt("NonphysicalPrimMax", 256);
-
             m_physPrimMax = config.GetInt("PhysicalPrimMax", 10);
-
             m_clampPrimSize = config.GetBoolean("ClampPrimSize", false);
-
             m_objectCapacity = config.GetInt("MaxPrims", 15000);
 
-
             // Multi-tenancy
-            //
             ScopeID = new UUID(config.GetString("ScopeID", UUID.Zero.ToString()));
         }
 
@@ -711,6 +678,7 @@ namespace OpenSim.Framework
                 config.Set("MasterAvatarFirstName", MasterAvatarFirstName);
                 config.Set("MasterAvatarLastName", MasterAvatarLastName);
             }
+
             if (MasterAvatarSandboxPassword != String.Empty)
             {
                 config.Set("MasterAvatarSandboxPassword", MasterAvatarSandboxPassword);
@@ -718,8 +686,10 @@ namespace OpenSim.Framework
 
             if (m_nonphysPrimMax != 0)
                 config.Set("NonphysicalPrimMax", m_nonphysPrimMax);
+
             if (m_physPrimMax != 0)
                 config.Set("PhysicalPrimMax", m_physPrimMax);
+
             config.Set("ClampPrimSize", m_clampPrimSize.ToString());
 
             if (m_objectCapacity != 0)
@@ -756,138 +726,58 @@ namespace OpenSim.Framework
 
                 return;
             }
-            configMember = new ConfigurationMember(filename, description, loadConfigurationOptionsFromMe,
-                                                   ignoreIncomingConfiguration, false);
+
+            configMember = new ConfigurationMember(filename, description, loadConfigurationOptionsFromMe, ignoreIncomingConfiguration, false);
             configMember.performConfigurationRetrieve();
             RegionFile = filename;
         }
 
         public void loadConfigurationOptionsFromMe()
         {
-            configMember.addConfigurationOption("sim_UUID", ConfigurationOption.ConfigurationTypes.TYPE_UUID_NULL_FREE,
-                                                "UUID of Region (Default is recommended, random UUID)",
-                                                RegionID.ToString(), true);
-            configMember.addConfigurationOption("sim_name", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Region Name", RegionName, true);
-            configMember.addConfigurationOption("sim_location_x", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Grid Location (X Axis)", m_regionLocX.ToString(), true);
-            configMember.addConfigurationOption("sim_location_y", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Grid Location (Y Axis)", m_regionLocY.ToString(), true);
-            //m_configMember.addConfigurationOption("datastore", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Filename for local storage", "OpenSim.db", false);
-            configMember.addConfigurationOption("internal_ip_address",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_IP_ADDRESS,
-                                                "Internal IP Address for incoming UDP client connections",
-                                                m_internalEndPoint.Address.ToString(),
-                                                true);
-            configMember.addConfigurationOption("internal_ip_port", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Internal IP Port for incoming UDP client connections",
-                                                m_internalEndPoint.Port.ToString(), true);
-            configMember.addConfigurationOption("allow_alternate_ports",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                                                "Allow sim to find alternate UDP ports when ports are in use?",
-                                                m_allow_alternate_ports.ToString(), true);
-            configMember.addConfigurationOption("external_host_name",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "External Host Name", m_externalHostName, true);
-            configMember.addConfigurationOption("master_avatar_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                                "Master Avatar UUID", MasterAvatarAssignedUUID.ToString(), true);
-            configMember.addConfigurationOption("master_avatar_first",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "First Name of Master Avatar", MasterAvatarFirstName, true);
-            configMember.addConfigurationOption("master_avatar_last",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Last Name of Master Avatar", MasterAvatarLastName, true);
-            configMember.addConfigurationOption("master_avatar_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "(Sandbox Mode Only)Password for Master Avatar account",
-                                                MasterAvatarSandboxPassword, true);
-            configMember.addConfigurationOption("lastmap_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                                "Last Map UUID", lastMapUUID.ToString(), true);
-            configMember.addConfigurationOption("lastmap_refresh", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Last Map Refresh", Util.UnixTimeSinceEpoch().ToString(), true);
-
-            configMember.addConfigurationOption("nonphysical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Maximum size for nonphysical prims", m_nonphysPrimMax.ToString(), true);
-            
-            configMember.addConfigurationOption("physical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Maximum size for physical prims", m_physPrimMax.ToString(), true);
-            
-            configMember.addConfigurationOption("clamp_prim_size", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                                                "Clamp prims to max size", m_clampPrimSize.ToString(), true);
-            
-            configMember.addConfigurationOption("object_capacity", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Max objects this sim will hold", m_objectCapacity.ToString(), true);
-            
-            configMember.addConfigurationOption("scope_id", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                                "Scope ID for this region", ScopeID.ToString(), true);
-
-            configMember.addConfigurationOption("region_type", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Free form string describing the type of region", String.Empty, true);
+            configMember.addConfigurationOption("sim_UUID", ConfigurationOption.ConfigurationTypes.TYPE_UUID_NULL_FREE, "UUID of Region (Default is recommended, random UUID)", RegionID.ToString(), true);
+            configMember.addConfigurationOption("sim_name", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Region Name", RegionName, true);
+            configMember.addConfigurationOption("sim_location_x", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Grid Location (X Axis)", m_regionLocX.ToString(), true);
+            configMember.addConfigurationOption("sim_location_y", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Grid Location (Y Axis)", m_regionLocY.ToString(), true);
+            configMember.addConfigurationOption("internal_ip_address", ConfigurationOption.ConfigurationTypes.TYPE_IP_ADDRESS, "Internal IP Address for incoming UDP client connections", m_internalEndPoint.Address.ToString(), true);
+            configMember.addConfigurationOption("internal_ip_port", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Internal IP Port for incoming UDP client connections", m_internalEndPoint.Port.ToString(), true);
+            configMember.addConfigurationOption("allow_alternate_ports", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Allow sim to find alternate UDP ports when ports are in use?", m_allow_alternate_ports.ToString(), true);
+            configMember.addConfigurationOption("external_host_name", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "External Host Name", m_externalHostName, true);
+            configMember.addConfigurationOption("master_avatar_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "Master Avatar UUID", MasterAvatarAssignedUUID.ToString(), true);
+            configMember.addConfigurationOption("master_avatar_first", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "First Name of Master Avatar", MasterAvatarFirstName, true);
+            configMember.addConfigurationOption("master_avatar_last", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Last Name of Master Avatar", MasterAvatarLastName, true);
+            configMember.addConfigurationOption("master_avatar_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "(Sandbox Mode Only)Password for Master Avatar account", MasterAvatarSandboxPassword, true);
+            configMember.addConfigurationOption("lastmap_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "Last Map UUID", lastMapUUID.ToString(), true);
+            configMember.addConfigurationOption("lastmap_refresh", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Last Map Refresh", Util.UnixTimeSinceEpoch().ToString(), true);
+            configMember.addConfigurationOption("nonphysical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Maximum size for nonphysical prims", m_nonphysPrimMax.ToString(), true);
+            configMember.addConfigurationOption("physical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Maximum size for physical prims", m_physPrimMax.ToString(), true);
+            configMember.addConfigurationOption("clamp_prim_size", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Clamp prims to max size", m_clampPrimSize.ToString(), true);
+            configMember.addConfigurationOption("object_capacity", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Max objects this sim will hold", m_objectCapacity.ToString(), true);
+            configMember.addConfigurationOption("scope_id", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "Scope ID for this region", ScopeID.ToString(), true);
+            configMember.addConfigurationOption("region_type", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Free form string describing the type of region", String.Empty, true);
         }
 
         public void loadConfigurationOptions()
         {
-            configMember.addConfigurationOption("sim_UUID", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                                "UUID of Region (Default is recommended, random UUID)",
-                                                UUID.Random().ToString(), true);
-            configMember.addConfigurationOption("sim_name", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Region Name", "OpenSim Test", false);
-            configMember.addConfigurationOption("sim_location_x", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Grid Location (X Axis)", "1000", false);
-            configMember.addConfigurationOption("sim_location_y", ConfigurationOption.ConfigurationTypes.TYPE_UINT32,
-                                                "Grid Location (Y Axis)", "1000", false);
-            //m_configMember.addConfigurationOption("datastore", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Filename for local storage", "OpenSim.db", false);
-            configMember.addConfigurationOption("internal_ip_address",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_IP_ADDRESS,
-                                                "Internal IP Address for incoming UDP client connections", "0.0.0.0",
-                                                false);
-            configMember.addConfigurationOption("internal_ip_port", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Internal IP Port for incoming UDP client connections",
-                                                ConfigSettings.DefaultRegionHttpPort.ToString(), false);
-            configMember.addConfigurationOption("allow_alternate_ports", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                                                "Allow sim to find alternate UDP ports when ports are in use?",
-                                                "false", true);
-            configMember.addConfigurationOption("external_host_name",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "External Host Name", "127.0.0.1", false);
-            configMember.addConfigurationOption("master_avatar_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                                "Master Avatar UUID", UUID.Zero.ToString(), true);
-            configMember.addConfigurationOption("master_avatar_first",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "First Name of Master Avatar", "Test", false,
-                                                (ConfigurationOption.ConfigurationOptionShouldBeAsked)
-                                                shouldMasterAvatarDetailsBeAsked);
-            configMember.addConfigurationOption("master_avatar_last",
-                                                ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Last Name of Master Avatar", "User", false,
-                                                (ConfigurationOption.ConfigurationOptionShouldBeAsked)
-                                                shouldMasterAvatarDetailsBeAsked);
-            configMember.addConfigurationOption("master_avatar_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "(Sandbox Mode Only)Password for Master Avatar account", "test", false,
-                                                (ConfigurationOption.ConfigurationOptionShouldBeAsked)
-                                                shouldMasterAvatarDetailsBeAsked);
-            configMember.addConfigurationOption("lastmap_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                    "Last Map UUID", lastMapUUID.ToString(), true);
-
-            configMember.addConfigurationOption("lastmap_refresh", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY,
-                                                "Last Map Refresh", Util.UnixTimeSinceEpoch().ToString(), true);
-            
-            configMember.addConfigurationOption("nonphysical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Maximum size for nonphysical prims", "0", true);
-            
-            configMember.addConfigurationOption("physical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Maximum size for physical prims", "0", true);
-            
-            configMember.addConfigurationOption("clamp_prim_size", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                                                "Clamp prims to max size", "false", true);
-            
-            configMember.addConfigurationOption("object_capacity", ConfigurationOption.ConfigurationTypes.TYPE_INT32,
-                                                "Max objects this sim will hold", "0", true);
-
-            configMember.addConfigurationOption("scope_id", ConfigurationOption.ConfigurationTypes.TYPE_UUID,
-                                                "Scope ID for this region", UUID.Zero.ToString(), true);
-
-            configMember.addConfigurationOption("region_type", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
-                                                "Region Type", String.Empty, true);
+            configMember.addConfigurationOption("sim_UUID", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "UUID of Region (Default is recommended, random UUID)", UUID.Random().ToString(), true);
+            configMember.addConfigurationOption("sim_name", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Region Name", "OpenSim Test", false);
+            configMember.addConfigurationOption("sim_location_x", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Grid Location (X Axis)", "1000", false);
+            configMember.addConfigurationOption("sim_location_y", ConfigurationOption.ConfigurationTypes.TYPE_UINT32, "Grid Location (Y Axis)", "1000", false);
+            configMember.addConfigurationOption("internal_ip_address", ConfigurationOption.ConfigurationTypes.TYPE_IP_ADDRESS, "Internal IP Address for incoming UDP client connections", "0.0.0.0", false);
+            configMember.addConfigurationOption("internal_ip_port", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Internal IP Port for incoming UDP client connections", ConfigSettings.DefaultRegionHttpPort.ToString(), false);
+            configMember.addConfigurationOption("allow_alternate_ports", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Allow sim to find alternate UDP ports when ports are in use?", "false", true);
+            configMember.addConfigurationOption("external_host_name", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "External Host Name", "127.0.0.1", false);
+            configMember.addConfigurationOption("master_avatar_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "Master Avatar UUID", UUID.Zero.ToString(), true);
+            configMember.addConfigurationOption("master_avatar_first", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "First Name of Master Avatar", "Test", false, (ConfigurationOption.ConfigurationOptionShouldBeAsked)shouldMasterAvatarDetailsBeAsked);
+            configMember.addConfigurationOption("master_avatar_last", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Last Name of Master Avatar", "User", false, (ConfigurationOption.ConfigurationOptionShouldBeAsked)shouldMasterAvatarDetailsBeAsked);
+            configMember.addConfigurationOption("master_avatar_pass", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "(Sandbox Mode Only)Password for Master Avatar account", "test", false, (ConfigurationOption.ConfigurationOptionShouldBeAsked)shouldMasterAvatarDetailsBeAsked);
+            configMember.addConfigurationOption("lastmap_uuid", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "Last Map UUID", lastMapUUID.ToString(), true);
+            configMember.addConfigurationOption("lastmap_refresh", ConfigurationOption.ConfigurationTypes.TYPE_STRING_NOT_EMPTY, "Last Map Refresh", Util.UnixTimeSinceEpoch().ToString(), true);
+            configMember.addConfigurationOption("nonphysical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Maximum size for nonphysical prims", "0", true);
+            configMember.addConfigurationOption("physical_prim_max", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Maximum size for physical prims", "0", true);
+            configMember.addConfigurationOption("clamp_prim_size", ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN, "Clamp prims to max size", "false", true);
+            configMember.addConfigurationOption("object_capacity", ConfigurationOption.ConfigurationTypes.TYPE_INT32, "Max objects this sim will hold", "0", true);
+            configMember.addConfigurationOption("scope_id", ConfigurationOption.ConfigurationTypes.TYPE_UUID, "Scope ID for this region", UUID.Zero.ToString(), true);
+            configMember.addConfigurationOption("region_type", ConfigurationOption.ConfigurationTypes.TYPE_STRING, "Region Type", String.Empty, true);
         }
 
         public bool shouldMasterAvatarDetailsBeAsked(string configuration_key)
@@ -900,35 +790,35 @@ namespace OpenSim.Framework
             switch (configuration_key)
             {
                 case "sim_UUID":
-                    RegionID = (UUID) configuration_result;
-                    originRegionID = (UUID) configuration_result;
+                    RegionID = (UUID)configuration_result;
+                    originRegionID = (UUID)configuration_result;
                     break;
                 case "sim_name":
-                    RegionName = (string) configuration_result;
+                    RegionName = (string)configuration_result;
                     break;
                 case "sim_location_x":
-                    m_regionLocX = (uint) configuration_result;
+                    m_regionLocX = (uint)configuration_result;
                     break;
                 case "sim_location_y":
-                    m_regionLocY = (uint) configuration_result;
+                    m_regionLocY = (uint)configuration_result;
                     break;
                 case "datastore":
-                    DataStore = (string) configuration_result;
+                    DataStore = (string)configuration_result;
                     break;
                 case "internal_ip_address":
-                    IPAddress address = (IPAddress) configuration_result;
+                    IPAddress address = (IPAddress)configuration_result;
                     m_internalEndPoint = new IPEndPoint(address, 0);
                     break;
                 case "internal_ip_port":
-                    m_internalEndPoint.Port = (int) configuration_result;
+                    m_internalEndPoint.Port = (int)configuration_result;
                     break;
                 case "allow_alternate_ports":
-                    m_allow_alternate_ports = (bool) configuration_result;
+                    m_allow_alternate_ports = (bool)configuration_result;
                     break;
                 case "external_host_name":
-                    if ((string) configuration_result != "SYSTEMIP")
+                    if ((string)configuration_result != "SYSTEMIP")
                     {
-                        m_externalHostName = (string) configuration_result;
+                        m_externalHostName = (string)configuration_result;
                     }
                     else
                     {
@@ -936,13 +826,13 @@ namespace OpenSim.Framework
                     }
                     break;
                 case "master_avatar_uuid":
-                    MasterAvatarAssignedUUID = (UUID) configuration_result;
+                    MasterAvatarAssignedUUID = (UUID)configuration_result;
                     break;
                 case "master_avatar_first":
-                    MasterAvatarFirstName = (string) configuration_result;
+                    MasterAvatarFirstName = (string)configuration_result;
                     break;
                 case "master_avatar_last":
-                    MasterAvatarLastName = (string) configuration_result;
+                    MasterAvatarLastName = (string)configuration_result;
                     break;
                 case "master_avatar_pass":
                     MasterAvatarSandboxPassword = (string)configuration_result;
@@ -992,8 +882,10 @@ namespace OpenSim.Framework
         {
             OSDMap args = new OSDMap();
             args["region_id"] = OSD.FromUUID(RegionID);
+
             if ((RegionName != null) && !RegionName.Equals(""))
                 args["region_name"] = OSD.FromString(RegionName);
+
             args["external_host_name"] = OSD.FromString(ExternalHostName);
             args["http_port"] = OSD.FromString(HttpPort.ToString());
             args["server_uri"] = OSD.FromString(ServerURI);
@@ -1001,12 +893,16 @@ namespace OpenSim.Framework
             args["region_yloc"] = OSD.FromString(RegionLocY.ToString());
             args["internal_ep_address"] = OSD.FromString(InternalEndPoint.Address.ToString());
             args["internal_ep_port"] = OSD.FromString(InternalEndPoint.Port.ToString());
+
             if ((RemotingAddress != null) && !RemotingAddress.Equals(""))
                 args["remoting_address"] = OSD.FromString(RemotingAddress);
+
             args["remoting_port"] = OSD.FromString(RemotingPort.ToString());
             args["allow_alt_ports"] = OSD.FromBoolean(m_allow_alternate_ports);
+
             if ((proxyUrl != null) && !proxyUrl.Equals(""))
                 args["proxy_url"] = OSD.FromString(proxyUrl);
+
             if (RegionType != String.Empty)
                 args["region_type"] = OSD.FromString(RegionType);
 
@@ -1017,45 +913,61 @@ namespace OpenSim.Framework
         {
             if (args["region_id"] != null)
                 RegionID = args["region_id"].AsUUID();
+
             if (args["region_name"] != null)
                 RegionName = args["region_name"].AsString();
+
             if (args["external_host_name"] != null)
                 ExternalHostName = args["external_host_name"].AsString();
+
             if (args["http_port"] != null)
                 UInt32.TryParse(args["http_port"].AsString(), out m_httpPort);
+
             if (args["server_uri"] != null)
                 ServerURI = args["server_uri"].AsString();
+
             if (args["region_xloc"] != null)
             {
                 uint locx;
                 UInt32.TryParse(args["region_xloc"].AsString(), out locx);
                 RegionLocX = locx;
             }
+
             if (args["region_yloc"] != null)
             {
                 uint locy;
                 UInt32.TryParse(args["region_yloc"].AsString(), out locy);
                 RegionLocY = locy;
             }
+
             IPAddress ip_addr = null;
+
             if (args["internal_ep_address"] != null)
             {
                 IPAddress.TryParse(args["internal_ep_address"].AsString(), out ip_addr);
             }
+
             int port = 0;
+
             if (args["internal_ep_port"] != null)
             {
                 Int32.TryParse(args["internal_ep_port"].AsString(), out port);
             }
+
             InternalEndPoint = new IPEndPoint(ip_addr, port);
+
             if (args["remoting_address"] != null)
                 RemotingAddress = args["remoting_address"].AsString();
+
             if (args["remoting_port"] != null)
                 UInt32.TryParse(args["remoting_port"].AsString(), out m_remotingPort);
+
             if (args["allow_alt_ports"] != null)
                 m_allow_alternate_ports = args["allow_alt_ports"].AsBoolean();
+
             if (args["proxy_url"] != null)
                 proxyUrl = args["proxy_url"].AsString();
+
             if (args["region_type"] != null)
                 m_regionType = args["region_type"].AsString();
         }
@@ -1073,6 +985,5 @@ namespace OpenSim.Framework
             regionInfo.ServerURI = serverURI;
             return regionInfo;
         }
-
     }
 }

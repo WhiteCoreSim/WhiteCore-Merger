@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,18 +30,18 @@
 namespace OpenSim.Framework.Statistics
 {
     /// <summary>
-    /// Implemented by classes which collect up non-viewer statistical information
+    ///     Implemented by classes which collect up non-viewer statistical information
     /// </summary>
     public interface IStatsCollector
     {
         /// <summary>
-        /// Report back collected statistical information.
+        ///     Report back collected statistical information.
         /// </summary>
         /// <returns></returns>
         string Report();
-         
+
         /// <summary>
-        /// Report back collected statistical information in json
+        ///     Report back collected statistical information in json
         /// </summary>
         /// <returns>
         /// A <see cref="System.String"/>

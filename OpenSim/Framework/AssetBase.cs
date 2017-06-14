@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,7 +36,8 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Asset class.   All Assets are reference by this class or a class derived from this class
+    ///     Asset class.
+    ///     All Assets are reference by this class or a class derived from this class
     /// </summary>
     [Serializable]
     public class AssetBase
@@ -42,12 +45,12 @@ namespace OpenSim.Framework
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Data of the Asset
+        ///     Data of the Asset
         /// </summary>
         private byte[] m_data;
 
         /// <summary>
-        /// Meta Data of the Asset
+        ///     Meta Data of the Asset
         /// </summary>
         private AssetMetadata m_metadata;
 
@@ -66,8 +69,7 @@ namespace OpenSim.Framework
             if (assetType == (sbyte)AssetType.Unknown)
             {
                 System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(true);
-                m_log.ErrorFormat("[ASSETBASE]: Creating asset '{0}' ({1}) with an unknown asset type\n{2}",
-                    name, assetID, trace.ToString());
+                m_log.ErrorFormat("[Asset Base]: Creating asset '{0}' ({1}) with an unknown asset type\n{2}", name, assetID, trace.ToString());
             }
 
             m_metadata = new AssetMetadata();
@@ -81,8 +83,7 @@ namespace OpenSim.Framework
             if (assetType == (sbyte)AssetType.Unknown)
             {
                 System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(true);
-                m_log.ErrorFormat("[ASSETBASE]: Creating asset '{0}' ({1}) with an unknown asset type\n{2}",
-                    name, assetID, trace.ToString());
+                m_log.ErrorFormat("[Asset Base]: Creating asset '{0}' ({1}) with an unknown asset type\n{2}", name, assetID, trace.ToString());
             }
 
             m_metadata = new AssetMetadata();
@@ -95,7 +96,7 @@ namespace OpenSim.Framework
         {
             get
             {
-                return 
+                return
                     IsTextualAsset && (
                     Type != (sbyte)AssetType.Notecard
                     && Type != (sbyte)AssetType.CallingCard
@@ -110,18 +111,17 @@ namespace OpenSim.Framework
             {
                 return !IsBinaryAsset;
             }
-
         }
 
         /// <summary>
-        /// Checks if this asset is a binary or text asset
+        ///     Checks if this asset is a binary or text asset
         /// </summary>
         public bool IsBinaryAsset
         {
             get
             {
-                return 
-                    (Type == (sbyte) AssetType.Animation ||
+                return
+                    (Type == (sbyte)AssetType.Animation ||
                      Type == (sbyte)AssetType.Gesture ||
                      Type == (sbyte)AssetType.Simstate ||
                      Type == (sbyte)AssetType.Unknown ||
@@ -136,8 +136,8 @@ namespace OpenSim.Framework
                      Type == (sbyte)AssetType.SnapshotFolder ||
                      Type == (sbyte)AssetType.TrashFolder ||
                      Type == (sbyte)AssetType.ImageJPEG ||
-                     Type == (sbyte) AssetType.ImageTGA ||
-                     Type == (sbyte) AssetType.LSLBytecode);
+                     Type == (sbyte)AssetType.ImageTGA ||
+                     Type == (sbyte)AssetType.LSLBytecode);
             }
         }
 
@@ -148,15 +148,16 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Asset UUID
+        ///     Asset UUID
         /// </summary>
         public UUID FullID
         {
             get { return m_metadata.FullID; }
             set { m_metadata.FullID = value; }
         }
+
         /// <summary>
-        /// Asset MetaData ID (transferring from UUID to string ID)
+        ///     Asset MetaData ID (transferring from UUID to string ID)
         /// </summary>
         public string ID
         {
@@ -177,7 +178,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// (sbyte) AssetType enum
+        ///     (sbyte) AssetType enum
         /// </summary>
         public sbyte Type
         {
@@ -186,7 +187,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Is this a region only asset, or does this exist on the asset server also
+        ///     Is this a region only asset, or does this exist on the asset server also
         /// </summary>
         public bool Local
         {
@@ -195,7 +196,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Is this asset going to be saved to the asset database?
+        ///     Is this asset going to be saved to the asset database?
         /// </summary>
         public bool Temporary
         {
@@ -220,6 +221,7 @@ namespace OpenSim.Framework
     public class AssetMetadata
     {
         private UUID m_fullid;
+
         // m_id added as a dirty hack to transition from FullID to ID
         private string m_id;
         private string m_name = String.Empty;
@@ -230,8 +232,6 @@ namespace OpenSim.Framework
         private byte[] m_sha1;
         private bool m_local;
         private bool m_temporary;
-        //private Dictionary<string, Uri> m_methods = new Dictionary<string, Uri>();
-        //private OSDMap m_extra_data;
 
         public UUID FullID
         {
@@ -241,8 +241,6 @@ namespace OpenSim.Framework
 
         public string ID
         {
-            //get { return m_fullid.ToString(); }
-            //set { m_fullid = new UUID(value); }
             get
             {
                 if (String.IsNullOrEmpty(m_id))
@@ -253,6 +251,7 @@ namespace OpenSim.Framework
             set
             {
                 UUID uuid = UUID.Zero;
+
                 if (UUID.TryParse(value, out uuid))
                 {
                     m_fullid = uuid;
@@ -310,17 +309,5 @@ namespace OpenSim.Framework
             get { return m_temporary; }
             set { m_temporary = value; }
         }
-
-        //public Dictionary<string, Uri> Methods
-        //{
-        //    get { return m_methods; }
-        //    set { m_methods = value; }
-        //}
-
-        //public OSDMap ExtraData
-        //{
-        //    get { return m_extra_data; }
-        //    set { m_extra_data = value; }
-        //}
     }
 }

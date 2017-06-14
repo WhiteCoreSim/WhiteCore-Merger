@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,32 +33,32 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Information about a particular user known to the userserver
+    ///     Information about a particular user known to the userserver
     /// </summary>
     public class UserProfileData
     {
         /// <summary>
-        /// A UNIX Timestamp (seconds since epoch) for the users creation
+        ///     A UNIX Timestamp (seconds since epoch) for the users creation
         /// </summary>
         private int m_created;
 
         /// <summary>
-        /// The users last registered agent (filled in on the user server)
+        ///     The users last registered agent (filled in on the user server)
         /// </summary>
         private UserAgentData m_currentAgent;
 
         /// <summary>
-        /// The first component of a users account name
+        ///     The first component of a users account name
         /// </summary>
         private string m_firstname;
 
         /// <summary>
-        /// The coordinates inside the region of the home location
+        ///     The coordinates inside the region of the home location
         /// </summary>
         private Vector3 m_homeLocation;
 
         /// <summary>
-        /// Where the user will be looking when they rez.
+        ///     Where the user will be looking when they rez.
         /// </summary>
         private Vector3 m_homeLookAt;
 
@@ -64,121 +66,119 @@ namespace OpenSim.Framework
         private uint m_homeRegionY;
 
         /// <summary>
-        /// The ID value for this user
+        ///     The ID value for this user
         /// </summary>
         private UUID m_id;
 
         /// <summary>
-        /// A UNIX Timestamp for the users last login date / time
+        ///     A UNIX Timestamp for the users last login date / time
         /// </summary>
         private int m_lastLogin;
 
         /// <summary>
-        /// A salted hash containing the users password, in the format md5(md5(password) + ":" + salt)
+        ///     A salted hash containing the users password, in the format md5(md5(password) + ":" + salt)
         /// </summary>
-        /// <remarks>This is double MD5'd because the client sends an unsalted MD5 to the loginserver</remarks>
+        /// <remarks>
+        ///     This is double MD5'd because the client sends an unsalted MD5 to the loginserver
+        /// </remarks>
         private string m_passwordHash;
 
         /// <summary>
-        /// The salt used for the users hash, should be 32 bytes or longer
+        ///     The salt used for the users hash, should be 32 bytes or longer
         /// </summary>
         private string m_passwordSalt;
 
         /// <summary>
-        /// The about text listed in a users profile.
+        ///     The about text listed in a users profile.
         /// </summary>
         private string m_profileAboutText = String.Empty;
 
         /// <summary>
-        /// A uint mask containing the "I can do" fields of the users profile
+        ///     A uint mask containing the "I can do" fields of the users profile
         /// </summary>
         private uint m_profileCanDoMask;
 
         /// <summary>
-        /// The profile image for the users first life tab
+        ///     The profile image for the users first life tab
         /// </summary>
         private UUID m_profileFirstImage;
 
         /// <summary>
-        /// The first life about text listed in a users profile
+        ///     The first life about text listed in a users profile
         /// </summary>
         private string m_profileFirstText = String.Empty;
 
         /// <summary>
-        /// The profile image for an avatar stored on the asset server
+        ///     The profile image for an avatar stored on the asset server
         /// </summary>
         private UUID m_profileImage;
 
         /// <summary>
-        /// A uint mask containing the "I want to do" part of the users profile
+        ///     A uint mask containing the "I want to do" part of the users profile
         /// </summary>
         private uint m_profileWantDoMask; // Profile window "I want to" mask
 
         /// <summary>
-        /// The profile url for an avatar
+        ///     The profile url for an avatar
         /// </summary>
         private string m_profileUrl;
 
         private UUID m_rootInventoryFolderId;
 
         /// <summary>
-        /// The second component of a users account name
+        ///     The second component of a users account name
         /// </summary>
         private string m_surname;
 
         /// <summary>
-        /// A valid email address for the account.  Useful for password reset requests.
+        ///     A valid email address for the account.  Useful for password reset requests.
         /// </summary>
         private string m_email = String.Empty;
 
         /// <summary>
-        /// A URI to the users asset server, used for foreigners and large grids.
+        ///     A URI to the users asset server, used for foreigners and large grids.
         /// </summary>
         private string m_userAssetUri = String.Empty;
 
         /// <summary>
-        /// A URI to the users inventory server, used for foreigners and large grids
+        ///     A URI to the users inventory server, used for foreigners and large grids
         /// </summary>
         private string m_userInventoryUri = String.Empty;
 
         /// <summary>
-        /// The last used Web_login_key
+        ///     The last used Web_login_key
         /// </summary>
         private UUID m_webLoginKey;
 
         // Data for estates and other goodies
         // to get away from per-machine configs a little
-        //
         private int m_userFlags;
         private int m_godLevel;
         private string m_customType;
         private UUID m_partner;
 
         /// <summary>
-        /// The regionhandle of the users preferred home region. If
-        /// multiple sims occupy the same spot, the grid may decide
-        /// which region the user logs into
+        ///     The regionhandle of the users preferred home region. If
+        ///     multiple sims occupy the same spot, the grid may decide
+        ///     which region the user logs into
         /// </summary>
         public virtual ulong HomeRegion
         {
-            get 
-            { 
-                return Utils.UIntsToLong(
-                    m_homeRegionX * (uint)Constants.RegionSize, m_homeRegionY * (uint)Constants.RegionSize); 
-            }
-            
+            get { return Utils.UIntsToLong(m_homeRegionX * (uint)Constants.RegionSize, m_homeRegionY * (uint)Constants.RegionSize); }
+
             set
             {
-                m_homeRegionX = (uint) (value >> 40);
-                m_homeRegionY = (((uint) (value)) >> 8);
+                m_homeRegionX = (uint)(value >> 40);
+                m_homeRegionY = (((uint)(value)) >> 8);
             }
         }
 
         private UUID m_homeRegionId;
+
         /// <summary>
-        /// The regionID of the users home region. This is unique;
-        /// even if the position of the region changes within the
-        /// grid, this will refer to the same region.
+        ///     The regionID of the users home region. This is unique;
+        ///     even if the position of the region changes within the
+        ///     grid, this will refer to the same region.
         /// </summary>
         public UUID HomeRegionID
         {
@@ -210,10 +210,10 @@ namespace OpenSim.Framework
             get { return m_surname; }
             set { m_surname = value; }
         }
-        
-        /// <value>
-        /// The concatentation of the various name components.
-        /// </value>
+
+        /// <summary>
+        ///     The concatentation of the various name components.
+        /// </summary>
         public string Name
         {
             get { return String.Format("{0} {1}", m_firstname, m_surname); }
@@ -273,7 +273,6 @@ namespace OpenSim.Framework
             get { return m_homeLocation.Z; }
             set { m_homeLocation.Z = value; }
         }
-
 
         public Vector3 HomeLookAt
         {

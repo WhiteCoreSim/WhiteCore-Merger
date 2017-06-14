@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +33,7 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Manage client circuits
+    ///     Manage client circuits
     /// </summary>
     public class AgentCircuitManager
     {
@@ -40,11 +42,14 @@ namespace OpenSim.Framework
         public virtual AuthenticateResponse AuthenticateSession(UUID sessionID, UUID agentID, uint circuitcode)
         {
             AgentCircuitData validcircuit = null;
+
             if (AgentCircuits.ContainsKey(circuitcode))
             {
                 validcircuit = AgentCircuits[circuitcode];
             }
+
             AuthenticateResponse user = new AuthenticateResponse();
+
             if (validcircuit == null)
             {
                 //don't have this circuit code in our list
@@ -75,7 +80,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Add information about a new circuit so that later on we can authenticate a new client session.
+        ///     Add information about a new circuit so that later on we can authenticate a new client session.
         /// </summary>
         /// <param name="circuitCode"></param>
         /// <param name="agentData"></param>
@@ -112,22 +117,20 @@ namespace OpenSim.Framework
 
         public void UpdateAgentData(AgentCircuitData agentData)
         {
-            if (AgentCircuits.ContainsKey((uint) agentData.circuitcode))
+            if (AgentCircuits.ContainsKey((uint)agentData.circuitcode))
             {
-                AgentCircuits[(uint) agentData.circuitcode].firstname = agentData.firstname;
-                AgentCircuits[(uint) agentData.circuitcode].lastname = agentData.lastname;
-                AgentCircuits[(uint) agentData.circuitcode].startpos = agentData.startpos;
+                AgentCircuits[(uint)agentData.circuitcode].firstname = agentData.firstname;
+                AgentCircuits[(uint)agentData.circuitcode].lastname = agentData.lastname;
+                AgentCircuits[(uint)agentData.circuitcode].startpos = agentData.startpos;
 
                 // Updated for when we don't know them before calling Scene.NewUserConnection
-                AgentCircuits[(uint) agentData.circuitcode].SecureSessionID = agentData.SecureSessionID;
-                AgentCircuits[(uint) agentData.circuitcode].SessionID = agentData.SessionID;
-
-                // m_log.Debug("update user start pos is " + agentData.startpos.X + " , " + agentData.startpos.Y + " , " + agentData.startpos.Z);
+                AgentCircuits[(uint)agentData.circuitcode].SecureSessionID = agentData.SecureSessionID;
+                AgentCircuits[(uint)agentData.circuitcode].SessionID = agentData.SessionID;
             }
         }
 
         /// <summary>
-        /// Sometimes the circuitcode may not be known before setting up the connection
+        ///     Sometimes the circuitcode may not be known before setting up the connection
         /// </summary>
         /// <param name="circuitcode"></param>
         /// <param name="newcircuitcode"></param>
@@ -138,16 +141,14 @@ namespace OpenSim.Framework
                 if (AgentCircuits.ContainsKey((uint)circuitcode) && !AgentCircuits.ContainsKey((uint)newcircuitcode))
                 {
                     AgentCircuitData agentData = AgentCircuits[(uint)circuitcode];
-
                     agentData.circuitcode = newcircuitcode;
-
                     AgentCircuits.Remove((uint)circuitcode);
                     AgentCircuits.Add(newcircuitcode, agentData);
                     return true;
                 }
             }
-            return false;
 
+            return false;
         }
 
         public void UpdateAgentChildStatus(uint circuitcode, bool childstatus)
@@ -164,6 +165,7 @@ namespace OpenSim.Framework
             {
                 return AgentCircuits[circuitcode].child;
             }
+
             return false;
         }
     }

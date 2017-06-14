@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,7 +32,7 @@ using System.Xml.Serialization;
 namespace OpenSim.Framework.Communications.XMPP
 {
     /// <summary>
-    /// An IQ needs to have one of the follow types set.
+    ///     An IQ needs to have one of the follow types set.
     /// </summary>
     public enum XmppIqType
     {
@@ -41,19 +43,19 @@ namespace OpenSim.Framework.Communications.XMPP
     }
 
     /// <summary>
-    /// XmppIqStanza needs to be subclassed as the query content is
-    /// specific to the query type.
+    ///     XmppIqStanza needs to be subclassed as the query content is
+    ///     specific to the query type.
     /// </summary>
     [XmlRoot("iq")]
-    public abstract class XmppIqStanza: XmppStanza
+    public abstract class XmppIqStanza : XmppStanza
     {
         /// <summary>
-        /// IQ type: one of set, get, result, error
+        ///     IQ type: one of set, get, result, error
         /// </summary>
         [XmlAttribute("type")]
         public XmppIqType Type;
 
-        public XmppIqStanza(): base()
+        public XmppIqStanza() : base()
         {
         }
     }

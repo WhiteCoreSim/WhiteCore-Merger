@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,24 +32,24 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// User inventory folder
+    ///     User inventory folder
     /// </summary>
     public class InventoryFolderBase : InventoryNodeBase
     {
         /// <summary>
-        /// The folder this folder is contained in
+        ///     The folder this folder is contained in
         /// </summary>
         private UUID _parentID;
 
         /// <summary>
-        /// Type of items normally stored in this folder
+        ///     Type of items normally stored in this folder
         /// </summary>
         private short _type;
 
         /// <summary>
-        /// This is used to denote the version of the client, needed
-        /// because of the changes clients have with inventory from
-        /// time to time (1.19.1 caused us some fits there).
+        ///     This is used to denote the version of the client, needed
+        ///     because of the changes clients have with inventory from
+        ///     time to time (1.19.1 caused us some fits there).
         /// </summary>
         private ushort _version;
 

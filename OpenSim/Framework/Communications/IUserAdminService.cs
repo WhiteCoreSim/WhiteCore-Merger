@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,12 +32,12 @@ using OpenMetaverse;
 namespace OpenSim.Framework.Communications
 {
     /// <summary>
-    /// Interface for the service for administrating users
+    ///     Interface for the service for administrating users
     /// </summary>
     public interface IUserAdminService
     {
         /// <summary>
-        /// Add a new user
+        ///     Add a new user
         /// </summary>
         /// <param name="firstName">The first name</param>
         /// <param name="lastName">The last name</param>
@@ -43,11 +45,13 @@ namespace OpenSim.Framework.Communications
         /// <param name="email">email of user</param>
         /// <param name="regX">region X</param>
         /// <param name="regY">region Y</param>
-        /// <returns>The UUID of the created user profile.  On failure, returns UUID.Zero</returns>
+        /// <returns>
+        ///     The UUID of the created user profile.  On failure, returns UUID.Zero
+        /// </returns>
         UUID AddUser(string firstName, string lastName, string pass, string email, uint regX, uint regY);
 
         /// <summary>
-        /// Add a new user with a specified UUID.   SHOULD ONLY BE USED in very special circumstances from modules!
+        ///     Add a new user with a specified UUID.   SHOULD ONLY BE USED in very special circumstances from modules!
         /// </summary>
         /// <param name="firstName">The first name</param>
         /// <param name="lastName">The last name</param>
@@ -56,16 +60,20 @@ namespace OpenSim.Framework.Communications
         /// <param name="regX">region X</param>
         /// <param name="regY">region Y</param>
         /// <param name="setUUID">The set UUID</param>
-        /// <returns>The UUID of the created user profile.  On failure, returns UUID.Zero</returns>
+        /// <returns>
+        ///     The UUID of the created user profile.  On failure, returns UUID.Zero
+        /// </returns>
         UUID AddUser(string firstName, string lastName, string pass, string email, uint regX, uint regY, UUID setUUID);
 
         /// <summary>
-        /// Reset a user password
+        ///     Reset a user password
         /// </summary>
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="newPassword"></param>
-        /// <returns>true if the update was successful, false otherwise</returns>
+        /// <returns>
+        ///     true if the update was successful, false otherwise
+        /// </returns>
         bool ResetUserPassword(string firstName, string lastName, string newPassword);
     }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -64,7 +66,7 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// Replacement for ChildAgentDataUpdate. Used over RESTComms and LocalComms.
+    ///     Replacement for ChildAgentDataUpdate. Used over RESTComms and LocalComms.
     /// </summary>
     public class AgentPosition : IAgentData
     {
@@ -91,7 +93,6 @@ namespace OpenSim.Framework
 
         // This probably shouldn't be here
         public byte[] Throttles;
-
 
         public OSDMap Pack()
         {
@@ -166,14 +167,13 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Soon to be decommissioned
+        ///     Soon to be decommissioned
         /// </summary>
         /// <param name="cAgent"></param>
         public void CopyFrom(ChildAgentDataUpdate cAgent)
         {
             AgentID = new UUID(cAgent.AgentID);
 
-            // next: ???
             Size = new Vector3();
             Size.Z = cAgent.AVHeight;
 
@@ -184,7 +184,6 @@ namespace OpenSim.Framework
             Throttles = cAgent.throttles;
             Velocity = new Vector3(cAgent.Velocity.x, cAgent.Velocity.y, cAgent.Velocity.z);
         }
-
     }
 
     public class AgentGroupData
@@ -219,8 +218,10 @@ namespace OpenSim.Framework
         {
             if (args["group_id"] != null)
                 GroupID = args["group_id"].AsUUID();
+
             if (args["group_powers"] != null)
                 UInt64.TryParse((string)args["group_powers"].AsString(), out GroupPowers);
+
             if (args["accept_notices"] != null)
                 AcceptNotices = args["accept_notices"].AsBoolean();
         }
@@ -254,13 +255,14 @@ namespace OpenSim.Framework
             return attachdata;
         }
 
-
         public void UnpackUpdateMessage(OSDMap args)
         {
             if (args["point"] != null)
                 AttachPoint = args["point"].AsInteger();
+
             if (args["item"] != null)
                 ItemID = args["item"].AsUUID();
+
             if (args["asset"] != null)
                 AssetID = args["asset"].AsUUID();
         }
@@ -269,11 +271,13 @@ namespace OpenSim.Framework
     public class AgentData : IAgentData
     {
         private UUID m_id;
+
         public UUID AgentID
         {
             get { return m_id; }
             set { m_id = value; }
         }
+
         public ulong RegionHandle;
         public uint CircuitCode;
         public UUID SessionID;
@@ -289,7 +293,6 @@ namespace OpenSim.Framework
 
         public float Far;
         public float Aspect;
-        //public int[] Throttles;
         public byte[] Throttles;
 
         public uint LocomotionState;
@@ -357,26 +360,22 @@ namespace OpenSim.Framework
             if ((Groups != null) && (Groups.Length > 0))
             {
                 OSDArray groups = new OSDArray(Groups.Length);
+
                 foreach (AgentGroupData agd in Groups)
                     groups.Add(agd.PackUpdateMessage());
+
                 args["groups"] = groups;
             }
 
             if ((Anims != null) && (Anims.Length > 0))
             {
                 OSDArray anims = new OSDArray(Anims.Length);
+
                 foreach (Animation aanim in Anims)
                     anims.Add(aanim.PackUpdateMessage());
+
                 args["animations"] = anims;
             }
-
-            //if ((AgentTextures != null) && (AgentTextures.Length > 0))
-            //{
-            //    OSDArray textures = new OSDArray(AgentTextures.Length);
-            //    foreach (UUID uuid in AgentTextures)
-            //        textures.Add(OSD.FromUUID(uuid));
-            //    args["agent_textures"] = textures;
-            //}
 
             if ((AgentTextures != null) && (AgentTextures.Length > 0))
                 args["texture_entry"] = OSD.FromBinary(AgentTextures);
@@ -388,16 +387,20 @@ namespace OpenSim.Framework
             if ((Wearables != null) && (Wearables.Length > 0))
             {
                 OSDArray wears = new OSDArray(Wearables.Length);
+
                 foreach (UUID uuid in Wearables)
                     wears.Add(OSD.FromUUID(uuid));
+
                 args["wearables"] = wears;
             }
 
             if ((Attachments != null) && (Attachments.Length > 0))
             {
                 OSDArray attachs = new OSDArray(Attachments.Length);
+
                 foreach (AttachmentData att in Attachments)
                     attachs.Add(att.PackUpdateMessage());
+
                 args["attachments"] = attachs;
             }
 
@@ -408,8 +411,8 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Deserialization of agent data.
-        /// Avoiding reflection makes it painful to write, but that's the price!
+        ///     Deserialization of agent data.
+        ///     Avoiding reflection makes it painful to write, but that's the price!
         /// </summary>
         /// <param name="hash"></param>
         public virtual void Unpack(OSDMap args)
@@ -494,6 +497,7 @@ namespace OpenSim.Framework
                 OSDArray groups = (OSDArray)(args["groups"]);
                 Groups = new AgentGroupData[groups.Count];
                 int i = 0;
+
                 foreach (OSD o in groups)
                 {
                     if (o.Type == OSDType.Map)
@@ -508,6 +512,7 @@ namespace OpenSim.Framework
                 OSDArray anims = (OSDArray)(args["animations"]);
                 Anims = new Animation[anims.Count];
                 int i = 0;
+
                 foreach (OSD o in anims)
                 {
                     if (o.Type == OSDType.Map)
@@ -516,15 +521,6 @@ namespace OpenSim.Framework
                     }
                 }
             }
-
-            //if ((args["agent_textures"] != null) && (args["agent_textures"]).Type == OSDType.Array)
-            //{
-            //    OSDArray textures = (OSDArray)(args["agent_textures"]);
-            //    AgentTextures = new UUID[textures.Count];
-            //    int i = 0;
-            //    foreach (OSD o in textures)
-            //        AgentTextures[i++] = o.AsUUID();
-            //}
 
             if (args["texture_entry"] != null)
                 AgentTextures = args["texture_entry"].AsBinary();
@@ -537,6 +533,7 @@ namespace OpenSim.Framework
                 OSDArray wears = (OSDArray)(args["wearables"]);
                 Wearables = new UUID[wears.Count];
                 int i = 0;
+
                 foreach (OSD o in wears)
                     Wearables[i++] = o.AsUUID();
             }
@@ -546,6 +543,7 @@ namespace OpenSim.Framework
                 OSDArray attachs = (OSDArray)(args["attachments"]);
                 Attachments = new AttachmentData[attachs.Count];
                 int i = 0;
+
                 foreach (OSD o in attachs)
                 {
                     if (o.Type == OSDType.Map)
@@ -565,7 +563,6 @@ namespace OpenSim.Framework
 
         public AgentData(Hashtable hash)
         {
-            //UnpackUpdateMessage(hash);
         }
 
         public void Dump()
@@ -579,7 +576,7 @@ namespace OpenSim.Framework
 
     public class CompleteAgentData : AgentData
     {
-        public override OSDMap Pack() 
+        public override OSDMap Pack()
         {
             return base.Pack();
         }

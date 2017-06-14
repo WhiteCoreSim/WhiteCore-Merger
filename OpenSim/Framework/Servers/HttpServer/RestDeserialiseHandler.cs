@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,32 +35,30 @@ namespace OpenSim.Framework.Servers.HttpServer
 {
     public delegate TResponse RestDeserialiseMethod<TRequest, TResponse>(TRequest request);
 
-    public class RestDeserialiseHandler<TRequest, TResponse> : BaseRequestHandler, IStreamHandler
-        where TRequest : new()
+    public class RestDeserialiseHandler<TRequest, TResponse> : BaseRequestHandler, IStreamHandler where TRequest : new()
     {
         private RestDeserialiseMethod<TRequest, TResponse> m_method;
 
-        public RestDeserialiseHandler(string httpMethod, string path, RestDeserialiseMethod<TRequest, TResponse> method)
-            : base(httpMethod, path)
+        public RestDeserialiseHandler(string httpMethod, string path, RestDeserialiseMethod<TRequest, TResponse> method) : base(httpMethod, path)
         {
             m_method = method;
         }
 
-        public void Handle(string path, Stream request, Stream responseStream,
-                           OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        public void Handle(string path, Stream request, Stream responseStream, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
         {
             TRequest deserial;
+
             using (XmlTextReader xmlReader = new XmlTextReader(request))
             {
-                XmlSerializer deserializer = new XmlSerializer(typeof (TRequest));
-                deserial = (TRequest) deserializer.Deserialize(xmlReader);
+                XmlSerializer deserializer = new XmlSerializer(typeof(TRequest));
+                deserial = (TRequest)deserializer.Deserialize(xmlReader);
             }
 
             TResponse response = m_method(deserial);
 
             using (XmlWriter xmlWriter = XmlTextWriter.Create(responseStream))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof (TResponse));
+                XmlSerializer serializer = new XmlSerializer(typeof(TResponse));
                 serializer.Serialize(xmlWriter, response);
             }
         }

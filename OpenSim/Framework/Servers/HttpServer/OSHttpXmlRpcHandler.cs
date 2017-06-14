@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +42,19 @@ namespace OpenSim.Framework.Servers.HttpServer
 {
     public delegate XmlRpcResponse OSHttpXmlRpcProcessor(XmlRpcRequest request);
 
-    public class OSHttpXmlRpcHandler: OSHttpHandler
+    public class OSHttpXmlRpcHandler : OSHttpHandler
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// XmlRpcMethodMatch tries to reify (deserialize) an incoming
-        /// XmlRpc request (and posts it to the "whiteboard") and
-        /// checks whether the method name is one we are interested
-        /// in.
+        ///     XmlRpcMethodMatch tries to reify (deserialize) an incoming
+        ///     XmlRpc request (and posts it to the "whiteboard") and
+        ///     checks whether the method name is one we are interested in.
         /// </summary>
-        /// <returns>true if the handler is interested in the content;
-        /// false otherwise</returns>
+        /// <returns>
+        ///     true if the handler is interested in the content;
+        ///     false otherwise
+        /// </returns>
         protected bool XmlRpcMethodMatch(OSHttpRequest req)
         {
             XmlRpcRequest xmlRpcRequest = null;
@@ -98,7 +101,7 @@ namespace OpenSim.Framework.Servers.HttpServer
 
 
         /// <summary>
-        /// Instantiate an XmlRpc handler.
+        ///     Instantiate an XmlRpc handler.
         /// </summary>
         /// <param name="handler">XmlRpcMethod
         /// delegate</param>
@@ -109,35 +112,29 @@ namespace OpenSim.Framework.Servers.HttpServer
         /// <param name="whitelist">IP whitelist of remote end points
         /// to accept (regular expression)</param>
         /// <remarks>
-        /// Except for handler and methodName, all other parameters
-        /// can be null, in which case they are not taken into account
-        /// when the handler is being looked up.
+        ///     Except for handler and methodName, all other parameters
+        ///     can be null, in which case they are not taken into account
+        ///     when the handler is being looked up.
         /// </remarks>
-        public OSHttpXmlRpcHandler(XmlRpcMethod handler, string methodName, Regex path,
-                                   Dictionary<string, Regex> headers, Regex whitelist)
-            : base(new Regex(@"^POST$", RegexOptions.IgnoreCase | RegexOptions.Compiled), path, null, headers,
-                   new Regex(@"^(text|application)/xml", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-                   whitelist)
+        public OSHttpXmlRpcHandler(XmlRpcMethod handler, string methodName, Regex path, Dictionary<string, Regex> headers, Regex whitelist)
+            : base(new Regex(@"^POST$", RegexOptions.IgnoreCase | RegexOptions.Compiled), path, null, headers, new Regex(@"^(text|application)/xml", RegexOptions.IgnoreCase | RegexOptions.Compiled), whitelist)
         {
             _handler = handler;
             _methodName = methodName;
         }
 
-
         /// <summary>
-        /// Instantiate an XmlRpc handler.
+        ///     Instantiate an XmlRpc handler.
         /// </summary>
         /// <param name="handler">XmlRpcMethod
         /// delegate</param>
         /// <param name="methodName">XmlRpc method name</param>
-        public OSHttpXmlRpcHandler(XmlRpcMethod handler, string methodName)
-            : this(handler, methodName, null, null, null)
+        public OSHttpXmlRpcHandler(XmlRpcMethod handler, string methodName) : this(handler, methodName, null, null, null)
         {
         }
 
-
         /// <summary>
-        /// Invoked by OSHttpRequestPump.
+        ///     Invoked by OSHttpRequestPump.
         /// </summary>
         public override OSHttpHandlerResult Process(OSHttpRequest request)
         {
@@ -146,7 +143,6 @@ namespace OpenSim.Framework.Servers.HttpServer
 
             // check whether we are interested in this request
             if (!XmlRpcMethodMatch(request)) return OSHttpHandlerResult.Pass;
-
 
             OSHttpResponse resp = new OSHttpResponse(request);
             try
@@ -167,13 +163,13 @@ namespace OpenSim.Framework.Servers.HttpServer
                 resp.Body.Flush();
 
                 resp.Send();
-
             }
             catch (Exception ex)
             {
                 _log.WarnFormat("[OSHttpXmlRpcHandler]: Error: {0}", ex.Message);
                 return OSHttpHandlerResult.Pass;
             }
+
             return OSHttpHandlerResult.Done;
         }
     }

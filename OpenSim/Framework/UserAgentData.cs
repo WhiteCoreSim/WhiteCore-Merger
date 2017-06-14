@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,73 +33,73 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Information about a users session
+    ///     Information about a users session
     /// </summary>
     public class UserAgentData
     {
         /// <summary>
-        /// The UUID of the users avatar (not the agent!)
+        ///     The UUID of the users avatar (not the agent!)
         /// </summary>
         private UUID UUID;
 
         /// <summary>
-        /// The session ID for the user (also the agent ID)
+        ///     The session ID for the user (also the agent ID)
         /// </summary>
         private UUID sessionID;
 
         /// <summary>
-        /// The "secure" session ID for the user
+        ///     The "secure" session ID for the user
         /// </summary>
         /// <remarks>Not very secure. Dont rely on it for anything more than Linden Lab does.</remarks>
         private UUID secureSessionID;
 
         /// <summary>
-        /// The IP address of the user
+        ///     The IP address of the user
         /// </summary>
         private string agentIP = String.Empty;
 
         /// <summary>
-        /// The port of the user
+        ///     The port of the user
         /// </summary>
         private uint agentPort;
 
         /// <summary>
-        /// Is the user online?
+        ///     Is the user online?
         /// </summary>
         private bool agentOnline;
 
         /// <summary>
-        /// A unix timestamp from when the user logged in
+        ///     A unix timestamp from when the user logged in
         /// </summary>
         private int loginTime;
 
         /// <summary>
-        /// When this agent expired and logged out, 0 if still online
+        ///     When this agent expired and logged out, 0 if still online
         /// </summary>
         private int logoutTime;
 
         /// <summary>
-        /// Region ID the user is logged into
+        ///     Region ID the user is logged into
         /// </summary>
         private UUID regionID;
 
         /// <summary>
-        /// Region handle of the current region the user is in
+        ///     Region handle of the current region the user is in
         /// </summary>
         private ulong regionHandle;
 
         /// <summary>
-        /// The position of the user within the region
+        ///     The position of the user within the region
         /// </summary>
         private Vector3 currentPos;
 
         /// <summary>
-        /// Current direction the user is looking at
+        ///     Current direction the user is looking at
         /// </summary>
         private Vector3 currentLookAt = Vector3.Zero;
 
         /// <summary>
-        /// The region the user logged into initially
+        ///     The region the user logged into initially
         /// </summary>
         private UUID originRegionID;
 
@@ -167,26 +169,6 @@ namespace OpenSim.Framework
             set { currentPos = value; }
         }
 
-/* 2008-08-28-tyre: Not really useful
-        public virtual float PositionX
-        {
-            get { return currentPos.X; }
-            set { currentPos.X = value; }
-        }
-
-        public virtual float PositionY
-        {
-            get { return currentPos.Y; }
-            set { currentPos.Y = value; }
-        }
-
-        public virtual float PositionZ
-        {
-            get { return currentPos.Z; }
-            set { currentPos.Z = value; }
-        }
-*/
-
         public virtual Vector3 LookAt
         {
             get { return currentLookAt; }
@@ -198,6 +180,5 @@ namespace OpenSim.Framework
             get { return originRegionID; }
             set { originRegionID = value; }
         }
-
     }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,18 +41,15 @@ namespace OpenSim.Framework.Servers.HttpServer
 {
     public class SynchronousRestFormsRequester
     {
-        private static readonly ILog m_log =
-                LogManager.GetLogger(
-                MethodBase.GetCurrentMethod().DeclaringType);
-        
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
-        /// Perform a synchronous REST request.
+        ///     Perform a synchronous REST request.
         /// </summary>
         /// <param name="verb"></param>
         /// <param name="requestUrl"></param>
         /// <param name="obj"> </param>
         /// <returns></returns>
-        ///
         /// <exception cref="System.Net.WebException">Thrown if we encounter a network issue while posting
         /// the request.  You'll want to make sure you deal with this as they're not uncommon</exception>
         public static string MakeRequest(string verb, string requestUrl, string obj)
@@ -64,6 +63,7 @@ namespace OpenSim.Framework.Servers.HttpServer
 
                 MemoryStream buffer = new MemoryStream();
                 int length = 0;
+
                 using (StreamWriter writer = new StreamWriter(buffer))
                 {
                     writer.Write(obj);
@@ -81,15 +81,12 @@ namespace OpenSim.Framework.Servers.HttpServer
                 }
                 catch (Exception e)
                 {
-                    m_log.DebugFormat("[FORMS]: exception occured on sending request {0}", e.Message);
+                    m_log.DebugFormat("[Forms]: exception occured on sending request {0}", e.Message);
                 }
                 finally
                 {
                     if (requestStream != null)
                         requestStream.Close();
-                    // Let's not close this
-                    //buffer.Close();
-
                 }
             }
 
@@ -105,6 +102,7 @@ namespace OpenSim.Framework.Servers.HttpServer
                         try
                         {
                             respStream = resp.GetResponseStream();
+
                             using (StreamReader reader = new StreamReader(respStream))
                             {
                                 respstring = reader.ReadToEnd();
@@ -112,7 +110,7 @@ namespace OpenSim.Framework.Servers.HttpServer
                         }
                         catch (Exception e)
                         {
-                            m_log.DebugFormat("[FORMS]: exception occured on receiving reply {0}", e.Message);
+                            m_log.DebugFormat("[Forms]: exception occured on receiving reply {0}", e.Message);
                         }
                         finally
                         {
@@ -125,8 +123,9 @@ namespace OpenSim.Framework.Servers.HttpServer
             catch (System.InvalidOperationException)
             {
                 // This is what happens when there is invalid XML
-                m_log.DebugFormat("[FORMS]: InvalidOperationException on receiving request");
+                m_log.DebugFormat("[Forms]: InvalidOperationException on receiving request");
             }
+
             return respstring;
         }
     }

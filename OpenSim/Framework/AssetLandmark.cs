@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,8 +39,7 @@ namespace OpenSim.Framework
         public UUID RegionID;
         public int Version;
 
-        public AssetLandmark(AssetBase a)
-            : base(a.FullID, a.Name, a.Type)
+        public AssetLandmark(AssetBase a) : base(a.FullID, a.Name, a.Type)
         {
             Data = a.Data;
             Description = a.Description;
@@ -51,6 +52,7 @@ namespace OpenSim.Framework
             string[] parts = temp.Split('\n');
             int.TryParse(parts[0].Substring(17, 1), out Version);
             UUID.TryParse(parts[1].Substring(10, 36), out RegionID);
+
             // the vector is stored with spaces as separators, not with commas ("10.3 32.5 43" instead of "10.3, 32.5, 43")
             Vector3.TryParse(parts[2].Substring(10, parts[2].Length - 10).Replace(" ", ","), out Position);
             ulong.TryParse(parts[3].Substring(14, parts[3].Length - 14), out RegionHandle);

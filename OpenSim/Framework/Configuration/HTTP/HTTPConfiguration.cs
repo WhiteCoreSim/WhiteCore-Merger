@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -63,9 +65,8 @@ namespace OpenSim.Framework.Configuration.HTTP
                 StringBuilder sb = new StringBuilder();
 
                 byte[] buf = new byte[8192];
-                HttpWebRequest request =
-                    (HttpWebRequest) WebRequest.Create(remoteConfigSettings.baseConfigURL + configFileName);
-                HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(remoteConfigSettings.baseConfigURL + configFileName);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 Stream resStream = response.GetResponseStream();
 
@@ -75,19 +76,19 @@ namespace OpenSim.Framework.Configuration.HTTP
                 do
                 {
                     count = resStream.Read(buf, 0, buf.Length);
+
                     if (count != 0)
                     {
                         tempString = Util.UTF8.GetString(buf, 0, count);
                         sb.Append(tempString);
                     }
                 } while (count > 0);
+
                 LoadDataFromString(sb.ToString());
             }
             catch (WebException)
             {
-                m_log.Warn("Unable to connect to remote configuration file (" +
-                                      remoteConfigSettings.baseConfigURL + configFileName +
-                                      "). Creating local file instead.");
+                m_log.Warn("Unable to connect to remote configuration file (" + remoteConfigSettings.baseConfigURL + configFileName + "). Creating local file instead.");
                 xmlConfig.SetFileName(configFileName);
                 xmlConfig.LoadData();
             }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,17 +37,13 @@ namespace OpenSim.Framework
     public class ClientInfo
     {
         public sAgentCircuitData agentcircuit;
-
         public Dictionary<uint, byte[]> needAck;
-
         public List<byte[]> out_packets;
         public Dictionary<uint, uint> pendingAcks;
         public EndPoint proxyEP;
-
         public uint sequence;
         public byte[] usecircuit;
         public EndPoint userEP;
-
         public int resendThrottle;
         public int landThrottle;
         public int windThrottle;

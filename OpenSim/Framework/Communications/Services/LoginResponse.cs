@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,18 +39,16 @@ using OpenMetaverse.StructuredData;
 namespace OpenSim.Framework.Communications.Services
 {
     /// <summary>
-    /// A temp class to handle login response.
-    /// Should make use of UserProfileManager where possible.
+    ///     A temp class to handle login response.
+    ///     Should make use of UserProfileManager where possible.
     /// </summary>
     public class LoginResponse
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private Hashtable loginFlagsHash;
         private Hashtable globalTexturesHash;
         private Hashtable loginError;
         private Hashtable uiConfigHash;
-
         private ArrayList loginFlags;
         private ArrayList globalTextures;
         private ArrayList eventCategories;
@@ -61,9 +61,7 @@ namespace OpenSim.Framework.Communications.Services
         private ArrayList inventoryLibRoot;
         private ArrayList inventoryLibrary;
         private ArrayList activeGestures;
-
         private UserInfo userProfile;
-
         private UUID agentID;
         private UUID sessionID;
         private UUID secureSessionID;
@@ -98,8 +96,6 @@ namespace OpenSim.Framework.Communications.Services
 
         // Response
         private XmlRpcResponse xmlRpcResponse;
-        // private XmlRpcResponse defaultXmlRpcResponse;
-
         private string welcomeMessage;
         private string startLocation;
         private string allowFirstLife;
@@ -120,7 +116,6 @@ namespace OpenSim.Framework.Communications.Services
             loginError = new Hashtable();
             uiConfigHash = new Hashtable();
 
-            // defaultXmlRpcResponse = new XmlRpcResponse();
             userProfile = new UserInfo();
             inventoryRoot = new ArrayList();
             initialOutfit = new ArrayList();
@@ -130,7 +125,6 @@ namespace OpenSim.Framework.Communications.Services
             activeGestures = new ArrayList();
 
             xmlRpcResponse = new XmlRpcResponse();
-            // defaultXmlRpcResponse = new XmlRpcResponse();
 
             SetDefaultValues();
         }
@@ -157,24 +151,24 @@ namespace OpenSim.Framework.Communications.Services
             ErrorReason = "key";
             welcomeMessage = "Welcome to OpenSim!";
             seedCapability = String.Empty;
-            home = "{'region_handle':[r" + (1000*Constants.RegionSize).ToString() + ",r" + (1000*Constants.RegionSize).ToString() + "], 'position':[r" +
+            home = "{'region_handle':[r" + (1000 * Constants.RegionSize).ToString() + ",r" + (1000 * Constants.RegionSize).ToString() + "], 'position':[r" +
                    userProfile.homepos.X.ToString() + ",r" + userProfile.homepos.Y.ToString() + ",r" +
                    userProfile.homepos.Z.ToString() + "], 'look_at':[r" + userProfile.homelookat.X.ToString() + ",r" +
                    userProfile.homelookat.Y.ToString() + ",r" + userProfile.homelookat.Z.ToString() + "]}";
             lookAt = "[r0.99949799999999999756,r0.03166859999999999814,r0]";
-            RegionX = (uint) 255232;
-            RegionY = (uint) 254976;
+            RegionX = (uint)255232;
+            RegionY = (uint)254976;
 
             // Classifieds;
-            AddClassifiedCategory((Int32) 1, "Shopping");
-            AddClassifiedCategory((Int32) 2, "Land Rental");
-            AddClassifiedCategory((Int32) 3, "Property Rental");
-            AddClassifiedCategory((Int32) 4, "Special Attraction");
-            AddClassifiedCategory((Int32) 5, "New Products");
-            AddClassifiedCategory((Int32) 6, "Employment");
-            AddClassifiedCategory((Int32) 7, "Wanted");
-            AddClassifiedCategory((Int32) 8, "Service");
-            AddClassifiedCategory((Int32) 9, "Personal");
+            AddClassifiedCategory((Int32)1, "Shopping");
+            AddClassifiedCategory((Int32)2, "Land Rental");
+            AddClassifiedCategory((Int32)3, "Property Rental");
+            AddClassifiedCategory((Int32)4, "Special Attraction");
+            AddClassifiedCategory((Int32)5, "New Products");
+            AddClassifiedCategory((Int32)6, "Employment");
+            AddClassifiedCategory((Int32)7, "Wanted");
+            AddClassifiedCategory((Int32)8, "Service");
+            AddClassifiedCategory((Int32)9, "Personal");
 
             SessionID = UUID.Random();
             SecureSessionID = UUID.Random();
@@ -232,29 +226,21 @@ namespace OpenSim.Framework.Communications.Services
         public XmlRpcResponse CreateLoginFailedResponse()
         {
             return
-                (GenerateFailureResponse("key",
-                                         "Could not authenticate your avatar. Please check your username and password, and check the grid if problems persist.",
-                                         "false"));
+                (GenerateFailureResponse("key", "Could not authenticate your avatar. Please check your username and password, and check the grid if problems persist.", "false"));
         }
 
         public OSD CreateLoginFailedResponseLLSD()
         {
-            return GenerateFailureResponseLLSD(
-                "key",
-                "Could not authenticate your avatar. Please check your username and password, and check the grid if problems persist.",
-                "false");
+            return GenerateFailureResponseLLSD("key", "Could not authenticate your avatar. Please check your username and password, and check the grid if problems persist.", "false");
         }
 
         /// <summary>
-        /// Response to indicate that login failed because the agent's inventory was not available.
+        ///     Response to indicate that login failed because the agent's inventory was not available.
         /// </summary>
         /// <returns></returns>
         public XmlRpcResponse CreateLoginInventoryFailedResponse()
         {
-            return GenerateFailureResponse(
-                "key",
-                "The avatar inventory service is not responding.  Please notify your login region operator.",
-                "false");
+            return GenerateFailureResponse("key", "The avatar inventory service is not responding.  Please notify your login region operator.", "false");
         }
 
         public XmlRpcResponse CreateAlreadyLoggedInResponse()
@@ -281,49 +267,33 @@ namespace OpenSim.Framework.Communications.Services
         public XmlRpcResponse CreateLoginBlockedResponse()
         {
             return
-                (GenerateFailureResponse("presence",
-                "Logins are currently restricted. Please try again later",
-                                         "false"));
+                (GenerateFailureResponse("presence", "Logins are currently restricted. Please try again later", "false"));
         }
 
         public OSD CreateLoginBlockedResponseLLSD()
         {
-            return GenerateFailureResponseLLSD(
-                "presence",
-                "Logins are currently restricted. Please try again later",
-                "false");
+            return GenerateFailureResponseLLSD("presence", "Logins are currently restricted. Please try again later", "false");
         }
 
         public XmlRpcResponse CreateDeadRegionResponse()
         {
             return
-                (GenerateFailureResponse("key",
-                                         "The region you are attempting to log into is not responding. Please select another region and try again.",
-                                         "false"));
+                (GenerateFailureResponse("key", "The region you are attempting to log into is not responding. Please select another region and try again.", "false"));
         }
 
         public OSD CreateDeadRegionResponseLLSD()
         {
-            return GenerateFailureResponseLLSD(
-                "key",
-                "The region you are attempting to log into is not responding. Please select another region and try again.",
-                "false");
+            return GenerateFailureResponseLLSD("key", "The region you are attempting to log into is not responding. Please select another region and try again.", "false");
         }
 
         public XmlRpcResponse CreateGridErrorResponse()
         {
-            return
-                (GenerateFailureResponse("key",
-                                         "Error connecting to grid. Could not percieve credentials from login XML.",
-                                         "false"));
+            return (GenerateFailureResponse("key", "Error connecting to grid. Could not percieve credentials from login XML.", "false"));
         }
 
         public OSD CreateGridErrorResponseLLSD()
         {
-            return GenerateFailureResponseLLSD(
-                "key",
-                "Error connecting to grid. Could not perceive credentials from login XML.",
-                "false");
+            return GenerateFailureResponseLLSD("key", "Error connecting to grid. Could not perceive credentials from login XML.", "false");
         }
 
         #endregion
@@ -351,12 +321,11 @@ namespace OpenSim.Framework.Communications.Services
                 globalTexturesHash["cloud_texture_id"] = CloudTexture;
                 globalTexturesHash["moon_texture_id"] = MoonTexture;
                 globalTextures.Add(globalTexturesHash);
-                // this.eventCategories.Add(this.eventCategoriesHash);
 
                 AddToUIConfig("allow_first_life", allowFirstLife);
                 uiConfig.Add(uiConfigHash);
 
-                responseData["sim_port"] = (Int32) SimPort;
+                responseData["sim_port"] = (Int32)SimPort;
                 responseData["sim_ip"] = SimAddress;
                 responseData["http_port"] = (Int32)SimHttpPort;
 
@@ -364,7 +333,7 @@ namespace OpenSim.Framework.Communications.Services
                 responseData["session_id"] = SessionID.ToString();
                 responseData["secure_session_id"] = SecureSessionID.ToString();
                 responseData["circuit_code"] = CircuitCode;
-                responseData["seconds_since_epoch"] = (Int32) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+                responseData["seconds_since_epoch"] = (Int32)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
                 responseData["login-flags"] = loginFlags;
                 responseData["global-textures"] = globalTextures;
                 responseData["seed_capability"] = seedCapability;
@@ -379,6 +348,7 @@ namespace OpenSim.Framework.Communications.Services
                     responseData["inventory-skeleton"] = agentInventory;
                     responseData["inventory-root"] = inventoryRoot;
                 }
+
                 responseData["inventory-skel-lib"] = inventoryLibrary;
                 responseData["inventory-lib-root"] = inventoryLibRoot;
                 responseData["gestures"] = activeGestures;
@@ -404,7 +374,7 @@ namespace OpenSim.Framework.Communications.Services
             }
             catch (Exception e)
             {
-                m_log.Warn("[CLIENT]: LoginResponse: Error creating XML-RPC Response: " + e.Message);
+                m_log.Warn("[Client]: LoginResponse: Error creating XML-RPC Response: " + e.Message);
 
                 return (GenerateFailureResponse("Internal Error", "Error generating Login Response", "false"));
             }
@@ -453,9 +423,7 @@ namespace OpenSim.Framework.Communications.Services
                 #endregion Global Textures
 
                 map["seed_capability"] = OSD.FromString(seedCapability);
-
                 map["event_categories"] = ArrayListToOSDArray(eventCategories);
-                //map["event_notifications"] = new OSDArray(); // todo
                 map["classified_categories"] = ArrayListToOSDArray(classifiedCategories);
 
                 #region UI Config
@@ -469,7 +437,6 @@ namespace OpenSim.Framework.Communications.Services
                 #region Inventory
 
                 map["inventory-skeleton"] = ArrayListToOSDArray(agentInventory);
-
                 map["inventory-skel-lib"] = ArrayListToOSDArray(inventoryLibrary);
                 map["inventory-root"] = ArrayListToOSDArray(inventoryRoot); ;
                 map["inventory-lib-root"] = ArrayListToOSDArray(inventoryLibRoot);
@@ -478,10 +445,8 @@ namespace OpenSim.Framework.Communications.Services
                 #endregion Inventory
 
                 map["gestures"] = ArrayListToOSDArray(activeGestures);
-
                 map["initial-outfit"] = ArrayListToOSDArray(initialOutfit);
                 map["start_location"] = OSD.FromString(startLocation);
-
                 map["seed_capability"] = OSD.FromString(seedCapability);
                 map["home"] = OSD.FromString(home);
                 map["look_at"] = OSD.FromString(lookAt);
@@ -500,7 +465,7 @@ namespace OpenSim.Framework.Communications.Services
             }
             catch (Exception e)
             {
-                m_log.Warn("[CLIENT]: LoginResponse: Error creating LLSD Response: " + e.Message);
+                m_log.Warn("[Client]: LoginResponse: Error creating LLSD Response: " + e.Message);
 
                 return GenerateFailureResponseLLSD("Internal Error", "Error generating Login Response", "false");
             }
@@ -509,15 +474,19 @@ namespace OpenSim.Framework.Communications.Services
         public OSDArray ArrayListToOSDArray(ArrayList arrlst)
         {
             OSDArray llsdBack = new OSDArray();
+
             foreach (Hashtable ht in arrlst)
             {
                 OSDMap mp = new OSDMap();
+
                 foreach (DictionaryEntry deHt in ht)
                 {
                     mp.Add((string)deHt.Key, OSDString.FromObject(deHt.Value));
                 }
+
                 llsdBack.Add(mp);
             }
+
             return llsdBack;
         }
 
@@ -530,8 +499,6 @@ namespace OpenSim.Framework.Communications.Services
 
         public void SetEventCategories(string category, string value)
         {
-            //  this.eventCategoriesHash[category] = value;
-            //TODO
         }
 
         public void AddToUIConfig(string itemName, string item)
@@ -545,7 +512,6 @@ namespace OpenSim.Framework.Communications.Services
             hash["category_name"] = categoryName;
             hash["category_id"] = ID;
             classifiedCategories.Add(hash);
-            // this.classifiedCategoriesHash.Clear();
         }
 
         #region Properties
@@ -741,7 +707,7 @@ namespace OpenSim.Framework.Communications.Services
             get { return activeGestures; }
             set { activeGestures = value; }
         }
-                
+
         public string Home
         {
             get { return home; }
@@ -786,10 +752,12 @@ namespace OpenSim.Framework.Communications.Services
             public ArrayList ToArray()
             {
                 ArrayList buddyArray = new ArrayList();
+
                 foreach (BuddyInfo buddy in Buddies)
                 {
                     buddyArray.Add(buddy.ToHashTable());
                 }
+
                 return buddyArray;
             }
 

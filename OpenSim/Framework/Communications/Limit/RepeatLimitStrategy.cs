@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,17 +32,17 @@ using System.Collections.Generic;
 namespace OpenSim.Framework.Communications.Limit
 {
     /// <summary>
-    /// Limit requests by discarding them after they've been repeated a certain number of times.
+    ///     Limit requests by discarding them after they've been repeated a certain number of times.
     /// </summary>
     public class RepeatLimitStrategy<TId> : IRequestLimitStrategy<TId>
     {
         /// <summary>
-        /// Record each asset request that we're notified about.
+        ///     Record each asset request that we're notified about.
         /// </summary>
         private readonly Dictionary<TId, int> requestCounts = new Dictionary<TId, int>();
 
         /// <summary>
-        /// The maximum number of requests that can be made before we drop subsequent requests.
+        ///     The maximum number of requests that can be made before we drop subsequent requests.
         /// </summary>
         private readonly int m_maxRequests;
         public int MaxRequests
@@ -48,7 +50,9 @@ namespace OpenSim.Framework.Communications.Limit
             get { return m_maxRequests; }
         }
 
-        /// <summary></summary>
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="maxRequests">The maximum number of requests that may be served before all further
         /// requests are dropped.</param>
         public RepeatLimitStrategy(int maxRequests)

@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,9 +34,7 @@ namespace OpenSim.Framework.Servers.HttpServer
 {
     public delegate void RequestMethod(UUID requestID, Hashtable request);
     public delegate bool HasEventsMethod(UUID requestID, UUID pId);
-
     public delegate Hashtable GetEventsMethod(UUID requestID, UUID pId, string request);
-
     public delegate Hashtable NoEventsMethod(UUID requestID, UUID pId);
 
     public class PollServiceEventArgs : EventArgs
@@ -44,7 +44,8 @@ namespace OpenSim.Framework.Servers.HttpServer
         public NoEventsMethod NoEvents;
         public RequestMethod Request;
         public UUID Id;
-        public PollServiceEventArgs(RequestMethod pRequest, HasEventsMethod pHasEvents, GetEventsMethod pGetEvents, NoEventsMethod pNoEvents,UUID pId)
+
+        public PollServiceEventArgs(RequestMethod pRequest, HasEventsMethod pHasEvents, GetEventsMethod pGetEvents, NoEventsMethod pNoEvents, UUID pId)
         {
             Request = pRequest;
             HasEvents = pHasEvents;

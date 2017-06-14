@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,7 +37,7 @@ using System.Xml.Serialization;
 namespace OpenSim.Framework.Servers.HttpServer
 {
     /// <summary>
-    /// Makes an asynchronous REST request which doesn't require us to do anything with the response.
+    ///     Makes an asynchronous REST request which doesn't require us to do anything with the response.
     /// </summary>
     public class RestObjectPoster
     {
@@ -46,7 +48,7 @@ namespace OpenSim.Framework.Servers.HttpServer
 
         public static void BeginPostObject<TRequest>(string verb, string requestUrl, TRequest obj)
         {
-            Type type = typeof (TRequest);
+            Type type = typeof(TRequest);
 
             WebRequest request = WebRequest.Create(requestUrl);
             request.Method = verb;
@@ -64,18 +66,18 @@ namespace OpenSim.Framework.Servers.HttpServer
                 writer.Flush();
             }
 
-            int length = (int) buffer.Length;
+            int length = (int)buffer.Length;
             request.ContentLength = length;
 
             Stream requestStream = request.GetRequestStream();
             requestStream.Write(buffer.ToArray(), 0, length);
-            // IAsyncResult result = request.BeginGetResponse(AsyncCallback, request);
             request.BeginGetResponse(AsyncCallback, request);
         }
 
         private static void AsyncCallback(IAsyncResult result)
         {
-            WebRequest request = (WebRequest) result.AsyncState;
+            WebRequest request = (WebRequest)result.AsyncState;
+
             using (WebResponse resp = request.EndGetResponse(result))
             {
             }

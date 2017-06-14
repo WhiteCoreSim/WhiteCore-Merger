@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,38 +32,33 @@ using System.Xml.Serialization;
 namespace OpenSim.Framework.Communications.XMPP
 {
     /// <summary>
-    /// Message types.
+    ///     Message types.
     /// </summary>
     public enum XmppPresenceType
     {
-        [XmlEnum("unavailable")]  unavailable,
-        [XmlEnum("subscribe")]    subscribe,
-        [XmlEnum("subscribed")]   subscribed,
-        [XmlEnum("unsubscribe")]  unsubscribe,
+        [XmlEnum("unavailable")] unavailable,
+        [XmlEnum("subscribe")] subscribe,
+        [XmlEnum("subscribed")] subscribed,
+        [XmlEnum("unsubscribe")] unsubscribe,
         [XmlEnum("unsubscribed")] unsubscribed,
-        [XmlEnum("probe")]        probe,
-        [XmlEnum("error")]        error,
+        [XmlEnum("probe")] probe,
+        [XmlEnum("error")] error,
     }
 
-
     [XmlRoot("message")]
-    public class XmppPresenceStanza: XmppStanza
+    public class XmppPresenceStanza : XmppStanza
     {
         /// <summary>
-        /// IQ type: one of set, get, result, error
+        ///     IQ type: one of set, get, result, error
         /// </summary>
         [XmlAttribute("type")]
         public XmppPresenceType PresenceType;
-
-        // [XmlAttribute("error")]
-        // public XmppError Error;
 
         public XmppPresenceStanza() : base()
         {
         }
 
-        public XmppPresenceStanza(string fromJid, string toJid, XmppPresenceType pType) :
-            base(fromJid, toJid)
+        public XmppPresenceStanza(string fromJid, string toJid, XmppPresenceType pType) : base(fromJid, toJid)
         {
             PresenceType = pType;
         }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,10 +33,10 @@ using OpenMetaverse.Packets;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Enapsulate statistics for a simulator/scene.
+    ///     Enapsulate statistics for a simulator/scene.
     /// 
-    /// TODO: This looks very much like the OpenMetaverse SimStatsPacket.  It should be much more generic stats
-    /// storage.
+    ///     TODO: This looks very much like the OpenMetaverse SimStatsPacket.  It should be much more generic stats
+    ///     storage.
     /// </summary>
     public class SimStats
     {
@@ -42,47 +44,52 @@ namespace OpenSim.Framework
         {
             get { return m_regionX; }
         }
+
         private uint m_regionX;
 
         public uint RegionY
         {
             get { return m_regionY; }
         }
+
         private uint m_regionY;
-        
+
         public SimStatsPacket.RegionBlock RegionBlock
         {
             get { return m_regionBlock; }
         }
+
         private SimStatsPacket.RegionBlock m_regionBlock;
-        
+
         public SimStatsPacket.StatBlock[] StatsBlock
         {
             get { return m_statsBlock; }
         }
+
         private SimStatsPacket.StatBlock[] m_statsBlock;
-        
+
         public uint RegionFlags
         {
             get { return m_regionFlags; }
         }
+
         private uint m_regionFlags;
-            
+
         public uint ObjectCapacity
         {
             get { return m_objectCapacity; }
         }
+
         private uint m_objectCapacity;
 
         public UUID RegionUUID
         {
             get { return regionUUID; }
         }
+
         private UUID regionUUID;
-                
-        public SimStats(
-            uint regionX, uint regionY, uint regionFlags, uint objectCapacity, 
-            SimStatsPacket.RegionBlock regionBlock, SimStatsPacket.StatBlock[] statsBlock, UUID pRUUID)
+
+        public SimStats(uint regionX, uint regionY, uint regionFlags, uint objectCapacity, SimStatsPacket.RegionBlock regionBlock, SimStatsPacket.StatBlock[] statsBlock, UUID pRUUID)
         {
             regionUUID = pRUUID;
             m_regionX = regionX;

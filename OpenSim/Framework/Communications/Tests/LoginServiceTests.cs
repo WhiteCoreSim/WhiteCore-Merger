@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,6 +35,7 @@ using System.Text.RegularExpressions;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Nwc.XmlRpc;
+using OpenMetaverse;
 using OpenSim.Framework.Communications.Cache;
 using OpenSim.Framework.Communications.Services;
 using OpenSim.Region.Communications.Local;
@@ -41,13 +44,12 @@ using OpenSim.Tests.Common.Mock;
 using OpenSim.Client.Linden;
 using OpenSim.Tests.Common;
 using OpenSim.Services.Interfaces;
-using OpenMetaverse;
 
 namespace OpenSim.Framework.Communications.Tests
 {
     /// <summary>
-    /// Test the login service.  For now, most of this will be done through the LocalLoginService as LoginService
-    /// is abstract
+    ///     Test the login service.  For now, most of this will be done through the LocalLoginService as LoginService
+    ///     is abstract
     /// </summary>
 
     [TestFixture]
@@ -75,24 +77,23 @@ namespace OpenSim.Framework.Communications.Tests
 
             m_regionConnector.AddRegion(new RegionInfo(42, 43, m_capsEndPoint, m_regionExternalName));
 
-            //IInventoryService m_inventoryService = new MockInventoryService();
+            m_localUserServices = (LocalUserServices)m_commsManager.UserService;
+            m_localUserServices.AddUser(m_firstName, m_lastName, "boingboing", "abc@ftw.com", 42, 43);
 
-            m_localUserServices = (LocalUserServices) m_commsManager.UserService;
-            m_localUserServices.AddUser(m_firstName,m_lastName,"boingboing","abc@ftw.com",42,43);
-
-            m_loginService = new LLStandaloneLoginService((UserManagerBase) m_localUserServices, "Hello folks", m_testScene.InventoryService,
+            m_loginService = new LLStandaloneLoginService((UserManagerBase)m_localUserServices, "Hello folks", m_testScene.InventoryService,
                   m_commsManager.NetworkServersInfo, true, new LibraryRootFolder(String.Empty), m_regionConnector);
 
             m_userProfileData = m_localUserServices.GetUserProfile(m_firstName, m_lastName);
         }
 
         /// <summary>
-        /// Test the normal response to a login.  Does not test authentication.
+        ///     Test the normal response to a login.  Does not test authentication.
         /// </summary>
         [Test]
         public void T010_TestUnauthenticatedLogin()
         {
             TestHelper.InMethod();
+
             // We want to use our own LoginService for this test, one that
             // doesn't require authentication.
             new LLStandaloneLoginService(
@@ -119,8 +120,7 @@ namespace OpenSim.Framework.Communications.Tests
 
             Assert.That(responseData["first_name"], Is.EqualTo(m_firstName));
             Assert.That(responseData["last_name"], Is.EqualTo(m_lastName));
-            Assert.That(
-                responseData["circuit_code"], Is.GreaterThanOrEqualTo(0) & Is.LessThanOrEqualTo(Int32.MaxValue));
+            Assert.That(responseData["circuit_code"], Is.GreaterThanOrEqualTo(0) & Is.LessThanOrEqualTo(Int32.MaxValue));
 
             Regex capsSeedPattern
                 = new Regex("^http://"
@@ -134,6 +134,7 @@ namespace OpenSim.Framework.Communications.Tests
         public void T011_TestAuthenticatedLoginSuccess()
         {
             TestHelper.InMethod();
+
             // TODO: Not check inventory part of response yet.
             // TODO: Not checking all of login response thoroughly yet.
 
@@ -158,7 +159,7 @@ namespace OpenSim.Framework.Communications.Tests
             Hashtable responseData = (Hashtable)response.Value;
 
             UserAgentData uagent = m_userProfileData.CurrentAgent;
-            Assert.That(uagent,Is.Not.Null);
+            Assert.That(uagent, Is.Not.Null);
 
             Assert.That(responseData["first_name"], Is.Not.Null);
             Assert.That(responseData["first_name"], Is.EqualTo(m_firstName));
@@ -166,11 +167,10 @@ namespace OpenSim.Framework.Communications.Tests
             Assert.That(responseData["agent_id"], Is.EqualTo(uagent.ProfileID.ToString()));
             Assert.That(responseData["session_id"], Is.EqualTo(uagent.SessionID.ToString()));
             Assert.That(responseData["secure_session_id"], Is.EqualTo(uagent.SecureSessionID.ToString()));
-            ArrayList invlibroot = (ArrayList) responseData["inventory-lib-root"];
-            Hashtable invlibroothash = (Hashtable) invlibroot[0];
-            Assert.That(invlibroothash["folder_id"],Is.EqualTo("00000112-000f-0000-0000-000100bba000"));
-            Assert.That(
-                responseData["circuit_code"], Is.GreaterThanOrEqualTo(0) & Is.LessThanOrEqualTo(Int32.MaxValue));
+            ArrayList invlibroot = (ArrayList)responseData["inventory-lib-root"];
+            Hashtable invlibroothash = (Hashtable)invlibroot[0];
+            Assert.That(invlibroothash["folder_id"], Is.EqualTo("00000112-000f-0000-0000-000100bba000"));
+            Assert.That(responseData["circuit_code"], Is.GreaterThanOrEqualTo(0) & Is.LessThanOrEqualTo(Int32.MaxValue));
             Assert.That(responseData["message"], Is.EqualTo("Hello folks"));
             Assert.That(responseData["buddy-list"], Is.Empty);
             Assert.That(responseData["start_location"], Is.EqualTo("last"));
@@ -187,14 +187,15 @@ namespace OpenSim.Framework.Communications.Tests
         public void T012_TestAuthenticatedLoginForBuddies()
         {
             TestHelper.InMethod();
-            // 1.1) Test for budddies!
-            m_localUserServices.AddUser("Friend","Number1","boingboing","abc@ftw.com",42,43);
-            m_localUserServices.AddUser("Friend","Number2","boingboing","abc@ftw.com",42,43);
 
-            UserProfileData friend1 = m_localUserServices.GetUserProfile("Friend","Number1");
-            UserProfileData friend2 = m_localUserServices.GetUserProfile("Friend","Number2");
-            m_localUserServices.AddNewUserFriend(friend1.ID,m_userProfileData.ID,1);
-            m_localUserServices.AddNewUserFriend(friend1.ID,friend2.ID,2);
+            // 1.1) Test for budddies!
+            m_localUserServices.AddUser("Friend", "Number1", "boingboing", "abc@ftw.com", 42, 43);
+            m_localUserServices.AddUser("Friend", "Number2", "boingboing", "abc@ftw.com", 42, 43);
+
+            UserProfileData friend1 = m_localUserServices.GetUserProfile("Friend", "Number1");
+            UserProfileData friend2 = m_localUserServices.GetUserProfile("Friend", "Number2");
+            m_localUserServices.AddNewUserFriend(friend1.ID, m_userProfileData.ID, 1);
+            m_localUserServices.AddNewUserFriend(friend1.ID, friend2.ID, 2);
 
             Hashtable loginParams = new Hashtable();
             loginParams["first"] = "Friend";
@@ -214,12 +215,12 @@ namespace OpenSim.Framework.Communications.Tests
 
             Hashtable responseData = (Hashtable)response.Value;
 
-            ArrayList friendslist = (ArrayList) responseData["buddy-list"];
+            ArrayList friendslist = (ArrayList)responseData["buddy-list"];
 
-            Assert.That(friendslist,Is.Not.Null);
+            Assert.That(friendslist, Is.Not.Null);
 
-            Hashtable buddy1 = (Hashtable) friendslist[0];
-            Hashtable buddy2 = (Hashtable) friendslist[1];
+            Hashtable buddy1 = (Hashtable)friendslist[0];
+            Hashtable buddy2 = (Hashtable)friendslist[1];
             Assert.That(friendslist.Count, Is.EqualTo(2));
             Assert.That(m_userProfileData.ID.ToString(), Is.EqualTo(buddy1["buddy_id"]) | Is.EqualTo(buddy2["buddy_id"]));
             Assert.That(friend2.ID.ToString(), Is.EqualTo(buddy1["buddy_id"]) | Is.EqualTo(buddy2["buddy_id"]));
@@ -231,9 +232,8 @@ namespace OpenSim.Framework.Communications.Tests
             TestHelper.InMethod();
 
             // 2) Test for negative authentication
-            //
             string error_auth_message = "Could not authenticate your avatar. Please check your username and password, and check the grid if problems persist.";
-            //string error_region_unavailable = "The region you are attempting to log into is not responding. Please select another region and try again.";
+
             // 2.1) Test for wrong user name
             Hashtable loginParams = new Hashtable();
             loginParams["first"] = m_lastName;
@@ -253,7 +253,6 @@ namespace OpenSim.Framework.Communications.Tests
 
             Hashtable responseData = (Hashtable)response.Value;
             Assert.That(responseData["message"], Is.EqualTo(error_auth_message));
-
         }
 
         [Test]
@@ -262,6 +261,7 @@ namespace OpenSim.Framework.Communications.Tests
             TestHelper.InMethod();
 
             string error_auth_message = "Could not authenticate your avatar. Please check your username and password, and check the grid if problems persist.";
+
             // 2.2) Test for wrong password
             Hashtable loginParams = new Hashtable();
             loginParams["first"] = "Friend";
@@ -281,7 +281,6 @@ namespace OpenSim.Framework.Communications.Tests
 
             Hashtable responseData = (Hashtable)response.Value;
             Assert.That(responseData["message"], Is.EqualTo(error_auth_message));
-
         }
 
         [Test]
@@ -290,6 +289,7 @@ namespace OpenSim.Framework.Communications.Tests
             TestHelper.InMethod();
 
             string error_xml_message = "Error connecting to grid. Could not percieve credentials from login XML.";
+
             // 2.3) Bad XML
             Hashtable loginParams = new Hashtable();
             loginParams["first"] = "Friend";
@@ -309,23 +309,18 @@ namespace OpenSim.Framework.Communications.Tests
 
             Hashtable responseData = (Hashtable)response.Value;
             Assert.That(responseData["message"], Is.EqualTo(error_xml_message));
-
         }
 
-        // [Test]
-        // Commenting out test now that LLStandAloneLoginService no longer replies with message in this case.
         // Kept the code for future test with grid mode, which will keep this behavior.
         public void T023_TestAuthenticatedLoginAlreadyLoggedIn()
         {
             TestHelper.InMethod();
 
-            //Console.WriteLine("Starting T023_TestAuthenticatedLoginAlreadyLoggedIn()");
-            //log4net.Config.XmlConfigurator.Configure();
-            
             string error_already_logged = "You appear to be already logged in. " +
                                          "If this is not the case please wait for your session to timeout. " +
                                          "If this takes longer than a few minutes please contact the grid owner. " +
                                          "Please wait 5 minutes if you are going to connect to a region nearby to the region you were at previously.";
+
             // 2.4) Already logged in and sucessfull post login
             Hashtable loginParams = new Hashtable();
             loginParams["first"] = "Adam";
@@ -359,8 +354,6 @@ namespace OpenSim.Framework.Communications.Tests
             response = m_loginService.XmlRpcLoginMethod(request, tmpEnd);
             responseData = (Hashtable)response.Value;
             Assert.That(responseData["message"], Is.EqualTo("Hello folks"));
-            
-            //Console.WriteLine("Finished T023_TestAuthenticatedLoginAlreadyLoggedIn()");
         }
 
         [TearDown]
@@ -369,8 +362,9 @@ namespace OpenSim.Framework.Communications.Tests
             try
             {
                 if (MainServer.Instance != null) MainServer.Instance.Stop();
-            } catch (NullReferenceException)
-            {}
+            }
+            catch (NullReferenceException)
+            { }
         }
 
         public class TestLoginToRegionConnector : ILoginServiceToRegionsConnector
@@ -389,6 +383,7 @@ namespace OpenSim.Framework.Communications.Tests
             }
 
             #region ILoginRegionsConnector Members
+
             public bool RegionLoginsEnabled
             {
                 get { return true; }
@@ -401,6 +396,7 @@ namespace OpenSim.Framework.Communications.Tests
             public bool NewUserConnection(ulong regionHandle, AgentCircuitData agent, out string reason)
             {
                 reason = String.Empty;
+
                 lock (m_regionsList)
                 {
                     foreach (RegionInfo regInfo in m_regionsList)
@@ -409,7 +405,9 @@ namespace OpenSim.Framework.Communications.Tests
                             return true;
                     }
                 }
+
                 reason = "Region not found";
+
                 return false;
             }
 

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,11 +46,11 @@ namespace OpenSim.Framework.Tests
 
             CheckContainsReferences(AssetType.Animation, false);
             CheckContainsReferences(AssetType.CallingCard, false);
-            CheckContainsReferences(AssetType.Folder     , false);
-            CheckContainsReferences(AssetType.Gesture    , false);
-            CheckContainsReferences(AssetType.ImageJPEG  , false);
-            CheckContainsReferences(AssetType.ImageTGA   , false);
-            CheckContainsReferences(AssetType.Landmark   , false);
+            CheckContainsReferences(AssetType.Folder, false);
+            CheckContainsReferences(AssetType.Gesture, false);
+            CheckContainsReferences(AssetType.ImageJPEG, false);
+            CheckContainsReferences(AssetType.ImageTGA, false);
+            CheckContainsReferences(AssetType.Landmark, false);
             CheckContainsReferences(AssetType.LostAndFoundFolder, false);
             CheckContainsReferences(AssetType.LSLBytecode, false);
             CheckContainsReferences(AssetType.LSLText, false);
@@ -69,7 +71,7 @@ namespace OpenSim.Framework.Tests
         {
             AssetBase asset = new AssetBase(UUID.Zero, String.Empty, (sbyte)assetType);
             bool actual = asset.ContainsReferences;
-            Assert.AreEqual(expected, actual, "Expected "+assetType+".ContainsReferences to be "+expected+" but was "+actual+".");
+            Assert.AreEqual(expected, actual, "Expected " + assetType + ".ContainsReferences to be " + expected + " but was " + actual + ".");
         }
     }
 }

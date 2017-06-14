@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,7 +48,7 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Set Culture to en-US to make string processing of numbers simpler.
+        ///     Set Culture to en-US to make string processing of numbers simpler.
         /// </summary>
         public static void SetCurrentCulture()
         {

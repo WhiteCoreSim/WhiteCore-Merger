@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,25 +33,15 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     public delegate void ExpectUserDelegate(AgentCircuitData agent);
-
     public delegate bool ExpectPrimDelegate(UUID primID, string objData, int XMLMethod);
-
     public delegate void UpdateNeighbours(List<RegionInfo> neighbours);
-
     public delegate void AgentCrossing(UUID agentID, Vector3 position, bool isFlying);
-
     public delegate void PrimCrossing(UUID primID, Vector3 position, bool isPhysical);
-
     public delegate void AcknowledgeAgentCross(UUID agentID);
-
     public delegate void AcknowledgePrimCross(UUID PrimID);
-
     public delegate bool CloseAgentConnection(UUID agentID);
-
     public delegate bool ChildAgentUpdate(ChildAgentDataUpdate cAgentData);
-
     public delegate void LogOffUser(UUID agentID, UUID regionSecret, string message);
-
     public delegate LandData GetLandData(uint x, uint y);
 
     public interface IRegionCommsListener

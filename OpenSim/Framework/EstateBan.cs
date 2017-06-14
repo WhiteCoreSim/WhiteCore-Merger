@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,13 +35,13 @@ namespace OpenSim.Framework
     {
         private uint m_estateID = 1;
         /// <summary>
-        /// ID of the estate this ban limits access to.
+        ///     ID of the estate this ban limits access to.
         /// </summary>
         public uint EstateID
         {
             get
             {
-                return m_estateID; 
+                return m_estateID;
             }
             set
             {
@@ -48,8 +50,9 @@ namespace OpenSim.Framework
         }
 
         private UUID m_bannedUserID = UUID.Zero;
+
         /// <summary>
-        /// ID of the banned user.
+        ///     ID of the banned user.
         /// </summary>
         public UUID BannedUserID
         {
@@ -64,8 +67,9 @@ namespace OpenSim.Framework
         }
 
         private string m_bannedHostAddress = string.Empty;
+
         /// <summary>
-        /// IP address or domain name of the banned client.
+        ///     IP address or domain name of the banned client.
         /// </summary>
         public string BannedHostAddress
         {
@@ -80,12 +84,13 @@ namespace OpenSim.Framework
         }
 
         private string m_bannedHostIPMask = string.Empty;
+
         /// <summary>
-        /// IP address mask for banning group of client hosts.
+        ///     IP address mask for banning group of client hosts.
         /// </summary>
         public string BannedHostIPMask
         {
-           get
+            get
             {
                 return m_bannedHostIPMask;
             }
@@ -96,8 +101,9 @@ namespace OpenSim.Framework
         }
 
         private string m_bannedHostNameMask = string.Empty;
+
         /// <summary>
-        /// Domain name mask for banning group of client hosts.
+        ///     Domain name mask for banning group of client hosts.
         /// </summary>
         public string BannedHostNameMask
         {
@@ -110,6 +116,5 @@ namespace OpenSim.Framework
                 m_bannedHostNameMask = value;
             }
         }
-
     }
 }

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,30 +34,29 @@ namespace OpenSim.Framework.Console
     public delegate void ConsoleCommand(string[] comParams);
 
     /// <summary>
-    /// Holder object for a new console plugin command
-    ///
-    /// Override the methods like Run and IsHelpfull (but the defaults might work ok.)
+    ///     Holder object for a new console plugin command
+    ///     Override the methods like Run and IsHelpfull (but the defaults might work ok.)
     /// </summary>
     public class ConsolePluginCommand
     {
         /// <summary>
-        /// command delegate used in running
+        ///     Command delegate used in running
         /// </summary>
         private ConsoleCommand m_commandDelegate;
+
         /// <summary>
-        /// help text displayed
+        ///     Help text displayed
         /// </summary>
         private string m_helpText;
+
         /// <summary>
-        /// command in the form of "showme new commands"
+        ///     Command in the form of "showme new commands"
         /// </summary>
         private string[] m_cmdText;
 
         /// <summary>
-        /// Construct a new ConsolePluginCommand
-        ///
-        /// for use with OpenSim.RegisterConsolePluginCommand(myCmd);
-        ///
+        ///     Construct a new ConsolePluginCommand
+        ///     for use with OpenSim.RegisterConsolePluginCommand(myCmd);
         /// </summary>
         /// <param name="command">in the form of "showme new commands"</param>
         /// <param name="dlg">ommand delegate used in running</param>
@@ -68,33 +69,35 @@ namespace OpenSim.Framework.Console
         }
 
         /// <summary>
-        /// Returns the match length this command has upon the 'cmdWithParams'
-        /// At least a higher number for "show plugin status" then "show" would return
-        /// This is used to have multi length command verbs
+        ///     Returns the match length this command has upon the 'cmdWithParams'
+        ///     At least a higher number for "show plugin status" then "show" would return
+        ///     This is used to have multi length command verbs
         ///
-        /// @see OopenSim.RunPluginCommands
-        /// It will only run the one with the highest number
-        ///
+        ///     @see OopenSim.RunPluginCommands
+        ///     It will only run the one with the highest number
         /// </summary>
         public int matchLength(string cmdWithParams)
         {
             // QUESTION: have a case insensitive flag?
             cmdWithParams = cmdWithParams.ToLower().Trim();
-            string matchText = String.Join(" ",m_cmdText).ToLower().Trim();
+            string matchText = String.Join(" ", m_cmdText).ToLower().Trim();
+
             if (cmdWithParams.StartsWith(matchText))
             {
                 // QUESTION Instead return cmdText.Length; ?
                 return matchText.Length;
             }
+
             return 0;
         }
 
         /// <summary>
-        /// Run the delegate the incomming string may contain the command, if so, it is chopped off the cmdParams[]
+        ///     Run the delegate the incomming string may contain the command, if so, it is chopped off the cmdParams[]
         /// </summary>
         public void Run(string cmd, string[] cmdParams)
         {
             int skipParams = 0;
+
             if (m_cmdText.Length > 1)
             {
                 int currentParam = 1;
@@ -104,23 +107,28 @@ namespace OpenSim.Framework.Console
                     {
                         skipParams++;
                     }
+
                     currentParam++;
                 }
-
             }
+
             string[] sendCmdParams = cmdParams;
+
             if (skipParams > 0)
             {
-                sendCmdParams = new string[cmdParams.Length-skipParams];
-                for (int i=0;i<sendCmdParams.Length;i++) {
+                sendCmdParams = new string[cmdParams.Length - skipParams];
+
+                for (int i = 0; i < sendCmdParams.Length; i++)
+                {
                     sendCmdParams[i] = cmdParams[skipParams++];
                 }
             }
+
             m_commandDelegate(sendCmdParams);//.Trim().Split(new char[] { ' ' }));
         }
 
         /// <summary>
-        /// Shows help information on the console's Notice method
+        ///     Shows help information on the console's Notice method
         /// </summary>
         public void ShowHelp(ConsoleBase console)
         {
@@ -128,7 +136,7 @@ namespace OpenSim.Framework.Console
         }
 
         /// <summary>
-        /// return true if the ShowHelp(..) method might be helpfull
+        ///     Return true if the ShowHelp(..) method might be helpfull
         /// </summary>
         public bool IsHelpfull(string cmdWithParams)
         {

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,13 +40,8 @@ namespace OpenSim.Framework
     {
         public string WearableName = "";
         public WearableType WearType = WearableType.Invalid;
-
         public string ItemInfo = "Created Wearable";
-
         public SortedList<int, VisualSetting> VisualSettings = new SortedList<int, VisualSetting>();
-        // public LLObject.TextureEntry TextureEntry = null;
-        //public byte[] TextureEntry = null;
-
         public List<string> TextureStrings = new List<string>();
 
         //permissions
@@ -64,7 +61,6 @@ namespace OpenSim.Framework
         public int SalePrice = 10;
 
         private string BuildString = "";
-
 
         public WearableItem(string wearableName, WearableType type)
         {
@@ -114,6 +110,7 @@ namespace OpenSim.Framework
         public bool SetParamValue(string paramName, float value)
         {
             VisualSetting paramSetting;
+
             if (TryGetSetting(paramName, out paramSetting))
             {
                 if ((value >= paramSetting.VisualParam.MinValue) && (value <= paramSetting.VisualParam.MaxValue))
@@ -122,6 +119,7 @@ namespace OpenSim.Framework
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -129,9 +127,7 @@ namespace OpenSim.Framework
         {
             foreach (VisualSetting setting in VisualSettings.Values)
             {
-                //int randNum = Util.RandomClass.Next(0, 1000);
                 float range = setting.VisualParam.MaxValue - setting.VisualParam.MinValue;
-                // float val = ((float) randNum) / ((float)(1000.0f / range));
                 float val = (float)Util.RandomClass.NextDouble() * range * 0.2f;
                 setting.Value = setting.VisualParam.MinValue + (range / 2) + val;
             }
@@ -147,7 +143,6 @@ namespace OpenSim.Framework
             BuildString = "LLWearable version 22\n";
             BuildString += "New Item \n";
             BuildString += ItemInfo + "\n";
-
 
             AddSectionStart("permissions");
             AddTabbedNameValueLine("base_mask", BaseMask.ToString("00000000"));
@@ -173,6 +168,7 @@ namespace OpenSim.Framework
             {
                 AddNameValueLine(kp.Key.ToString(), kp.Value.Value.ToString(CultureInfo.InvariantCulture));
             }
+
             if (TextureStrings.Count == 0)
             {
                 AddNameValueLine("textures", "0"); //todo output texture entry
@@ -180,12 +176,13 @@ namespace OpenSim.Framework
             else
             {
                 AddNameValueLine("textures", TextureStrings.Count.ToString());
+
                 for (int i = 0; i < TextureStrings.Count; i++)
                 {
                     BuildString += TextureStrings[i] + "\n";
                 }
-                BuildString += "\n";
 
+                BuildString += "\n";
             }
 
             return BuildString;
@@ -222,9 +219,11 @@ namespace OpenSim.Framework
         }
 
         #region Static Methods
+
         public static List<VisualParam> FindParamsForWearable(string wearableName)
         {
             List<VisualParam> wearableParams = new List<VisualParam>();
+
             foreach (VisualParam param in VisualParams.Params.Values)
             {
                 if (param.Wearable == wearableName)
@@ -240,10 +239,12 @@ namespace OpenSim.Framework
         {
             WearableItem wearableItem = new WearableItem(wearableTypeName);
             List<VisualParam> typeParams = FindParamsForWearable(wearableTypeName);
+
             foreach (VisualParam param in typeParams)
             {
                 wearableItem.AddVisualSetting(new VisualSetting(param));
             }
+
             return wearableItem;
         }
 
@@ -264,9 +265,8 @@ namespace OpenSim.Framework
             foreach (string line in lines)
             {
                 string trimLine = line.Trim();
-                // m_log.Debug("line : " + trimLine);
-
                 string[] splitLine = r.Split(trimLine);
+
                 if (splitLine.Length > 1)
                 {
                     switch (splitLine[0])
@@ -275,36 +275,30 @@ namespace OpenSim.Framework
                             reachedParams = false;
                             reachedTextures = true;
                             break;
-
                         case "type":
                             string wearableTypeName = Enum.GetName(typeof(WearableType), (WearableType)Convert.ToInt32(splitLine[1]));
                             wearableObject = Create(wearableTypeName.ToLower());
                             break;
-
                         case "parameters":
                             reachedParams = true;
                             break;
-
                         case "creator_id":
                             creatorID = new UUID(splitLine[1]);
                             break;
-
                         case "owner_id":
                             ownerID = new UUID(splitLine[1]);
                             break;
-
                         case "last_owner_id":
                             lastOwnerID = new UUID(splitLine[1]);
                             break;
-
                         case "group_id":
                             groupID = new UUID(splitLine[1]);
                             break;
-
                         default:
                             if ((wearableObject != null) && (reachedParams))
                             {
                                 int id = Convert.ToInt32(splitLine[0]);
+
                                 if (wearableObject.VisualSettings.ContainsKey(id))
                                 {
 
@@ -330,9 +324,11 @@ namespace OpenSim.Framework
 
             return wearableObject;
         }
+
         #endregion
 
         #region Nested Class
+
         public class VisualSetting
         {
             public VisualParam VisualParam;
@@ -350,6 +346,7 @@ namespace OpenSim.Framework
                 Value = param.DefaultValue;
             }
         }
+
         #endregion
     }
 }

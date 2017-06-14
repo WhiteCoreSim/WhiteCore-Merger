@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +33,7 @@ using System.Timers;
 namespace OpenSim.Framework.Statistics
 {
     /// <summary>
-    /// Asset service statistics collection
+    ///     Asset service statistics collection
     /// </summary>
     public class AssetStatsCollector : BaseStatsCollector
     {
@@ -67,7 +69,7 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Record that an asset request failed to find an asset
+        ///     Record that an asset request failed to find an asset
         /// </summary>
         public void AddNotFoundRequest()
         {
@@ -75,7 +77,7 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Record that a request was made to the asset server
+        ///     Record that a request was made to the asset server
         /// </summary>
         public void AddRequest()
         {
@@ -83,20 +85,23 @@ namespace OpenSim.Framework.Statistics
         }
 
         /// <summary>
-        /// Report back collected statistical information.
+        ///     Report back collected statistical information.
         /// </summary>
         /// <returns></returns>
         override public string Report()
         {
             double elapsedHours = (DateTime.Now - startTime).TotalHours;
-            if (elapsedHours <= 0) { elapsedHours = 1; }  // prevent divide by zero
+
+            if (elapsedHours <= 0)
+            {
+                // Prevent divide by zero
+                elapsedHours = 1;
+            }
 
             long assetRequestsTodayPerHour = (long)Math.Round(AssetRequestsToday / elapsedHours);
             long assetRequestsYesterdayPerHour = (long)Math.Round(AssetRequestsYesterday / 24.0);
 
-            return string.Format(
-@"Asset requests today     : {0}  ({1} per hour)  of which {2} were not found
-Asset requests yesterday : {3}  ({4} per hour)  of which {5} were not found",
+            return string.Format(@"Asset requests today     : {0}  ({1} per hour)  of which {2} were not found Asset requests yesterday : {3}  ({4} per hour)  of which {5} were not found",
                 AssetRequestsToday, assetRequestsTodayPerHour, AssetRequestsNotFoundToday,
                 AssetRequestsYesterday, assetRequestsYesterdayPerHour, AssetRequestsNotFoundYesterday);
         }

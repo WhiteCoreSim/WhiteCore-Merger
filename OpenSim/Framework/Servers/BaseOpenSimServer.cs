@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,54 +39,52 @@ using log4net;
 using log4net.Appender;
 using log4net.Core;
 using log4net.Repository;
+using OpenMetaverse;
+using OpenMetaverse.StructuredData;
 using OpenSim.Framework.Console;
 using OpenSim.Framework.Servers;
 using OpenSim.Framework.Servers.HttpServer;
 using OpenSim.Framework.Statistics;
-using Timer=System.Timers.Timer;
-
-using OpenMetaverse;
-using OpenMetaverse.StructuredData;
-
+using Timer = System.Timers.Timer;
 
 namespace OpenSim.Framework.Servers
 {
     /// <summary>
-    /// Common base for the main OpenSimServers (user, grid, inventory, region, etc)
+    ///     Common base for the main OpenSimServers (user, grid, inventory, region, etc)
     /// </summary>
     public abstract class BaseOpenSimServer
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// This will control a periodic log printout of the current 'show stats' (if they are active) for this
-        /// server.
+        ///     This will control a periodic log printout of the current 'show stats' (if they are active) for this
+        ///     server.
         /// </summary>
         private Timer m_periodicDiagnosticsTimer = new Timer(60 * 60 * 1000);
 
         protected CommandConsole m_console;
         protected OpenSimAppender m_consoleAppender;
-        protected IAppender m_logFileAppender = null; 
+        protected IAppender m_logFileAppender = null;
 
         /// <summary>
-        /// Time at which this server was started
+        ///     Time at which this server was started
         /// </summary>
         protected DateTime m_startuptime;
 
         /// <summary>
-        /// Record the initial startup directory for info purposes
+        ///     Record the initial startup directory for info purposes
         /// </summary>
         protected string m_startupDirectory = Environment.CurrentDirectory;
 
         /// <summary>
-        /// Server version information.  Usually VersionInfo + information about git commit, operating system, etc.
+        ///     Server version information.  Usually VersionInfo + information about git commit, operating system, etc.
         /// </summary>
         protected string m_version;
 
         protected string m_pidFile = String.Empty;
-        
+
         /// <summary>
-        /// Random uuid for private data 
+        ///     Random uuid for private data 
         /// </summary>
         protected string m_osSecret = String.Empty;
 
@@ -95,7 +95,7 @@ namespace OpenSim.Framework.Servers
         }
 
         /// <summary>
-        /// Holds the non-viewer statistics collection object for this service/server
+        ///     Holds the non-viewer statistics collection object for this service/server
         /// </summary>
         protected IStatsCollector m_stats;
 
@@ -103,7 +103,7 @@ namespace OpenSim.Framework.Servers
         {
             m_startuptime = DateTime.Now;
             m_version = VersionInfo.Version;
-            
+
             // Random uuid for private data
             m_osSecret = UUID.Random().ToString();
 
@@ -123,11 +123,10 @@ namespace OpenSim.Framework.Servers
                     m_logFileAppender = appender;
                 }
             }
-
         }
-        
+
         /// <summary>
-        /// Must be overriden by child classes for their own server specific startup behaviour.
+        ///     Must be overriden by child classes for their own server specific startup behaviour.
         /// </summary>
         protected virtual void StartupSpecific()
         {
@@ -152,14 +151,14 @@ namespace OpenSim.Framework.Servers
                 else
                 {
                     m_consoleAppender.Console = m_console;
-                    
+
                     // If there is no threshold set then the threshold is effectively everything.
                     if (null == m_consoleAppender.Threshold)
                         m_consoleAppender.Threshold = Level.All;
-                    
+
                     Notice(String.Format("Console log level is {0}", m_consoleAppender.Threshold));
                 }
-                
+
                 m_console.Commands.AddCommand("base", false, "quit",
                         "quit",
                         "Quit the application", HandleQuit);
@@ -193,24 +192,23 @@ namespace OpenSim.Framework.Servers
                         "Show server version", HandleShow);
             }
         }
-        
+
         /// <summary>
-        /// Should be overriden and referenced by descendents if they need to perform extra shutdown processing
+        ///     Should be overriden and referenced by descendents if they need to perform extra shutdown processing
         /// </summary>
-        public virtual void ShutdownSpecific() {}
-        
+        public virtual void ShutdownSpecific() { }
+
         /// <summary>
-        /// Provides a list of help topics that are available.  Overriding classes should append their topics to the
-        /// information returned when the base method is called.
+        ///     Provides a list of help topics that are available.  Overriding classes should append their topics to the
+        ///     information returned when the base method is called.
         /// </summary>
-        /// 
         /// <returns>
-        /// A list of strings that represent different help topics on which more information is available
+        ///     A list of strings that represent different help topics on which more information is available
         /// </returns>
         protected virtual List<string> GetHelpTopics() { return new List<string>(); }
 
         /// <summary>
-        /// Print statistics to the logfile, if they are active
+        ///     Print statistics to the logfile, if they are active
         /// </summary>
         protected void LogDiagnostics(object source, ElapsedEventArgs e)
         {
@@ -229,13 +227,14 @@ namespace OpenSim.Framework.Servers
         }
 
         /// <summary>
-        /// Get a report about the registered threads in this server.
+        ///     Get a report about the registered threads in this server.
         /// </summary>
         protected string GetThreadsReport()
         {
             StringBuilder sb = new StringBuilder();
 
             ProcessThreadCollection threads = ThreadTracker.GetThreads();
+
             if (threads == null)
             {
                 sb.Append("OpenSim thread tracking is only enabled in DEBUG mode.");
@@ -243,29 +242,30 @@ namespace OpenSim.Framework.Servers
             else
             {
                 sb.Append(threads.Count + " threads are being tracked:" + Environment.NewLine);
+
                 foreach (ProcessThread t in threads)
                 {
-                    sb.Append("ID: " + t.Id + ", TotalProcessorTime: " + t.TotalProcessorTime + ", TimeRunning: " +
-                        (DateTime.Now - t.StartTime) + ", Pri: " + t.CurrentPriority + ", State: " + t.ThreadState);
+                    sb.Append("ID: " + t.Id + ", TotalProcessorTime: " + t.TotalProcessorTime + ", TimeRunning: " + (DateTime.Now - t.StartTime) + ", Pri: " + t.CurrentPriority + ", State: " + t.ThreadState);
+
                     if (t.ThreadState == System.Diagnostics.ThreadState.Wait)
                         sb.Append(", Reason: " + t.WaitReason + Environment.NewLine);
                     else
                         sb.Append(Environment.NewLine);
-
                 }
             }
+
             int workers = 0, ports = 0, maxWorkers = 0, maxPorts = 0;
             ThreadPool.GetAvailableThreads(out workers, out ports);
             ThreadPool.GetMaxThreads(out maxWorkers, out maxPorts);
 
-            sb.Append(Environment.NewLine + "*** ThreadPool threads ***"  + Environment.NewLine);
+            sb.Append(Environment.NewLine + "*** ThreadPool threads ***" + Environment.NewLine);
             sb.Append("workers: " + (maxWorkers - workers) + " (" + maxWorkers + "); ports: " + (maxPorts - ports) + " (" + maxPorts + ")" + Environment.NewLine);
 
             return sb.ToString();
         }
 
         /// <summary>
-        /// Return a report about the uptime of this server
+        ///     Return a report about the uptime of this server
         /// </summary>
         /// <returns></returns>
         protected string GetUptimeReport()
@@ -278,33 +278,33 @@ namespace OpenSim.Framework.Servers
         }
 
         /// <summary>
-        /// Performs initialisation of the scene, such as loading configuration from disk.
+        ///     Performs initialisation of the scene, such as loading configuration from disk.
         /// </summary>
         public virtual void Startup()
         {
-            m_log.Info("[STARTUP]: Beginning startup processing");
+            m_log.Info("[Startup]: Beginning startup processing");
 
             EnhanceVersionInformation();
-            
-            m_log.Info("[STARTUP]: Version: " + m_version + "\n");
-            
+
+            m_log.Info("[Startup]: Version: " + m_version + "\n");
+
             StartupSpecific();
-            
+
             TimeSpan timeTaken = DateTime.Now - m_startuptime;
-            
-            m_log.InfoFormat("[STARTUP]: Startup took {0}m {1}s", timeTaken.Minutes, timeTaken.Seconds);
+
+            m_log.InfoFormat("[Startup]: Startup took {0}m {1}s", timeTaken.Minutes, timeTaken.Seconds);
         }
 
         /// <summary>
-        /// Should be overriden and referenced by descendents if they need to perform extra shutdown processing
+        ///     Should be overriden and referenced by descendents if they need to perform extra shutdown processing
         /// </summary>
         public virtual void Shutdown()
         {
             ShutdownSpecific();
-            
-            m_log.Info("[SHUTDOWN]: Shutdown processing on main thread complete.  Exiting...");
+
+            m_log.Info("[Shut Down]: Shutdown processing on main thread complete.  Exiting...");
             RemovePIDFile();
-            
+
             Environment.Exit(0);
         }
 
@@ -320,31 +320,28 @@ namespace OpenSim.Framework.Servers
                 Notice("No appender named Console found (see the log4net config file for this executable)!");
                 return;
             }
-      
+
             string rawLevel = cmd[3];
-            
+
             ILoggerRepository repository = LogManager.GetRepository();
             Level consoleLevel = repository.LevelMap[rawLevel];
-            
+
             if (consoleLevel != null)
                 m_consoleAppender.Threshold = consoleLevel;
             else
-                Notice(
-                    String.Format(
-                        "{0} is not a valid logging level.  Valid logging levels are ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF",
-                        rawLevel));
+                Notice(String.Format("{0} is not a valid logging level.  Valid logging levels are ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF", rawLevel));
 
             Notice(String.Format("Console log level is {0}", m_consoleAppender.Threshold));
         }
 
         /// <summary>
-        /// Show help information
+        ///     Show help information
         /// </summary>
         /// <param name="helpArgs"></param>
         protected virtual void ShowHelp(string[] helpArgs)
         {
             Notice("");
-            
+
             if (helpArgs.Length == 0)
             {
                 Notice("set log level [level] - change the console logging level only.  For example, off or debug.");
@@ -376,32 +373,26 @@ namespace OpenSim.Framework.Servers
                     Notice("Version: " + m_version);
                     Notice("Startup directory: " + m_startupDirectory);
                     break;
-
                 case "stats":
                     if (m_stats != null)
                         Notice(m_stats.Report());
                     break;
-
                 case "threads":
                     Notice(GetThreadsReport());
                     break;
-
                 case "uptime":
                     Notice(GetUptimeReport());
                     break;
-
                 case "version":
-                    Notice(
-                        String.Format(
-                            "Version: {0} (interface version {1})", m_version, VersionInfo.MajorInterfaceVersion));
+                    Notice(String.Format("Version: {0} (interface version {1})", m_version, VersionInfo.MajorInterfaceVersion));
                     break;
             }
         }
 
         /// <summary>
-        /// Console output is only possible if a console has been established.
-        /// That is something that cannot be determined within this class. So
-        /// all attempts to use the console MUST be verified.
+        ///     Console output is only possible if a console has been established.
+        ///     That is something that cannot be determined within this class. So
+        ///     all attempts to use the console MUST be verified.
         /// </summary>
         protected void Notice(string msg)
         {
@@ -412,7 +403,7 @@ namespace OpenSim.Framework.Servers
         }
 
         /// <summary>
-        /// Enhance the version string with extra information if it's available.
+        ///     Enhance the version string with extra information if it's available.
         /// </summary>
         protected void EnhanceVersionInformation()
         {
@@ -456,7 +447,6 @@ namespace OpenSim.Framework.Servers
                     buildVersion = RevisionFile.ReadLine();
                     buildVersion.Trim();
                     RevisionFile.Close();
-
                 }
 
                 if (string.IsNullOrEmpty(buildVersion) && File.Exists(svnFileName))
@@ -467,8 +457,9 @@ namespace OpenSim.Framework.Servers
                     {
                         // using the dir svn revision at the top of entries file
                         strcmp = String.Compare(inputLine, "dir");
+
                         if (strcmp == 0)
-                       {
+                        {
                             buildVersion = EntriesFile.ReadLine();
                             break;
                         }
@@ -477,13 +468,14 @@ namespace OpenSim.Framework.Servers
                             inputLine = EntriesFile.ReadLine();
                         }
                     }
+
                     EntriesFile.Close();
                 }
 
                 m_version += string.IsNullOrEmpty(buildVersion) ? "      " : ("." + buildVersion + "     ").Substring(0, 6);
             }
         }
-        
+
         protected void CreatePIDFile(string path)
         {
             try
@@ -500,11 +492,11 @@ namespace OpenSim.Framework.Servers
             {
             }
         }
-        
-        public string osSecret {
+
+        public string osSecret
+        {
             // Secret uuid for the simulator
             get { return m_osSecret; }
-            
         }
 
         public string StatReport(OSHttpRequest httpRequest)
@@ -512,14 +504,14 @@ namespace OpenSim.Framework.Servers
             // If we catch a request for "callback", wrap the response in the value for jsonp
             if (httpRequest.Query.ContainsKey("callback"))
             {
-                return httpRequest.Query["callback"].ToString() + "(" + m_stats.XReport((DateTime.Now - m_startuptime).ToString() , m_version) + ");";
-            } 
-            else 
+                return httpRequest.Query["callback"].ToString() + "(" + m_stats.XReport((DateTime.Now - m_startuptime).ToString(), m_version) + ");";
+            }
+            else
             {
-                return m_stats.XReport((DateTime.Now - m_startuptime).ToString() , m_version); 
+                return m_stats.XReport((DateTime.Now - m_startuptime).ToString(), m_version);
             }
         }
-           
+
         protected void RemovePIDFile()
         {
             if (m_pidFile != String.Empty)

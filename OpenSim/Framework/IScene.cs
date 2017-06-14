@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,15 +27,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using Nini.Config;
 using OpenMetaverse;
 using OpenSim.Framework.Console;
-using Nini.Config;
 
 namespace OpenSim.Framework
 {
     public delegate void restart(RegionInfo thisRegion);
-
-    //public delegate void regionup (RegionInfo thisRegion);
 
     public enum RegionStatus : int
     {
@@ -43,9 +43,9 @@ namespace OpenSim.Framework
         Starting = 3,
         SlaveScene = 4
     };
-            
+
     /// <value>
-    /// Indicate what action to take on an object derez request
+    ///     Indicate what action to take on an object derez request
     /// </value>
     public enum DeRezAction : byte
     {
@@ -61,40 +61,29 @@ namespace OpenSim.Framework
     {
         RegionInfo RegionInfo { get; }
         RegionStatus RegionStatus { get; set; }
-
         IConfigSource Config { get; }
-
         float TimeDilation { get; }
-
         event restart OnRestart;
-
         void AddNewClient(IClientAPI client);
         void RemoveClient(UUID agentID);
-
         void Restart(int seconds);
-        //RegionInfo OtherRegionUp(RegionInfo thisRegion);
-
         string GetSimulatorVersion();
 
         /// <summary>
-        /// Is the agent denoted by the given agentID a child presence in this scene?
+        ///     Is the agent denoted by the given agentID a child presence in this scene?
+        ///  
+        ///     Used by ClientView when a 'kick everyone' or 'estate message' occurs
         /// </summary>
-        /// 
-        /// Used by ClientView when a 'kick everyone' or 'estate message' occurs
-        /// 
         /// <param name="avatarID">AvatarID to lookup</param>
         /// <returns>true if the presence is a child agent, false if the presence is a root exception</returns>
         /// <exception cref="System.NullReferenceException">
         /// Thrown if the agent does not exist.
         /// </exception>
         bool PresenceChildStatus(UUID agentId);
-
         T RequestModuleInterface<T>();
         T[] RequestModuleInterfaces<T>();
-
         void RegisterModuleInterface<M>(M mod);
         void StackModuleInterface<M>(M mod);
-
         void AddCommand(object module, string command, string shorthelp, string longhelp, CommandDelegate callback);
     }
 }

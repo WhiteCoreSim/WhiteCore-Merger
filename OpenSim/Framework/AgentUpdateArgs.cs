@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,50 +33,50 @@ using OpenMetaverse;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Client provided parameters for avatar movement
+    ///     Client provided parameters for avatar movement
     /// </summary>
     public class AgentUpdateArgs : EventArgs
     {
         /// <summary>
-        /// Agent's unique ID
+        ///     Agent's unique ID
         /// </summary>
         public UUID AgentID;
 
         /// <summary>
-        /// Rotation of the avatar's body
+        ///     Rotation of the avatar's body
         /// </summary>
         public Quaternion BodyRotation;
 
         /// <summary>
-        /// AT portion of the camera matrix
+        ///     AT portion of the camera matrix
         /// </summary>
         public Vector3 CameraAtAxis;
 
         /// <summary>
-        /// Position of the camera in the Scene
+        ///     Position of the camera in the Scene
         /// </summary>
         public Vector3 CameraCenter;
         public Vector3 CameraLeftAxis;
         public Vector3 CameraUpAxis;
 
         /// <summary>
-        /// Bitflag field for agent movement.  Fly, forward, backward, turn left, turn right, go up, go down, Straffe, etc.
+        ///     Bitflag field for agent movement.  Fly, forward, backward, turn left, turn right, go up, go down, Straffe, etc.
         /// </summary>
         public uint ControlFlags;
 
         /// <summary>
-        /// Agent's client Draw distance setting
+        ///     Agent's client Draw distance setting
         /// </summary>
         public float Far;
         public byte Flags;
 
         /// <summary>
-        /// Rotation of the avatar's head
+        ///     Rotation of the avatar's head
         /// </summary>
         public Quaternion HeadRotation;
 
         /// <summary>
-        /// Session Id
+        ///     Session Id
         /// </summary>
         public UUID SessionID;
         public byte State;

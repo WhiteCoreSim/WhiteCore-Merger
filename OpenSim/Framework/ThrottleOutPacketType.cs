@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,24 +33,52 @@ namespace OpenSim.Framework
 {
     public enum ThrottleOutPacketType : int
     {
-        /// <summary>Unthrottled packets</summary>
+        /// <summary>
+        ///     Unthrottled packets
+        /// </summary>
         Unknown = -1,
-        /// <summary>Packets that are being resent</summary>
+
+        /// <summary>
+        ///     Packets that are being resent
+        /// </summary>
         Resend = 0,
-        /// <summary>Terrain data</summary>
+
+        /// <summary>
+        ///     Terrain data
+        /// </summary>
         Land = 1,
-        /// <summary>Wind data</summary>
+
+        /// <summary>
+        ///     Wind data
+        /// </summary>
         Wind = 2,
-        /// <summary>Cloud data</summary>
+
+        /// <summary>
+        ///     Cloud data
+        /// </summary>
         Cloud = 3,
-        /// <summary>Any packets that do not fit into the other throttles</summary>
+
+        /// <summary>
+        ///     Any packets that do not fit into the other throttles
+        /// </summary>
         Task = 4,
-        /// <summary>Texture assets</summary>
+
+        /// <summary>
+        ///     Texture assets
+        /// </summary>
         Texture = 5,
-        /// <summary>Non-texture assets</summary>
+
+        /// <summary>
+        ///     Non-texture assets
+        /// </summary>
         Asset = 6,
-        /// <summary>Avatar and primitive data</summary>
-        /// <remarks>This is a sub-category of Task</remarks>
+
+        /// <summary>
+        ///     Avatar and primitive data
+        /// </summary>
+        /// <remarks>
+        ///     This is a sub-category of Task
+        /// </remarks>
         State = 7,
     }
 

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,17 +35,17 @@ namespace OpenSim.Framework.Capabilities
     public class LLSDTaskInventoryUploadComplete
     {
         /// <summary>
-        /// The task inventory item that was updated
+        ///     The task inventory item that was updated
         /// </summary>
         public UUID item_id;
 
         /// <summary>
-        /// The task that was updated
+        ///     The task that was updated
         /// </summary>
         public UUID task_id;
 
         /// <summary>
-        /// State of the upload.  So far have only even seen this set to "complete"
+        ///     State of the upload.  So far have only even seen this set to "complete"
         /// </summary>
         public string state;
     }

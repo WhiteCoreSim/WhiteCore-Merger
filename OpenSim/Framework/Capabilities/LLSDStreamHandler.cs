@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,37 +35,22 @@ using OpenSim.Framework.Servers.HttpServer;
 
 namespace OpenSim.Framework.Capabilities
 {
-    public class LLSDStreamhandler<TRequest, TResponse> : BaseStreamHandler
-        where TRequest : new()
+    public class LLSDStreamhandler<TRequest, TResponse> : BaseStreamHandler where TRequest : new()
     {
         private LLSDMethod<TRequest, TResponse> m_method;
 
-        public LLSDStreamhandler(string httpMethod, string path, LLSDMethod<TRequest, TResponse> method)
-            : base(httpMethod, path)
+        public LLSDStreamhandler(string httpMethod, string path, LLSDMethod<TRequest, TResponse> method) : base(httpMethod, path)
         {
             m_method = method;
         }
 
-        public override byte[] Handle(string path, Stream request,
-                                      OSHttpRequest httpRequest, OSHttpResponse httpResponse)
+        public override byte[] Handle(string path, Stream request, OSHttpRequest httpRequest, OSHttpResponse httpResponse)
         {
-            //Encoding encoding = Util.UTF8;
-            //StreamReader streamReader = new StreamReader(request, false);
-
-            //string requestBody = streamReader.ReadToEnd();
-            //streamReader.Close();
-
-            // OpenMetaverse.StructuredData.OSDMap hash = (OpenMetaverse.StructuredData.OSDMap)
-            //    OpenMetaverse.StructuredData.LLSDParser.DeserializeXml(new XmlTextReader(request));
-
-            Hashtable hash = (Hashtable) LLSD.LLSDDeserialize(request);
+            Hashtable hash = (Hashtable)LLSD.LLSDDeserialize(request);
             TRequest llsdRequest = new TRequest();
             LLSDHelpers.DeserialiseOSDMap(hash, llsdRequest);
-
             TResponse response = m_method(llsdRequest);
-
             Encoding encoding = new UTF8Encoding(false);
-
             return encoding.GetBytes(LLSDHelpers.SerialiseLLSDReply(response));
         }
     }

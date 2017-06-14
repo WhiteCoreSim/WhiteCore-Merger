@@ -1,6 +1,8 @@
 ﻿/*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -24,11 +26,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System.Collections.Generic;
+using NUnit.Framework;
 using OpenMetaverse;
 using OpenMetaverse.StructuredData;
-using NUnit.Framework;
-
 
 namespace OpenSim.Framework.Tests
 {
@@ -48,7 +50,6 @@ namespace OpenSim.Framework.Tests
         private UUID SessionId;
         private Vector3 StartPos;
 
-
         [SetUp]
         public void setup()
         {
@@ -59,7 +60,7 @@ namespace OpenSim.Framework.Tests
             ChildrenCapsPaths.Add(ulong.MaxValue, "http://www.opensimulator.org/Caps/Foo2");
             firstname = "CoolAvatarTest";
             lastname = "test";
-            StartPos = new Vector3(5,23,125);
+            StartPos = new Vector3(5, 23, 125);
 
             SecureSessionId = UUID.Random();
             SessionId = UUID.Random();
@@ -96,7 +97,6 @@ namespace OpenSim.Framework.Tests
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_BOWED_LEGS] = 127;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_FOOT_SIZE] = 45;
 
-
             // head 
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_HEAD_SIZE] = 255;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_SQUASH_STRETCH_HEAD] = 0; // head stretch
@@ -110,8 +110,6 @@ namespace OpenSim.Framework.Tests
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_PUFFY_UPPER_CHEEKS] = 0; //  upper cheeks 
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_DOUBLE_CHIN] = 122; //  lower cheeks
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_HIGH_CHEEK_BONES] = 130;
-
-
 
             // eyes
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_EYE_SIZE] = 105;
@@ -147,7 +145,6 @@ namespace OpenSim.Framework.Tests
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_BULBOUS_NOSE_TIP] = 25;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_CROOKED_NOSE] = 127;
 
-
             // Mouth
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_LIP_WIDTH] = 122;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_TALL_LIPS] = 10; // lip fullness
@@ -159,7 +156,6 @@ namespace OpenSim.Framework.Tests
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_WIDE_LIP_CLEFT] = 84;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_SHIFT_MOUTH] = 127;
 
-
             // chin
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_WEAK_CHIN] = 119;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_SQUARE_JAW] = 5;
@@ -170,7 +166,6 @@ namespace OpenSim.Framework.Tests
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_CLEFT_CHIN] = 89;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_CLEFT_CHIN_UPPER] = 89;
             VisualParams[(int)AvatarAppearance.VPElement.SHAPE_DOUBLE_CHIN] = 0;
-
 
             // hair color
             VisualParams[(int)AvatarAppearance.VPElement.HAIR_WHITE_HAIR] = 0;
@@ -222,6 +217,7 @@ namespace OpenSim.Framework.Tests
             AvAppearance.VisualParams = VisualParams;
 
             List<byte> wearbyte = new List<byte>();
+
             for (int i = 0; i < VisualParams.Length; i++)
             {
                 wearbyte.Add(VisualParams[i]);
@@ -231,10 +227,10 @@ namespace OpenSim.Framework.Tests
         }
 
         /// <summary>
-        /// Test to ensure that the serialization format is the same and the underlying types don't change without notice
-        /// oldSerialization is just a json serialization of the OSDMap packed for the AgentCircuitData.
-        /// The idea is that if the current json serializer cannot parse the old serialization, then the underlying types 
-        /// have changed and are incompatible.
+        ///     Test to ensure that the serialization format is the same and the underlying types don't change without notice
+        ///     oldSerialization is just a json serialization of the OSDMap packed for the AgentCircuitData.
+        ///     The idea is that if the current json serializer cannot parse the old serialization, then the underlying types 
+        ///     have changed and are incompatible.
         /// </summary>
         [Test]
         public void HistoricalAgentCircuitDataOSDConversion()
@@ -255,12 +251,10 @@ namespace OpenSim.Framework.Tests
             Agent1Data.SessionID = new UUID("aa06f798-9d70-4bdb-9bbf-012a02ee2baf");
             Agent1Data.startpos = StartPos;
 
-
             OSDMap map2;
             try
             {
-                map2 = (OSDMap) OSDParser.DeserializeJson(oldSerialization);
-
+                map2 = (OSDMap)OSDParser.DeserializeJson(oldSerialization);
 
                 AgentCircuitData Agent2Data = new AgentCircuitData();
                 Agent2Data.UnpackAgentCircuitData(map2);
@@ -281,77 +275,63 @@ namespace OpenSim.Framework.Tests
             }
             catch (LitJson.JsonException)
             {
-                //intermittant litjson errors :P
+                //intermittant litjson errors
                 Assert.That(1 == 1);
             }
-            /*
-            Enable this once VisualParams go in the packing method
-            for (int i=0;i<208;i++)
-               Assert.That((Agent1Data.Appearance.VisualParams[i] == Agent2Data.Appearance.VisualParams[i]));
-            */
-       }
+        }
 
-       /// <summary>
-       /// Test to ensure that the packing and unpacking methods work.
-       /// </summary>
-       [Test]
-       public void TestAgentCircuitDataOSDConversion()
-       {
-           AgentCircuitData Agent1Data = new AgentCircuitData();
-           Agent1Data.AgentID = AgentId;
-           Agent1Data.Appearance = AvAppearance;
-           Agent1Data.BaseFolder = BaseFolder;
-           Agent1Data.CapsPath = CapsPath;
-           Agent1Data.child = false;
-           Agent1Data.ChildrenCapSeeds = ChildrenCapsPaths;
-           Agent1Data.circuitcode = circuitcode;
-           Agent1Data.firstname = firstname;
-           Agent1Data.InventoryFolder = BaseFolder;
-           Agent1Data.lastname = lastname;
-           Agent1Data.SecureSessionID = SecureSessionId;
-           Agent1Data.SessionID = SessionId;
-           Agent1Data.startpos = StartPos;
+        /// <summary>
+        ///     Test to ensure that the packing and unpacking methods work.
+        /// </summary>
+        [Test]
+        public void TestAgentCircuitDataOSDConversion()
+        {
+            AgentCircuitData Agent1Data = new AgentCircuitData();
+            Agent1Data.AgentID = AgentId;
+            Agent1Data.Appearance = AvAppearance;
+            Agent1Data.BaseFolder = BaseFolder;
+            Agent1Data.CapsPath = CapsPath;
+            Agent1Data.child = false;
+            Agent1Data.ChildrenCapSeeds = ChildrenCapsPaths;
+            Agent1Data.circuitcode = circuitcode;
+            Agent1Data.firstname = firstname;
+            Agent1Data.InventoryFolder = BaseFolder;
+            Agent1Data.lastname = lastname;
+            Agent1Data.SecureSessionID = SecureSessionId;
+            Agent1Data.SessionID = SessionId;
+            Agent1Data.startpos = StartPos;
 
             OSDMap map2;
             OSDMap map = Agent1Data.PackAgentCircuitData();
             try
             {
                 string str = OSDParser.SerializeJsonString(map);
-                //System.Console.WriteLine(str);
-                map2 = (OSDMap) OSDParser.DeserializeJson(str);
-            } 
+                map2 = (OSDMap)OSDParser.DeserializeJson(str);
+            }
             catch (System.NullReferenceException)
             {
-                //spurious litjson errors :P
+                //spurious litjson errors
                 map2 = map;
-                Assert.That(1==1);
+                Assert.That(1 == 1);
                 return;
             }
 
-           AgentCircuitData Agent2Data = new AgentCircuitData();
-           Agent2Data.UnpackAgentCircuitData(map2);
+            AgentCircuitData Agent2Data = new AgentCircuitData();
+            Agent2Data.UnpackAgentCircuitData(map2);
 
-           Assert.That((Agent1Data.AgentID == Agent2Data.AgentID));
-           Assert.That((Agent1Data.BaseFolder == Agent2Data.BaseFolder));
+            Assert.That((Agent1Data.AgentID == Agent2Data.AgentID));
+            Assert.That((Agent1Data.BaseFolder == Agent2Data.BaseFolder));
 
-           Assert.That((Agent1Data.CapsPath == Agent2Data.CapsPath));
-           Assert.That((Agent1Data.child == Agent2Data.child));
-           Assert.That((Agent1Data.ChildrenCapSeeds.Count == Agent2Data.ChildrenCapSeeds.Count));
-           Assert.That((Agent1Data.circuitcode == Agent2Data.circuitcode));
-           Assert.That((Agent1Data.firstname == Agent2Data.firstname));
-           Assert.That((Agent1Data.InventoryFolder == Agent2Data.InventoryFolder));
-           Assert.That((Agent1Data.lastname == Agent2Data.lastname));
-           Assert.That((Agent1Data.SecureSessionID == Agent2Data.SecureSessionID));
-           Assert.That((Agent1Data.SessionID == Agent2Data.SessionID));
-           Assert.That((Agent1Data.startpos == Agent2Data.startpos));
-
-           /*
-            Enable this once VisualParams go in the packing method
-           for (int i = 0; i < 208; i++)
-               Assert.That((Agent1Data.Appearance.VisualParams[i] == Agent2Data.Appearance.VisualParams[i]));
-           */
-
-
+            Assert.That((Agent1Data.CapsPath == Agent2Data.CapsPath));
+            Assert.That((Agent1Data.child == Agent2Data.child));
+            Assert.That((Agent1Data.ChildrenCapSeeds.Count == Agent2Data.ChildrenCapSeeds.Count));
+            Assert.That((Agent1Data.circuitcode == Agent2Data.circuitcode));
+            Assert.That((Agent1Data.firstname == Agent2Data.firstname));
+            Assert.That((Agent1Data.InventoryFolder == Agent2Data.InventoryFolder));
+            Assert.That((Agent1Data.lastname == Agent2Data.lastname));
+            Assert.That((Agent1Data.SecureSessionID == Agent2Data.SecureSessionID));
+            Assert.That((Agent1Data.SessionID == Agent2Data.SessionID));
+            Assert.That((Agent1Data.startpos == Agent2Data.startpos));
         }
     }
 }

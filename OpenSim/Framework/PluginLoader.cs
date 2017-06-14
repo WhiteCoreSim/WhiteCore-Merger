@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,18 +37,18 @@ using Mono.Addins;
 namespace OpenSim.Framework
 {
     /// <summary>
-    /// Exception thrown if an incorrect number of plugins are loaded
+    ///     Exception thrown if an incorrect number of plugins are loaded
     /// </summary>
     public class PluginConstraintViolatedException : Exception
     {
-        public PluginConstraintViolatedException () : base() {}
-        public PluginConstraintViolatedException (string msg) : base(msg) {}
-        public PluginConstraintViolatedException (string msg, Exception e) : base(msg, e) {}
+        public PluginConstraintViolatedException() : base() { }
+        public PluginConstraintViolatedException(string msg) : base(msg) { }
+        public PluginConstraintViolatedException(string msg, Exception e) : base(msg, e) { }
     }
 
     /// <summary>
-    /// Classes wishing to impose constraints on plugin loading must implement
-    /// this class and pass it to PluginLoader AddConstraint()
+    ///     Classes wishing to impose constraints on plugin loading must implement
+    ///     this class and pass it to PluginLoader AddConstraint()
     /// </summary>
     public interface IPluginConstraint
     {
@@ -55,8 +57,8 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// Classes wishing to select specific plugins from a range of possible options
-    /// must implement this class and pass it to PluginLoader Load()
+    ///     Classes wishing to select specific plugins from a range of possible options
+    ///     must implement this class and pass it to PluginLoader Load()
     /// </summary>
     public interface IPluginFilter
     {
@@ -64,24 +66,18 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// Generic Plugin Loader
+    ///     Generic Plugin Loader
     /// </summary>
-    public class PluginLoader <T> : IDisposable where T : IPlugin
+    public class PluginLoader<T> : IDisposable where T : IPlugin
     {
         private const int max_loadable_plugins = 10000;
-
         private List<T> loaded = new List<T>();
         private List<string> extpoints = new List<string>();
         private PluginInitialiserBase initialiser;
+        private Dictionary<string, IPluginConstraint> constraints = new Dictionary<string, IPluginConstraint>();
+        private Dictionary<string, IPluginFilter> filters = new Dictionary<string, IPluginFilter>();
 
-        private Dictionary<string,IPluginConstraint> constraints
-            = new Dictionary<string,IPluginConstraint>();
-
-        private Dictionary<string,IPluginFilter> filters
-            = new Dictionary<string,IPluginFilter>();
-
-        private static readonly ILog log
-            = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public PluginInitialiserBase Initialiser
         {
@@ -96,7 +92,7 @@ namespace OpenSim.Framework
 
         public T Plugin
         {
-            get { return (loaded.Count == 1)? loaded [0] : default (T); }
+            get { return (loaded.Count == 1) ? loaded[0] : default(T); }
         }
 
         public PluginLoader()
@@ -157,13 +153,14 @@ namespace OpenSim.Framework
         {
             foreach (string ext in extpoints)
             {
-                log.Info("[PLUGINS]: Loading extension point " + ext);
+                log.Info("[Plugins]: Loading extension point " + ext);
 
                 if (constraints.ContainsKey(ext))
                 {
                     IPluginConstraint cons = constraints[ext];
+
                     if (cons.Apply(ext))
-                        log.Error("[PLUGINS]: " + ext + " failed constraint: " + cons.Message);
+                        log.Error("[Plugins]: " + ext + " failed constraint: " + cons.Message);
                 }
 
                 IPluginFilter filter = null;
@@ -174,7 +171,7 @@ namespace OpenSim.Framework
                 List<T> loadedPlugins = new List<T>();
                 foreach (PluginExtensionNode node in AddinManager.GetExtensionNodes(ext))
                 {
-                    log.Info("[PLUGINS]: Trying plugin " + node.Path);
+                    log.Info("[Plugins]: Trying plugin " + node.Path);
 
                     if ((filter != null) && (filter.Apply(node) == false))
                         continue;
@@ -195,9 +192,9 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Unregisters Mono.Addins event handlers, allowing temporary Mono.Addins
-        /// data to be garbage collected. Since the plugins created by this loader
-        /// are meant to outlive the loader itself, they must be disposed separately
+        ///     Unregisters Mono.Addins event handlers, allowing temporary Mono.Addins
+        ///     data to be garbage collected. Since the plugins created by this loader
+        ///     are meant to outlive the loader itself, they must be disposed separately
         /// </summary>
         public void Dispose()
         {
@@ -210,7 +207,7 @@ namespace OpenSim.Framework
             if (AddinManager.IsInitialized == true)
                 return;
 
-            log.Info("[PLUGINS]: Initializing addin manager");
+            log.Info("[Plugins]: Initializing addin manager");
 
             AddinManager.AddinLoadError += on_addinloaderror_;
             AddinManager.AddinLoaded += on_addinloaded_;
@@ -225,18 +222,15 @@ namespace OpenSim.Framework
 
         private void on_addinloaded_(object sender, AddinEventArgs args)
         {
-            log.Info ("[PLUGINS]: Plugin Loaded: " + args.AddinId);
+            log.Info("[Plugins]: Plugin Loaded: " + args.AddinId);
         }
 
         private void on_addinloaderror_(object sender, AddinErrorEventArgs args)
         {
             if (args.Exception == null)
-                log.Error ("[PLUGINS]: Plugin Error: "
-                        + args.Message);
+                log.Error("[Plugins]: Plugin Error: " + args.Message);
             else
-                log.Error ("[PLUGINS]: Plugin Error: "
-                        + args.Exception.Message + "\n"
-                        + args.Exception.StackTrace);
+                log.Error("[Plugins]: Plugin Error: " + args.Exception.Message + "\n" + args.Exception.StackTrace);
         }
 
         private void clear_registry_()
@@ -318,7 +312,7 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// Constraint that bounds the number of plugins to be loaded.
+    ///     Constraint that bounds the number of plugins to be loaded.
     /// </summary>
     public class PluginCountConstraint : IPluginConstraint
     {
@@ -341,12 +335,11 @@ namespace OpenSim.Framework
         {
             get
             {
-                return "The number of plugins is constrained to the interval ["
-                    + min + ", " + max + "]";
+                return "The number of plugins is constrained to the interval [" + min + ", " + max + "]";
             }
         }
 
-        public bool Apply (string extpoint)
+        public bool Apply(string extpoint)
         {
             int count = AddinManager.GetExtensionNodes(extpoint).Count;
 
@@ -358,18 +351,18 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// Filters out which plugin to load based on the plugin name or names given.  Plugin names are contained in
-    /// their addin.xml
+    ///     Filters out which plugin to load based on the plugin name or names given.  Plugin names are contained in
+    ///     their addin.xml
     /// </summary>
     public class PluginProviderFilter : IPluginFilter
     {
         private string[] m_filters;
 
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         /// <param name="p">
-        /// Plugin name or names on which to filter.  Multiple names should be separated by commas.
+        ///     Plugin name or names on which to filter.  Multiple names should be separated by commas.
         /// </param>
         public PluginProviderFilter(string p)
         {
@@ -382,11 +375,11 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Apply this filter to the given plugin.
+        ///     Apply this filter to the given plugin.
         /// </summary>
         /// <param name="plugin"></param>
         /// <returns>true if the plugin's name matched one of the filters, false otherwise.</returns>
-        public bool Apply (PluginExtensionNode plugin)
+        public bool Apply(PluginExtensionNode plugin)
         {
             for (int i = 0; i < m_filters.Length; i++)
             {
@@ -401,17 +394,17 @@ namespace OpenSim.Framework
     }
 
     /// <summary>
-    /// Filters plugins according to their ID. Plugin IDs are contained in their addin.xml
+    ///     Filters plugins according to their ID. Plugin IDs are contained in their addin.xml
     /// </summary>
     public class PluginIdFilter : IPluginFilter
     {
         private string[] m_filters;
 
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         /// <param name="p">
-        /// Plugin ID or IDs on which to filter. Multiple names should be separated by commas.
+        ///     Plugin ID or IDs on which to filter. Multiple names should be separated by commas.
         /// </param>
         public PluginIdFilter(string p)
         {
@@ -424,11 +417,11 @@ namespace OpenSim.Framework
         }
 
         /// <summary>
-        /// Apply this filter to <paramref name="plugin" />.
+        ///     Apply this filter to <paramref name="plugin" />.
         /// </summary>
         /// <param name="plugin">PluginExtensionNode instance to check whether it passes the filter.</param>
         /// <returns>true if the plugin's ID matches one of the filters, false otherwise.</returns>
-        public bool Apply (PluginExtensionNode plugin)
+        public bool Apply(PluginExtensionNode plugin)
         {
             for (int i = 0; i < m_filters.Length; i++)
             {

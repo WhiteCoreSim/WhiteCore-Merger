@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,36 +35,35 @@ using OpenSim.Framework.Servers.HttpServer;
 namespace OpenSim.Framework.Capabilities
 {
     /// <summary>
-    /// CapsHandlers is a cap handler container but also takes
-    /// care of adding and removing cap handlers to and from the
-    /// supplied BaseHttpServer.
+    ///     CapsHandlers is a cap handler container but also takes
+    ///     care of adding and removing cap handlers to and from the
+    ///     supplied BaseHttpServer.
     /// </summary>
     public class CapsHandlers
     {
-        private Dictionary <string, IRequestHandler> m_capsHandlers = new Dictionary<string, IRequestHandler>();
+        private Dictionary<string, IRequestHandler> m_capsHandlers = new Dictionary<string, IRequestHandler>();
         private IHttpServer m_httpListener;
         private string m_httpListenerHostName;
         private uint m_httpListenerPort;
         private bool m_useSSL = false;
 
-        /// <summary></summary>
-        /// CapsHandlers is a cap handler container but also takes
-        /// care of adding and removing cap handlers to and from the
-        /// supplied BaseHttpServer.
+        /// <summary>
+        ///     CapsHandlers is a cap handler container but also takes
+        ///     care of adding and removing cap handlers to and from the
+        ///     supplied BaseHttpServer.
         /// </summary>
         /// <param name="httpListener">base HTTP server</param>
         /// <param name="httpListenerHostname">host name of the HTTP
         /// server</param>
         /// <param name="httpListenerPort">HTTP port</param>
-        public CapsHandlers(BaseHttpServer httpListener, string httpListenerHostname, uint httpListenerPort)
-         : this (httpListener,httpListenerHostname,httpListenerPort, false)
+        public CapsHandlers(BaseHttpServer httpListener, string httpListenerHostname, uint httpListenerPort) : this(httpListener, httpListenerHostname, httpListenerPort, false)
         {
         }
 
-        /// <summary></summary>
-        /// CapsHandlers is a cap handler container but also takes
-        /// care of adding and removing cap handlers to and from the
-        /// supplied BaseHttpServer.
+        /// <summary>
+        ///     CapsHandlers is a cap handler container but also takes
+        ///     care of adding and removing cap handlers to and from the
+        ///     supplied BaseHttpServer.
         /// </summary>
         /// <param name="httpListener">base HTTP server</param>
         /// <param name="httpListenerHostname">host name of the HTTP
@@ -74,6 +75,7 @@ namespace OpenSim.Framework.Capabilities
             m_httpListenerHostName = httpListenerHostname;
             m_httpListenerPort = httpListenerPort;
             m_useSSL = https;
+
             if (m_useSSL)
             {
                 m_httpListenerHostName = httpListener.SSLCommonName;
@@ -82,7 +84,7 @@ namespace OpenSim.Framework.Capabilities
         }
 
         /// <summary>
-        /// Remove the cap handler for a capability.
+        ///     Remove the cap handler for a capability.
         /// </summary>
         /// <param name="capsName">name of the capability of the cap
         /// handler to be removed</param>
@@ -99,13 +101,13 @@ namespace OpenSim.Framework.Capabilities
         }
 
         /// <summary>
-        /// The indexer allows us to treat the CapsHandlers object
-        /// in an intuitive dictionary like way.
+        ///     The indexer allows us to treat the CapsHandlers object
+        ///     in an intuitive dictionary like way.
         /// </summary>
         /// <Remarks>
-        /// The indexer will throw an exception when you try to
-        /// retrieve a cap handler for a cap that is not contained in
-        /// CapsHandlers.
+        ///     The indexer will throw an exception when you try to
+        ///     retrieve a cap handler for a cap that is not contained in
+        ///     CapsHandlers.
         /// </Remarks>
         public IRequestHandler this[string idx]
         {
@@ -130,7 +132,7 @@ namespace OpenSim.Framework.Capabilities
         }
 
         /// <summary>
-        /// Return the list of cap names for which this CapsHandlers
+        ///     Return the list of cap names for which this CapsHandlers
         /// object contains cap handlers.
         /// </summary>
         public string[] Caps
@@ -144,8 +146,8 @@ namespace OpenSim.Framework.Capabilities
         }
 
         /// <summary>
-        /// Return an LLSD-serializable Hashtable describing the
-        /// capabilities and their handler details.
+        ///     Return an LLSD-serializable Hashtable describing the
+        ///     capabilities and their handler details.
         /// </summary>
         public Hashtable CapsDetails
         {
@@ -153,7 +155,7 @@ namespace OpenSim.Framework.Capabilities
             {
                 Hashtable caps = new Hashtable();
                 string protocol = "http://";
-                
+
                 if (m_useSSL)
                     protocol = "https://";
 
@@ -164,6 +166,7 @@ namespace OpenSim.Framework.Capabilities
                     if ("SEED" == capsName) continue;
                     caps[capsName] = baseUrl + m_capsHandlers[capsName].Path;
                 }
+
                 return caps;
             }
         }

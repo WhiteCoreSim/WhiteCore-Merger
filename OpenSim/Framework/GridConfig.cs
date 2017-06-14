@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,13 +31,12 @@ using System;
 
 namespace OpenSim.Framework
 {
-    public class GridConfig:ConfigBase
+    public class GridConfig : ConfigBase
     {
         public string AllowForcefulBanlines = "TRUE";
         public bool AllowRegionRegistration = true;
         public string AssetRecvKey = String.Empty;
         public string AssetSendKey = String.Empty;
-
         public string DatabaseProvider = String.Empty;
         public string DatabaseConnect = String.Empty;
         public string DefaultAssetServer = String.Empty;
@@ -50,8 +51,7 @@ namespace OpenSim.Framework
 
         public GridConfig(string description, string filename)
         {
-            m_configMember =
-                new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
+            m_configMember = new ConfigurationMember(filename, description, loadConfigurationOptions, handleIncomingConfiguration, true);
             m_configMember.performConfigurationRetrieve();
         }
 
@@ -91,11 +91,11 @@ namespace OpenSim.Framework
             m_configMember.addConfigurationOption("allow_forceful_banlines",
                                                 ConfigurationOption.ConfigurationTypes.TYPE_STRING,
                                                 "Allow Forceful Banlines", "TRUE", true);
-            
-            m_configMember.addConfigurationOption("allow_region_registration", 
+
+            m_configMember.addConfigurationOption("allow_region_registration",
                                                 ConfigurationOption.ConfigurationTypes.TYPE_BOOLEAN,
-                                                "Allow regions to register immediately upon grid server startup? true/false", 
-                                                "True", 
+                                                "Allow regions to register immediately upon grid server startup? true/false",
+                                                "True",
                                                 false);
             m_configMember.addConfigurationOption("console_user", ConfigurationOption.ConfigurationTypes.TYPE_STRING,
                                                  "Remote console access user name [Default: disabled]", "", false);
@@ -110,40 +110,40 @@ namespace OpenSim.Framework
             switch (configuration_key)
             {
                 case "default_asset_server":
-                    DefaultAssetServer = (string) configuration_result;
+                    DefaultAssetServer = (string)configuration_result;
                     break;
                 case "asset_send_key":
-                    AssetSendKey = (string) configuration_result;
+                    AssetSendKey = (string)configuration_result;
                     break;
                 case "asset_recv_key":
-                    AssetRecvKey = (string) configuration_result;
+                    AssetRecvKey = (string)configuration_result;
                     break;
                 case "default_user_server":
-                    DefaultUserServer = (string) configuration_result;
+                    DefaultUserServer = (string)configuration_result;
                     break;
                 case "user_send_key":
-                    UserSendKey = (string) configuration_result;
+                    UserSendKey = (string)configuration_result;
                     break;
                 case "user_recv_key":
-                    UserRecvKey = (string) configuration_result;
+                    UserRecvKey = (string)configuration_result;
                     break;
                 case "sim_send_key":
-                    SimSendKey = (string) configuration_result;
+                    SimSendKey = (string)configuration_result;
                     break;
                 case "sim_recv_key":
-                    SimRecvKey = (string) configuration_result;
+                    SimRecvKey = (string)configuration_result;
                     break;
                 case "database_provider":
-                    DatabaseProvider = (string) configuration_result;
+                    DatabaseProvider = (string)configuration_result;
                     break;
                 case "database_connect":
-                    DatabaseConnect = (string) configuration_result;
+                    DatabaseConnect = (string)configuration_result;
                     break;
                 case "http_port":
-                    HttpPort = (uint) configuration_result;
+                    HttpPort = (uint)configuration_result;
                     break;
                 case "allow_forceful_banlines":
-                    AllowForcefulBanlines = (string) configuration_result;
+                    AllowForcefulBanlines = (string)configuration_result;
                     break;
                 case "allow_region_registration":
                     AllowRegionRegistration = (bool)configuration_result;

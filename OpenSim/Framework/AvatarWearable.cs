@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -52,31 +54,32 @@ namespace OpenSim.Framework
             get
             {
                 AvatarWearable[] defaultWearables = new AvatarWearable[13]; //should be 13 of these
+
                 for (int i = 0; i < 13; i++)
                 {
                     defaultWearables[i] = new AvatarWearable();
                 }
-                
+
                 // Body
-                defaultWearables[0].ItemID  = new UUID("66c41e39-38f9-f75a-024e-585989bfaba9");
+                defaultWearables[0].ItemID = new UUID("66c41e39-38f9-f75a-024e-585989bfaba9");
                 defaultWearables[0].AssetID = new UUID("66c41e39-38f9-f75a-024e-585989bfab73");
-                
+
                 // Hair
-                defaultWearables[2].ItemID  = new UUID("d342e6c1-b9d2-11dc-95ff-0800200c9a66");
+                defaultWearables[2].ItemID = new UUID("d342e6c1-b9d2-11dc-95ff-0800200c9a66");
                 defaultWearables[2].AssetID = new UUID("d342e6c0-b9d2-11dc-95ff-0800200c9a66");
 
                 // Skin
-                defaultWearables[1].ItemID  = new UUID("77c41e39-38f9-f75a-024e-585989bfabc9");
+                defaultWearables[1].ItemID = new UUID("77c41e39-38f9-f75a-024e-585989bfabc9");
                 defaultWearables[1].AssetID = new UUID("77c41e39-38f9-f75a-024e-585989bbabbb");
 
                 // Shirt
-                defaultWearables[4].ItemID  = new UUID("77c41e39-38f9-f75a-0000-585989bf0000");
+                defaultWearables[4].ItemID = new UUID("77c41e39-38f9-f75a-0000-585989bf0000");
                 defaultWearables[4].AssetID = new UUID("00000000-38f9-1111-024e-222222111110");
 
                 // Pants
-                defaultWearables[5].ItemID  = new UUID("77c41e39-38f9-f75a-0000-5859892f1111");
+                defaultWearables[5].ItemID = new UUID("77c41e39-38f9-f75a-0000-5859892f1111");
                 defaultWearables[5].AssetID = new UUID("00000000-38f9-1111-024e-222222111120");
-                
+
                 return defaultWearables;
             }
         }

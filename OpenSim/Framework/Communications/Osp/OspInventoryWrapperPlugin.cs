@@ -1,6 +1,8 @@
 /*
  * Copyright (c) Contributors, http://whitecore-sim.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ * For an explanation of the license of each contributor and the content it 
+ * covers please see the Licenses directory.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,7 +34,7 @@ using OpenMetaverse;
 namespace OpenSim.Framework.Communications.Osp
 {
     /// <summary>
-    /// Wrap other inventory data plugins so that we can perform OSP related post processing for items
+    ///     Wrap other inventory data plugins so that we can perform OSP related post processing for items
     /// </summary>
     public class OspInventoryWrapperPlugin : IInventoryDataPlugin
     {
@@ -44,28 +46,28 @@ namespace OpenSim.Framework.Communications.Osp
             m_wrappedPlugin = wrappedPlugin;
             m_commsManager = commsManager;
         }
-            
+
         public string Name { get { return "OspInventoryWrapperPlugin"; } }
         public string Version { get { return "0.1"; } }
-        public void Initialise() {}
-        public void Initialise(string connect) {}
-        public void Dispose() {}
+        public void Initialise() { }
+        public void Initialise(string connect) { }
+        public void Dispose() { }
 
         public InventoryItemBase getInventoryItem(UUID item)
         {
             return PostProcessItem(m_wrappedPlugin.getInventoryItem(item));
         }
 
-        // XXX: Why on earth does this exist as it appears to duplicate getInventoryItem?
+        // Why does this exist as it appears to duplicate getInventoryItem?
         public InventoryItemBase queryInventoryItem(UUID item)
         {
             return PostProcessItem(m_wrappedPlugin.queryInventoryItem(item));
         }
-        
+
         public List<InventoryItemBase> getInventoryInFolder(UUID folderID)
         {
             List<InventoryItemBase> items = m_wrappedPlugin.getInventoryInFolder(folderID);
-            
+
             foreach (InventoryItemBase item in items)
                 PostProcessItem(item);
 
@@ -74,9 +76,8 @@ namespace OpenSim.Framework.Communications.Osp
 
         public List<InventoryItemBase> fetchActiveGestures(UUID avatarID)
         {
+            // Presuming that no post processing is needed here as gestures don't refer to creator information
             return m_wrappedPlugin.fetchActiveGestures(avatarID);
-
-            // Presuming that no post processing is needed here as gestures don't refer to creator information (?)
         }
 
         protected InventoryItemBase PostProcessItem(InventoryItemBase item)
@@ -84,7 +85,7 @@ namespace OpenSim.Framework.Communications.Osp
             item.CreatorIdAsUuid = OspResolver.ResolveOspa(item.CreatorId, m_commsManager);
             return item;
         }
-        
+
         public List<InventoryFolderBase> getFolderHierarchy(UUID parentID) { return m_wrappedPlugin.getFolderHierarchy(parentID); }
         public List<InventoryFolderBase> getUserRootFolders(UUID user) { return m_wrappedPlugin.getUserRootFolders(user); }
         public InventoryFolderBase getUserRootFolder(UUID user) { return m_wrappedPlugin.getUserRootFolder(user); }
