@@ -95,58 +95,55 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
             return m_OSSL_Functions.osWindActiveModelPluginName();
         }
 
-// Not yet plugged in as available OSSL functions, so commented out
-//        void osWindParamSet(string plugin, string param, float value)
-//        {
-//            m_OSSL_Functions.osWindParamSet(plugin, param, value);
-//        }
-//
-//        float osWindParamGet(string plugin, string param)
-//        {
-//            return m_OSSL_Functions.osWindParamGet(plugin, param);
-//        }
+        // Not yet plugged in as available OSSL functions, so commented out
+        //        void osWindParamSet(string plugin, string param, float value)
+        //        {
+        //            m_OSSL_Functions.osWindParamSet(plugin, param, value);
+        //        }
+        //
+        //        float osWindParamGet(string plugin, string param)
+        //        {
+        //            return m_OSSL_Functions.osWindParamGet(plugin, param);
+        //        }
 
         public double osList2Double(LSL_Types.list src, int index)
         {
             return m_OSSL_Functions.osList2Double(src, index);
         }
 
-        public string osSetDynamicTextureURL(string dynamicID, string contentType, string url, string extraParams,
-                                             int timer)
+        public string osSetDynamicTextureURL(string dynamicID, string contentType, string url, string extraParams, int timer)
         {
             return m_OSSL_Functions.osSetDynamicTextureURL(dynamicID, contentType, url, extraParams, timer);
         }
 
-        public string osSetDynamicTextureData(string dynamicID, string contentType, string data, string extraParams,
-                                             int timer)
+        public string osSetDynamicTextureData(string dynamicID, string contentType, string data, string extraParams, int timer)
         {
             return m_OSSL_Functions.osSetDynamicTextureData(dynamicID, contentType, data, extraParams, timer);
         }
 
-        public string osSetDynamicTextureURLBlend(string dynamicID, string contentType, string url, string extraParams,
-                                           int timer, int alpha)
+        public string osSetDynamicTextureDataFace(string dynamicID, string contentType, string data, string extraParams, int timer, int face)
+        {
+            return m_OSSL_Functions.osSetDynamicTextureDataFace(dynamicID, contentType, data, extraParams, timer, face);
+        }
+
+        public string osSetDynamicTextureURLBlend(string dynamicID, string contentType, string url, string extraParams, int timer, int alpha)
         {
             return m_OSSL_Functions.osSetDynamicTextureURLBlend(dynamicID, contentType, url, extraParams, timer, alpha);
         }
 
-        public string osSetDynamicTextureDataBlend(string dynamicID, string contentType, string data, string extraParams,
-                                             int timer, int alpha)
+        public string osSetDynamicTextureDataBlend(string dynamicID, string contentType, string data, string extraParams, int timer, int alpha)
         {
             return m_OSSL_Functions.osSetDynamicTextureDataBlend(dynamicID, contentType, data, extraParams, timer, alpha);
         }
 
-        public string osSetDynamicTextureURLBlendFace(string dynamicID, string contentType, string url, string extraParams,
-                                           bool blend, int disp, int timer, int alpha, int face)
+        public string osSetDynamicTextureURLBlendFace(string dynamicID, string contentType, string url, string extraParams, bool blend, int disp, int timer, int alpha, int face)
         {
-            return m_OSSL_Functions.osSetDynamicTextureURLBlendFace(dynamicID, contentType, url, extraParams,
-                                             blend, disp, timer, alpha, face);
+            return m_OSSL_Functions.osSetDynamicTextureURLBlendFace(dynamicID, contentType, url, extraParams, blend, disp, timer, alpha, face);
         }
 
-        public string osSetDynamicTextureDataBlendFace(string dynamicID, string contentType, string data, string extraParams,
-                                             bool blend, int disp, int timer, int alpha, int face)
+        public string osSetDynamicTextureDataBlendFace(string dynamicID, string contentType, string data, string extraParams, bool blend, int disp, int timer, int alpha, int face)
         {
-            return m_OSSL_Functions.osSetDynamicTextureDataBlendFace(dynamicID, contentType, data, extraParams,
-                                             blend, disp, timer, alpha, face);
+            return m_OSSL_Functions.osSetDynamicTextureDataBlendFace(dynamicID, contentType, data, extraParams, blend, disp, timer, alpha, face);
         }
 
         public LSL_Float osTerrainGetHeight(int x, int y)
@@ -195,7 +192,6 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
         }
 
         // Teleport Functions
-
         public void osTeleportAgent(string agent, string regionName, vector position, vector lookat)
         {
             m_OSSL_Functions.osTeleportAgent(agent, regionName, position, lookat);
@@ -223,7 +219,6 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
         }
 
         // Animation Functions
-
         public void osAvatarPlayAnimation(string avatar, string animation)
         {
             m_OSSL_Functions.osAvatarPlayAnimation(avatar, animation);
@@ -234,9 +229,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
             m_OSSL_Functions.osAvatarStopAnimation(avatar, animation);
         }
 
-
         //Texture Draw functions
-
         public string osMovePen(string drawList, int x, int y)
         {
             return m_OSSL_Functions.osMovePen(drawList, x, y);
@@ -329,7 +322,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
 
         public string osGetSimulatorVersion()
         {
-           return m_OSSL_Functions.osGetSimulatorVersion();
+            return m_OSSL_Functions.osGetSimulatorVersion();
         }
 
         public Hashtable osParseJSON(string JSON)
@@ -337,9 +330,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
             return m_OSSL_Functions.osParseJSON(JSON);
         }
 
-        public void osMessageObject(key objectUUID,string message)
+        public void osMessageObject(key objectUUID, string message)
         {
-            m_OSSL_Functions.osMessageObject(objectUUID,message);
+            m_OSSL_Functions.osMessageObject(objectUUID, message);
         }
 
         public void osMakeNotecard(string notecardName, LSL_Types.list contents)
@@ -444,6 +437,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
         public class OSSLPrim
         {
             internal ScriptBaseClass OSSL;
+
             public OSSLPrim(ScriptBaseClass bc)
             {
                 OSSL = bc;
@@ -454,6 +448,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
             public OSSLPrim_Position Position;
             public OSSLPrim_Rotation Rotation;
             private TextStruct _text;
+
             public TextStruct Text
             {
                 get { return _text; }
@@ -478,28 +473,37 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
         {
             private OSSLPrim prim;
             private LSL_Types.Vector3 Position;
+
             public OSSLPrim_Position(OSSLPrim _prim)
             {
                 prim = _prim;
             }
+
             private void Load()
             {
                 Position = prim.OSSL.llGetPos();
             }
+
             private void Save()
             {
                 if (Position.x > ((int)Constants.RegionSize - 1))
                     Position.x = ((int)Constants.RegionSize - 1);
+
                 if (Position.x < 0)
                     Position.x = 0;
+
                 if (Position.y > ((int)Constants.RegionSize - 1))
                     Position.y = ((int)Constants.RegionSize - 1);
+
                 if (Position.y < 0)
                     Position.y = 0;
+
                 if (Position.z > 768)
                     Position.z = 768;
+
                 if (Position.z < 0)
                     Position.z = 0;
+
                 prim.OSSL.llSetPos(Position);
             }
 
@@ -517,6 +521,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
                     Save();
                 }
             }
+
             public double y
             {
                 get
@@ -531,6 +536,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
                     Save();
                 }
             }
+
             public double z
             {
                 get
@@ -552,14 +558,17 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
         {
             private OSSLPrim prim;
             private LSL_Types.Quaternion Rotation;
+
             public OSSLPrim_Rotation(OSSLPrim _prim)
             {
                 prim = _prim;
             }
+
             private void Load()
             {
                 Rotation = prim.OSSL.llGetRot();
             }
+
             private void Save()
             {
                 prim.OSSL.llSetRot(Rotation);
@@ -579,6 +588,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
                     Save();
                 }
             }
+
             public double y
             {
                 get
@@ -593,6 +603,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
                     Save();
                 }
             }
+
             public double z
             {
                 get
@@ -607,6 +618,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.ScriptBase
                     Save();
                 }
             }
+
             public double s
             {
                 get
