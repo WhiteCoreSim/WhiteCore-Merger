@@ -1,0 +1,59 @@
+<Addin id="OpenSim.Region.CoreModules" version="0.3">
+    <Runtime>
+        <Import assembly="OpenSim.Region.CoreModules.dll"/>
+    </Runtime>
+
+    <Dependencies>
+        <Addin id="OpenSim" version="0.5" />
+    </Dependencies>
+
+    <Extension path = "/OpenSim/RegionModules">
+        <RegionModule id="LandManagementModule" type="OpenSim.Region.CoreModules.World.Land.LandManagementModule" />
+        <RegionModule id="ExportSerialisationModule" type="OpenSim.Region.CoreModules.World.Serialiser.SerialiserModule" />
+        <RegionModule id="ArchiverModule" type="OpenSim.Region.CoreModules.World.Archiver.ArchiverModule" />
+        <RegionModule id="CapabilitiesModule" type="OpenSim.Region.CoreModules.Agent.Capabilities.CapabilitiesModule" />
+        <RegionModule id="TerrainModule" type="OpenSim.Region.CoreModules.World.Terrain.TerrainModule" />
+        <RegionModule id="WorldMapModule" type="OpenSim.Region.CoreModules.World.WorldMap.WorldMapModule" />
+        <RegionModule id="HGWorldMapModule" type="OpenSim.Region.CoreModules.Hypergrid.HGWorldMapModule" />
+        <RegionModule id="UrlModule" type="OpenSim.Region.CoreModules.Scripting.LSLHttp.UrlModule" />
+        <RegionModule id="Chat" type="OpenSim.Region.CoreModules.Avatar.Chat.ChatModule" />
+        <RegionModule id="CoreAssetCache" type="OpenSim.Region.CoreModules.Asset.CoreAssetCache" />
+        <RegionModule id="GlynnTuckerAssetCache" type="OpenSim.Region.CoreModules.Asset.GlynnTuckerAssetCache" />
+        <RegionModule id="CenomeMemoryAssetCache" type="OpenSim.Region.CoreModules.Asset.CenomeMemoryAssetCache"/>
+        <RegionModule id="LibraryModule" type="OpenSim.Region.CoreModules.Framework.Library.LibraryModule"/>
+      <!-- Service connectors OUT modules -->
+        <RegionModule id="LocalUserServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.User.LocalUserServicesConnector" />
+        <RegionModule id="RemoteUserServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.User.RemoteUserServicesConnector" />
+        <RegionModule id="LocalAssetServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset.LocalAssetServicesConnector" />
+        <RegionModule id="RemoteAssetServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset.RemoteAssetServicesConnector" />
+        <RegionModule id="LocalAuthorizationServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Authorization.LocalAuthorizationServicesConnector" />
+        <RegionModule id="RemoteAuthorizationServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Authorization.RemoteAuthorizationServicesConnector" />
+        <RegionModule id="HGAssetBroker" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset.HGAssetBroker" />
+        <RegionModule id="LocalInventoryServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory.LocalInventoryServicesConnector" />
+        <RegionModule id="RemoteInventoryServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory.RemoteInventoryServicesConnector" />
+        <RegionModule id="HGInventoryBroker" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory.HGInventoryBroker" />
+        <RegionModule id="LocalNeighbourServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Neighbour.LocalNeighbourServicesConnector" />
+        <RegionModule id="RemoteNeighbourServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Neighbour.RemoteNeighbourServicesConnector" />
+        <RegionModule id="LocalLandServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Land.LocalLandServicesConnector" />
+        <RegionModule id="RemoteLandServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Land.RemoteLandServicesConnector" />
+        <RegionModule id="LocalInterregionComms" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Interregion.LocalInterregionComms" />
+        <RegionModule id="RESTInterregionComms" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Interregion.RESTInterregionComms" />
+        <RegionModule id="LocalGridServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid.LocalGridServicesConnector" />
+        <RegionModule id="RemoteGridServicesConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid.RemoteGridServicesConnector" />
+        <RegionModule id="HGGridConnector" type="OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid.HGGridConnector" />
+      <!-- Service connectors IN modules -->
+        <RegionModule id="AssetServiceInConnectorModule" type="OpenSim.Region.CoreModules.ServiceConnectorsIn.Asset.AssetServiceInConnectorModule" />
+        <RegionModule id="InventoryServiceInConnectorModule" type="OpenSim.Region.CoreModules.ServiceConnectorsIn.Inventory.InventoryServiceInConnectorModule" />
+        <RegionModule id="LandServiceInConnectorModule" type="OpenSim.Region.CoreModules.ServiceConnectorsIn.Land.LandServiceInConnectorModule" />
+        <RegionModule id="NeighbourServiceInConnectorModule" type="OpenSim.Region.CoreModules.ServiceConnectorsIn.Neighbour.NeighbourServiceInConnectorModule" />    \
+        <RegionModule id="HypergridServiceInConnectorModule" type="OpenSim.Region.CoreModules.ServiceConnectorsIn.Grid.HypergridServiceInConnectorModule" />    \
+        <RegionModule id="AccessModule" type="OpenSim.Region.CoreModules.World.AccessModule" />    \
+
+    </Extension>
+
+    <Extension path = "/OpenSim/WindModule">
+        <WindModel id="ConfigurableWind" type="OpenSim.Region.CoreModules.World.Wind.Plugins.ConfigurableWind" />
+        <WindModel id="SimpleRandomWind" type="OpenSim.Region.CoreModules.World.Wind.Plugins.SimpleRandomWind" />
+    </Extension>
+
+</Addin>
