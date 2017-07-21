@@ -25,36 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using OpenMetaverse;
+using System.Collections;
+using WhiteCore.ScriptEngine.Interfaces;
 
-namespace OpenSim.Region.Framework.Interfaces
+using key = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLString;
+using rotation = WhiteCore.ScriptEngine.Shared.LSL_Types.Quaternion;
+using vector = WhiteCore.ScriptEngine.Shared.LSL_Types.Vector3;
+using LSL_List = WhiteCore.ScriptEngine.Shared.LSL_Types.list;
+using LSL_String = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLString;
+using LSL_Integer = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLInteger;
+using LSL_Float = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLFloat;
+
+namespace WhiteCore.ScriptEngine.Shared.Api.Interfaces
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
-    /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
-    /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+    public interface IMOD_Api
     {
-        /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
-        /// </summary>
-        event ScriptCommand OnScriptCommand;
-
-        /// <summary>
-        /// Send a link_message event to an in-world script
-        /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
-
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+        //Module functions
+        string modSendCommand(string modules, string command, string k);
     }
 }

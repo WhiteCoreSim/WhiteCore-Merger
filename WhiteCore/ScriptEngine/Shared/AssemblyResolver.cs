@@ -26,35 +26,40 @@
  */
 
 using System;
-using OpenMetaverse;
+using System.IO;
+using System.Reflection;
 
-namespace OpenSim.Region.Framework.Interfaces
+namespace WhiteCore.ScriptEngine.Shared
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
-    /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
-    /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+    [Serializable]
+    public class AssemblyResolver
     {
-        /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
-        /// </summary>
-        event ScriptCommand OnScriptCommand;
+        public static Assembly OnAssemblyResolve(object sender,
+                ResolveEventArgs args)
+        {
+            if (!(sender is System.AppDomain))
+                return null;
 
-        /// <summary>
-        /// Send a link_message event to an in-world script
-        /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
+            AppDomain myDomain = (AppDomain)sender;
+            string dirName = myDomain.FriendlyName;
 
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+            string[] pathList = new string[] {"bin", "ScriptEngines",
+                                              Path.Combine("ScriptEngines", dirName)};
+
+            string assemblyName = args.Name;
+            if (assemblyName.IndexOf(",") != -1)
+                assemblyName = args.Name.Substring(0, args.Name.IndexOf(","));
+
+            foreach (string s in pathList)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(),
+                        Path.Combine(s, assemblyName))+".dll";
+
+                if (File.Exists(path))
+                    return Assembly.LoadFrom(path);
+            }
+
+            return null;
+        }
     }
 }

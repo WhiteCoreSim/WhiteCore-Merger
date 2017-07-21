@@ -44,8 +44,8 @@ namespace OpenSim.Region.Framework.Scenes.Scripting
             {
                 ret =
                     LoadAndInitAssembly(
-                        Path.Combine("ScriptEngines", "OpenSim.Region.ScriptEngine." + EngineName + ".dll"),
-                        "OpenSim.Region.ScriptEngine." + EngineName + ".ScriptEngine");
+                        Path.Combine("ScriptEngines", "WhiteCore.ScriptEngine." + EngineName + ".dll"),
+                        "WhiteCore.ScriptEngine." + EngineName + ".ScriptEngine");
             }
             catch (Exception e)
             {

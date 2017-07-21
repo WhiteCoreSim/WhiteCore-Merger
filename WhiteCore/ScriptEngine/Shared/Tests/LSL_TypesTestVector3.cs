@@ -25,36 +25,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using OpenMetaverse;
+using System.Collections.Generic;
+using NUnit.Framework;
+using OpenSim.Tests.Common;
+using WhiteCore.ScriptEngine.Shared;
 
-namespace OpenSim.Region.Framework.Interfaces
+namespace WhiteCore.ScriptEngine.Shared.Tests
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
-    /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
-    /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+    [TestFixture]
+    public class LSL_TypesTestVector3
     {
         /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
+        /// Tests for Vector3
         /// </summary>
-        event ScriptCommand OnScriptCommand;
+        [Test]
 
-        /// <summary>
-        /// Send a link_message event to an in-world script
-        /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
+        public void TestDotProduct()
+        {
+            // The numbers we test for.
+            Dictionary<string, double> expectsSet = new Dictionary<string, double>();
+            expectsSet.Add("<1, 2, 3> * <2, 3, 4>", 20.0);
+            expectsSet.Add("<1, 2, 3> * <0, 0, 0>", 0.0);
 
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+            double result;
+            string[] parts;
+            string[] delim = { "*" };
+
+            foreach (KeyValuePair<string, double> ex in expectsSet)
+            {
+                parts = ex.Key.Split(delim, System.StringSplitOptions.None);
+                result = new LSL_Types.Vector3(parts[0]) * new LSL_Types.Vector3(parts[1]);
+                Assert.AreEqual(ex.Value, result);
+            }
+        }
     }
 }

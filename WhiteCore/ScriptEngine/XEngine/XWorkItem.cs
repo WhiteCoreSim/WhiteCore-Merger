@@ -26,35 +26,40 @@
  */
 
 using System;
-using OpenMetaverse;
+using System.IO;
+using System.Threading;
+using Amib.Threading;
+using WhiteCore.ScriptEngine.Interfaces;
 
-namespace OpenSim.Region.Framework.Interfaces
+namespace WhiteCore.ScriptEngine.XEngine
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
-    /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
-    /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+    public class XWorkItem : IScriptWorkItem
     {
-        /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
-        /// </summary>
-        event ScriptCommand OnScriptCommand;
+        private IWorkItemResult wr;
 
-        /// <summary>
-        /// Send a link_message event to an in-world script
-        /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
+        public IWorkItemResult WorkItem
+        {
+            get { return wr; }
+        }
 
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+        public XWorkItem(IWorkItemResult w)
+        {
+            wr = w;
+        }
+
+        public bool Cancel()
+        {
+            return wr.Cancel();
+        }
+
+        public void Abort()
+        {
+            wr.Abort();
+        }
+
+        public bool Wait(TimeSpan t)
+        {
+            return SmartThreadPool.WaitAll(new IWorkItemResult[] {wr}, t, false);
+        }
     }
 }

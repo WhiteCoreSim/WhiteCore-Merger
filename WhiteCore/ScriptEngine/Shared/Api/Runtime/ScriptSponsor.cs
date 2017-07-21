@@ -26,35 +26,32 @@
  */
 
 using System;
-using OpenMetaverse;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Lifetime;
+using System.Text;
 
-namespace OpenSim.Region.Framework.Interfaces
+namespace WhiteCore.ScriptEngine.Shared.Api.Runtime
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
-    /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
-    /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+    public class ScriptSponsor : MarshalByRefObject, ISponsor
     {
-        /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
-        /// </summary>
-        event ScriptCommand OnScriptCommand;
+        private bool m_closed = false;
 
-        /// <summary>
-        /// Send a link_message event to an in-world script
-        /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
+        public TimeSpan Renewal(ILease lease)
+        {
+            if (!m_closed)
+                return lease.InitialLeaseTime;
+            return TimeSpan.FromTicks(0);
+        }
 
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+        public void Close() { m_closed = true; }
+
+#if DEBUG
+        // For tracing GC while debugging
+        public static bool GCDummy = false;
+        ~ScriptSponsor()
+        {
+            GCDummy = true;
+        }
+#endif
     }
 }

@@ -26,35 +26,54 @@
  */
 
 using System;
-using OpenMetaverse;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using WhiteCore.ScriptEngine.Interfaces;
 
-namespace OpenSim.Region.Framework.Interfaces
+namespace WhiteCore.ScriptEngine.Shared.Api
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
-    /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
-    /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+    public class ApiManager
     {
-        /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
-        /// </summary>
-        event ScriptCommand OnScriptCommand;
+        private Dictionary<string,Type> m_Apis = new Dictionary<string,Type>();
 
-        /// <summary>
-        /// Send a link_message event to an in-world script
-        /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
+        public string[] GetApis()
+        {
+            if (m_Apis.Count > 0)
+            {
+                List<string> l = new List<string>(m_Apis.Keys);
+                return l.ToArray();
+            }
 
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+            Assembly a = Assembly.GetExecutingAssembly();
+
+            Type[] types = a.GetExportedTypes();
+
+            foreach (Type t in types)
+            {
+                string name = t.ToString();
+                int idx = name.LastIndexOf('.');
+                if (idx != -1)
+                    name = name.Substring(idx+1);
+
+                if (name.EndsWith("_Api"))
+                {
+                    name = name.Substring(0, name.Length - 4);
+                    m_Apis[name] = t;
+                }
+            }
+
+            List<string> ret = new List<string>(m_Apis.Keys);
+            return ret.ToArray();
+        }
+
+        public IScriptApi CreateApi(string api)
+        {
+            if (!m_Apis.ContainsKey(api))
+                return null;
+
+            IScriptApi ret = (IScriptApi)(Activator.CreateInstance(m_Apis[api]));
+            return ret;
+        }
     }
 }

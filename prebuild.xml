@@ -2546,7 +2546,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Shared" path="OpenSim/Region/ScriptEngine/Shared" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Shared" path="WhiteCore/ScriptEngine/Shared" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -2585,7 +2585,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Shared.Api.Runtime" path="OpenSim/Region/ScriptEngine/Shared/Api/Runtime" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Shared.Api.Runtime" path="WhiteCore/ScriptEngine/Shared/Api/Runtime" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../../../bin/</OutputPath>
@@ -2609,7 +2609,7 @@
       <Reference name="OpenSim.Region.Framework" />
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
       <Reference name="Nini.dll" />
       <Reference name="RAIL.dll"/>
       <Reference name="Nini.dll" />
@@ -2620,7 +2620,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Shared.YieldProlog" path="OpenSim/Region/ScriptEngine/Shared/Api/Runtime/YieldProlog/" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Shared.YieldProlog" path="WhiteCore/ScriptEngine/Shared/Api/Runtime/YieldProlog/" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../../../../bin/</OutputPath>
@@ -2643,7 +2643,7 @@
       <Reference name="OpenSim.Framework.Communications"/>
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
       <Reference name="Nini.dll" />
       <Reference name="RAIL.dll"/>
       <Reference name="Nini.dll" />
@@ -2654,7 +2654,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Shared.Api" path="OpenSim/Region/ScriptEngine/Shared/Api/Implementation" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Shared.Api" path="WhiteCore/ScriptEngine/Shared/Api/Implementation" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../../../bin/</OutputPath>
@@ -2681,8 +2681,8 @@
       <Reference name="WhiteCore.Physics.Manager" />
       <Reference name="OpenSim.Framework.Console"/>
       <Reference name="OpenSim.Services.Interfaces"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.Api.Runtime"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.Api.Runtime"/>
       <Reference name="Nini.dll" />
       <Reference name="RAIL.dll"/>
       <Reference name="Nini.dll" />
@@ -2693,7 +2693,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Shared.CodeTools" path="OpenSim/Region/ScriptEngine/Shared/CodeTools" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Shared.CodeTools" path="WhiteCore/ScriptEngine/Shared/CodeTools" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../../bin/</OutputPath>
@@ -2710,8 +2710,8 @@
       <Reference name="Microsoft.JScript"/>
       <Reference name="OpenSim.Framework" />
       <Reference name="OpenSim.Region.Framework" />
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.YieldProlog"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.YieldProlog"/>
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="Nini.dll" />
@@ -2726,7 +2726,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Shared.Instance" path="OpenSim/Region/ScriptEngine/Shared/Instance" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Shared.Instance" path="WhiteCore/ScriptEngine/Shared/Instance" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../../bin/</OutputPath>
@@ -2750,10 +2750,10 @@
       <Reference name="OpenSim.Region.Framework" />
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.CodeTools"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.Api"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.Api.Runtime"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.CodeTools"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.Api"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.Api.Runtime"/>
       <Reference name="SmartThreadPool"/>
       <Reference name="Axiom.MathLib.dll"/>
       <Reference name="Nini.dll" />
@@ -2765,7 +2765,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.XEngine" path="OpenSim/Region/ScriptEngine/XEngine" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.XEngine" path="WhiteCore/ScriptEngine/XEngine" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -2790,10 +2790,10 @@
       <Reference name="OpenSim.Region.Framework" />
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.CodeTools"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.Instance"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.Api"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.CodeTools"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.Instance"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.Api"/>
       <Reference name="SmartThreadPool"/>
       <Reference name="Nini.dll" />
       <Reference name="RAIL.dll"/>
@@ -2904,7 +2904,7 @@
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.CodeTools"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.CodeTools"/>
       <Reference name="Nini.dll" />
       <Reference name="log4net.dll"/>
 
@@ -3425,7 +3425,7 @@
     </Project>
     -->
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.ScriptEngine.Tests" path="OpenSim/Region/ScriptEngine" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.ScriptEngine.Tests" path="WhiteCore/ScriptEngine" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../bin/</OutputPath>
@@ -3442,15 +3442,15 @@
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Communications"/>
       <Reference name="OpenSim.Region.Framework"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.Api"/>
-      <Reference name="OpenSim.Region.ScriptEngine.XEngine"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.Api"/>
+      <Reference name="WhiteCore.ScriptEngine.XEngine"/>
       <Reference name="OpenSim.Tests.Common"/>
       <Reference name="nunit.framework.dll" />
       <Reference name="Nini.dll" />
       <Reference name="OpenMetaverseTypes.dll"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared.CodeTools"/>
-      <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared.CodeTools"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
       <Reference name="Tools.dll" />
 
       <!--

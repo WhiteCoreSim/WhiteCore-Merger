@@ -25,36 +25,63 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using log4net;
 using System;
+using WhiteCore.ScriptEngine.Shared;
+using OpenSim.Region.Framework.Scenes;
+using OpenSim.Region.Framework.Interfaces;
 using OpenMetaverse;
+using Nini.Config;
+using WhiteCore.ScriptEngine.Interfaces;
+using Amib.Threading;
+using OpenSim.Framework;
 
-namespace OpenSim.Region.Framework.Interfaces
+namespace WhiteCore.ScriptEngine.Interfaces
 {
-    public delegate void ScriptCommand(UUID script, string id, string module, string command, string k);
-
     /// <summary>
-    /// Interface for communication between OpenSim modules and in-world scripts
+    /// An interface for a script API module to communicate with
+    /// the engine it's running under
     /// </summary>
-    ///
-    /// See WhiteCore.ScriptEngine.Shared.Api.MOD_Api.modSendCommand() for information on receiving messages
-    /// from scripts in OpenSim modules.
-    public interface IScriptModuleComms
+
+    public delegate void ScriptRemoved(UUID script);
+    public delegate void ObjectRemoved(UUID prim);
+
+    public interface IScriptEngine
     {
         /// <summary>
-        /// Modules can subscribe to this event to receive command invocations from in-world scripts
+        /// Queue an event for execution
         /// </summary>
-        event ScriptCommand OnScriptCommand;
+        IScriptWorkItem QueueEventHandler(object parms);
+
+        Scene World { get; }
+
+        IScriptModule ScriptModule { get; }
+
+        event ScriptRemoved OnScriptRemoved;
+        event ObjectRemoved OnObjectRemoved;
 
         /// <summary>
-        /// Send a link_message event to an in-world script
+        /// Post an event to a single script
         /// </summary>
-        /// <param name="scriptId"></param>
-        /// <param name="code"></param>
-        /// <param name="text"></param>
-        /// <param name="key"></param>
-        void DispatchReply(UUID scriptId, int code, string text, string key);
+        bool PostScriptEvent(UUID itemID, EventParams parms);
+        
+        /// <summary>
+        /// Post event to an entire prim
+        /// </summary>
+        bool PostObjectEvent(uint localID, EventParams parms);
 
-        // For use ONLY by the script API
-        void RaiseEvent(UUID script, string id, string module, string command, string key);
+        DetectParams GetDetectParams(UUID item, int number);
+        void SetMinEventDelay(UUID itemID, double delay);
+        int GetStartParameter(UUID itemID);
+
+        void SetScriptState(UUID itemID, bool state);
+        bool GetScriptState(UUID itemID);
+        void SetState(UUID itemID, string newState);
+        void ApiResetScript(UUID itemID);
+        void ResetScript(UUID itemID);
+        IConfig Config { get; }
+        IConfigSource ConfigSource { get; }
+        string ScriptEngineName { get; }
+        IScriptApi GetApi(UUID itemID, string name);
     }
 }
