@@ -36,7 +36,7 @@ using OpenSim.Framework.Client;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
 using OpenSim.Framework.Console;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 using Mono.Addins;
 
 [assembly: Addin("RegionCombinerModule", "0.1")]

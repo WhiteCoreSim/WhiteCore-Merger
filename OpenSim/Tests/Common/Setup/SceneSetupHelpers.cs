@@ -36,7 +36,7 @@ using OpenSim.Framework.Communications.Cache;
 using OpenSim.Framework.Console;
 using OpenSim.Framework.Servers;
 using OpenSim.Framework.Servers.HttpServer;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 using OpenSim.Region.Framework;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
@@ -202,7 +202,7 @@ namespace OpenSim.Tests.Common.Setup
             testScene.LoadWorldMap();
 
             PhysicsPluginManager physicsPluginManager = new PhysicsPluginManager();
-            physicsPluginManager.LoadPluginsFromAssembly("Physics/OpenSim.Region.Physics.BasicPhysicsPlugin.dll");
+            physicsPluginManager.LoadPluginsFromAssembly("Physics/WhiteCore.Physics.BasicPhysicsPlugin.dll");
             testScene.PhysicsScene
                 = physicsPluginManager.GetPhysicsScene("basicphysics", "ZeroMesher",   new IniConfigSource(), "test");
             

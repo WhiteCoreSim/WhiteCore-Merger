@@ -414,7 +414,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.Manager" path="OpenSim/Region/Physics/Manager" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.Manager" path="WhiteCore/Physics/Manager" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -442,7 +442,30 @@
     </Project>
 
     <!-- Physics Plug-ins -->
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.BasicPhysicsPlugin" path="OpenSim/Region/Physics/BasicPhysicsPlugin" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.BasicPhysicsPlugin" path="WhiteCore/Physics/BasicPhysicsPlugin" type="Library">
+      <Configuration name="Debug">0
+        <Options>
+          <OutputPath>../../../../bin/Physics/</OutputPath>
+        </Options>
+      </Configuration>
+      <Configuration name="Release">
+        <Options>
+          <OutputPath>../../../../bin/Physics/</OutputPath>
+        </Options>
+      </Configuration>
+
+      <ReferencePath>../../../../bin/</ReferencePath>
+      <Reference name="System"/>
+      <Reference name="OpenMetaverseTypes.dll"/>
+      <Reference name="Nini.dll" />
+      <Reference name="OpenSim.Framework"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
+      <Files>
+        <Match pattern="*.cs" recurse="true"/>
+      </Files>
+    </Project>
+
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.POSPlugin" path="WhiteCore/Physics/POSPlugin" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/Physics/</OutputPath>
@@ -459,36 +482,13 @@
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="Nini.dll" />
       <Reference name="OpenSim.Framework"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Files>
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.POSPlugin" path="OpenSim/Region/Physics/POSPlugin" type="Library">
-      <Configuration name="Debug">
-        <Options>
-          <OutputPath>../../../../bin/Physics/</OutputPath>
-        </Options>
-      </Configuration>
-      <Configuration name="Release">
-        <Options>
-          <OutputPath>../../../../bin/Physics/</OutputPath>
-        </Options>
-      </Configuration>
-
-      <ReferencePath>../../../../bin/</ReferencePath>
-      <Reference name="System"/>
-      <Reference name="OpenMetaverseTypes.dll"/>
-      <Reference name="Nini.dll" />
-      <Reference name="OpenSim.Framework"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
-      <Files>
-        <Match pattern="*.cs" recurse="true"/>
-      </Files>
-    </Project>
-
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.PhysXPlugin" path="OpenSim/Region/Physics/PhysXPlugin" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.PhysXPlugin" path="WhiteCore/Physics/PhysXPlugin" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/Physics/</OutputPath>
@@ -506,14 +506,14 @@
       <Reference name="Nini.dll" />
       <Reference name="PhysX_Wrapper_Dotnet.dll"/>
       <Reference name="OpenSim.Framework"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="log4net.dll"/>
       <Files>
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.OdePlugin" path="OpenSim/Region/Physics/OdePlugin" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.OdePlugin" path="WhiteCore/Physics/OdePlugin" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/Physics/</OutputPath>
@@ -532,7 +532,7 @@
       <Reference name="Nini.dll" />
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="Ode.NET.dll" />
       <Reference name="log4net.dll"/>
 
@@ -543,7 +543,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.BulletXPlugin" path="OpenSim/Region/Physics/BulletXPlugin" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.BulletXPlugin" path="WhiteCore/Physics/BulletXPlugin" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/Physics/</OutputPath>
@@ -561,7 +561,7 @@
       <Reference name="Nini.dll" />
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="MonoXnaCompactMaths.dll"/>
       <Reference name="Modified.XnaDevRu.BulletX.dll" />
       <Reference name="log4net.dll"/>
@@ -571,7 +571,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.Meshing" path="OpenSim/Region/Physics/Meshing" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.Meshing" path="WhiteCore/Physics/Meshing" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/Physics/</OutputPath>
@@ -592,7 +592,7 @@
       <Reference name="Nini.dll" />
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="log4net.dll"/>
 
       <Files>
@@ -600,7 +600,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.BulletDotNETPlugin" path="OpenSim/Region/Physics/BulletDotNETPlugin" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.BulletDotNETPlugin" path="WhiteCore/Physics/BulletDotNETPlugin" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/Physics/</OutputPath>
@@ -618,7 +618,7 @@
       <Reference name="Nini.dll" />
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="BulletDotNET.dll" />
       <Reference name="nunit.framework.dll" />
       <Reference name="log4net.dll"/>
@@ -762,7 +762,7 @@
       <Reference name="OpenSim.Framework.Servers"/>
       <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Framework.Statistics"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
 
       <!-- For scripting in funny languages by default -->
       <Reference name="Microsoft.JScript"/>
@@ -1614,7 +1614,7 @@
       <Reference name="OpenSim.Framework.Servers"/>
       <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Framework.Statistics"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
 
       <Reference name="GlynnTucker.Cache.dll"/>
 
@@ -1693,7 +1693,7 @@
       <Reference name="OpenSim.Framework.Servers"/>
       <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Framework.Statistics"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Server.Base" />
       <Reference name="OpenSim.Server.Handlers" />
       <Reference name="OpenSim.Services.Connectors" />
@@ -1740,7 +1740,7 @@
       <Reference name="OpenSim.Server.Base" />
       <Reference name="OpenSim.Server.Handlers" />
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Framework.Communications"/>
       <Reference name="OpenSim.Region.CoreModules" />
       <Reference name="Nini.dll" />
@@ -1816,7 +1816,7 @@
       <Reference name="OpenSim.Framework.Communications"/>
       <Reference name="OpenSim.Framework.Statistics"/>
       <Reference name="OpenSim.Region.Communications.Local"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Region.CoreModules"/>
       <Reference name="XMLRPC.dll"/>
       <Reference name="Nini.dll" />
@@ -1856,7 +1856,7 @@
       <Reference name="OpenSim.Framework.Statistics"/>
       <Reference name="OpenSim.Region.ClientStack"/>
       <Reference name="OpenSim.Region.Communications.Local"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Services.Interfaces"/>
       <Reference name="BclExtras.dll"/>
       <Reference name="XMLRPC.dll"/>
@@ -1921,7 +1921,7 @@
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Data"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Framework.Servers"/>
       <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Framework.Statistics"/>
@@ -2678,7 +2678,7 @@
       <Reference name="OpenSim.Framework.Communications"/>
       <Reference name="OpenSim.Region.Framework" />
       <Reference name="OpenSim.Region.CoreModules" />
-      <Reference name="OpenSim.Region.Physics.Manager" />
+      <Reference name="WhiteCore.Physics.Manager" />
       <Reference name="OpenSim.Framework.Console"/>
       <Reference name="OpenSim.Services.Interfaces"/>
       <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
@@ -2839,7 +2839,7 @@
       <Reference name="OpenSim.Framework.Capabilities"/>
       <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Framework.Statistics"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="Mono.Data.SqliteClient"/>
       <Reference name="Mono.Addins"/>
 
@@ -3027,7 +3027,7 @@
       <Reference name="OpenSim.Region.Communications.Local"/>
       <Reference name="OpenSim.Region.Framework"/>
       <Reference name="OpenSim.Region.CoreModules"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
 
       <Files>
         <Match pattern="*.cs" recurse="true"/>
@@ -3297,7 +3297,7 @@
       <Reference name="OpenSim.Region.Communications.Local"/>
       <Reference name="OpenSim.Region.Framework"/>
       <Reference name="OpenSim.Region.CoreModules"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Services.Interfaces"/>
 
       <!-- Unit tests -->
@@ -3360,7 +3360,7 @@
       <Reference name="OpenSim.Region.Communications.Local"/>
       <Reference name="OpenSim.Region.Framework"/>
       <Reference name="OpenSim.Region.CoreModules"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="OpenSim.Services.Interfaces"/>
 
       <!-- Unit tests -->
@@ -3471,7 +3471,7 @@
            TODO: this is kind of lame, we basically build a duplicate
            assembly but with tests added in, just because we can't resolve cross-bin-dir-refs.
       -->
-    <Project frameworkVersion="v3_5" name="OpenSim.Region.Physics.OdePlugin.Tests" path="OpenSim/Region/Physics/OdePlugin" type="Library">
+    <Project frameworkVersion="v3_5" name="WhiteCore.Physics.OdePlugin.Tests" path="WhiteCore/Physics/OdePlugin" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -3490,7 +3490,7 @@
       <Reference name="Nini.dll" />
       <Reference name="OpenSim.Framework"/>
       <Reference name="OpenSim.Framework.Console"/>
-      <Reference name="OpenSim.Region.Physics.Manager"/>
+      <Reference name="WhiteCore.Physics.Manager"/>
       <Reference name="Ode.NET.dll" />
       <Reference name="nunit.framework.dll" />
       <Reference name="log4net.dll"/>

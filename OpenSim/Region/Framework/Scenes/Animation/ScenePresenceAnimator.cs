@@ -31,7 +31,7 @@ using OpenMetaverse;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 
 namespace OpenSim.Region.Framework.Scenes.Animation
 {

@@ -34,7 +34,7 @@ using OpenMetaverse.Packets;
 using log4net;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Scenes.Types;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 
 namespace OpenSim.Region.Framework.Scenes
 {

@@ -37,7 +37,7 @@ using OpenSim.Framework.Servers;
 using OpenSim.Framework.Servers.HttpServer;
 using OpenSim.Region.Framework;
 using OpenSim.Region.Framework.Scenes;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 
 namespace OpenSim.Region.ClientStack
 {

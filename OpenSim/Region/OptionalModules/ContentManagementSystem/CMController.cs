@@ -45,7 +45,7 @@ using OpenSim;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 
 using log4net;
 

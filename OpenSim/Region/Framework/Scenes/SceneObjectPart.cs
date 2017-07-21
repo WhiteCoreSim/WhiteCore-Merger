@@ -39,7 +39,7 @@ using OpenMetaverse.Packets;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes.Scripting;
-using OpenSim.Region.Physics.Manager;
+using WhiteCore.Physics.Manager;
 
 namespace OpenSim.Region.Framework.Scenes
 {
