@@ -655,7 +655,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Framework.Capabilities" path="OpenSim/Framework/Capabilities" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -730,7 +729,6 @@
         <Match pattern="*.addin.xml" path="Resources" buildAction="EmbeddedResource" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Region.Framework" path="OpenSim/Region/Framework" type="Library">
       <Configuration name="Debug">
@@ -979,7 +977,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Server.Base" path="OpenSim/Server/Base" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1100,7 +1097,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Grid.UserServer.Modules" path="OpenSim/Grid/UserServer.Modules" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1142,7 +1138,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Grid.UserServer" path="OpenSim/Grid/UserServer" type="Exe">
       <Configuration name="Debug">
@@ -1219,7 +1214,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Grid.MessagingServer" path="OpenSim/Grid/MessagingServer" type="Exe">
       <Configuration name="Debug">
@@ -1474,7 +1468,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Server.Handlers" path="OpenSim/Server/Handlers" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -1510,7 +1503,6 @@
         </Match>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Server" path="OpenSim/Server" type="Exe">
       <Configuration name="Debug">
@@ -1615,7 +1607,6 @@
       <Reference name="OpenSim.Framework.Servers.HttpServer"/>
       <Reference name="OpenSim.Framework.Statistics"/>
       <Reference name="WhiteCore.Physics.Manager"/>
-
       <Reference name="GlynnTucker.Cache.dll"/>
 
       <!-- For scripting in funny languages by default -->
@@ -1660,7 +1651,6 @@
         <Match pattern="*.cs" recurse="true"/>
       </Files>
     </Project>
-
 
     <Project frameworkVersion="v3_5" name="OpenSim.Region.OptionalModules" path="OpenSim/Region/OptionalModules" type="Library">
       <Configuration name="Debug">
@@ -2089,8 +2079,7 @@
     </Project>
 
     <!-- REST plugins -->
-    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest"
-             path="OpenSim/ApplicationPlugins/Rest" type="Library">
+    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest" path="OpenSim/ApplicationPlugins/Rest" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../bin/</OutputPath>
@@ -2125,8 +2114,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest.Regions"
-             path="OpenSim/ApplicationPlugins/Rest/Regions" type="Library">
+    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest.Regions" path="OpenSim/ApplicationPlugins/Rest/Regions" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -2163,8 +2151,7 @@
       </Files>
     </Project>
 
-    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest.Inventory"
-             path="OpenSim/ApplicationPlugins/Rest/Inventory" type="Library">
+    <Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.Rest.Inventory" path="OpenSim/ApplicationPlugins/Rest/Inventory" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -2255,7 +2242,6 @@
       </Configuration>
 
       <ReferencePath>../../../../bin/</ReferencePath>
-
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="System"/>
@@ -2283,7 +2269,6 @@
       </Configuration>
 
       <ReferencePath>../../../bin/</ReferencePath>
-
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="System"/>
@@ -2300,7 +2285,6 @@
       </Files>
     </Project>
 
-
     <Project frameworkVersion="v3_5" name="OpenSim.Client.Sirikata" path="OpenSim/Client/Sirikata" type="Library">
       <Configuration name="Debug">
         <Options>
@@ -2314,7 +2298,6 @@
       </Configuration>
 
       <ReferencePath>../../../bin/</ReferencePath>
-
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="System"/>
@@ -2346,7 +2329,6 @@
       </Configuration>
 
       <ReferencePath>../../../bin/</ReferencePath>
-
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="System"/>
@@ -2377,7 +2359,6 @@
       </Configuration>
 
       <ReferencePath>../../../bin/</ReferencePath>
-
       <Reference name="OpenMetaverseTypes.dll"/>
       <Reference name="OpenMetaverse.dll"/>
       <Reference name="System"/>
@@ -2400,8 +2381,6 @@
         <Match pattern="*.addin.xml" path="Resources" buildAction="EmbeddedResource" recurse="true"/>
       </Files>
     </Project>
-
-
 
     <!-- Data Base Modules -->
     <Project frameworkVersion="v3_5" name="OpenSim.Data.MySQL" path="OpenSim/Data/MySQL" type="Library">
@@ -3503,59 +3482,5 @@
   <?include file="addon-modules/*/prebuild*.xml" ?>
 
   </Solution>
-
-  <!-- Prebuild tool -->
-  <Solution name="Prebuild" path="Prebuild/" >
-    <Configuration name="Debug">
-      <Options>
-        <CompilerDefines>DEBUG;TRACE</CompilerDefines>
-        <OptimizeCode>false</OptimizeCode>
-        <OutputPath>bin/Debug</OutputPath>
-        <DebugInformation>true</DebugInformation>
-        <SuppressWarnings>1595</SuppressWarnings>
-      </Options>
-    </Configuration>
-    <Configuration name="Release">
-      <Options>
-        <CompilerDefines>TRACE</CompilerDefines>
-        <OutputPath>bin/Release</OutputPath>
-        <OptimizeCode>true</OptimizeCode>
-        <DebugInformation>false</DebugInformation>
-        <SuppressWarnings>1595</SuppressWarnings>
-      </Options>
-    </Configuration>
-
-    <Project frameworkVersion="v3_5" name="Prebuild" path="src/" language="C#" assemblyName="Prebuild" icon="App.ico" type="Exe" rootNamespace="Prebuild" startupObject="Prebuild.Prebuild">
-      <Configuration name="Debug">
-        <Options>
-          <CompilerDefines>DEBUG;TRACE</CompilerDefines>
-          <OptimizeCode>false</OptimizeCode>
-          <OutputPath>..\..\bin\</OutputPath>
-          <DebugInformation>true</DebugInformation>
-          <KeyFile>Prebuild.snk</KeyFile>
-          <SuppressWarnings>1595</SuppressWarnings>
-        </Options>
-      </Configuration>
-      <Configuration name="Release">
-        <Options>
-          <CompilerDefines>TRACE</CompilerDefines>
-          <OutputPath>..\..\bin\</OutputPath>
-          <OptimizeCode>true</OptimizeCode>
-          <DebugInformation>false</DebugInformation>
-          <KeyFile>Prebuild.snk</KeyFile>
-          <SuppressWarnings>1595</SuppressWarnings>
-        </Options>
-      </Configuration>
-      <ReferencePath>../../bin/</ReferencePath>
-      <Reference name="System.EnterpriseServices" />
-      <Reference name="System.Xml" />
-      <Reference name="System" />
-      <Files>
-        <Match pattern="App.ico" buildAction="EmbeddedResource"/>
-        <Match path="data" pattern="prebuild-1.7.xsd" buildAction="EmbeddedResource"/>
-        <Match pattern="*.cs" recurse="true"/>
-      </Files>
-    </Project>
-
   </Solution>
 </Prebuild>
