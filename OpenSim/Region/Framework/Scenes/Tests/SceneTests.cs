@@ -44,7 +44,7 @@ namespace OpenSim.Region.Framework.Scenes.Tests
         {
             private class FakeRegionDataStore : IRegionDataStore
             {
-                public void Initialise(string filename)
+                public void Initialize(string filename)
                 {
                 }
 

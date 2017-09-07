@@ -76,12 +76,12 @@ namespace OpenSim.Region.CoreModules.Avatar.ObjectCaps
 
         #region IRegionModule Members
 
-        public void Initialise(Scene pScene, IConfigSource pSource)
+        public void Initialize(Scene pScene, IConfigSource pSource)
         {
             m_scene = pScene;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             m_assetService = m_scene.RequestModuleInterface<IAssetService>();
             m_scene.EventManager.OnRegisterCaps += RegisterCaps;

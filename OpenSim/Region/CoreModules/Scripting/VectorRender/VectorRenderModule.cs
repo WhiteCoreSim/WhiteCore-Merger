@@ -112,7 +112,7 @@ namespace OpenSim.Region.CoreModules.Scripting.VectorRender
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             if (m_scene == null)
             {
@@ -133,7 +133,7 @@ namespace OpenSim.Region.CoreModules.Scripting.VectorRender
             m_log.DebugFormat("[VECTORRENDERMODULE]: using font \"{0}\" for text rendering.", m_fontName);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             m_textureManager = m_scene.RequestModuleInterface<IDynamicTextureManager>();
             if (m_textureManager != null)

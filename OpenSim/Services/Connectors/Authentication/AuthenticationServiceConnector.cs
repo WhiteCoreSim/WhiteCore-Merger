@@ -59,10 +59,10 @@ namespace OpenSim.Services.Connectors
 
         public AuthenticationServicesConnector(IConfigSource source)
         {
-            Initialise(source);
+            Initialize(source);
         }
 
-        public virtual void Initialise(IConfigSource source)
+        public virtual void Initialize(IConfigSource source)
         {
             IConfig assetConfig = source.Configs["AuthenticationService"];
             if (assetConfig == null)

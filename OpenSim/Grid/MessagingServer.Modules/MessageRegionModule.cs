@@ -69,12 +69,12 @@ namespace OpenSim.Grid.MessagingServer.Modules
             m_GridService = new GridServicesConnector(m_cfg.GridServerURL);
         }
 
-        public void Initialise()
+        public void Initialize()
         {
             m_messageCore.RegisterInterface<IMessageRegionLookup>(this);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             IInterServiceUserService messageUserServer;
             if (m_messageCore.TryGet<IInterServiceUserService>(out messageUserServer))

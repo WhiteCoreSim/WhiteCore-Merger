@@ -51,7 +51,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsIn.Simulation
 
         #region IRegionModule interface
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             m_Config = config;
 
@@ -69,7 +69,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsIn.Simulation
 
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

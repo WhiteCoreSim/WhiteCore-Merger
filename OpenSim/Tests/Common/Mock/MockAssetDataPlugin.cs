@@ -43,8 +43,8 @@ namespace OpenSim.Tests.Common.Mock
         public string Version { get { return "0"; } }
         public string Name { get { return "MockAssetDataPlugin"; } }
 
-        public void Initialise() {}
-        public void Initialise(string connect) {}
+        public void Initialize() {}
+        public void Initialize(string connect) {}
         public void Dispose() {}
 
         private readonly List<AssetBase> assets = new List<AssetBase>();

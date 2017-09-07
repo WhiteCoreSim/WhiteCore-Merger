@@ -107,7 +107,7 @@ namespace OpenSim.Server.Base
             MainServer.Instance = m_HttpServer;
         }
 
-        protected override void Initialise()
+        protected override void Initialize()
         {
             m_HttpServer.Start();
 

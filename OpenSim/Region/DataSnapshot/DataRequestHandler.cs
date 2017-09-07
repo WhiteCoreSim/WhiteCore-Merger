@@ -86,7 +86,7 @@ namespace OpenSim.Region.DataSnapshot
 
             llsd_response.snapshot_resources.Array.Add(llsd_dataurl);
 
-            string response = LLSDHelpers.SerialiseLLSDReply(llsd_response);
+            string response = LLSDHelpers.SerializeLLSDReply(llsd_response);
 
             return response;
         }

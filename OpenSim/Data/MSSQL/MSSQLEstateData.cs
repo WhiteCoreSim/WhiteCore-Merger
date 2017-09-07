@@ -51,10 +51,10 @@ namespace OpenSim.Data.MSSQL
         #region Public methods
 
         /// <summary>
-        /// Initialises the estatedata class.
+        /// Initializes the estatedata class.
         /// </summary>
         /// <param name="connectionString">connectionString.</param>
-        public void Initialise(string connectionString)
+        public void Initialize(string connectionString)
         {
             if (!string.IsNullOrEmpty(connectionString))
             {

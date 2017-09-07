@@ -106,7 +106,7 @@ namespace OpenSim.Region.Framework.Scenes
             return copy;
         }
 
-        public float[] GetFloatsSerialised()
+        public float[] GetFloatsSerialized()
         {
             // Move the member variables into local variables, calling
             // member variables 256*256 times gets expensive
@@ -210,7 +210,7 @@ namespace OpenSim.Region.Framework.Scenes
 
         private void ToXml(XmlWriter xmlWriter)
         {
-            float[] mapData = GetFloatsSerialised();
+            float[] mapData = GetFloatsSerialized();
             byte[] buffer = new byte[mapData.Length * 4];
             for (int i = 0; i < mapData.Length; i++)
             {

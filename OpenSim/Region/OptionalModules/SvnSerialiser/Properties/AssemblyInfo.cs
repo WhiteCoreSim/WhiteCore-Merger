@@ -31,11 +31,11 @@ using System.Runtime.InteropServices;
 // General information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SvnSerialiser")]
+[assembly: AssemblyTitle("SvnSerializer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("http://opensimulator.org")]
-[assembly: AssemblyProduct("SvnSerialiser")]
+[assembly: AssemblyProduct("SvnSerializer")]
 [assembly: AssemblyCopyright("Copyright (c) 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

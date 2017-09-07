@@ -134,7 +134,7 @@ namespace OpenSim.Region.OptionalModules.World.NPC
         }
 
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_createMutex = new Mutex(false);
 
@@ -173,7 +173,7 @@ namespace OpenSim.Region.OptionalModules.World.NPC
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

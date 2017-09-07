@@ -65,7 +65,7 @@ namespace OpenSim.Region.CoreModules.Agent.AssetTransaction
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             if (!RegisteredScenes.ContainsKey(scene.RegionInfo.RegionID))
             {
@@ -83,7 +83,7 @@ namespace OpenSim.Region.CoreModules.Agent.AssetTransaction
                 m_scene = scene;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 
@@ -256,7 +256,7 @@ namespace OpenSim.Region.CoreModules.Agent.AssetTransaction
             AssetXferUploader uploader = transactions.RequestXferUploader(transaction);
             if (uploader != null)
             {
-                uploader.Initialise(remoteClient, assetID, transaction, type, data, storeLocal, tempFile);
+                uploader.Initialize(remoteClient, assetID, transaction, type, data, storeLocal, tempFile);
             }
         }
 

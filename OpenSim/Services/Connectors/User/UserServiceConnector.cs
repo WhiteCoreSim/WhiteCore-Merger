@@ -58,10 +58,10 @@ namespace OpenSim.Services.Connectors
 
         public UserServicesConnector(IConfigSource source)
         {
-            Initialise(source);
+            Initialize(source);
         }
 
-        public virtual void Initialise(IConfigSource source)
+        public virtual void Initialize(IConfigSource source)
         {
             IConfig assetConfig = source.Configs["UserService"];
             if (assetConfig == null)

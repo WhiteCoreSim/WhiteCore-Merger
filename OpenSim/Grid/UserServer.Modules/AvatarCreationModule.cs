@@ -62,7 +62,7 @@ namespace OpenSim.Grid.UserServer.Modules
             m_inventoryServerUrl = config.InventoryUrl.OriginalString;
         }
 
-        public void Initialise(IGridServiceCore core)
+        public void Initialize(IGridServiceCore core)
         {
             CommandConsole console;
             if (core.TryGet<CommandConsole>(out console))
@@ -73,7 +73,7 @@ namespace OpenSim.Grid.UserServer.Modules
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
 
         }

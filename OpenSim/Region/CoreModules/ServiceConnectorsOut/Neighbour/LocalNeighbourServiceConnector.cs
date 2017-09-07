@@ -70,7 +70,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Neighbour
             get { return "LocalNeighbourServicesConnector"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -104,7 +104,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Neighbour
             m_log.Info("[NEIGHBOUR CONNECTOR]: Local neighbour connector enabled for region " + scene.RegionInfo.RegionName);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

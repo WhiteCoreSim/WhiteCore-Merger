@@ -85,13 +85,13 @@ namespace OpenSim.Client.Sirikata
 
         #region Implementation of IRegionModule
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             lock (m_scenes)
                 m_scenes.Add(scene);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (!m_enabled)
                 return;

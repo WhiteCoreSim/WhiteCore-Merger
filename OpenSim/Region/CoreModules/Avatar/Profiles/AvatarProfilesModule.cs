@@ -51,7 +51,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Profiles
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             IConfig profileConfig = config.Configs["Profile"];
             if (profileConfig != null)
@@ -67,7 +67,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Profiles
             m_scene.EventManager.OnNewClient += NewClient;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (!m_enabled)
                 return;

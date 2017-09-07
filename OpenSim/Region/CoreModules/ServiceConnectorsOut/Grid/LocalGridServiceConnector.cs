@@ -63,7 +63,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
         {
             m_log.Debug("[LOCAL GRID CONNECTOR]: LocalGridServicesConnector instantiated");
             m_MainInstance = this;
-            InitialiseService(source);
+            InitializeService(source);
         }
 
         #region ISharedRegionModule
@@ -78,7 +78,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
             get { return "LocalGridServicesConnector"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -86,7 +86,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
                 string name = moduleConfig.GetString("GridServices", "");
                 if (name == Name)
                 {
-                    InitialiseService(source);
+                    InitializeService(source);
                     m_MainInstance = this;
                     m_Enabled = true;
                     m_log.Info("[LOCAL GRID CONNECTOR]: Local grid connector enabled");
@@ -94,7 +94,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
             }
         }
 
-        private void InitialiseService(IConfigSource source)
+        private void InitializeService(IConfigSource source)
         {
             IConfig assetConfig = source.Configs["GridService"];
             if (assetConfig == null)
@@ -124,7 +124,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_MainInstance == this)
             {

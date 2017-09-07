@@ -55,23 +55,23 @@ namespace OpenSim.Data.MSSQL
         override public void Dispose() { }
 
         /// <summary>
-        /// <para>Initialises asset interface</para>
+        /// <para>Initializes asset interface</para>
         /// </summary>
         // [Obsolete("Cannot be default-initialized!")]
-        override public void Initialise()
+        override public void Initialize()
         {
             m_log.Info("[MSSQLAssetData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         /// <summary>
-        /// Initialises asset interface
+        /// Initializes asset interface
         /// </summary>
         /// <para>
         /// a string instead of file, if someone writes the support
         /// </para>
         /// <param name="connectionString">connect string</param>
-        override public void Initialise(string connectionString)
+        override public void Initialize(string connectionString)
         {
             m_ticksToEpoch = new System.DateTime(1970, 1, 1).Ticks;
 

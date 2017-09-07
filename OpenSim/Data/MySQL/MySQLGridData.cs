@@ -48,24 +48,24 @@ namespace OpenSim.Data.MySQL
         private object m_dbLock = new object();
         private string m_connectionString;
 
-        override public void Initialise()
+        override public void Initialize()
         {
             m_log.Info("[MySQLGridData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            throw new PluginNotInitializedException (Name);
         }
 
         /// <summary>
-        /// <para>Initialises Grid interface</para>
+        /// <para>Initializes Grid interface</para>
         /// <para>
         /// <list type="bullet">
-        /// <item>Loads and initialises the MySQL storage plugin</item>
+        /// <item>Loads and initializes the MySQL storage plugin</item>
         /// <item>Warns and uses the obsolete mysql_connection.ini if connect string is empty.</item>
         /// <item>Check for migration</item>
         /// </list>
         /// </para>
         /// </summary>
         /// <param name="connect">connect string.</param>
-        override public void Initialise(string connect)
+        override public void Initialize(string connect)
         {
             m_connectionString = connect;
             m_database = new MySQLManager(connect);

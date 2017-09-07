@@ -53,7 +53,7 @@ namespace OpenSim.Data.SQLite.Tests
             connect = "URI=file:" + file + ",version=3";
             
             db = new SQLiteInventoryStore();
-            db.Initialise(connect);
+            db.Initialize(connect);
         }
 
         [TestFixtureTearDown]

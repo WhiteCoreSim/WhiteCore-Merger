@@ -56,10 +56,10 @@ namespace OpenSim.Services.Connectors
 
         public LandServicesConnector(IGridService gridServices)
         {
-            Initialise(gridServices);
+            Initialize(gridServices);
         }
 
-        public virtual void Initialise(IGridService gridServices)
+        public virtual void Initialize(IGridService gridServices)
         {
             m_GridService = gridServices;
         }

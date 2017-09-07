@@ -55,7 +55,7 @@ namespace OpenSim.Data.MySQL.Tests
                 database = new MySQLManager(connect);
                 DropTables();
                 db = new MySQLInventoryData();
-                db.Initialise(connect);
+                db.Initialize(connect);
             } 
             catch (Exception e)
             {

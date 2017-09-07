@@ -63,7 +63,7 @@ namespace OpenSim.Tests.Common.Mock
         /// </summary>
         private Dictionary<UUID, List<FriendListItem>> m_friendsListByUuid = new Dictionary<UUID, List<FriendListItem>>();
 
-        public void Initialise() {}
+        public void Initialize() {}
         public void Dispose() {}
         
         public void AddTemporaryUserProfile(UserProfileData userProfile)
@@ -203,7 +203,7 @@ namespace OpenSim.Tests.Common.Mock
 
         public bool InventoryTransferRequest(UUID from, UUID to, UUID inventory) { return false; }
 
-        public void Initialise(string connect) { return; }
+        public void Initialize(string connect) { return; }
 
         public AvatarAppearance GetUserAppearance(UUID user) { return null; }
 

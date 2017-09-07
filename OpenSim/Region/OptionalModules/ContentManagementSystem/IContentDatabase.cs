@@ -64,10 +64,10 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
 
         /// <summary>
         /// Similar to the IRegionModule function. This is the function to be called before attempting to interface with the database.
-        /// Initialise should be called one for each region to be contained in the database. The directory should be the full path 
+        /// Initialize should be called one for each region to be contained in the database. The directory should be the full path 
         /// to the repository and will only be defined once, regardless of how many times the method is called.
         /// </summary>
-        void Initialise(Scene scene, String dir);
+        void Initialize(Scene scene, String dir);
 
         /// <summary>
         /// Returns a list of the revision numbers and corresponding log messages for a given region.
@@ -80,9 +80,9 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
         int NumOfRegionRev(UUID regionid);
 
         /// <summary>
-        /// Should be called once after Initialise has been called.
+        /// Should be called once after Initialize has been called.
         /// </summary>
-        void PostInitialise();
+        void PostInitialize();
 
         /// <summary>
         /// Saves the Region terrain map and objects within the region as xml to the database.

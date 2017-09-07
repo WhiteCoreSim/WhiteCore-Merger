@@ -53,7 +53,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Combat.CombatModule
         /// </summary>
         /// <param name="scene"></param>
         /// <param name="config"></param>
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             lock (m_scenel)
             {
@@ -71,7 +71,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Combat.CombatModule
             scene.EventManager.OnAvatarEnteringNewParcel += AvatarEnteringParcel;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

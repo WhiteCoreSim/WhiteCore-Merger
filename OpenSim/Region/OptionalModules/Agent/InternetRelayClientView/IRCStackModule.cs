@@ -44,7 +44,7 @@ namespace OpenSim.Region.OptionalModules.Agent.InternetRelayClientView
 
         #region Implementation of IRegionModule
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             if (null != source.Configs["IRCd"] &&
                 source.Configs["IRCd"].GetBoolean("Enabled",false))
@@ -68,7 +68,7 @@ namespace OpenSim.Region.OptionalModules.Agent.InternetRelayClientView
             m_log.Info("[IRCd] Added user to Scene");
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
 
         }

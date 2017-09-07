@@ -47,16 +47,16 @@ namespace OpenSim.Data.MSSQL
         public MSSQLManager database;
 
         [Obsolete("Cannot be default-initialized!")]
-        public void Initialise()
+        public void Initialize()
         {
             m_log.Info("[LOG DB]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            throw new PluginNotInitializedException (Name);
         }
 
         /// <summary>
         /// Artificial constructor called when the plugin is loaded
         /// </summary>
-        public void Initialise(string connect)
+        public void Initialize(string connect)
         {
             if (!string.IsNullOrEmpty(connect))
             {

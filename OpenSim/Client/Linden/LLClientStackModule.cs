@@ -61,7 +61,7 @@ namespace OpenSim.Client.Linden
 
         protected string m_clientStackDll = "OpenSim.Region.ClientStack.LindenUDP.dll";
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             if (m_scene == null)
             {

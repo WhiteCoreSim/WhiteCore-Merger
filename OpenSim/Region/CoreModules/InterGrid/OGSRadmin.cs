@@ -57,7 +57,7 @@ namespace OpenSim.Region.CoreModules.InterGrid
         }
 
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             m_settings = source;
         }
@@ -84,7 +84,7 @@ namespace OpenSim.Region.CoreModules.InterGrid
             
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_settings.Configs["Startup"].GetBoolean("gridmode", false))
             {
@@ -97,7 +97,7 @@ namespace OpenSim.Region.CoreModules.InterGrid
 
         #region IRegionModule
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_settings = source;
 

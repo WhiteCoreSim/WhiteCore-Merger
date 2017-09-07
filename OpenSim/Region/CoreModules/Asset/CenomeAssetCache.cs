@@ -317,7 +317,7 @@ namespace OpenSim.Region.CoreModules.Asset
         /// <param name="source">
         /// Configuration source.
         /// </param>
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             m_cache = null;
             m_enabled = false;
@@ -360,7 +360,7 @@ namespace OpenSim.Region.CoreModules.Asset
         /// Modules can use this to initialize connection with other modules.
         /// </para>
         /// </remarks>
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

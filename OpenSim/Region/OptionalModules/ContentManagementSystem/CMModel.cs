@@ -140,7 +140,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
             return null;
         }
 
-        public void Initialise(string database)
+        public void Initialize(string database)
         {
             if (database == "FileSystemDatabase")
                 m_database = new FileSystemDatabase();
@@ -148,17 +148,17 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
                 m_database = new GitDatabase();
         }
 
-        public void InitialiseDatabase(Scene scene, string dir)
+        public void InitializeDatabase(Scene scene, string dir)
         {
-            m_database.Initialise(scene, dir);
+            m_database.Initialize(scene, dir);
         }
 
         /// <summary>
         /// Should be called just once to finish initializing the database.
         /// </summary>
-        public void PostInitialise()
+        public void PostInitialize()
         {
-            m_database.PostInitialise();
+            m_database.PostInitialize();
         }
 
         /// <summary>

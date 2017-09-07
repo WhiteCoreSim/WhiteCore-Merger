@@ -53,18 +53,18 @@ namespace OpenSim.Data.MSSQL
         #region IPlugin members
 
         [Obsolete("Cannot be default-initialized!")]
-        public void Initialise()
+        public void Initialize()
         {
             m_log.Info("[MSSQLInventoryData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         /// <summary>
-        /// Loads and initialises the MSSQL inventory storage interface
+        /// Loads and initializes the MSSQL inventory storage interface
         /// </summary>
         /// <param name="connectionString">connect string</param>
         /// <remarks>use mssql_connection.ini</remarks>
-        public void Initialise(string connectionString)
+        public void Initialize(string connectionString)
         {
             if (!string.IsNullOrEmpty(connectionString))
             {

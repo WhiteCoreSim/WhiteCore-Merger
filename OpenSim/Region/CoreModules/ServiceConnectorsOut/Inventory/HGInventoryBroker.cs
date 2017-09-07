@@ -77,7 +77,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory
             get { return "HGInventoryBroker"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -141,7 +141,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

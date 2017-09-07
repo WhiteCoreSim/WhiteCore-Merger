@@ -37,7 +37,7 @@ using OpenSim.Framework;
 using OpenSim.Framework.Communications.Cache;
 using OpenSim.Framework.Serialization;
 using OpenSim.Framework.Serialization.External;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Region.CoreModules.World.Terrain;
 using OpenSim.Region.Framework.Scenes;
 using OpenSim.Region.Framework.Scenes.Serialization;
@@ -60,11 +60,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver.Tests
         public void SetUp()
         {
             m_archiverModule = new ArchiverModule();
-            SerialiserModule serialiserModule = new SerialiserModule();
+            SerializerModule serializerModule = new SerializerModule();
             TerrainModule terrainModule = new TerrainModule();
 
             m_scene = SceneSetupHelpers.SetupScene("scene1");
-            SceneSetupHelpers.SetupSceneModules(m_scene, m_archiverModule, serialiserModule, terrainModule);
+            SceneSetupHelpers.SetupSceneModules(m_scene, m_archiverModule, serializerModule, terrainModule);
         }
         
         private void LoadCompleted(Guid requestId, string errorMessage)
@@ -416,11 +416,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver.Tests
             // Create an oar file that we can use for the merge
             {
                 ArchiverModule archiverModule = new ArchiverModule();
-                SerialiserModule serialiserModule = new SerialiserModule();
+                SerializerModule serializerModule = new SerializerModule();
                 TerrainModule terrainModule = new TerrainModule();
 
                 Scene scene = SceneSetupHelpers.SetupScene();
-                SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serialiserModule, terrainModule);
+                SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serializerModule, terrainModule);
 
                 m_scene.AddNewSceneObject(new SceneObjectGroup(part2), false);
 

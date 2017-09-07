@@ -218,9 +218,9 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
             httpResponse.SendChunked = true;
             httpResponse.ContentType = "text/xml";
             
-            IRegionSerialiserModule serialiser = scene.RequestModuleInterface<IRegionSerialiserModule>();
-            if (serialiser != null)
-                serialiser.SavePrimsToXml2(scene, new StreamWriter(httpResponse.OutputStream), min, max);
+            IRegionSerializerModule serializer = scene.RequestModuleInterface<IRegionSerializerModule>();
+            if (serializer != null)
+                serializer.SavePrimsToXml2(scene, new StreamWriter(httpResponse.OutputStream), min, max);
             
             return "";
         }

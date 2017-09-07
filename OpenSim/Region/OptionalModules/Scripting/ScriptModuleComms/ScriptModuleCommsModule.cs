@@ -47,7 +47,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.ScriptModuleComms
 
         public event ScriptCommand OnScriptCommand;
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
         }
 

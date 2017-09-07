@@ -63,13 +63,13 @@ namespace OpenSim.Data.SQLite
 
         /// <summary>
         /// <list type="bullet">
-        /// <item>Initialises AssetData interface</item>
-        /// <item>Loads and initialises a new SQLite connection and maintains it.</item>
+        /// <item>Initializes AssetData interface</item>
+        /// <item>Loads and initializes a new SQLite connection and maintains it.</item>
         /// <item>use default URI if connect string is empty.</item>
         /// </list>
         /// </summary>
         /// <param name="dbconnect">connect string</param>
-        override public void Initialise(string dbconnect)
+        override public void Initialize(string dbconnect)
         {
             if (dbconnect == string.Empty)
             {
@@ -322,11 +322,11 @@ namespace OpenSim.Data.SQLite
         }
 
         /// <summary>
-        /// Initialise the AssetData interface using default URI
+        /// Initialize the AssetData interface using default URI
         /// </summary>
-        override public void Initialise()
+        override public void Initialize()
         {
-            Initialise("URI=file:Asset.db,version=3");
+            Initialize("URI=file:Asset.db,version=3");
         }
 
         /// <summary>

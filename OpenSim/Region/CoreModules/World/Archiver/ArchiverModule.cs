@@ -63,7 +63,7 @@ namespace OpenSim.Region.CoreModules.World.Archiver
         }
 
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             //m_log.Debug("[ARCHIVER] Initialising");
         }

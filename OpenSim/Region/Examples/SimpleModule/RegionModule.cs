@@ -40,12 +40,12 @@ namespace OpenSim.Region.Examples.SimpleModule
 
         private Scene m_scene;
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             // RegionInfo regionInfo = m_scene.RegionInfo;
 

@@ -63,7 +63,7 @@ namespace OpenSim.Region.CoreModules.Asset
             get { return "GlynnTuckerAssetCache"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
 
@@ -87,7 +87,7 @@ namespace OpenSim.Region.CoreModules.Asset
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

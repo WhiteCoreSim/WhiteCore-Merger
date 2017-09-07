@@ -70,7 +70,7 @@ namespace OpenSim.Region.UserStatistics
         private string m_loglines = String.Empty;
         private volatile int lastHit = 12000;
 
-        public virtual void Initialise(Scene scene, IConfigSource config)
+        public virtual void Initialize(Scene scene, IConfigSource config)
         {
             IConfig cnfg;
             try
@@ -280,7 +280,7 @@ namespace OpenSim.Region.UserStatistics
 
 
 
-        public virtual void PostInitialise()
+        public virtual void PostInitialize()
         {
             if (!enabled)
             {

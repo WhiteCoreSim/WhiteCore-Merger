@@ -37,10 +37,10 @@ using OpenSim.Tests.Common.Setup;
 using System.IO;
 using System.Xml;
 
-namespace OpenSim.Region.CoreModules.World.Serialiser.Tests
+namespace OpenSim.Region.CoreModules.World.Serializer.Tests
 {
     [TestFixture]
-    public class SerialiserTests
+    public class SerializerTests
     {
         private string xml = @"
         <SceneObjectGroup>
@@ -231,14 +231,14 @@ namespace OpenSim.Region.CoreModules.World.Serialiser.Tests
         </SceneObjectGroup>";
 
         protected Scene m_scene;
-        protected SerialiserModule m_serialiserModule;
+        protected SerializerModule m_serializerModule;
 
         [TestFixtureSetUp]
         public void Init()
         {
-            m_serialiserModule = new SerialiserModule();
+            m_serializerModule = new SerializerModule();
             m_scene = SceneSetupHelpers.SetupScene("");
-            SceneSetupHelpers.SetupSceneModules(m_scene, m_serialiserModule);
+            SceneSetupHelpers.SetupSceneModules(m_scene, m_serializerModule);
         }
 
         [Test]
@@ -334,7 +334,7 @@ namespace OpenSim.Region.CoreModules.World.Serialiser.Tests
             TestHelper.InMethod();
             //log4net.Config.XmlConfigurator.Configure();
 
-            SceneObjectGroup so = m_serialiserModule.DeserializeGroupFromXml2(xml2);
+            SceneObjectGroup so = m_serializerModule.DeserializeGroupFromXml2(xml2);
             SceneObjectPart rootPart = so.RootPart;
 
             Assert.That(rootPart.UUID, Is.EqualTo(new UUID("9be68fdd-f740-4a0f-9675-dfbbb536b946")));
@@ -369,7 +369,7 @@ namespace OpenSim.Region.CoreModules.World.Serialiser.Tests
             // Need to add the object to the scene so that the request to get script state succeeds
             m_scene.AddSceneObject(so);
 
-            string xml2 = m_serialiserModule.SerializeGroupToXml2(so);
+            string xml2 = m_serializerModule.SerializeGroupToXml2(so);
 
             XmlTextReader xtr = new XmlTextReader(new StringReader(xml2));
             xtr.ReadStartElement("SceneObjectGroup");

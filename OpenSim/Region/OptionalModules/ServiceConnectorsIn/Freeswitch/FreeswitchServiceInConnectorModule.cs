@@ -49,7 +49,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsIn.Freeswitch
 
         #region IRegionModule interface
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             m_Config = config;
             IConfig moduleConfig = config.Configs["Modules"];
@@ -64,7 +64,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsIn.Freeswitch
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

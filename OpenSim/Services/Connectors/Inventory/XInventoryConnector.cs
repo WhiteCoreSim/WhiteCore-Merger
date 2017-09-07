@@ -60,10 +60,10 @@ namespace OpenSim.Services.Connectors
 
         public XInventoryServicesConnector(IConfigSource source)
         {
-            Initialise(source);
+            Initialize(source);
         }
 
-        public virtual void Initialise(IConfigSource source)
+        public virtual void Initialize(IConfigSource source)
         {
             IConfig assetConfig = source.Configs["InventoryService"];
             if (assetConfig == null)

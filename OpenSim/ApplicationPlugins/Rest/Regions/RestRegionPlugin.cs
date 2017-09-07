@@ -61,11 +61,11 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
         /// Note that entries MUST be added to the active configuration files before
         /// the plugin can be enabled.
         /// </remarks>
-        public override void Initialise(OpenSimBase openSim)
+        public override void Initialize(OpenSimBase openSim)
         {
             try
             {
-                base.Initialise(openSim);
+                base.Initialize(openSim);
                 if (!IsEnabled)
                 {
                     //m_log.WarnFormat("{0} Rest Plugins are disabled", MsgID);

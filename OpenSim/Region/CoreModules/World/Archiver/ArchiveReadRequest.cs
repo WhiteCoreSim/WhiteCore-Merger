@@ -112,8 +112,8 @@ namespace OpenSim.Region.CoreModules.World.Archiver
         {
             int successfulAssetRestores = 0;
             int failedAssetRestores = 0;
-            List<string> serialisedSceneObjects = new List<string>();
-            List<string> serialisedParcels = new List<string>();
+            List<string> serializedSceneObjects = new List<string>();
+            List<string> serializedParcels = new List<string>();
             string filePath = "NONE";
 
             TarArchiveReader archive = new TarArchiveReader(m_loadStream);
@@ -132,7 +132,7 @@ namespace OpenSim.Region.CoreModules.World.Archiver
 
                     if (filePath.StartsWith(ArchiveConstants.OBJECTS_PATH))
                     {
-                        serialisedSceneObjects.Add(m_utf8Encoding.GetString(data));
+                        serializedSceneObjects.Add(m_utf8Encoding.GetString(data));
                     }
                     else if (filePath.StartsWith(ArchiveConstants.ASSETS_PATH))
                     {
@@ -154,7 +154,7 @@ namespace OpenSim.Region.CoreModules.World.Archiver
                     } 
                     else if (!m_merge && filePath.StartsWith(ArchiveConstants.LANDDATA_PATH))
                     {
-                        serialisedParcels.Add(m_utf8Encoding.GetString(data));
+                        serializedParcels.Add(m_utf8Encoding.GetString(data));
                     } 
                     else if (filePath == ArchiveConstants.CONTROL_FILE_PATH)
                     {
@@ -199,11 +199,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver
                 masterAvatarId = m_scene.RegionInfo.EstateSettings.EstateOwner;
 
             // Reload serialized parcels
-            m_log.InfoFormat("[ARCHIVER]: Loading {0} parcels.  Please wait.", serialisedParcels.Count);
+            m_log.InfoFormat("[ARCHIVER]: Loading {0} parcels.  Please wait.", serializedParcels.Count);
             List<LandData> landData = new List<LandData>();
-            foreach (string serialisedParcel in serialisedParcels)
+            foreach (string serializedParcel in serializedParcels)
             {
-                LandData parcel = LandDataSerializer.Deserialize(serialisedParcel);
+                LandData parcel = LandDataSerializer.Deserialize(serializedParcel);
                 if (!ResolveUserUuid(parcel.OwnerID))
                     parcel.OwnerID = masterAvatarId;
                 landData.Add(parcel);
@@ -212,28 +212,28 @@ namespace OpenSim.Region.CoreModules.World.Archiver
             m_log.InfoFormat("[ARCHIVER]: Restored {0} parcels.", landData.Count);
 
             // Reload serialized prims
-            m_log.InfoFormat("[ARCHIVER]: Loading {0} scene objects.  Please wait.", serialisedSceneObjects.Count);
+            m_log.InfoFormat("[ARCHIVER]: Loading {0} scene objects.  Please wait.", serializedSceneObjects.Count);
 
-            IRegionSerialiserModule serialiser = m_scene.RequestModuleInterface<IRegionSerialiserModule>();
+            IRegionSerializerModule serializer = m_scene.RequestModuleInterface<IRegionSerializerModule>();
             int sceneObjectsLoadedCount = 0;
 
-            foreach (string serialisedSceneObject in serialisedSceneObjects)
+            foreach (string serializedSceneObject in serializedSceneObjects)
             {
                 /*
-                m_log.DebugFormat("[ARCHIVER]: Loading xml with raw size {0}", serialisedSceneObject.Length);
+                m_log.DebugFormat("[ARCHIVER]: Loading xml with raw size {0}", serializedSceneObject.Length);
 
                 // Really large xml files (multi megabyte) appear to cause
                 // memory problems
                 // when loading the xml.  But don't enable this check yet
                 
-                if (serialisedSceneObject.Length > 5000000)
+                if (serializedSceneObject.Length > 5000000)
                 {
                     m_log.Error("[ARCHIVER]: Ignoring xml since size > 5000000);");
                     continue;
                 }
                 */
 
-                SceneObjectGroup sceneObject = serialiser.DeserializeGroupFromXml2(serialisedSceneObject);
+                SceneObjectGroup sceneObject = serializer.DeserializeGroupFromXml2(serializedSceneObject);
 
                 // For now, give all incoming scene objects new uuids.  This will allow scenes to be cloned
                 // on the same region server and multiple examples a single object archive to be imported
@@ -285,7 +285,7 @@ namespace OpenSim.Region.CoreModules.World.Archiver
 
             m_log.InfoFormat("[ARCHIVER]: Restored {0} scene objects to the scene", sceneObjectsLoadedCount);
 
-            int ignoredObjects = serialisedSceneObjects.Count - sceneObjectsLoadedCount;
+            int ignoredObjects = serializedSceneObjects.Count - sceneObjectsLoadedCount;
 
             if (ignoredObjects > 0)
                 m_log.WarnFormat("[ARCHIVER]: Ignored {0} scene objects that already existed in the scene", ignoredObjects);

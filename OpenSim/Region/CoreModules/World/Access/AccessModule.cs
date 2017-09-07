@@ -46,7 +46,7 @@ namespace OpenSim.Region.CoreModules.World
                 
         private List<Scene> m_SceneList = new List<Scene>();
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             MainConsole.Instance.Commands.AddCommand("access", true,
                     "login enable",
@@ -70,7 +70,7 @@ namespace OpenSim.Region.CoreModules.World
                     HandleLoginCommand);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

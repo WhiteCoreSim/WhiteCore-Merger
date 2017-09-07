@@ -60,7 +60,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.RegionReady
             get { return null; }
         }
             
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             //m_log.Info("[RegionReady] Initialising");
 

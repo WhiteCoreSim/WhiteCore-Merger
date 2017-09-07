@@ -157,7 +157,7 @@ namespace OpenSim
 
         protected virtual void LoadPlugins()
         {
-            using (PluginLoader<IApplicationPlugin> loader = new PluginLoader<IApplicationPlugin>(new ApplicationPluginInitialiser(this)))
+            using (PluginLoader<IApplicationPlugin> loader = new PluginLoader<IApplicationPlugin>(new ApplicationPluginInitializer(this)))
             {
                 loader.Load("/OpenSim/Startup");
                 m_plugins = loader.Plugins;
@@ -200,7 +200,7 @@ namespace OpenSim
             LoadPlugins();
             foreach (IApplicationPlugin plugin in m_plugins)
             {
-                plugin.PostInitialise();
+                plugin.PostInitialize();
             }
 
             AddPluginCommands();
@@ -334,7 +334,7 @@ namespace OpenSim
 
             // This needs to be ahead of the script engine load, so the
             // script module can pick up events exposed by a module
-            m_moduleLoader.InitialiseSharedModules(scene);
+            m_moduleLoader.InitializeSharedModules(scene);
 
             // Use this in the future, the line above will be deprecated soon
             m_log.Info("[MODULES]: Loading Region's modules (new style)");
@@ -389,7 +389,7 @@ namespace OpenSim
             {
                 foreach (IRegionModule module in modules)
                 {
-                    module.PostInitialise();
+                    module.PostInitialize();
                 }
             }
             scene.EventManager.OnShutdown += delegate() { ShutdownRegion(scene); };
@@ -552,7 +552,7 @@ namespace OpenSim
             scene.LoadWorldMap();
 
             scene.PhysicsScene = GetPhysicsScene(scene.RegionInfo.RegionName);
-            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialised());
+            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialized());
             scene.PhysicsScene.SetWaterLevel((float) regionInfo.RegionSettings.WaterHeight);
 
             // TODO: Remove this cruft once MasterAvatar is fully deprecated

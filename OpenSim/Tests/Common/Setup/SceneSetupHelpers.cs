@@ -158,12 +158,12 @@ namespace OpenSim.Tests.Common.Setup
                 regInfo, acm, cm, scs, sm, null, false, false, false, configSource, null);
 
             INonSharedRegionModule capsModule = new CapabilitiesModule();
-            capsModule.Initialise(new IniConfigSource());
+            capsModule.Initialize(new IniConfigSource());
             testScene.AddRegionModule(capsModule.Name, capsModule);
             capsModule.AddRegion(testScene);
             
             IRegionModule godsModule = new GodsModule();
-            godsModule.Initialise(testScene, new IniConfigSource());
+            godsModule.Initialize(testScene, new IniConfigSource());
             testScene.AddModule(godsModule.Name, godsModule);
             realServices = realServices.ToLower();
             // IConfigSource config = new IniConfigSource();
@@ -191,8 +191,8 @@ namespace OpenSim.Tests.Common.Setup
                 m_inventoryService.AddRegion(testScene);
                 m_inventoryService.RegionLoaded(testScene);
             }
-            m_inventoryService.PostInitialise();
-            m_assetService.PostInitialise();
+            m_inventoryService.PostInitialize();
+            m_assetService.PostInitialize();
 
             testScene.CommsManager.UserService.SetInventoryService(testScene.InventoryService);
 
@@ -221,7 +221,7 @@ namespace OpenSim.Tests.Common.Setup
             else
                 config.Configs["AssetService"].Set("LocalServiceModule", "OpenSim.Tests.Common.dll:MockAssetService");
             config.Configs["AssetService"].Set("StorageProvider", "OpenSim.Tests.Common.dll");
-            assetService.Initialise(config);
+            assetService.Initialize(config);
             assetService.AddRegion(testScene);
             assetService.RegionLoaded(testScene);
             testScene.AddRegionModule(assetService.Name, assetService);
@@ -240,7 +240,7 @@ namespace OpenSim.Tests.Common.Setup
             else
                 config.Configs["InventoryService"].Set("LocalServiceModule", "OpenSim.Tests.Common.dll:MockInventoryService");
             config.Configs["InventoryService"].Set("StorageProvider", "OpenSim.Tests.Common.dll");
-            inventoryService.Initialise(config);
+            inventoryService.Initialize(config);
             inventoryService.AddRegion(testScene);
             inventoryService.RegionLoaded(testScene);
             testScene.AddRegionModule(inventoryService.Name, inventoryService);
@@ -259,7 +259,7 @@ namespace OpenSim.Tests.Common.Setup
             if (m_gridService == null)
             {
                 ISharedRegionModule gridService = new LocalGridServicesConnector();
-                gridService.Initialise(config);
+                gridService.Initialize(config);
                 m_gridService = gridService;
             }
             //else
@@ -294,23 +294,23 @@ namespace OpenSim.Tests.Common.Setup
                 if (module is IRegionModule)
                 {
                     IRegionModule m = (IRegionModule)module;
-                    m.Initialise(scene, config);
+                    m.Initialize(scene, config);
                     scene.AddModule(m.Name, m);
-                    m.PostInitialise();
+                    m.PostInitialize();
                 }
                 else if (module is IRegionModuleBase)
                 {
-                    // for the new system, everything has to be initialised first,
-                    // shared modules have to be post-initialised, then all get an AddRegion with the scene
+                    // for the new system, everything has to be initialized first,
+                    // shared modules have to be post-initialized, then all get an AddRegion with the scene
                     IRegionModuleBase m = (IRegionModuleBase)module;
-                    m.Initialise(config);
+                    m.Initialize(config);
                     newModules.Add(m);
                 }
             }
 
             foreach (IRegionModuleBase module in newModules)
             {
-                if (module is ISharedRegionModule) ((ISharedRegionModule)module).PostInitialise();
+                if (module is ISharedRegionModule) ((ISharedRegionModule)module).PostInitialize();
             }
 
             foreach (IRegionModuleBase module in newModules)

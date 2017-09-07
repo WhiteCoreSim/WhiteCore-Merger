@@ -97,12 +97,12 @@ namespace OpenSim.Region.CoreModules.Scripting.LSLHttp
             get { return "UrlModule"; }
         }
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             m_ExternalHostNameForLSL = config.Configs["Network"].GetString("ExternalHostNameForLSL", System.Environment.MachineName);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

@@ -47,7 +47,7 @@ using Nini.Config;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Region.CoreModules.World.Terrain;
 using WhiteCore.Physics.Manager;
 
@@ -69,7 +69,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
 
         private string m_repodir = null;
         private Dictionary<UUID, Scene> m_scenes = new Dictionary<UUID, Scene>();
-        private Dictionary<UUID, IRegionSerialiserModule> m_serialiser = new Dictionary<UUID, IRegionSerialiserModule>();
+        private Dictionary<UUID, IRegionSerializerModule> m_serializer = new Dictionary<UUID, IRegionSerializerModule>();
 
         #endregion Fields
 
@@ -83,7 +83,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
 
         #region Private Methods
 
-        // called by postinitialise
+        // called by postinitialize
         private void CreateDirectory()
         {
             string scenedir;
@@ -98,14 +98,14 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
             }
         }
 
-        // called by postinitialise
-        private void SetupSerialiser()
+        // called by postinitialize
+        private void SetupSerializer()
         {
-            if (m_serialiser.Count == 0)
+            if (m_serializer.Count == 0)
             {
                 foreach (UUID region in m_scenes.Keys)
                 {
-                    m_serialiser.Add(region, m_scenes[region].RequestModuleInterface<IRegionSerialiserModule>());
+                    m_serializer.Add(region, m_scenes[region].RequestModuleInterface<IRegionSerializerModule>());
                 }
             }
         }
@@ -205,7 +205,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
             return null;
         }
 
-        public void Initialise(Scene scene, string dir)
+        public void Initialize(Scene scene, string dir)
         {
             lock (this)
             {
@@ -256,9 +256,9 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
         }
 
         // Run once and only once.
-        public void PostInitialise()
+        public void PostInitialize()
         {
-            SetupSerialiser();
+            SetupSerializer();
 
             m_log.Info("[FSDB]: Creating repository in " + m_repodir + ".");
             CreateDirectory();
@@ -285,7 +285,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
                 x.Start();
                 if (m_scenes.ContainsKey(regionid))
                 {
-                    m_serialiser[regionid].SerialiseRegion(m_scenes[regionid], revisiondir);
+                    m_serializer[regionid].SerializeRegion(m_scenes[regionid], revisiondir);
                 }
                 x.Stop();
                 TimeToSave += x.ElapsedMilliseconds;

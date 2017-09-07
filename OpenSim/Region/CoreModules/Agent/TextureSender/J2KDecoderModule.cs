@@ -67,7 +67,7 @@ namespace OpenSim.Region.CoreModules.Agent.TextureSender
         {
         }
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             if (m_scene == null)
                 m_scene = scene;
@@ -75,7 +75,7 @@ namespace OpenSim.Region.CoreModules.Agent.TextureSender
             scene.RegisterModuleInterface<IJ2KDecoder>(this);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             m_cache = m_scene.RequestModuleInterface<IImprovedAssetCache>();
         }

@@ -66,7 +66,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset
             get { return "HGAssetBroker"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -134,7 +134,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

@@ -49,7 +49,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsIn.Inventory
 
         #region IRegionModule interface
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             //// This module is only on for standalones in hypergrid mode
             //enabled = (!config.Configs["Startup"].GetBoolean("gridmode", true)) &&
@@ -69,7 +69,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsIn.Inventory
 
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

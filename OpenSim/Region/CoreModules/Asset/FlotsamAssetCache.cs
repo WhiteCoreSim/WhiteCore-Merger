@@ -123,7 +123,7 @@ namespace Flotsam.RegionModules.AssetCache
             get { return m_ModuleName; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             
@@ -202,7 +202,7 @@ namespace Flotsam.RegionModules.AssetCache
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

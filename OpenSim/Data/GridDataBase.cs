@@ -42,8 +42,8 @@ namespace OpenSim.Data
         public abstract ReservationData GetReservationAtPoint(uint x, uint y);
         public abstract DataResponse DeleteProfile(string uuid);
 
-        public abstract void Initialise();
-        public abstract void Initialise(string connect);
+        public abstract void Initialize();
+        public abstract void Initialize(string connect);
         public abstract void Dispose();
 
         public abstract string Name { get; }

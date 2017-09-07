@@ -41,7 +41,7 @@ using OpenSim.Framework.Communications;
 using OpenSim.Region.Framework.Scenes;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.CoreModules.ServiceConnectorsOut.Interregion;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Tests.Common;
 using OpenSim.Tests.Common.Mock;
 using OpenSim.Tests.Common.Setup;
@@ -72,8 +72,8 @@ namespace OpenSim.Region.Framework.Scenes.Tests
             scene3 = SceneSetupHelpers.SetupScene("Neighbour x-1", UUID.Random(), 999, 1000, cm);
 
             ISharedRegionModule interregionComms = new RESTInterregionComms();
-            interregionComms.Initialise(new IniConfigSource());
-            interregionComms.PostInitialise();
+            interregionComms.Initialize(new IniConfigSource());
+            interregionComms.PostInitialize();
             SceneSetupHelpers.SetupSceneModules(scene, new IniConfigSource(), interregionComms);
             SceneSetupHelpers.SetupSceneModules(scene2, new IniConfigSource(), interregionComms);
             SceneSetupHelpers.SetupSceneModules(scene3, new IniConfigSource(), interregionComms);
@@ -367,9 +367,9 @@ namespace OpenSim.Region.Framework.Scenes.Tests
             presence2.AddAttachment(sog1);
             presence2.AddAttachment(sog2);
 
-            ISharedRegionModule serialiser = new SerialiserModule();
-            SceneSetupHelpers.SetupSceneModules(scene, new IniConfigSource(), serialiser);
-            SceneSetupHelpers.SetupSceneModules(scene2, new IniConfigSource(), serialiser);
+            ISharedRegionModule serializer = new SerializerModule();
+            SceneSetupHelpers.SetupSceneModules(scene, new IniConfigSource(), serializer);
+            SceneSetupHelpers.SetupSceneModules(scene2, new IniConfigSource(), serializer);
 
             Assert.That(presence.HasAttachments(), Is.False, "Presence has attachments before cross");
 

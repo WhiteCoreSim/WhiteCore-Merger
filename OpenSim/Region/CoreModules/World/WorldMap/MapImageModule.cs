@@ -96,7 +96,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             {
                 terrainRenderer = new ShadedMapTileRenderer();
             }
-            terrainRenderer.Initialise(m_scene, m_config);
+            terrainRenderer.Initialize(m_scene, m_config);
 
             using (Bitmap mapbmp = new Bitmap((int)Constants.RegionSize, (int)Constants.RegionSize))
             {
@@ -130,7 +130,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
             m_config = source;
@@ -143,7 +143,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             m_scene.RegisterModuleInterface<IMapImageGenerator>(this);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

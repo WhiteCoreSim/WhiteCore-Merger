@@ -56,7 +56,7 @@ namespace OpenSim.Data.MySQL.Tests
             {
                 database = new MySQLManager(connect);
                 db = new MySQLGridData();
-                db.Initialise(connect);
+                db.Initialize(connect);
             }
             catch (Exception e)
             {

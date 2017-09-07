@@ -58,7 +58,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
 
         public RemoteGridServicesConnector(IConfigSource source)
         {
-            InitialiseServices(source);
+            InitializeServices(source);
         }
 
         #region ISharedRegionmodule
@@ -73,7 +73,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
             get { return "RemoteGridServicesConnector"; }
         }
 
-        public override void Initialise(IConfigSource source)
+        public override void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -81,14 +81,14 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
                 string name = moduleConfig.GetString("GridServices", "");
                 if (name == Name)
                 {
-                    InitialiseServices(source);
+                    InitializeServices(source);
                     m_Enabled = true;
                     m_log.Info("[REMOTE GRID CONNECTOR]: Remote grid enabled");
                 }
             }
         }
 
-        private void InitialiseServices(IConfigSource source)
+        private void InitializeServices(IConfigSource source)
         {
             IConfig gridConfig = source.Configs["GridService"];
             if (gridConfig == null)
@@ -97,15 +97,15 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
                 return;
             }
 
-            base.Initialise(source);
+            base.Initialize(source);
 
             m_LocalGridService = new LocalGridServicesConnector(source);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_LocalGridService != null)
-                ((ISharedRegionModule)m_LocalGridService).PostInitialise();
+                ((ISharedRegionModule)m_LocalGridService).PostInitialize();
         }
 
         public void Close()

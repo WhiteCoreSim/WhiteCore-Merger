@@ -67,7 +67,7 @@ namespace OpenSim.Client.Linden
 
         #region IRegionModule Members
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig startupConfig = source.Configs["Modules"];
             if (startupConfig != null)
@@ -103,7 +103,7 @@ namespace OpenSim.Client.Linden
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
 
         }

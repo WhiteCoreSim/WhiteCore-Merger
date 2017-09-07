@@ -170,7 +170,7 @@ namespace OpenSim.Region.OptionalModules.World.TreePopulator
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             
             m_scene = scene;
@@ -198,10 +198,10 @@ namespace OpenSim.Region.OptionalModules.World.TreePopulator
 
             InstallCommands();
 
-            m_log.Debug("[TREES]: Initialised tree module");
+            m_log.Debug("[TREES]: Initialized tree module");
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             ReloadCopse();
             if (m_copse.Count > 0)

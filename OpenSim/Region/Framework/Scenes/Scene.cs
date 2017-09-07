@@ -248,7 +248,7 @@ namespace OpenSim.Region.Framework.Scenes
             get { return m_AvatarFactory; }
         }
         protected IConfigSource m_config;
-        protected IRegionSerialiserModule m_serialiser;
+        protected IRegionSerializerModule m_serializer;
         protected IInterregionCommsOut m_interregionCommsOut;
         protected IInterregionCommsIn m_interregionCommsIn;
         protected IDialogModule m_dialogModule;
@@ -1122,7 +1122,7 @@ namespace OpenSim.Region.Framework.Scenes
             m_worldCommModule = RequestModuleInterface<IWorldComm>();
             XferManager = RequestModuleInterface<IXfer>();
             m_AvatarFactory = RequestModuleInterface<IAvatarFactory>();
-            m_serialiser = RequestModuleInterface<IRegionSerialiserModule>();
+            m_serializer = RequestModuleInterface<IRegionSerializerModule>();
             m_interregionCommsOut = RequestModuleInterface<IInterregionCommsOut>();
             m_interregionCommsIn = RequestModuleInterface<IInterregionCommsIn>();
             m_dialogModule = RequestModuleInterface<IDialogModule>();
@@ -1913,7 +1913,7 @@ namespace OpenSim.Region.Framework.Scenes
             
             //SceneObjectPart rootPart = group.GetChildPart(group.UUID);
 
-            // Serialise calls to RemoveScriptInstances to avoid
+            // Serialize calls to RemoveScriptInstances to avoid
             // deadlocking on m_parts inside SceneObjectGroup
             lock (m_deleting_scene_object)
             {
@@ -2408,7 +2408,7 @@ namespace OpenSim.Region.Framework.Scenes
 
                 //successYN
                 //    = m_sceneGridService.PrimCrossToNeighboringRegion(
-                //        newRegionHandle, grp.UUID, m_serialiser.SaveGroupToXml2(grp), primcrossingXMLmethod);
+                //        newRegionHandle, grp.UUID, m_serializer.SaveGroupToXml2(grp), primcrossingXMLmethod);
                 //if (successYN && (objectState != "") && m_allowScriptCrossings)
                 //{
                 //    successYN = m_sceneGridService.PrimCrossToNeighboringRegion(
@@ -4532,7 +4532,7 @@ namespace OpenSim.Region.Framework.Scenes
         public void TerrainUnAcked(IClientAPI client, int patchX, int patchY)
         {
             //m_log.Debug("Terrain packet unacked, resending patch: " + patchX + " , " + patchY);
-             client.SendLayerData(patchX, patchY, Heightmap.GetFloatsSerialised());
+             client.SendLayerData(patchX, patchY, Heightmap.GetFloatsSerialized());
         }
 
         public void SetRootAgentScene(UUID agentID)

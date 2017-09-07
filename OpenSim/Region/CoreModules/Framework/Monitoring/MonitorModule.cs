@@ -64,7 +64,7 @@ namespace OpenSim.Region.CoreModules.Framework.Monitoring
 
         #region Implementation of IRegionModule
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
 
@@ -132,7 +132,7 @@ namespace OpenSim.Region.CoreModules.Framework.Monitoring
             return ereply;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             m_monitors.Add(new AgentCountMonitor(m_scene));
             m_monitors.Add(new ChildAgentCountMonitor(m_scene));

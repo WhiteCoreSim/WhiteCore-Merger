@@ -87,7 +87,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
             get { return "HGGridServicesConnector"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -103,7 +103,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
                     }
 
 
-                    InitialiseConnectorModule(source);
+                    InitializeConnectorModule(source);
                     
                     m_Enabled = true;
                     m_log.Info("[HGGRID CONNECTOR]: HG grid enabled");
@@ -111,7 +111,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
             }
         }
 
-        private void InitialiseConnectorModule(IConfigSource source)
+        private void InitializeConnectorModule(IConfigSource source)
         {
             IConfig gridConfig = source.Configs["GridService"];
             if (gridConfig == null)
@@ -133,10 +133,10 @@ namespace OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid
 
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_Enabled)
-                ((ISharedRegionModule)m_GridServiceConnector).PostInitialise();
+                ((ISharedRegionModule)m_GridServiceConnector).PostInitialize();
         }
 
         public void Close()

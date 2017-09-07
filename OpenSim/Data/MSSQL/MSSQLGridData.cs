@@ -55,18 +55,18 @@ namespace OpenSim.Data.MSSQL
         #region IPlugin Members
 
         // [Obsolete("Cannot be default-initialized!")]
-        override public void Initialise()
+        override public void Initialize()
         {
             m_log.Info("[GRID DB]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         /// <summary>
-        /// Initialises the Grid Interface
+        /// Initializes the Grid Interface
         /// </summary>
         /// <param name="connectionString">connect string</param>
         /// <remarks>use mssql_connection.ini</remarks>
-        override public void Initialise(string connectionString)
+        override public void Initialize(string connectionString)
         {
             if (!string.IsNullOrEmpty(connectionString))
             {

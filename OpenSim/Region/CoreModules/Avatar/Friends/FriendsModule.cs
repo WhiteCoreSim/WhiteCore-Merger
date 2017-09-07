@@ -113,7 +113,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Friends
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             lock (m_scenes)
             {
@@ -138,7 +138,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Friends
             scene.EventManager.OnClientClosed += ClientClosed;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_scenes.Count > 0)
             {

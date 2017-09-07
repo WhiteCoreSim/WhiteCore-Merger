@@ -898,7 +898,7 @@ namespace OpenSim.Region.CoreModules.World.Estate
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
             m_scene.RegisterModuleInterface<IEstateModule>(this);
@@ -1007,7 +1007,7 @@ namespace OpenSim.Region.CoreModules.World.Estate
 
         #endregion
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             // Sets up the sun module based no the saved Estate and Region Settings
             // DO NOT REMOVE or the sun will stop working

@@ -113,7 +113,7 @@ namespace OpenSim.Region.OptionalModules.World.MoneyModule
         /// </summary>
         /// <param name="scene"></param>
         /// <param name="config"></param>
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             m_gConfig = config;
 
@@ -212,7 +212,7 @@ namespace OpenSim.Region.OptionalModules.World.MoneyModule
             return give_result;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

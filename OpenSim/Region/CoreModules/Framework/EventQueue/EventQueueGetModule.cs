@@ -66,7 +66,7 @@ namespace OpenSim.Region.CoreModules.Framework.EventQueue
         private Dictionary<UUID, UUID> m_AvatarQueueUUIDMapping = new Dictionary<UUID, UUID>();
             
         #region IRegionModule methods
-        public virtual void Initialise(Scene scene, IConfigSource config)
+        public virtual void Initialize(Scene scene, IConfigSource config)
         {
             m_gConfig = config;
 
@@ -107,7 +107,7 @@ namespace OpenSim.Region.CoreModules.Framework.EventQueue
             enabledYN = startupConfig.GetBoolean("EventQueue", true);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

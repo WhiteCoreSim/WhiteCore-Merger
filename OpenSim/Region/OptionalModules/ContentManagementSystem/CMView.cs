@@ -168,7 +168,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
                 ((ContentManagementEntity)obj).HideFromAll();
         }
 
-        public void Initialise(CMModel model)
+        public void Initialize(CMModel model)
         {
             m_model = model;
         }

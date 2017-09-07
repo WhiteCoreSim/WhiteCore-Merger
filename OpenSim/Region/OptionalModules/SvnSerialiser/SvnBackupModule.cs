@@ -33,14 +33,14 @@ using System.Timers;
 using log4net;
 using Nini.Config;
 using OpenSim.Region.Framework.Interfaces;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Region.CoreModules.World.Terrain;
 using OpenSim.Region.Framework.Scenes;
 using PumaCode.SvnDotNet.AprSharp;
 using PumaCode.SvnDotNet.SubversionSharp;
 using Slash = System.IO.Path;
 
-namespace OpenSim.Region.Modules.SvnSerialiser
+namespace OpenSim.Region.Modules.SvnSerializer
 {
     public class SvnBackupModule : IRegionModule
     {
@@ -50,7 +50,7 @@ namespace OpenSim.Region.Modules.SvnSerialiser
         private Timer m_timer;
         private bool m_enabled;
         private bool m_installBackupOnLoad;
-        private IRegionSerialiserModule m_serialiser;
+        private IRegionSerializerModule m_serializer;
         private bool m_svnAutoSave;
         private SvnClient m_svnClient;
         private string m_svndir = "SVNmodule" + Slash.DirectorySeparatorChar + "repo";
@@ -96,7 +96,7 @@ namespace OpenSim.Region.Modules.SvnSerialiser
         {
             m_log.Info("[SVNBACKUP]: Saving a region to SVN with name " + scene.RegionInfo.RegionName);
 
-            List<string> filenames = m_serialiser.SerialiseRegion(scene, m_svndir + Slash.DirectorySeparatorChar + scene.RegionInfo.RegionID + Slash.DirectorySeparatorChar);
+            List<string> filenames = m_serializer.SerializeRegion(scene, m_svndir + Slash.DirectorySeparatorChar + scene.RegionInfo.RegionID + Slash.DirectorySeparatorChar);
 
             try
             {
@@ -116,10 +116,10 @@ namespace OpenSim.Region.Modules.SvnSerialiser
 
         public void LoadRegion(Scene scene)
         {
-            IRegionSerialiserModule serialiser = scene.RequestModuleInterface<IRegionSerialiserModule>();
-            if (serialiser != null)
+            IRegionSerializerModule serializer = scene.RequestModuleInterface<IRegionSerializerModule>();
+            if (serializer != null)
             {
-                serialiser.LoadPrimsFromXml2(
+                serializer.LoadPrimsFromXml2(
                     scene,
                     m_svndir + Slash.DirectorySeparatorChar + scene.RegionInfo.RegionID
                         + Slash.DirectorySeparatorChar + "objects.xml");
@@ -202,7 +202,7 @@ namespace OpenSim.Region.Modules.SvnSerialiser
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scenes = new List<Scene>();
             m_timer = new Timer();
@@ -237,7 +237,7 @@ namespace OpenSim.Region.Modules.SvnSerialiser
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_enabled == false)
                 return;
@@ -256,7 +256,7 @@ namespace OpenSim.Region.Modules.SvnSerialiser
             m_log.Info("[SVNBACKUP]: Creating repository in " + m_svndir + ".");
             CreateSvnDirectory();
             CheckoutSvn();
-            SetupSerialiser();
+            SetupSerializer();
 
             if (m_installBackupOnLoad)
             {
@@ -375,10 +375,10 @@ namespace OpenSim.Region.Modules.SvnSerialiser
             SaveAllRegions();
         }
 
-        private void SetupSerialiser()
+        private void SetupSerializer()
         {
             if (m_scenes.Count > 0)
-                m_serialiser = m_scenes[0].RequestModuleInterface<IRegionSerialiserModule>();
+                m_serializer = m_scenes[0].RequestModuleInterface<IRegionSerializerModule>();
         }
 
         private void SetupSvnProvider()

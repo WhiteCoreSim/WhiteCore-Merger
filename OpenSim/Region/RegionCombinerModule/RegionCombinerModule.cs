@@ -63,7 +63,7 @@ namespace OpenSim.Region.RegionCombinerModule
         private bool enabledYN = false;
         private Dictionary<UUID, Scene> m_startingScenes = new Dictionary<UUID, Scene>();
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig myConfig = source.Configs["Startup"];
             enabledYN = myConfig.GetBoolean("CombineContiguousRegions", false);
@@ -493,7 +493,7 @@ namespace OpenSim.Region.RegionCombinerModule
             // Reset Terrain..  since terrain loads before we get here, we need to load 
             // it again so it loads in the root region
 
-            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialised());
+            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialized());
 
             // Unlock borders
             conn.RegionScene.BordersLocked = false;
@@ -549,9 +549,9 @@ namespace OpenSim.Region.RegionCombinerModule
             }
 
             // Reset Terrain..  since terrain normally loads first.
-            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialised());
-            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialised());
-            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialised());
+            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialized());
+            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialized());
+            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialized());
 
             scene.BordersLocked = false;
             conn.RegionScene.BordersLocked = false;
@@ -645,9 +645,9 @@ namespace OpenSim.Region.RegionCombinerModule
 
 
             // Reset Terrain..  since terrain normally loads first.
-            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialised());
-            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialised());
-            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialised());
+            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialized());
+            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialized());
+            //conn.RegionScene.PhysicsScene.SetTerrain(conn.RegionScene.Heightmap.GetFloatsSerialized());
             scene.BordersLocked = false;
             conn.RegionScene.BordersLocked = false;
 
@@ -836,7 +836,7 @@ namespace OpenSim.Region.RegionCombinerModule
             return returnclient;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
         
