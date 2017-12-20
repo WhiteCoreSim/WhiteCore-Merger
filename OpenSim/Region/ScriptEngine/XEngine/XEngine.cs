@@ -50,9 +50,9 @@ using OpenSim.Region.ScriptEngine.Shared.CodeTools;
 using OpenSim.Region.ScriptEngine.Shared.Instance;
 using OpenSim.Region.ScriptEngine.Interfaces;
 
-namespace OpenSim.Region.ScriptEngine.XEngine
+namespace OpenSim.Region.ScriptEngine.Emporia
 {
-    public class XEngine : INonSharedRegionModule, IScriptModule, IScriptEngine
+    public class Emporia : INonSharedRegionModule, IScriptModule, IScriptEngine
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -73,7 +73,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
         private int m_ScriptFailCount; // Number of script fails since compile queue was last empty
         private string m_ScriptErrorMessage;
 
-// disable warning: need to keep a reference to XEngine.EventManager
+// disable warning: need to keep a reference to Emporia.EventManager
 // alive to avoid it being garbage collected
 #pragma warning disable 414
         private EventManager m_EventManager;
@@ -82,8 +82,8 @@ namespace OpenSim.Region.ScriptEngine.XEngine
         private int m_EventLimit;
         private bool m_KillTimedOutScripts;
 
-        private static List<XEngine> m_ScriptEngines =
-                new List<XEngine>();
+        private static List<Emporia> m_ScriptEngines =
+                new List<Emporia>();
 
         // Maps the local id to the script inventory items in it
 
@@ -118,7 +118,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
 
         public string ScriptEngineName
         {
-            get { return "XEngine"; }
+            get { return "Emporia"; }
         }
 
         public Scene World
@@ -126,7 +126,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
             get { return m_Scene; }
         }
 
-        public static List<XEngine> ScriptEngines
+        public static List<Emporia> ScriptEngines
         {
             get { return m_ScriptEngines; }
         }
@@ -156,10 +156,10 @@ namespace OpenSim.Region.ScriptEngine.XEngine
         //
         public void Initialise(IConfigSource configSource)
         {
-            if (configSource.Configs["XEngine"] == null)
+            if (configSource.Configs["Emporia"] == null)
                 return;
 
-            m_ScriptConfig = configSource.Configs["XEngine"];
+            m_ScriptConfig = configSource.Configs["Emporia"];
         }
 
         public void AddRegion(Scene scene)
@@ -171,7 +171,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
 
             if (m_ScriptConfig == null)
             {
-//                m_log.ErrorFormat("[XEngine] No script configuration found. Scripts disabled");
+//                m_log.ErrorFormat("[Emporia] No script configuration found. Scripts disabled");
                 return;
             }
 
@@ -183,7 +183,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
             AppDomain.CurrentDomain.AssemblyResolve +=
                 OnAssemblyResolve;
 
-            m_log.InfoFormat("[XEngine] Initializing scripts in region {0}",
+            m_log.InfoFormat("[Emporia] Initializing scripts in region {0}",
                              scene.RegionInfo.RegionName);
             m_Scene = scene;
 
@@ -218,7 +218,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
                     m_Prio = ThreadPriority.Highest;
                     break;
                 default:
-                    m_log.ErrorFormat("[XEngine] Invalid thread priority: '{0}'. Assuming BelowNormal", priority);
+                    m_log.ErrorFormat("[Emporia] Invalid thread priority: '{0}'. Assuming BelowNormal", priority);
                     break;
             }
 
@@ -339,7 +339,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
             if (saveTime > 0)
                 System.Threading.Thread.Sleep(saveTime);
 
-//            m_log.Debug("[XEngine] Backing up script states");
+//            m_log.Debug("[Emporia] Backing up script states");
 
             List<IScriptInstance> instances = new List<IScriptInstance>();
 
@@ -397,7 +397,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
 
         public string Name
         {
-            get { return "XEngine"; }
+            get { return "Emporia"; }
         }
 
         public void OnRezScript(uint localID, UUID itemID, string script, int startParam, bool postOnRez, string engine, int stateSource)
@@ -562,7 +562,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
 
             UUID assetID = item.AssetID;
 
-            //m_log.DebugFormat("[XEngine] Compiling script {0} ({1} on object {2})",
+            //m_log.DebugFormat("[Emporia] Compiling script {0} ({1} on object {2})",
             //        item.Name, itemID.ToString(), part.ParentGroup.RootPart.Name);
 
             ScenePresence presence = m_Scene.GetScenePresence(item.OwnerID);
@@ -610,10 +610,10 @@ namespace OpenSim.Region.ScriptEngine.XEngine
                         }
                         catch (Exception e2) // LEGIT: User Scripting
                         {
-                            m_log.Error("[XEngine]: " +
+                            m_log.Error("[Emporia]: " +
                                     "Error displaying warning in-world: " +
                                     e2.ToString());
-                            m_log.Error("[XEngine]: " +
+                            m_log.Error("[Emporia]: " +
                                     "Warning:\r\n" +
                                     warning);
                         }
@@ -640,10 +640,10 @@ namespace OpenSim.Region.ScriptEngine.XEngine
                 }
                 catch (Exception e2) // LEGIT: User Scripting
                 {
-                    m_log.Error("[XEngine]: "+
+                    m_log.Error("[Emporia]: "+
                             "Error displaying error in-world: " +
                             e2.ToString());
-                    m_log.Error("[XEngine]: " +
+                    m_log.Error("[Emporia]: " +
                             "Errormessage: Error compiling script:\r\n" +
                             e.Message.ToString());
                 }
@@ -698,7 +698,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
                         }
                         catch (Exception e)
                         {
-                            m_log.ErrorFormat("[XEngine] Exception creating app domain:\n {0}", e.ToString());
+                            m_log.ErrorFormat("[Emporia] Exception creating app domain:\n {0}", e.ToString());
                             m_ScriptErrorMessage += "Exception creating app domain:\n";
                             m_ScriptFailCount++;
                             lock (m_AddingAssemblies) 
@@ -717,7 +717,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
                                                   item.Name, startParam, postOnRez,
                                                   stateSource, m_MaxScriptQueue);
                     
-                    m_log.DebugFormat("[XEngine] Loaded script {0}.{1}",
+                    m_log.DebugFormat("[Emporia] Loaded script {0}.{1}",
                             part.ParentGroup.RootPart.Name, item.Name);
 
                     instance.AppDomain = appDomain;
@@ -848,7 +848,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
                     if (!m_AddingAssemblies.ContainsKey(m_Assemblies[assetID])
                         || m_AddingAssemblies[m_Assemblies[assetID]] == 0) 
                     {
-//                        m_log.DebugFormat("[XEngine] Removing unreferenced assembly {0}", m_Assemblies[assetID]);
+//                        m_log.DebugFormat("[Emporia] Removing unreferenced assembly {0}", m_Assemblies[assetID]);
                         try
                         {
                             if (File.Exists(m_Assemblies[assetID]))
@@ -881,7 +881,7 @@ namespace OpenSim.Region.ScriptEngine.XEngine
 
                 AppDomain.Unload(domain);
                 domain = null;
-//                m_log.DebugFormat("[XEngine] Unloaded app domain {0}", id.ToString());
+//                m_log.DebugFormat("[Emporia] Unloaded app domain {0}", id.ToString());
             }
         }
 

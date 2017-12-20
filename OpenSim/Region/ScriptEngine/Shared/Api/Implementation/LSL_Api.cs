@@ -2946,7 +2946,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
             catch (NotImplementedException)
             {
-                // Currently not implemented in DotNetEngine only XEngine
+                // Currently not implemented in DotNetEngine only Emporia
                 NotImplemented("llMinEventDelay in DotNetEngine");
             }
         }
@@ -7936,10 +7936,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             m_host.AddScriptLPS(1);
             IConfigSource config = new IniConfigSource(Application.iniFilePath);
-            if (config.Configs["XEngine"] == null)
-                config.AddConfig("XEngine");
+            if (config.Configs["Emporia"] == null)
+                config.AddConfig("Emporia");
 
-            if (config.Configs["XEngine"].GetBoolean("AllowGodFunctions", false))
+            if (config.Configs["Emporia"].GetBoolean("AllowGodFunctions", false))
             {
                 if (World.Permissions.CanRunConsoleCommand(m_host.OwnerID))
                 {

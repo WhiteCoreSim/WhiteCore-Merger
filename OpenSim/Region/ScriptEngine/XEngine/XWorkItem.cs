@@ -31,7 +31,7 @@ using System.Threading;
 using Amib.Threading;
 using OpenSim.Region.ScriptEngine.Interfaces;
 
-namespace OpenSim.Region.ScriptEngine.XEngine
+namespace OpenSim.Region.ScriptEngine.Emporia
 {
     public class XWorkItem : IScriptWorkItem
     {

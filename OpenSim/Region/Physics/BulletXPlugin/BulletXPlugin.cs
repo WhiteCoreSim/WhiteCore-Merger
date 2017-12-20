@@ -223,7 +223,7 @@ namespace OpenSim.Region.Physics.BulletXPlugin
 
         public string GetName()
         {
-            return ("modified_BulletX"); //Changed!! "BulletXEngine" To "modified_BulletX"
+            return ("modified_BulletX"); //Changed!! "BulletEmporia" To "modified_BulletX"
         }
 
         public void Dispose()

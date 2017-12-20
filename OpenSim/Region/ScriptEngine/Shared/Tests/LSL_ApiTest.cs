@@ -53,13 +53,13 @@ namespace OpenSim.Region.ScriptEngine.Shared.Tests
         {
 
             IniConfigSource initConfigSource = new IniConfigSource();
-            IConfig config = initConfigSource.AddConfig("XEngine");
+            IConfig config = initConfigSource.AddConfig("Emporia");
             config.Set("Enabled", "true");
 
             Scene scene = SceneSetupHelpers.SetupScene();
             SceneObjectPart part = SceneSetupHelpers.AddSceneObject(scene);
 
-            XEngine.XEngine engine = new XEngine.XEngine();
+            Emporia.Emporia engine = new Emporia.Emporia();
             engine.Initialise(initConfigSource);
             engine.AddRegion(scene);
 

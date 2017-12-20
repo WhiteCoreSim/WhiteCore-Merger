@@ -35,13 +35,13 @@ using OpenSim.Region.Framework.Scenes;
 using OpenMetaverse;
 using OpenSim.Region.Framework.Interfaces;
 
-namespace OpenSim.Region.ScriptEngine.XEngine.Tests
+namespace OpenSim.Region.ScriptEngine.Emporia.Tests
 {
     /// <summary>
     /// Scene presence tests
     /// </summary>
     [TestFixture]
-    public class XEngineTest
+    public class EmporiaTest
     {
         public Scene scene;
         
@@ -60,9 +60,9 @@ namespace OpenSim.Region.ScriptEngine.XEngine.Tests
         [Test]
         public void T001_XStart()
         {
-            INonSharedRegionModule xengine = new XEngine();
-            SceneSetupHelpers.SetupSceneModules(scene, new IniConfigSource(), xengine);
-            xengine.RegionLoaded(scene);
+            INonSharedRegionModule emporia = new Emporia();
+            SceneSetupHelpers.SetupSceneModules(scene, new IniConfigSource(), emporia);
+            emporia.RegionLoaded(scene);
         }
     }
 }

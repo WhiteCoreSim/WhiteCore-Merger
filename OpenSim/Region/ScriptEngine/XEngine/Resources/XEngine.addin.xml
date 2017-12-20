@@ -1,6 +1,6 @@
-<Addin id="OpenSim.Region.ScriptEngine.XEngine" version="0.2">
+<Addin id="OpenSim.Region.ScriptEngine.Emporia" version="0.2">
     <Runtime>
-        <Import assembly="OpenSim.Region.ScriptEngine.XEngine.dll"/>
+        <Import assembly="OpenSim.Region.ScriptEngine.Emporia.dll"/>
     </Runtime>
 
     <Dependencies>
@@ -8,6 +8,6 @@
     </Dependencies>
 
     <Extension path = "/OpenSim/RegionModules">
-        <RegionModule id="XEngine" type="OpenSim.Region.ScriptEngine.XEngine.XEngine" />
+        <RegionModule id="Emporia" type="OpenSim.Region.ScriptEngine.Emporia.Emporia" />
     </Extension>
 </Addin>

@@ -2585,7 +2585,7 @@
       </Files>
     </Project>
 
-    <Project name="OpenSim.Region.ScriptEngine.XEngine" path="OpenSim/Region/ScriptEngine/XEngine" type="Library">
+    <Project name="OpenSim.Region.ScriptEngine.Emporia" path="OpenSim/Region/ScriptEngine/Emporia" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../../../../bin/</OutputPath>
@@ -3626,7 +3626,7 @@
       <Reference name="OpenSim.Region.Framework"/>
       <Reference name="OpenSim.Region.ScriptEngine.Shared"/>
       <Reference name="OpenSim.Region.ScriptEngine.Shared.Api"/>
-      <Reference name="OpenSim.Region.ScriptEngine.XEngine"/>
+      <Reference name="OpenSim.Region.ScriptEngine.Emporia"/>
       <Reference name="OpenSim.Tests.Common"/>
       <Reference name="nunit.framework.dll" />
       <Reference name="Nini.dll" />
@@ -3645,7 +3645,7 @@
         <!-- SADLY the way this works means you need to keep adding these paths -->
         <Match path="Shared/Tests" pattern="*.cs" recurse="true" />
         <Match path="Shared/CodeTools/Tests" pattern="*.cs" recurse="true" />
-        <Match path="XEngine/Tests" pattern="*.cs" recurse="true" />
+        <Match path="Emporia/Tests" pattern="*.cs" recurse="true" />
       </Files>
     </Project>
 

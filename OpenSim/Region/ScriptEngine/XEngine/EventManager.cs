@@ -37,7 +37,7 @@ using OpenSim.Region.ScriptEngine.Shared;
 using OpenSim.Region.ScriptEngine.Interfaces;
 using log4net;
 
-namespace OpenSim.Region.ScriptEngine.XEngine
+namespace OpenSim.Region.ScriptEngine.Emporia
 {
     /// <summary>
     /// Prepares events so they can be directly executed upon a script by EventQueueManager, then queues it.
@@ -46,13 +46,13 @@ namespace OpenSim.Region.ScriptEngine.XEngine
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private XEngine myScriptEngine;
+        private Emporia myScriptEngine;
 
-        public EventManager(XEngine _ScriptEngine)
+        public EventManager(Emporia _ScriptEngine)
         {
             myScriptEngine = _ScriptEngine;
 
-            m_log.Info("[XEngine] Hooking up to server events");
+            m_log.Info("[Emporia] Hooking up to server events");
             myScriptEngine.World.EventManager.OnObjectGrab += touch_start;
             myScriptEngine.World.EventManager.OnObjectDeGrab += touch_end;
             myScriptEngine.World.EventManager.OnScriptChangedEvent += changed;

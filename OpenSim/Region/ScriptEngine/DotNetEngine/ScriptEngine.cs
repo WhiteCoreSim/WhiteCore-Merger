@@ -299,7 +299,7 @@ namespace OpenSim.Region.ScriptEngine.DotNetEngine
 
         public void SetMinEventDelay(UUID itemID, double delay)
         {
-            // TODO in DotNet, done in XEngine
+            // TODO in DotNet, done in Emporia
             throw new NotImplementedException();
         }
 

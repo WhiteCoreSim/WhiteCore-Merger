@@ -199,7 +199,7 @@
     ; ##
 
     ;DefaultScriptEngine = "ScriptEngine.DotNetEngine"
-    DefaultScriptEngine = "XEngine"
+    DefaultScriptEngine = "Emporia"
 
     ; ##
     ; ## WORLD MAP
@@ -985,7 +985,7 @@
     AutoSavePeriod = 15 ; Number of minutes between autosave backups
 
 
-[XEngine]
+[Emporia]
     ; Enable this engine in this OpenSim instance
     Enabled = true
 

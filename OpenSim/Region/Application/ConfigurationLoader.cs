@@ -218,7 +218,7 @@ namespace OpenSim
                 config.Set("storage_prim_inventories", true);
                 config.Set("startup_console_commands_file", String.Empty);
                 config.Set("shutdown_console_commands_file", String.Empty);
-                config.Set("DefaultScriptEngine", "XEngine");
+                config.Set("DefaultScriptEngine", "Emporia");
                 config.Set("asset_database", "default");
                 config.Set("clientstack_plugin", "OpenSim.Region.ClientStack.LindenUDP.dll");
                 // life doesn't really work without this
