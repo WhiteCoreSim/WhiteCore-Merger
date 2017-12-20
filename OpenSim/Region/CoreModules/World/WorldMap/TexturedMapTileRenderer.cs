@@ -39,7 +39,8 @@ using OpenSim.Region.Framework.Scenes;
 namespace OpenSim.Region.CoreModules.World.WorldMap
 {
     // Hue, Saturation, Value; used for color-interpolation
-    struct HSV {
+    struct HSV
+    {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public float h;
@@ -63,14 +64,22 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             float min = Math.Min(Math.Min(r, g), b);
             float diff = max - min;
 
-            if (max == min) h = 0f;
-            else if (max == r) h = (g - b) / diff * 60f;
-            else if (max == g) h = (b - r) / diff * 60f + 120f;
-            else h = (r - g) / diff * 60f + 240f;
-            if (h < 0f) h += 360f;
+            if (max == min)
+                h = 0f;
+            else if (max == r)
+                h = (g - b) / diff * 60f;
+            else if (max == g)
+                h = (b - r) / diff * 60f + 120f;
+            else
+                h = (r - g) / diff * 60f + 240f;
 
-            if (max == 0f) s = 0f;
-            else s = diff / max;
+            if (h < 0f)
+                h += 360f;
+
+            if (max == 0f)
+                s = 0f;
+            else
+                s = diff / max;
 
             v = max;
         }
@@ -78,10 +87,15 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
         // (for info about algorithm, see http://en.wikipedia.org/wiki/HSL_and_HSV)
         public Color toColor()
         {
-            if (s < 0f) m_log.Debug("S < 0: " + s);
-            else if (s > 1f) m_log.Debug("S > 1: " + s);
-            if (v < 0f) m_log.Debug("V < 0: " + v);
-            else if (v > 1f) m_log.Debug("V > 1: " + v);
+            if (s < 0f)
+                m_log.Debug("S < 0: " + s);
+            else if (s > 1f)
+                m_log.Debug("S > 1: " + s);
+
+            if (v < 0f)
+                m_log.Debug("V < 0: " + v);
+            else if (v > 1f)
+                m_log.Debug("V > 1: " + v);
 
             float f = h / 60f;
             int sector = (int)f % 6;
@@ -91,14 +105,29 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             int ti = (int)(v * (1f - (1f - f) * s) * 255f);
             int vi = (int)(v * 255f);
 
-            if (pi < 0) pi = 0;
-            if (pi > 255) pi = 255;
-            if (qi < 0) qi = 0;
-            if (qi > 255) qi = 255;
-            if (ti < 0) ti = 0;
-            if (ti > 255) ti = 255;
-            if (vi < 0) vi = 0;
-            if (vi > 255) vi = 255;
+            if (pi < 0)
+                pi = 0;
+
+            if (pi > 255)
+                pi = 255;
+
+            if (qi < 0)
+                qi = 0;
+
+            if (qi > 255)
+                qi = 255;
+
+            if (ti < 0)
+                ti = 0;
+
+            if (ti > 255)
+                ti = 255;
+
+            if (vi < 0)
+                vi = 0;
+
+            if (vi > 255)
+                vi = 255;
 
             switch (sector)
             {
@@ -122,25 +151,26 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
     {
         #region Constants
 
-        private static readonly ILog m_log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         // some hardcoded terrain UUIDs that work with SL 1.20 (the four default textures and "Blank").
         // The color-values were choosen because they "look right" (at least to me) ;-)
         private static readonly UUID defaultTerrainTexture1 = new UUID("0bc58228-74a0-7e83-89bc-5c23464bcec5");
-        private static readonly Color defaultColor1 = Color.FromArgb(165, 137, 118);
         private static readonly UUID defaultTerrainTexture2 = new UUID("63338ede-0037-c4fd-855b-015d77112fc8");
-        private static readonly Color defaultColor2 = Color.FromArgb(69, 89, 49);
         private static readonly UUID defaultTerrainTexture3 = new UUID("303cd381-8560-7579-23f1-f0a880799740");
-        private static readonly Color defaultColor3 = Color.FromArgb(162, 154, 141);
         private static readonly UUID defaultTerrainTexture4 = new UUID("53a2f406-4895-1d13-d541-d2e3b86bc19c");
-        private static readonly Color defaultColor4 = Color.FromArgb(200, 200, 200);
 
         #endregion
 
-
         private Scene m_scene;
-        // private IConfigSource m_config; // not used currently
+        private IConfigSource m_config;
+
+        // Water color configurable for the MapTiles on the world map
+        private Color m_color_water;
+        private Color m_color_1;
+        private Color m_color_2;
+        private Color m_color_3;
+        private Color m_color_4;
 
         // mapping from texture UUIDs to averaged color. This will contain 5-9 values, in general; new values are only
         // added when the terrain textures are changed in the estate dialog and a new map is generated (and will stay in
@@ -148,16 +178,24 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
         // TODO does it make sense to use a "real" cache and regenerate missing entries on fetch?
         private Dictionary<UUID, Color> m_mapping;
 
-
         public void Initialise(Scene scene, IConfigSource source)
         {
             m_scene = scene;
-            // m_config = source; // not used currently
+            m_config = source; // not used currently
+
+            // Water color configuration for MapTiles on the world map
+            string[] configSections = new string[] { "Map", "Startup" };
+            m_color_water = System.Drawing.ColorTranslator.FromHtml(Util.GetConfigVarFromSections<string>(m_config, "MapColorWater", configSections, "#1D475F"));
+            m_color_1 = System.Drawing.ColorTranslator.FromHtml(Util.GetConfigVarFromSections<string>(m_config, "MapColor1", configSections, "#A58976"));
+            m_color_2 = System.Drawing.ColorTranslator.FromHtml(Util.GetConfigVarFromSections<string>(m_config, "MapColor2", configSections, "#455931"));
+            m_color_3 = System.Drawing.ColorTranslator.FromHtml(Util.GetConfigVarFromSections<string>(m_config, "MapColor3", configSections, "#A29A8D"));
+            m_color_4 = System.Drawing.ColorTranslator.FromHtml(Util.GetConfigVarFromSections<string>(m_config, "MapColor4", configSections, "#C8C8C8"));
+
             m_mapping = new Dictionary<UUID,Color>();
-            m_mapping.Add(defaultTerrainTexture1, defaultColor1);
-            m_mapping.Add(defaultTerrainTexture2, defaultColor2);
-            m_mapping.Add(defaultTerrainTexture3, defaultColor3);
-            m_mapping.Add(defaultTerrainTexture4, defaultColor4);
+            m_mapping.Add(defaultTerrainTexture1, m_color_1);
+            m_mapping.Add(defaultTerrainTexture2, m_color_2);
+            m_mapping.Add(defaultTerrainTexture3, m_color_3);
+            m_mapping.Add(defaultTerrainTexture4, m_color_4);
             m_mapping.Add(Util.BLANK_TEXTURE_UUID, Color.White);
         }
 
@@ -172,7 +210,9 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
         {
             AssetBase asset = m_scene.CommsManager.AssetCache.GetAsset(id, true);
             m_log.DebugFormat("Fetched texture {0}, found: {1}", id, asset != null);
-            if (asset == null) return null;
+
+            if (asset == null)
+                return null;
 
             ManagedImage managedImage;
             Image image;
@@ -186,21 +226,20 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             }
             catch (DllNotFoundException)
             {
-                m_log.ErrorFormat("[TexturedMapTileRenderer]: OpenJpeg is not installed correctly on this system.   Asset Data is emtpy for {0}", id);
+                m_log.ErrorFormat("[Textured Map Tile Renderer]: OpenJpeg is not installed correctly on this system.   Asset Data is emtpy for {0}", id);
                 
             }
             catch (IndexOutOfRangeException)
             {
-                m_log.ErrorFormat("[TexturedMapTileRenderer]: OpenJpeg was unable to encode this.   Asset Data is emtpy for {0}", id);
+                m_log.ErrorFormat("[Textured Map Tile Renderer]: OpenJpeg was unable to encode this.   Asset Data is emtpy for {0}", id);
                 
             }
             catch (Exception)
             {
-                m_log.ErrorFormat("[TexturedMapTileRenderer]: OpenJpeg was unable to encode this.   Asset Data is emtpy for {0}", id);
-                
+                m_log.ErrorFormat("[Textured Map Tile Renderer]: OpenJpeg was unable to encode this.   Asset Data is emtpy for {0}", id);    
             }
-            return null;
-            
+
+            return null;    
         }
 
         // Compute the average color of a texture.
@@ -227,12 +266,17 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
 
         // return either the average color of the texture, or the defaultColor if the texturID is invalid
         // or the texture couldn't be found
-        private Color computeAverageColor(UUID textureID, Color defaultColor) {
-            if (textureID == UUID.Zero) return defaultColor; // not set
-            if (m_mapping.ContainsKey(textureID)) return m_mapping[textureID]; // one of the predefined textures
+        private Color computeAverageColor(UUID textureID, Color defaultColor)
+        {
+            if (textureID == UUID.Zero)
+                return defaultColor; // not set
+
+            if (m_mapping.ContainsKey(textureID))
+                return m_mapping[textureID]; // one of the predefined textures
 
             Bitmap bmp = fetchTexture(textureID);
             Color color = bmp == null ? defaultColor : computeAverageColor(bmp);
+        
             // store it for future reference
             m_mapping[textureID] = color;
 
@@ -243,20 +287,27 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
         // f(0) = 0, f(0.5) = 0.5, f(1) = 1,
         // f'(x) = 0 at x = 0 and x = 1; f'(0.5) = 1.5,
         // f''(0.5) = 0, f''(x) != 0 for x != 0.5
-        private float S(float v) {
+        private float S(float v)
+        {
             return (v * v * (3f - 2f * v));
         }
 
         // interpolate two colors in HSV space and return the resulting color
-        private HSV interpolateHSV(ref HSV c1, ref HSV c2, float ratio) {
-            if (ratio <= 0f) return c1;
-            if (ratio >= 1f) return c2;
+        private HSV interpolateHSV(ref HSV c1, ref HSV c2, float ratio)
+        {
+            if (ratio <= 0f)
+                return c1;
+
+            if (ratio >= 1f)
+                return c2;
 
             // make sure we are on the same side on the hue-circle for interpolation
             // We change the hue of the parameters here, but we don't change the color
             // represented by that value
-            if (c1.h - c2.h > 180f) c1.h -= 360f;
-            else if (c2.h - c1.h > 180f) c1.h += 360f;
+            if (c1.h - c2.h > 180f)
+                c1.h -= 360f;
+            else if (c2.h - c1.h > 180f)
+                c1.h += 360f;
 
             return new HSV(c1.h * (1f - ratio) + c2.h * ratio,
                            c1.s * (1f - ratio) + c2.s * ratio,
@@ -265,18 +316,20 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
 
         // the heigthfield might have some jumps in values. Rendered land is smooth, though,
         // as a slope is rendered at that place. So average 4 neighbour values to emulate that.
-        private float getHeight(double[,] hm, int x, int y) {
+        private float getHeight(double[,] hm, int x, int y)
+        {
             if (x < 255 && y < 255)
                 return (float)(hm[x, y] * .444 + (hm[x + 1, y] + hm[x, y + 1]) * .222 + hm[x + 1, y +1] * .112);
             else
                 return (float)hm[x, y];
         }
+
         #endregion
 
         public void TerrainToBitmap(Bitmap mapbmp)
         {
             int tc = Environment.TickCount;
-            m_log.Info("[MAPTILE]: Generating Maptile Step 1: Terrain");
+            m_log.Info("[Map Tile]: Generating Maptile Step 1: Terrain");
 
             // These textures should be in the AssetCache anyway, as every client conneting to this
             // region needs them. Except on start, when the map is recreated (before anyone connected),
@@ -285,10 +338,10 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             RegionSettings settings = m_scene.RegionInfo.RegionSettings;
 
             // the four terrain colors as HSVs for interpolation
-            HSV hsv1 = new HSV(computeAverageColor(settings.TerrainTexture1, defaultColor1));
-            HSV hsv2 = new HSV(computeAverageColor(settings.TerrainTexture2, defaultColor2));
-            HSV hsv3 = new HSV(computeAverageColor(settings.TerrainTexture3, defaultColor3));
-            HSV hsv4 = new HSV(computeAverageColor(settings.TerrainTexture4, defaultColor4));
+            HSV hsv1 = new HSV(computeAverageColor(settings.TerrainTexture1, m_color_1));
+            HSV hsv2 = new HSV(computeAverageColor(settings.TerrainTexture2, m_color_2));
+            HSV hsv3 = new HSV(computeAverageColor(settings.TerrainTexture3, m_color_3));
+            HSV hsv4 = new HSV(computeAverageColor(settings.TerrainTexture4, m_color_4));
 
             float levelNElow = (float)settings.Elevation1NE;
             float levelNEhigh = (float)settings.Elevation2NE;
@@ -309,6 +362,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             for (int x = 0; x < 256; x++)
             {
                 float columnRatio = x / 255f; // 0 - 1, for interpolation
+
                 for (int y = 0; y < 256; y++)
                 {
                     float rowRatio = y / 255f; // 0 - 1, for interpolation
@@ -317,6 +371,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                     int yr = 255 - y;
 
                     float heightvalue = getHeight(hm, x, y);
+
                     if (Single.IsInfinity(heightvalue) || Single.IsNaN(heightvalue))
                         heightvalue = 0;
 
@@ -343,6 +398,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                             levelSEhigh * (1f - rowRatio) * columnRatio +
                             levelNWhigh * rowRatio * (1f - columnRatio) +
                             levelNEhigh * rowRatio * columnRatio;
+
                         if (high < low)
                         {
                             // someone tried to fool us. High value should be higher than low every time
@@ -352,28 +408,37 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                         }
 
                         HSV hsv;
-                        if (hmod <= low) hsv = hsv1; // too low
-                        else if (hmod >= high) hsv = hsv4; // too high
+
+                        if (hmod <= low)
+                            hsv = hsv1; // too low
+                        else if (hmod >= high)
+                            hsv = hsv4; // too high
                         else
                         {
                             // HSV-interpolate along the colors
                             // first, rescale h to 0.0 - 1.0
                             hmod = (hmod - low) / (high - low);
+                            
                             // now we have to split: 0.00 => color1, 0.33 => color2, 0.67 => color3, 1.00 => color4
-                            if (hmod < 1f/3f) hsv = interpolateHSV(ref hsv1, ref hsv2, hmod * 3f);
-                            else if (hmod < 2f/3f) hsv = interpolateHSV(ref hsv2, ref hsv3, (hmod * 3f) - 1f);
-                            else hsv = interpolateHSV(ref hsv3, ref hsv4, (hmod * 3f) - 2f);
+                            if (hmod < 1f/3f)
+                                hsv = interpolateHSV(ref hsv1, ref hsv2, hmod * 3f);
+                            else if (hmod < 2f/3f)
+                                hsv = interpolateHSV(ref hsv2, ref hsv3, (hmod * 3f) - 1f);
+                            else
+                                hsv = interpolateHSV(ref hsv3, ref hsv4, (hmod * 3f) - 2f);
                         }
 
                         // Shade the terrain for shadows
                         if (x < 255 && y < 255)
                         {
                             float hfvaluecompare = getHeight(hm, x + 1, y + 1); // light from north-east => look at land height there
+
                             if (Single.IsInfinity(hfvaluecompare) || Single.IsNaN(hfvaluecompare))
                                 hfvaluecompare = 0f;
 
                             float hfdiff = heightvalue - hfvaluecompare;  // => positive if NE is lower, negative if here is lower
                             hfdiff *= 0.06f; // some random factor so "it looks good"
+
                             if (hfdiff > 0.02f)
                             {
                                 float highlightfactor = 0.18f;
@@ -390,6 +455,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                                 hsv.v = (hsv.v + hfdiff > 0f) ? hsv.v + hfdiff : 0f;
                             }
                         }
+
                         mapbmp.SetPixel(x, yr, hsv.toColor());
                     }
                     else
@@ -397,6 +463,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                         // We're under the water level with the terrain, so paint water instead of land
 
                         heightvalue = waterHeight - heightvalue;
+
                         if (Single.IsInfinity(heightvalue) || Single.IsNaN(heightvalue))
                             heightvalue = 0f;
                         else if (heightvalue > 19f)
@@ -407,11 +474,12 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                         heightvalue = 100f - (heightvalue * 100f) / 19f;  // 0 - 19 => 100 - 0
 
                         Color water = Color.FromArgb((int)heightvalue, (int)heightvalue, 255);
-                        mapbmp.SetPixel(x, yr, water);
+                        mapbmp.SetPixel(x, yr, m_color_water);
                     }
                 }
             }
-            m_log.Info("[MAPTILE]: Generating Maptile Step 1: Done in " + (Environment.TickCount - tc) + " ms");
+
+            m_log.Info("[Map Tile]: Generating Maptile Step 1: Done in " + (Environment.TickCount - tc) + " ms");
         }
     }
 }

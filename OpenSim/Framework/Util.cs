@@ -57,17 +57,16 @@ namespace OpenSim.Framework
 
         private static uint nextXferID = 5000;
         private static Random randomClass = new Random();
+        
         // Get a list of invalid file characters (OS dependent)
         private static string regexInvalidFileChars = "[" + new String(Path.GetInvalidFileNameChars()) + "]";
         private static string regexInvalidPathChars = "[" + new String(Path.GetInvalidPathChars()) + "]";
         private static object XferLock = new object();
 
         // Unix-epoch starts at January 1st 1970, 00:00:00 UTC. And all our times in the server are (or at least should be) in UTC.
-        private static readonly DateTime unixEpoch =
-            DateTime.ParseExact("1970-01-01 00:00:00 +0", "yyyy-MM-dd hh:mm:ss z", DateTimeFormatInfo.InvariantInfo).ToUniversalTime();
+        private static readonly DateTime unixEpoch = DateTime.ParseExact("1970-01-01 00:00:00 +0", "yyyy-MM-dd hh:mm:ss z", DateTimeFormatInfo.InvariantInfo).ToUniversalTime();
 
-        public static readonly Regex UUIDPattern 
-            = new Regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
+        public static readonly Regex UUIDPattern = new Regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
         
         /// <value>
         /// Well known UUID for the blank texture used in the Linden SL viewer version 1.20 (and hopefully onwards) 
@@ -624,13 +623,15 @@ namespace OpenSim.Framework
             return FileName;
         }
 
-        // Nini (config) related Methods
+        #region Nini (config) related Methods
+
         public static IConfigSource ConvertDataRowToXMLConfig(DataRow row, string fileName)
         {
             if (!File.Exists(fileName))
             {
-                //create new file
+                // create new file
             }
+
             XmlConfigSource config = new XmlConfigSource(fileName);
             AddDataRowToConfig(config, row);
             config.Save();
@@ -640,12 +641,239 @@ namespace OpenSim.Framework
 
         public static void AddDataRowToConfig(IConfigSource config, DataRow row)
         {
-            config.Configs.Add((string) row[0]);
+            config.Configs.Add((string)row[0]);
+
             for (int i = 0; i < row.Table.Columns.Count; i++)
             {
-                config.Configs[(string) row[0]].Set(row.Table.Columns[i].ColumnName, row[i]);
+                config.Configs[(string)row[0]].Set(row.Table.Columns[i].ColumnName, row[i]);
             }
         }
+
+        public static string GetConfigVarWithDefaultSection(IConfigSource config, string varname, string section)
+        {
+            // First, check the Startup section, the default section
+            IConfig cnf = config.Configs["Startup"];
+
+            if (cnf == null)
+                return string.Empty;
+
+            string val = cnf.GetString(varname, string.Empty);
+
+            // Then check for an overwrite of the default in the given section
+            if (!string.IsNullOrEmpty(section))
+            {
+                cnf = config.Configs[section];
+
+                if (cnf != null)
+                    val = cnf.GetString(varname, val);
+            }
+
+            return val;
+        }
+
+        /// <summary>
+        /// Gets the value of a configuration variable by looking into
+        /// multiple sections in order. The latter sections overwrite
+        /// any values previously found.
+        /// </summary>
+        /// <typeparam name="T">Type of the variable</typeparam>
+        /// <param name="config">The configuration object</param>
+        /// <param name="varname">The configuration variable</param>
+        /// <param name="sections">Ordered sequence of sections to look at</param>
+        /// <returns></returns>
+        public static T GetConfigVarFromSections<T>(IConfigSource config, string varname, string[] sections)
+        {
+            return GetConfigVarFromSections<T>(config, varname, sections, default(T));
+        }
+
+        /// <summary>
+        /// Gets the value of a configuration variable by looking into
+        /// multiple sections in order. The latter sections overwrite
+        /// any values previously found.
+        /// </summary>
+        /// <remarks>
+        /// If no value is found then the given default value is returned
+        /// </remarks>
+        /// <typeparam name="T">Type of the variable</typeparam>
+        /// <param name="config">The configuration object</param>
+        /// <param name="varname">The configuration variable</param>
+        /// <param name="sections">Ordered sequence of sections to look at</param>
+        /// <param name="val">Default value</param>
+        /// <returns></returns>
+        public static T GetConfigVarFromSections<T>(IConfigSource config, string varname, string[] sections, object val)
+        {
+            foreach (string section in sections)
+            {
+                IConfig cnf = config.Configs[section];
+
+                if (cnf == null)
+                    continue;
+
+                if (typeof(T) == typeof(String))
+                    val = cnf.GetString(varname, (string)val);
+                else if (typeof(T) == typeof(Boolean))
+                    val = cnf.GetBoolean(varname, (bool)val);
+                else if (typeof(T) == typeof(Int32))
+                    val = cnf.GetInt(varname, (int)val);
+                else if (typeof(T) == typeof(float))
+                    val = cnf.GetFloat(varname, (float)val);
+                else
+                    m_log.ErrorFormat("[UTIL]: Unhandled type {0}", typeof(T));
+            }
+
+            return (T)val;
+        }
+
+        public static void MergeEnvironmentToConfig(IConfigSource ConfigSource)
+        {
+            IConfig enVars = ConfigSource.Configs["Environment"];
+
+            // if section does not exist then user isn't expecting them, so don't bother.
+            if (enVars != null)
+            {
+                // load the values from the environment
+                EnvConfigSource envConfigSource = new EnvConfigSource();
+                // add the requested keys
+                string[] env_keys = enVars.GetKeys();
+
+                foreach (string key in env_keys)
+                {
+                    envConfigSource.AddEnv(key, string.Empty);
+                }
+
+                // load the values from environment
+                envConfigSource.LoadEnv();
+                
+                // add them in to the master
+                ConfigSource.Merge(envConfigSource);
+                ConfigSource.ExpandKeyValues();
+            }
+        }
+
+        public static T ReadSettingsFromIniFile<T>(IConfig config, T settingsClass)
+        {
+            Type settingsType = settingsClass.GetType();
+
+            FieldInfo[] fieldInfos = settingsType.GetFields();
+
+            foreach (FieldInfo fieldInfo in fieldInfos)
+            {
+                if (!fieldInfo.IsStatic)
+                {
+                    if (fieldInfo.FieldType == typeof(System.String))
+                    {
+                        fieldInfo.SetValue(settingsClass, config.Get(fieldInfo.Name, (string)fieldInfo.GetValue(settingsClass)));
+                    }
+                    else if (fieldInfo.FieldType == typeof(System.Boolean))
+                    {
+                        fieldInfo.SetValue(settingsClass, config.GetBoolean(fieldInfo.Name, (bool)fieldInfo.GetValue(settingsClass)));
+                    }
+                    else if (fieldInfo.FieldType == typeof(System.Int32))
+                    {
+                        fieldInfo.SetValue(settingsClass, config.GetInt(fieldInfo.Name, (int)fieldInfo.GetValue(settingsClass)));
+                    }
+                    else if (fieldInfo.FieldType == typeof(System.Single))
+                    {
+                        fieldInfo.SetValue(settingsClass, config.GetFloat(fieldInfo.Name, (float)fieldInfo.GetValue(settingsClass)));
+                    }
+                    else if (fieldInfo.FieldType == typeof(System.UInt32))
+                    {
+                        fieldInfo.SetValue(settingsClass, Convert.ToUInt32(config.Get(fieldInfo.Name, ((uint)fieldInfo.GetValue(settingsClass)).ToString())));
+                    }
+                }
+            }
+
+            PropertyInfo[] propertyInfos = settingsType.GetProperties();
+
+            foreach (PropertyInfo propInfo in propertyInfos)
+            {
+                if ((propInfo.CanRead) && (propInfo.CanWrite))
+                {
+                    if (propInfo.PropertyType == typeof(System.String))
+                    {
+                        propInfo.SetValue(settingsClass, config.Get(propInfo.Name, (string)propInfo.GetValue(settingsClass, null)), null);
+                    }
+                    else if (propInfo.PropertyType == typeof(System.Boolean))
+                    {
+                        propInfo.SetValue(settingsClass, config.GetBoolean(propInfo.Name, (bool)propInfo.GetValue(settingsClass, null)), null);
+                    }
+                    else if (propInfo.PropertyType == typeof(System.Int32))
+                    {
+                        propInfo.SetValue(settingsClass, config.GetInt(propInfo.Name, (int)propInfo.GetValue(settingsClass, null)), null);
+                    }
+                    else if (propInfo.PropertyType == typeof(System.Single))
+                    {
+                        propInfo.SetValue(settingsClass, config.GetFloat(propInfo.Name, (float)propInfo.GetValue(settingsClass, null)), null);
+                    }
+                    if (propInfo.PropertyType == typeof(System.UInt32))
+                    {
+                        propInfo.SetValue(settingsClass, Convert.ToUInt32(config.Get(propInfo.Name, ((uint)propInfo.GetValue(settingsClass, null)).ToString())), null);
+                    }
+                }
+            }
+
+            return settingsClass;
+        }
+
+        /// <summary>
+        /// Reads a configuration file, configFile, merging it with the main configuration, config.
+        /// If the file doesn't exist, it copies a given exampleConfigFile onto configFile, and then
+        /// merges it.
+        /// </summary>
+        /// <param name="config">The main configuration data</param>
+        /// <param name="configFileName">The name of a configuration file in ConfigDirectory variable, no path</param>
+        /// <param name="exampleConfigFile">Full path to an example configuration file</param>
+        /// <param name="configFilePath">Full path ConfigDirectory/configFileName</param>
+        /// <param name="created">True if the file was created in ConfigDirectory, false if it existed</param>
+        /// <returns>True if success</returns>
+        public static bool MergeConfigurationFile(IConfigSource config, string configFileName, string exampleConfigFile, out string configFilePath, out bool created)
+        {
+            created = false;
+            configFilePath = string.Empty;
+
+            IConfig cnf = config.Configs["Startup"];
+
+            if (cnf == null)
+            {
+                m_log.WarnFormat("[Utils]: Startup section doesn't exist");
+                return false;
+            }
+
+            string configDirectory = cnf.GetString("ConfigDirectory", ".");
+            string configFile = Path.Combine(configDirectory, configFileName);
+
+            if (!File.Exists(configFile) && !string.IsNullOrEmpty(exampleConfigFile))
+            {
+                // We need to copy the example onto it
+
+                if (!Directory.Exists(configDirectory))
+                    Directory.CreateDirectory(configDirectory);
+
+                try
+                {
+                    File.Copy(exampleConfigFile, configFile);
+                    created = true;
+                }
+                catch (Exception e)
+                {
+                    m_log.WarnFormat("[Utils]: Exception copying configuration file {0} to {1}: {2}", configFile, exampleConfigFile, e.Message);
+                    return false;
+                }
+            }
+
+            if (File.Exists(configFile))
+            {
+                // Merge
+                config.Merge(new IniConfigSource(configFile));
+                config.ExpandKeyValues();
+                configFilePath = configFile;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        #endregion
 
         public static float Clip(float x, float min, float max)
         {
@@ -1065,9 +1293,5 @@ namespace OpenSim.Framework
             return retVal;
 
         }
-
-
-
-
     }
 }

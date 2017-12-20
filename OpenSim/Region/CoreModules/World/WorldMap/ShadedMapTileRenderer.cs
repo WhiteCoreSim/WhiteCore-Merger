@@ -40,18 +40,21 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private Scene m_scene;
-        //private IConfigSource m_config; // not used currently
+        private IConfigSource m_config;
 
         public void Initialise(Scene scene, IConfigSource config)
         {
             m_scene = scene;
-            // m_config = config; // not used currently
+            m_config = config;
+
+            string[] configSections = new string[] { "Map", "Startup" };
+            m_color_water = System.Drawing.ColorTranslator.FromHtml(Util.GetConfigVarFromSections<string>(m_config, "MapColorWater", configSections, "#1D475F"));
         }
 
         public void TerrainToBitmap(Bitmap mapbmp)
         {
             int tc = Environment.TickCount;
-            m_log.Info("[MAPTILE]: Generating Maptile Step 1: Terrain");
+            m_log.Info("[Map Tile]: Generating Maptile Step 1: Terrain");
 
             double[,] hm = m_scene.Heightmap.GetDoubles();
             bool ShadowDebugContinue = true;
@@ -146,7 +149,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                                 }
                                 catch (OverflowException)
                                 {
-                                    m_log.Debug("[MAPTILE]: Shadow failed at value: " + hfdiff.ToString());
+                                    m_log.Debug("[Map Tile]: Shadow failed at value: " + hfdiff.ToString());
                                     ShadowDebugContinue = false;
                                 }
 
@@ -196,7 +199,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                         {
                             if (!terraincorruptedwarningsaid)
                             {
-                                m_log.WarnFormat("[MAPIMAGE]: Your terrain is corrupted in region {0}, it might take a few minutes to generate the map image depending on the corruption level", m_scene.RegionInfo.RegionName);
+                                m_log.WarnFormat("[Map Image]: Your terrain is corrupted in region {0}, it might take a few minutes to generate the map image depending on the corruption level", m_scene.RegionInfo.RegionName);
                                 terraincorruptedwarningsaid = true;
                             }
                             color = Color.Black;
@@ -221,22 +224,24 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
                         try
                         {
                             Color water = Color.FromArgb((int)heightvalue, (int)heightvalue, 255);
-                            mapbmp.SetPixel(x, yr, water);
+                            mapbmp.SetPixel(x, yr, m_color_water);
                         }
                         catch (ArgumentException)
                         {
                             if (!terraincorruptedwarningsaid)
                             {
-                                m_log.WarnFormat("[MAPIMAGE]: Your terrain is corrupted in region {0}, it might take a few minutes to generate the map image depending on the corruption level", m_scene.RegionInfo.RegionName);
+                                m_log.WarnFormat("[Map Image]: Your terrain is corrupted in region {0}, it might take a few minutes to generate the map image depending on the corruption level", m_scene.RegionInfo.RegionName);
                                 terraincorruptedwarningsaid = true;
                             }
+
                             Color black = Color.Black;
                             mapbmp.SetPixel(x, (256 - y) - 1, black);
                         }
                     }
                 }
             }
-            m_log.Info("[MAPTILE]: Generating Maptile Step 1: Done in " + (Environment.TickCount - tc) + " ms");
+
+            m_log.Info("[Map Tile]: Generating Maptile Step 1: Done in " + (Environment.TickCount - tc) + " ms");
         }
     }
 }
