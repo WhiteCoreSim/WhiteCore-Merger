@@ -48,7 +48,7 @@ using Nini.Config;
 using OpenSim.Framework;
 using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Region.CoreModules.World.Terrain;
 using OpenSim.Region.Physics.Manager;
 
@@ -126,7 +126,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
             return false;
         }
 
-        public void Initialise(Scene scene, String dir)
+        public void Initialize(Scene scene, String dir)
         {
         }
 
@@ -150,7 +150,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
             return 0;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

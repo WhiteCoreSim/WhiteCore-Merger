@@ -62,7 +62,7 @@ namespace OpenSim.Region.CoreModules
 
         #region IRegion Methods
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             IConfig windConfig = config.Configs["Wind"];
             string desiredWindPlugin = m_dWindPluginName;
@@ -103,7 +103,7 @@ namespace OpenSim.Region.CoreModules
 
                     if (windConfig != null)
                     {
-                        m_activeWindPlugin.Initialise();
+                        m_activeWindPlugin.Initialize();
                         m_activeWindPlugin.WindConfig(m_scene, windConfig);
                     }
                 } 
@@ -152,7 +152,7 @@ namespace OpenSim.Region.CoreModules
 
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

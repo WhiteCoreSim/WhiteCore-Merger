@@ -185,14 +185,14 @@ namespace OpenSim.Grid.AssetInventoryServer
 
         private List<IAssetInventoryServerPlugin> LoadAssetInventoryServerPlugins(string addinPath, string configParam)
         {
-            PluginLoader<IAssetInventoryServerPlugin> loader = new PluginLoader<IAssetInventoryServerPlugin>(new AssetInventoryServerPluginInitialiser(this));
+            PluginLoader<IAssetInventoryServerPlugin> loader = new PluginLoader<IAssetInventoryServerPlugin>(new AssetInventoryServerPluginInitializer(this));
             loader.Add(addinPath, new PluginIdFilter(ConfigFile.Configs["Plugins"].GetString(configParam)));
 
             try
             {
                 loader.Load();
             }
-            catch (PluginNotInitialisedException e)
+            catch (PluginNotInitializedException e)
             {
                 m_log.ErrorFormat("[ASSETINVENTORY]: Error initialising plugin '{0}' for extension point '{1}'.", e.Message, addinPath);
                 Shutdown();

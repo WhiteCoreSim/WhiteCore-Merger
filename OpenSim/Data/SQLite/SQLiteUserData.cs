@@ -68,21 +68,21 @@ namespace OpenSim.Data.SQLite
         private SqliteDataAdapter daa;
         SqliteConnection g_conn;
 
-        public override void Initialise()
+        public override void Initialize()
         {
             m_log.Info("[SQLiteUserData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            throw new PluginNotInitializedException (Name);
         }
 
         /// <summary>
         /// <list type="bullet">
-        /// <item>Initialises User Interface</item>
-        /// <item>Loads and initialises a new SQLite connection and maintains it.</item>
+        /// <item>Initializes User Interface</item>
+        /// <item>Loads and initializes a new SQLite connection and maintains it.</item>
         /// <item>use default URI if connect string string is empty.</item>
         /// </list>
         /// </summary>
         /// <param name="connect">connect string</param>
-        override public void Initialise(string connect)
+        override public void Initialize(string connect)
         {
             // default to something sensible
             if (connect == "")

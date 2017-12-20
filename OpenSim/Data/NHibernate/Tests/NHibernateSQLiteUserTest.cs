@@ -56,7 +56,7 @@ namespace OpenSim.Data.NHibernate.Tests
                 string connect = "SQLiteDialect;SQLite20Driver;Data Source=" + Path.GetTempFileName() + ".db;Version=3"; 
                 
                 db = new NHibernateUserData();
-                db.Initialise(connect);
+                db.Initialize(connect);
                 database = ((NHibernateUserData)db).Manager;
             } 
             catch (Exception e)

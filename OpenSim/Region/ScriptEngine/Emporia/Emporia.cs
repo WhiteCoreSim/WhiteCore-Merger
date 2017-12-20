@@ -154,7 +154,7 @@ namespace OpenSim.Region.ScriptEngine.Emporia
         //
         // IRegionModule functions
         //
-        public void Initialise(IConfigSource configSource)
+        public void Initialize(IConfigSource configSource)
         {
             if (configSource.Configs["Emporia"] == null)
                 return;

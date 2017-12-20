@@ -117,7 +117,7 @@ namespace OpenSim.Region.ScriptEngine.DotNetEngine
             }
         }
 
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
             ConfigSource = config;
         }

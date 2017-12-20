@@ -36,7 +36,7 @@ using OpenMetaverse;
 using OpenSim.Framework;
 using OpenSim.Framework.Communications.Cache;
 using OpenSim.Framework.Serialization;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Region.CoreModules.World.Terrain;
 using OpenSim.Region.Framework.Scenes;
 using OpenSim.Region.Framework.Scenes.Serialization;
@@ -84,11 +84,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver.Tests
             //log4net.Config.XmlConfigurator.Configure();
 
             ArchiverModule archiverModule = new ArchiverModule();
-            SerialiserModule serialiserModule = new SerialiserModule();
+            SerializerModule serializerModule = new SerializerModule();
             TerrainModule terrainModule = new TerrainModule();
 
             Scene scene = SceneSetupHelpers.SetupScene(false);
-            SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serialiserModule, terrainModule);
+            SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serializerModule, terrainModule);
 
             SceneObjectPart part1;
 
@@ -225,11 +225,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver.Tests
             Quaternion rotationOffset = new Quaternion(60, 70, 80, 90);
             Vector3 offsetPosition = new Vector3(20, 25, 30);
 
-            SerialiserModule serialiserModule = new SerialiserModule();
+            SerializerModule serializerModule = new SerializerModule();
             ArchiverModule archiverModule = new ArchiverModule();
 
             Scene scene = SceneSetupHelpers.SetupScene();
-            SceneSetupHelpers.SetupSceneModules(scene, serialiserModule, archiverModule);
+            SceneSetupHelpers.SetupSceneModules(scene, serializerModule, archiverModule);
 
             SceneObjectPart part1
                 = new SceneObjectPart(
@@ -291,11 +291,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver.Tests
             // Create an oar file that we can use for the merge
             {
                 ArchiverModule archiverModule = new ArchiverModule();
-                SerialiserModule serialiserModule = new SerialiserModule();
+                SerializerModule serializerModule = new SerializerModule();
                 TerrainModule terrainModule = new TerrainModule();
 
                 Scene scene = SceneSetupHelpers.SetupScene();
-                SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serialiserModule, terrainModule);
+                SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serializerModule, terrainModule);
 
                 SceneObjectPart part2
                     = new SceneObjectPart(
@@ -317,11 +317,11 @@ namespace OpenSim.Region.CoreModules.World.Archiver.Tests
 
             {
                 ArchiverModule archiverModule = new ArchiverModule();
-                SerialiserModule serialiserModule = new SerialiserModule();
+                SerializerModule serializerModule = new SerializerModule();
                 TerrainModule terrainModule = new TerrainModule();
 
                 Scene scene = SceneSetupHelpers.SetupScene();
-                SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serialiserModule, terrainModule);
+                SceneSetupHelpers.SetupSceneModules(scene, archiverModule, serializerModule, terrainModule);
 
                 string part1Name = "objectExisting";
                 PrimitiveBaseShape part1Shape = PrimitiveBaseShape.CreateCylinder();

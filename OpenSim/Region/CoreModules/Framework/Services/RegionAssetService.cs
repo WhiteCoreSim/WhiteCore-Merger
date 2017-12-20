@@ -51,7 +51,7 @@ namespace OpenSim.Region.CoreModules.Framework.Services
 
         #region IRegionModule interface
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             if (!initialized)
             {
@@ -66,7 +66,7 @@ namespace OpenSim.Region.CoreModules.Framework.Services
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (enabled)
             {

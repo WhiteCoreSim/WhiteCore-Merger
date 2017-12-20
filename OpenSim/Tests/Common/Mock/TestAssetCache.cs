@@ -34,7 +34,7 @@ namespace OpenSim.Tests.Common.Mock
             get { throw new NotImplementedException(); }
         }
 
-        public void Initialise()
+        public void Initialize()
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace OpenSim.Tests.Common.Mock
             get { throw new NotImplementedException(); }
         }
 
-        public void Initialise(ConfigSettings cs, IAssetServer server)
+        public void Initialize(ConfigSettings cs, IAssetServer server)
         {
             throw new NotImplementedException();
         }

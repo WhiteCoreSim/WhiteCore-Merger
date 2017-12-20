@@ -36,7 +36,7 @@ namespace OpenSim.Region.OptionalModules.World.NPC
     {
         // private const bool m_enabled = false;
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             // if (m_enabled)
             // {
@@ -47,7 +47,7 @@ namespace OpenSim.Region.OptionalModules.World.NPC
             // }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

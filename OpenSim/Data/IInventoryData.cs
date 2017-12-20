@@ -37,9 +37,9 @@ namespace OpenSim.Data
     public interface IInventoryDataPlugin : IPlugin
     {
         /// <summary>
-        /// Initialises the interface
+        /// Initializes the interface
         /// </summary>
-        void Initialise(string connect);
+        void Initialize(string connect);
 
         /// <summary>
         /// Returns all descendent folders of this folder.  Does not return the parent folder itself.
@@ -156,14 +156,14 @@ namespace OpenSim.Data
         List<InventoryItemBase> fetchActiveGestures(UUID avatarID);
     }
 
-    public class InventoryDataInitialiser : PluginInitialiserBase
+    public class InventoryDataInitializer : PluginInitializerBase
     {
         private string connect;
-        public InventoryDataInitialiser (string s) { connect = s; }
-        public override void Initialise (IPlugin plugin)
+        public InventoryDataInitializer (string s) { connect = s; }
+        public override void Initialize (IPlugin plugin)
         {
             IInventoryDataPlugin p = plugin as IInventoryDataPlugin;
-            p.Initialise (connect);
+            p.Initialize (connect);
         }
     }
 }

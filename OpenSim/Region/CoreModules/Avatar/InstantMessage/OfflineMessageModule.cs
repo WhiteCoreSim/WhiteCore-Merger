@@ -48,7 +48,7 @@ namespace OpenSim.Region.CoreModules.Avatar.InstantMessage
         private List<Scene> m_SceneList = new List<Scene>();
         private string m_RestURL = String.Empty;
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             if (!enabled)
                 return;
@@ -86,7 +86,7 @@ namespace OpenSim.Region.CoreModules.Avatar.InstantMessage
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (!enabled)
                 return;

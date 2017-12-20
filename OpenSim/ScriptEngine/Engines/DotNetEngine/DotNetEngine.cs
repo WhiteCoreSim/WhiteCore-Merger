@@ -98,7 +98,7 @@ namespace OpenSim.ScriptEngine.Engines.DotNetEngine
             RegionInfo.EventProviders = new Dictionary<string, IScriptEventProvider>();
         }
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             RegionInfo.Scene = scene;
             RegionInfo.ConfigSource = source;
@@ -107,7 +107,7 @@ namespace OpenSim.ScriptEngine.Engines.DotNetEngine
             InitializeComponents();
         }
 
-        public void PostInitialise() { }
+        public void PostInitialize() { }
 
         /// <summary>
         /// Called on region close

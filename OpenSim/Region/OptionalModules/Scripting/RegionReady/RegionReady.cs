@@ -53,7 +53,7 @@ namespace OpenSim.Region.CoreModules.Scripting.RegionReady
         
         #region IRegionModule interface
             
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             m_log.Info("[RegionReady] Initialising");
             m_scene = scene;
@@ -72,7 +72,7 @@ namespace OpenSim.Region.CoreModules.Scripting.RegionReady
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_enabled) 
             {

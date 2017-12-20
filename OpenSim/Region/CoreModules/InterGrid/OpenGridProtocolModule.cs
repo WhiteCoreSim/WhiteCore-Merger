@@ -95,7 +95,7 @@ namespace OpenSim.Region.CoreModules.InterGrid
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             bool enabled = false;
             IConfig cfg = null;
@@ -195,7 +195,7 @@ namespace OpenSim.Region.CoreModules.InterGrid
             }
         }
         
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

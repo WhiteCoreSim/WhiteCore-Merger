@@ -74,7 +74,7 @@ namespace OpenSim.Region.Physics.BasicPhysicsPlugin
             //sceneIdentifier = _sceneIdentifier;
         }
 
-        public override void Initialise(IMesher meshmerizer, IConfigSource config)
+        public override void Initialize(IMesher meshmerizer, IConfigSource config)
         {
             // Does nothing right now
         }

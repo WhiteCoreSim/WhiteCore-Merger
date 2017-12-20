@@ -43,7 +43,7 @@ namespace OpenSim.Region.CoreModules.Hypergrid
 
         #region INonSharedRegionModule Members
 
-        public override void Initialise(IConfigSource config)
+        public override void Initialize(IConfigSource config)
         {
             IConfig startupConfig = config.Configs["Startup"];
             if (startupConfig.GetString("WorldMapModule", "WorldMap") == "HGWorldMap")

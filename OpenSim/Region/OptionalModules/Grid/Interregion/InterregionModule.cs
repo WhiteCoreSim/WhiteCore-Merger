@@ -141,7 +141,7 @@ namespace OpenSim.Region.CoreModules.Grid.Interregion
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_myLocations.Add(new Location((int) scene.RegionInfo.RegionLocX,
                                            (int) scene.RegionInfo.RegionLocY));
@@ -150,7 +150,7 @@ namespace OpenSim.Region.CoreModules.Grid.Interregion
             scene.RegisterModuleInterface<IInterregionModule>(this);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             // Commenting out to remove 'unreachable code' warning since m_enabled is never true
 //            if (m_enabled)

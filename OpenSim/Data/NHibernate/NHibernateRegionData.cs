@@ -54,7 +54,7 @@ namespace OpenSim.Data.NHibernate
             }
         }
 
-        public void Initialise(string connect)
+        public void Initialize(string connect)
         {
             m_log.InfoFormat("[NHIBERNATE] Initializing NHibernateRegionData");
             manager = new NHibernateManager(connect, "RegionStore");

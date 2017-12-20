@@ -66,7 +66,7 @@ namespace OpenSim.Region.OptionalModules.Avatar.Chat
             get { return false; }
         }
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             // Do a once-only scan of the configuration file to make
             // sure it's basically intact.
@@ -136,7 +136,7 @@ namespace OpenSim.Region.OptionalModules.Avatar.Chat
         // is not called following Initialize. So no use is made of this
         // call.
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

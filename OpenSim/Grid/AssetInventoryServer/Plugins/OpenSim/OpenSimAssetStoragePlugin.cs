@@ -137,7 +137,7 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins.OpenSim
 
         #region IPlugin implementation
 
-        public void Initialise(AssetInventoryServer server)
+        public void Initialize(AssetInventoryServer server)
         {
             m_server = server;
             m_openSimConfig = server.ConfigFile.Configs["OpenSim"];
@@ -157,17 +157,17 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins.OpenSim
             catch (Exception e)
             {
                 m_log.WarnFormat("[OPENSIMASSETSTORAGE]: Failure loading data plugin: {0}", e.ToString());
-                throw new PluginNotInitialisedException(Name);
+                throw new PluginNotInitializedException(Name);
             }
         }
 
         /// <summary>
-        /// <para>Initialises asset interface</para>
+        /// <para>Initializes asset interface</para>
         /// </summary>
-        public void Initialise()
+        public void Initialize()
         {
             m_log.InfoFormat("[OPENSIMASSETSTORAGE]: {0} cannot be default-initialized!", Name);
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         public void Dispose()

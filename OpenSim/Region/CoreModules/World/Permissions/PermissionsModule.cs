@@ -92,7 +92,7 @@ namespace OpenSim.Region.CoreModules.World.Permissions
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             m_scene = scene;
 
@@ -257,7 +257,7 @@ namespace OpenSim.Region.CoreModules.World.Permissions
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

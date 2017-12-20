@@ -73,7 +73,7 @@ namespace OpenSim.Region.CoreModules.World.Land
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
             m_landIDList.Initialize();
@@ -133,7 +133,7 @@ namespace OpenSim.Region.CoreModules.World.Land
         }
 
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 
@@ -1283,7 +1283,7 @@ namespace OpenSim.Region.CoreModules.World.Land
             response.parcel_id = parcelID;
             m_log.DebugFormat("[LAND] got parcelID {0}", parcelID);
 
-            return LLSDHelpers.SerialiseLLSDReply(response);
+            return LLSDHelpers.SerializeLLSDReply(response);
         }
 
         #endregion

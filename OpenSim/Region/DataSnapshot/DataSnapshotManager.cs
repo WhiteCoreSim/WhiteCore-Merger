@@ -89,7 +89,7 @@ namespace OpenSim.Region.DataSnapshot
 
         #region IRegionModule
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             if (!m_configLoaded) 
             {
@@ -212,7 +212,7 @@ namespace OpenSim.Region.DataSnapshot
             get { return "External Data Generator"; }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
 
         }

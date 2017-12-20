@@ -109,7 +109,7 @@ namespace OpenSim.Framework.Communications.Services
             httpServer.AddHTTPHandler("/InvCap/", CapHandler);
 
             // Un-cap'ed for now
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<Guid, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<Guid, InventoryItemBase>(
                     "POST", "/GetItem/", GetInventoryItem, CheckAuthSession));
 
         }
@@ -629,38 +629,38 @@ namespace OpenSim.Framework.Communications.Services
 
             Hashtable capsHandlers = caps.CapsHandlers.CapsDetails;
 
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<Guid, InventoryCollection>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<Guid, InventoryCollection>(
                                         "POST", AddAndGetCapUrl(authToken, "GetInventory", capsHandlers), GetUserInventory, CheckAuthSession));
 
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryFolderBase, InventoryCollection>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryFolderBase, InventoryCollection>(
                                         "POST", AddAndGetCapUrl(authToken, "FetchDescendants", capsHandlers), FetchDescendants, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryFolderBase, bool>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryFolderBase, bool>(
                                         "POST", AddAndGetCapUrl(authToken, "NewFolder", capsHandlers), m_inventoryService.AddFolder, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryFolderBase, bool>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryFolderBase, bool>(
                                         "POST", AddAndGetCapUrl(authToken, "UpdateFolder", capsHandlers), m_inventoryService.UpdateFolder, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryFolderBase, bool>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryFolderBase, bool>(
                                         "POST", AddAndGetCapUrl(authToken, "MoveFolder", capsHandlers), m_inventoryService.MoveFolder, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryFolderBase, bool>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryFolderBase, bool>(
                                         "POST", AddAndGetCapUrl(authToken, "PurgeFolder", capsHandlers), m_inventoryService.PurgeFolder, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryFolderBase, bool>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryFolderBase, bool>(
                                         "POST", AddAndGetCapUrl(authToken, "RemoveFolder", capsHandlers), RemoveFolder, CheckAuthSession));
 
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, InventoryItemBase>(
                                         "POST", AddAndGetCapUrl(authToken, "GetItem", capsHandlers), GetInventoryItem, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, InventoryItemBase>(
                                         "POST", AddAndGetCapUrl(authToken, "NewItem", capsHandlers), AddItem, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, InventoryItemBase>(
                                         "POST", AddAndGetCapUrl(authToken, "UpdateItem", capsHandlers), UpdateItem, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, InventoryItemBase>(
                                         "POST", AddAndGetCapUrl(authToken, "MoveItem", capsHandlers), MoveItem, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, InventoryItemBase>(
                                         "POST", AddAndGetCapUrl(authToken, "DeleteItem", capsHandlers), DeleteItem, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, InventoryItemBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, InventoryItemBase>(
                                         "POST", AddAndGetCapUrl(authToken, "CopyItem", capsHandlers), CopyItem, CheckAuthSession));
 
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<InventoryItemBase, AssetBase>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<InventoryItemBase, AssetBase>(
                                         "POST", AddAndGetCapUrl(authToken, "GetAsset", capsHandlers), GetAsset, CheckAuthSession));
-            httpServer.AddStreamHandler(new RestDeserialiseSecureHandler<AssetBase, bool>(
+            httpServer.AddStreamHandler(new RestDeserializeSecureHandler<AssetBase, bool>(
                                         "POST", AddAndGetCapUrl(authToken, "PostAsset", capsHandlers), PostAsset, CheckAuthSession));
 
             lock (invCaps)

@@ -1108,7 +1108,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             try
             {
 
-                // iterate through the serialised stream of tokens and store at the right depth in the hashtable
+                // iterate through the serialized stream of tokens and store at the right depth in the hashtable
                 // the top level hashtable may contain more nested hashtables within it each containing an objects representation
                 for (i = 0; i < JSON.Length; i++)
                 {

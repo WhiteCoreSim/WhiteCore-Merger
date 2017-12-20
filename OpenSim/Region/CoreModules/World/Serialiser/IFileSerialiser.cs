@@ -27,9 +27,9 @@
 
 using OpenSim.Region.Framework.Scenes;
 
-namespace OpenSim.Region.CoreModules.World.Serialiser
+namespace OpenSim.Region.CoreModules.World.Serializer
 {
-    internal interface IFileSerialiser
+    internal interface IFileSerializer
     {
         string WriteToFile(Scene scene, string dir);
     }

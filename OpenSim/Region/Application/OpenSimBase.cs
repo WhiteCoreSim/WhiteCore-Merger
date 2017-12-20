@@ -163,7 +163,7 @@ namespace OpenSim
         protected virtual void LoadPlugins()
         {
             PluginLoader<IApplicationPlugin> loader =
-                new PluginLoader<IApplicationPlugin>(new ApplicationPluginInitialiser(this));
+                new PluginLoader<IApplicationPlugin>(new ApplicationPluginInitializer(this));
 
             loader.Load("/OpenSim/Startup");
             m_plugins = loader.Plugins;
@@ -206,7 +206,7 @@ namespace OpenSim
             LoadPlugins();
             foreach (IApplicationPlugin plugin in m_plugins)
             {
-                plugin.PostInitialise();
+                plugin.PostInitialize();
             }
 
             // Only enable logins to the regions once we have completely finished starting up (apart from scripts)
@@ -281,12 +281,12 @@ namespace OpenSim
             // Called from base.StartUp()
 
             m_httpServerPort = m_networkServersInfo.HttpListenerPort;
-            InitialiseAssetCache();
+            InitializeAssetCache();
             m_sceneManager.OnRestartSim += handleRestartRegion;
         }
 
         /// <summary>
-        /// Initialises the asset cache. This supports legacy configuration values
+        /// Initializes the asset cache. This supports legacy configuration values
         /// to ensure consistent operation, but values outside of that namespace
         /// are handled by the more generic resolution mechanism provided by 
         /// the ResolveAssetServer virtual method. If extended resolution fails, 
@@ -296,11 +296,11 @@ namespace OpenSim
         /// returns an IAssetCache implementation, if possible. This is a virtual
         /// method.
         /// </summary>
-        protected virtual void InitialiseAssetCache()
+        protected virtual void InitializeAssetCache()
         {
-            LegacyAssetClientPluginInitialiser linit = null;
-            CryptoAssetClientPluginInitialiser cinit = null;
-            AssetClientPluginInitialiser init = null;
+            LegacyAssetClientPluginInitializer linit = null;
+            CryptoAssetClientPluginInitializer cinit = null;
+            AssetClientPluginInitializer init = null;
 
             IAssetServer assetServer = null;
             string mode = m_configSettings.AssetStorage;
@@ -324,14 +324,14 @@ namespace OpenSim
                     // If grid is specified then the grid server is chose regardless 
                     // of whether the server is standalone.
                 case "grid":
-                    linit = new LegacyAssetClientPluginInitialiser(m_configSettings, m_networkServersInfo.AssetURL);
+                    linit = new LegacyAssetClientPluginInitializer(m_configSettings, m_networkServersInfo.AssetURL);
                     assetServer = loadAssetServer("Grid", linit);
                     break;
 
                     // If cryptogrid is specified then the cryptogrid server is chose regardless 
                     // of whether the server is standalone.
                 case "cryptogrid":
-                    cinit = new CryptoAssetClientPluginInitialiser(m_configSettings, m_networkServersInfo.AssetURL,
+                    cinit = new CryptoAssetClientPluginInitializer(m_configSettings, m_networkServersInfo.AssetURL,
                                                                    Environment.CurrentDirectory, true);
                     assetServer = loadAssetServer("Crypto", cinit);
                     break;
@@ -339,7 +339,7 @@ namespace OpenSim
                     // If cryptogrid_eou is specified then the cryptogrid_eou server is chose regardless 
                     // of whether the server is standalone.
                 case "cryptogrid_eou":
-                    cinit = new CryptoAssetClientPluginInitialiser(m_configSettings, m_networkServersInfo.AssetURL,
+                    cinit = new CryptoAssetClientPluginInitializer(m_configSettings, m_networkServersInfo.AssetURL,
                                                                    Environment.CurrentDirectory, false);
                     assetServer = loadAssetServer("Crypto", cinit);
                     break;
@@ -347,7 +347,7 @@ namespace OpenSim
                     // If file is specified then the file server is chose regardless 
                     // of whether the server is standalone.
                 case "file":
-                    linit = new LegacyAssetClientPluginInitialiser(m_configSettings, m_networkServersInfo.AssetURL);
+                    linit = new LegacyAssetClientPluginInitializer(m_configSettings, m_networkServersInfo.AssetURL);
                     assetServer = loadAssetServer("File", linit);
                     break;
 
@@ -363,7 +363,7 @@ namespace OpenSim
                 default:
                     try
                     {
-                        init = new AssetClientPluginInitialiser(m_configSettings);
+                        init = new AssetClientPluginInitializer(m_configSettings);
                         assetServer = loadAssetServer(m_configSettings.AssetStorage, init);
                         break;
                     }
@@ -377,7 +377,7 @@ namespace OpenSim
             // Open the local SQL-based database asset server
             if (assetServer == null)
             {
-                init = new AssetClientPluginInitialiser(m_configSettings);
+                init = new AssetClientPluginInitializer(m_configSettings);
                 SQLAssetServer sqlAssetServer = (SQLAssetServer) loadAssetServer("SQL", init);
                 sqlAssetServer.LoadDefaultAssets(m_configSettings.AssetSetsXMLFile);
                 assetServer = sqlAssetServer;
@@ -391,9 +391,9 @@ namespace OpenSim
         }
 
         // This method loads the identified asset server, passing an approrpiately
-        // initialized Initialise wrapper. There should to be exactly one match,
+        // initialized Initialize wrapper. There should to be exactly one match,
         // if not, then the first match is used.
-        private IAssetServer loadAssetServer(string id, PluginInitialiserBase pi)
+        private IAssetServer loadAssetServer(string id, PluginInitializerBase pi)
         {
             if (id != null && id != String.Empty)
             {
@@ -438,7 +438,7 @@ namespace OpenSim
                 
                 try
                 {
-                    PluginInitialiserBase init = new AssetCachePluginInitialiser(m_configSettings, assetServer);
+                    PluginInitializerBase init = new AssetCachePluginInitializer(m_configSettings, assetServer);
                     PluginLoader<IAssetCache> loader = new PluginLoader<IAssetCache>(init);
                     loader.AddFilter(PLUGIN_ASSET_CACHE, new PluginProviderFilter(m_configSettings.AssetCache));
 
@@ -533,7 +533,7 @@ namespace OpenSim
 
             // This needs to be ahead of the script engine load, so the
             // script module can pick up events exposed by a module
-            m_moduleLoader.InitialiseSharedModules(scene);
+            m_moduleLoader.InitializeSharedModules(scene);
 
             // Use this in the future, the line above will be deprecated soon
             m_log.Info("[MODULES]: Loading Region's modules (new style)");
@@ -590,7 +590,7 @@ namespace OpenSim
             {
                 foreach (IRegionModule module in modules)
                 {
-                    module.PostInitialise();
+                    module.PostInitialize();
                 }
             }
             scene.EventManager.OnShutdown += delegate() { ShutdownRegion(scene); };
@@ -692,7 +692,7 @@ namespace OpenSim
             scene.LoadWorldMap();
 
             scene.PhysicsScene = GetPhysicsScene(scene.RegionInfo.RegionName);
-            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialised());
+            scene.PhysicsScene.SetTerrain(scene.Heightmap.GetFloatsSerialized());
             scene.PhysicsScene.SetWaterLevel((float) regionInfo.RegionSettings.WaterHeight);
 
             // TODO: Remove this cruft once MasterAvatar is fully deprecated

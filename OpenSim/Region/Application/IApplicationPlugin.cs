@@ -31,23 +31,23 @@ namespace OpenSim
 {
     public interface IApplicationPlugin : IPlugin
     {
-        void Initialise(OpenSimBase openSim);
-        void PostInitialise();
+        void Initialize(OpenSimBase openSim);
+        void PostInitialize();
     }
 
-    public class ApplicationPluginInitialiser : PluginInitialiserBase
+    public class ApplicationPluginInitializer : PluginInitializerBase
     {
         private OpenSimBase server;
 
-        public ApplicationPluginInitialiser(OpenSimBase s)
+        public ApplicationPluginInitializer(OpenSimBase s)
         {
             server = s;
         }
 
-        public override void Initialise(IPlugin plugin)
+        public override void Initialize(IPlugin plugin)
         {
             IApplicationPlugin p = plugin as IApplicationPlugin;
-            p.Initialise(server);
+            p.Initialize(server);
         }
     }
 }

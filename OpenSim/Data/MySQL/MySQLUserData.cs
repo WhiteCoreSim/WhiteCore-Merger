@@ -65,10 +65,10 @@ namespace OpenSim.Data.MySQL
         private string m_attachmentsTableName = "avatarattachments";
         private string m_connectString;
 
-        public override void Initialise()
+        public override void Initialize()
         {
             m_log.Info("[MySQLUserData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         public MySQLSuperManager GetLockedConnection(string why)
@@ -107,13 +107,13 @@ namespace OpenSim.Data.MySQL
         }
 
         /// <summary>
-        /// Initialise User Interface
-        /// Loads and initialises the MySQL storage plugin
+        /// Initialize User Interface
+        /// Loads and initializes the MySQL storage plugin
         /// Warns and uses the obsolete mysql_connection.ini if connect string is empty.
         /// Checks for migration
         /// </summary>
         /// <param name="connect">connect string.</param>
-        public override void Initialise(string connect)
+        public override void Initialize(string connect)
         {
             if (connect == String.Empty)
             {

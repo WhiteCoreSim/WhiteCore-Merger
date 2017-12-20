@@ -56,18 +56,18 @@ namespace OpenSim.Data.MSSQL
         private const string m_userFriendsTableName = "userfriends";
 
         // [Obsolete("Cannot be default-initialized!")]
-        override public void Initialise()
+        override public void Initialize()
         {
             m_log.Info("[MSSQLUserData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         /// <summary>
-        /// Loads and initialises the MSSQL storage plugin
+        /// Loads and initializes the MSSQL storage plugin
         /// </summary>
         /// <param name="connect">connectionstring</param>
         /// <remarks>use mssql_connection.ini</remarks>
-        override public void Initialise(string connect)
+        override public void Initialize(string connect)
         {
 
             if (!string.IsNullOrEmpty(connect))

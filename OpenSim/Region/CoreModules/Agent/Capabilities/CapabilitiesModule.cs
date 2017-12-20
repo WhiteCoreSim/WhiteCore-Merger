@@ -53,13 +53,13 @@ namespace OpenSim.Region.CoreModules.Agent.Capabilities
         protected Dictionary<UUID, Dictionary<ulong, string>> childrenSeeds 
             = new Dictionary<UUID, Dictionary<ulong, string>>();        
         
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
             m_scene.RegisterModuleInterface<ICapabilitiesModule>(this);
         }
         
-        public void PostInitialise() {}
+        public void PostInitialize() {}
         public void Close() {}
         public string Name { get { return "Capabilities Module"; } }
         public bool IsSharedModule { get { return false; } }

@@ -96,11 +96,11 @@ namespace OpenSim.Region.CoreModules.World.Terrain
         #region INonSharedRegionModule Members
 
         /// <summary>
-        /// Creates and initialises a terrain module for a region
+        /// Creates and initializes a terrain module for a region
         /// </summary>
         /// <param name="scene">Region initialising</param>
         /// <param name="config">Config for the region</param>
-        public void Initialise(IConfigSource config)
+        public void Initialize(IConfigSource config)
         {
         }
 
@@ -497,7 +497,7 @@ namespace OpenSim.Region.CoreModules.World.Terrain
             if (m_tainted)
             {
                 m_tainted = false;
-                m_scene.PhysicsScene.SetTerrain(m_channel.GetFloatsSerialised());
+                m_scene.PhysicsScene.SetTerrain(m_channel.GetFloatsSerialized());
                 m_scene.SaveTerrain();
 
                 // Clients who look at the map will never see changes after they looked at the map, so i've commented this out.
@@ -559,7 +559,7 @@ namespace OpenSim.Region.CoreModules.World.Terrain
         private void CheckForTerrainUpdates(bool respectEstateSettings)
         {
             bool shouldTaint = false;
-            float[] serialised = m_channel.GetFloatsSerialised();
+            float[] serialized = m_channel.GetFloatsSerialized();
             int x;
             for (x = 0; x < m_channel.Width; x += Constants.TerrainPatchSize)
             {
@@ -574,10 +574,10 @@ namespace OpenSim.Region.CoreModules.World.Terrain
                         {
                             // this has been vetoed, so update
                             // what we are going to send to the client
-                            serialised = m_channel.GetFloatsSerialised();
+                            serialized = m_channel.GetFloatsSerialized();
                         }
 
-                        SendToClients(serialised, x, y);
+                        SendToClients(serialized, x, y);
                         shouldTaint = true;
                     }
                 }
@@ -629,15 +629,15 @@ namespace OpenSim.Region.CoreModules.World.Terrain
         /// <summary>
         /// Sends a copy of the current terrain to the scenes clients
         /// </summary>
-        /// <param name="serialised">A copy of the terrain as a 1D float array of size w*h</param>
+        /// <param name="serialized">A copy of the terrain as a 1D float array of size w*h</param>
         /// <param name="x">The patch corner to send</param>
         /// <param name="y">The patch corner to send</param>
-        private void SendToClients(float[] serialised, int x, int y)
+        private void SendToClients(float[] serialized, int x, int y)
         {
             m_scene.ForEachClient(
                 delegate(IClientAPI controller)
                     { controller.SendLayerData(
-                        x / Constants.TerrainPatchSize, y / Constants.TerrainPatchSize, serialised);
+                        x / Constants.TerrainPatchSize, y / Constants.TerrainPatchSize, serialized);
                     }
             );
         }

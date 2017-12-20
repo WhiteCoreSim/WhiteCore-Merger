@@ -51,7 +51,7 @@ namespace OpenSim.ApplicationPlugins.RegionModulesController
 
 #region IApplicationPlugin implementation
 
-        public void Initialise (OpenSimBase openSim)
+        public void Initialize (OpenSimBase openSim)
         {
             m_log.DebugFormat("[REGIONMODULES]: Initializing...");
             m_openSim = openSim;
@@ -82,22 +82,22 @@ namespace OpenSim.ApplicationPlugins.RegionModulesController
             }
 
             // now we've got all the region-module classes loaded, create one instance of every ISharedRegionModule,
-            // initialize and postinitialize it. This Initialise we are in is called before LoadRegion.PostInitialise
+            // initialize and postinitialize it. This Initialize we are in is called before LoadRegion.PostInitialize
             // is called (which loads the regions), so we don't have any regions in the server yet.
             foreach (Type type in m_sharedModules)
             {
                 ISharedRegionModule module = (ISharedRegionModule)Activator.CreateInstance(type);
                 m_sharedInstances.Add(module);
-                module.Initialise(openSim.ConfigSource.Source);
+                module.Initialize(openSim.ConfigSource.Source);
             }
 
             foreach (ISharedRegionModule module in m_sharedInstances)
             {
-                module.PostInitialise();
+                module.PostInitialize();
             }
         }
 
-        public void PostInitialise ()
+        public void PostInitialize ()
         {
         }
 
@@ -105,7 +105,7 @@ namespace OpenSim.ApplicationPlugins.RegionModulesController
 
 #region IPlugin implementation
 
-        public void Initialise ()
+        public void Initialize ()
         {
             throw new System.NotImplementedException();
         }
@@ -163,7 +163,7 @@ namespace OpenSim.ApplicationPlugins.RegionModulesController
                 INonSharedRegionModule module = (INonSharedRegionModule)Activator.CreateInstance(type);
                 m_log.DebugFormat("[REGIONMODULE]: Adding scene {0} to non-shared module {1}",
                                   scene.RegionInfo.RegionName, module.Name);
-                module.Initialise(m_openSim.ConfigSource.Source);
+                module.Initialize(m_openSim.ConfigSource.Source);
                 list.Add(module);
             }
 

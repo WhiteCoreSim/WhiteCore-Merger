@@ -60,7 +60,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
 
         #region Fields
 
-        bool initialised = false;
+        bool initialized = false;
         CMController m_control = null;
         bool m_enabled = false;
         CMModel m_model = null;
@@ -89,7 +89,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
         {
         }
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             string databaseDir = "./";
             string database = "FileSystemDatabase";
@@ -124,26 +124,26 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
 
             lock (this)
             {
-                if (!initialised) //only init once
+                if (!initialized) //only init once
                 {
                     m_view = new CMView();
                     m_model = new CMModel();
                     m_control = new CMController(m_model, m_view, scene, channel);
-                    m_model.Initialise(database);
-                    m_view.Initialise(m_model);
+                    m_model.Initialize(database);
+                    m_view.Initialize(m_model);
 
-                    initialised = true;
-                    m_model.InitialiseDatabase(scene, databaseDir);
+                    initialized = true;
+                    m_model.InitializeDatabase(scene, databaseDir);
                 }
                 else
                 {
-                    m_model.InitialiseDatabase(scene, databaseDir);
+                    m_model.InitializeDatabase(scene, databaseDir);
                     m_control.RegisterNewRegion(scene);
                 }
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (! m_enabled)
                 return;
@@ -152,7 +152,7 @@ namespace OpenSim.Region.OptionalModules.ContentManagement
             {
                 if (!m_posted) //only post once
                 {
-                    m_model.PostInitialise();
+                    m_model.PostInitialize();
                     m_posted = true;
                 }
             }

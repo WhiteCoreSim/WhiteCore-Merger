@@ -73,7 +73,7 @@ namespace OpenSim.Region.CoreModules.Hypergrid
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             if (m_firstScene == null)
             {
@@ -127,7 +127,7 @@ namespace OpenSim.Region.CoreModules.Hypergrid
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
 
         }

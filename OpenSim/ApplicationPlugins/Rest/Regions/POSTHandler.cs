@@ -108,9 +108,9 @@ namespace OpenSim.ApplicationPlugins.Rest.Regions
 
         public string LoadPrims(string requestBody, OSHttpRequest request, OSHttpResponse response, Scene scene)
         {
-            IRegionSerialiserModule serialiser = scene.RequestModuleInterface<IRegionSerialiserModule>();
-            if (serialiser != null)
-                serialiser.LoadPrimsFromXml2(scene, new StringReader(requestBody), true);
+            IRegionSerializerModule serializer = scene.RequestModuleInterface<IRegionSerializerModule>();
+            if (serializer != null)
+                serializer.LoadPrimsFromXml2(scene, new StringReader(requestBody), true);
 
             return "";
         }

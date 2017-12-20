@@ -42,8 +42,8 @@ namespace OpenSim.Tests.Common.Mock
         public string Version { get { return "0"; } }
         public string Name { get { return "TestAssetDataPlugin"; } }
 
-        public void Initialise() {}
-        public void Initialise(string connect) {}
+        public void Initialize() {}
+        public void Initialize(string connect) {}
         public void Dispose() {}
 
         public List<AssetMetadata> FetchAssetMetadataSet(int start, int count) { return new List<AssetMetadata>(count); }        

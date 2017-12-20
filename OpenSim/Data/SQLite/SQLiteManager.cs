@@ -46,7 +46,7 @@ namespace OpenSim.Data.SQLite
 
         /// <summary>
         /// <list type="bullet">
-        /// <item>Initialises and creates a new SQLite connection and maintains it.</item>
+        /// <item>Initializes and creates a new SQLite connection and maintains it.</item>
         /// <item>use default URI if connect string is empty.</item>
         /// </list>
         /// </summary>

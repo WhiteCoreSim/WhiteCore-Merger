@@ -2098,7 +2098,7 @@
             <summary> Representation of a non-initialized HttpParam </summary>
         </member>
         <member name="M:HttpServer.HttpParam.#ctor(HttpServer.IHttpInput,HttpServer.IHttpInput)">
-            <summary>Initialises the class to hold a value either from a post request or a querystring request</summary>		
+            <summary>Initializes the class to hold a value either from a post request or a querystring request</summary>		
         </member>
         <member name="M:HttpServer.HttpParam.Add(System.String,System.String)">
             <summary>

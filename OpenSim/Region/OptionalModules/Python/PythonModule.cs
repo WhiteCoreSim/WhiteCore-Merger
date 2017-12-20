@@ -43,11 +43,11 @@ namespace OpenSim.Region.Modules.Python
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private PythonEngine m_python;
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             m_log.Info("[PYTHON] Initialising IronPython engine.");
             m_python = new PythonEngine();

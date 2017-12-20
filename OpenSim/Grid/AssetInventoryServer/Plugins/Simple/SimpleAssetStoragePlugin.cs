@@ -192,7 +192,7 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins.Simple
 
         #region IPlugin implementation
 
-        public void Initialise(AssetInventoryServer server)
+        public void Initialize(AssetInventoryServer server)
         {
             this.server = server;
 
@@ -207,12 +207,12 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins.Simple
         }
 
         /// <summary>
-        /// <para>Initialises asset interface</para>
+        /// <para>Initializes asset interface</para>
         /// </summary>
-        public void Initialise()
+        public void Initialize()
         {
             m_log.InfoFormat("[SIMPLEASSETSTORAGE]: {0} cannot be default-initialized!", Name);
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         public void Dispose()

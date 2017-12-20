@@ -46,19 +46,19 @@ namespace OpenSim.Grid.AssetInventoryServer
         Failure
     }
 
-    public class AssetInventoryServerPluginInitialiser : PluginInitialiserBase
+    public class AssetInventoryServerPluginInitializer : PluginInitializerBase
     {
         private AssetInventoryServer server;
 
-        public AssetInventoryServerPluginInitialiser(AssetInventoryServer server)
+        public AssetInventoryServerPluginInitializer(AssetInventoryServer server)
         {
             this.server = server;
         }
 
-        public override void Initialise(IPlugin plugin)
+        public override void Initialize(IPlugin plugin)
         {
             IAssetInventoryServerPlugin p = plugin as IAssetInventoryServerPlugin;
-            p.Initialise (server);
+            p.Initialize (server);
         }
     }
 
@@ -66,7 +66,7 @@ namespace OpenSim.Grid.AssetInventoryServer
 
     public interface IAssetInventoryServerPlugin : IPlugin
     {
-        void Initialise(AssetInventoryServer server);
+        void Initialize(AssetInventoryServer server);
     }
 
     public interface IAssetStorageProvider : IAssetInventoryServerPlugin

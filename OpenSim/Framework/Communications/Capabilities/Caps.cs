@@ -278,7 +278,7 @@ namespace OpenSim.Framework.Communications.Capabilities
         {
             //m_log.Debug("[CAPS]: Seed Caps Request in region: " + m_regionName);
 
-            string result = LLSDHelpers.SerialiseLLSDReply(m_capsHandlers.CapsDetails);
+            string result = LLSDHelpers.SerializeLLSDReply(m_capsHandlers.CapsDetails);
 
             //m_log.DebugFormat("[CAPS] CapsRequest {0}", result);
 
@@ -336,10 +336,10 @@ namespace OpenSim.Framework.Communications.Capabilities
                 Hashtable inventoryhash = (Hashtable)foldersrequested[i];
 
                 LLSDFetchInventoryDescendents llsdRequest = new LLSDFetchInventoryDescendents();
-                LLSDHelpers.DeserialiseOSDMap(inventoryhash, llsdRequest);
+                LLSDHelpers.DeserializeOSDMap(inventoryhash, llsdRequest);
                 LLSDInventoryDescendents reply = FetchInventoryReply(llsdRequest);
 
-                inventoryitemstr = LLSDHelpers.SerialiseLLSDReply(reply);
+                inventoryitemstr = LLSDHelpers.SerializeLLSDReply(reply);
                 inventoryitemstr = inventoryitemstr.Replace("<llsd><map><key>folders</key><array>", "");
                 inventoryitemstr = inventoryitemstr.Replace("</array></map></llsd>", "");
 
@@ -398,7 +398,7 @@ namespace OpenSim.Framework.Communications.Capabilities
                 LLSDFetchInventoryDescendents llsdRequest = new LLSDFetchInventoryDescendents();
                 
                 try{
-                LLSDHelpers.DeserialiseOSDMap(inventoryhash, llsdRequest);
+                LLSDHelpers.DeserializeOSDMap(inventoryhash, llsdRequest);
                 }
                 catch(Exception e)
                 {
@@ -406,7 +406,7 @@ namespace OpenSim.Framework.Communications.Capabilities
                 }
                 LLSDInventoryDescendents reply = FetchInventoryReply(llsdRequest);
 
-                inventoryitemstr = LLSDHelpers.SerialiseLLSDReply(reply);
+                inventoryitemstr = LLSDHelpers.SerializeLLSDReply(reply);
                 inventoryitemstr = inventoryitemstr.Replace("<llsd><map><key>folders</key><array>", "");
                 inventoryitemstr = inventoryitemstr.Replace("</array></map></llsd>", "");
 
@@ -622,7 +622,7 @@ namespace OpenSim.Framework.Communications.Capabilities
             eventItem.id = m_eventQueueCount;
             //should be creating a EstablishAgentComms item, but there isn't a class for it yet
             eventItem.events.Array.Add(new LLSDEmpty());
-            string res = LLSDHelpers.SerialiseLLSDReply(eventItem);
+            string res = LLSDHelpers.SerializeLLSDReply(eventItem);
             m_eventQueueCount++;
 
             m_capsEventQueue.Enqueue(res);
@@ -638,7 +638,7 @@ namespace OpenSim.Framework.Communications.Capabilities
             LLSDCapEvent eventItem = new LLSDCapEvent();
             eventItem.id = m_eventQueueCount;
             eventItem.events.Array.Add(new LLSDEmpty());
-            string res = LLSDHelpers.SerialiseLLSDReply(eventItem);
+            string res = LLSDHelpers.SerializeLLSDReply(eventItem);
             m_eventQueueCount++;
             return res;
         }
@@ -664,7 +664,7 @@ namespace OpenSim.Framework.Communications.Capabilities
 
                 Hashtable hash = (Hashtable) LLSD.LLSDDeserialize(Utils.StringToBytes(request));
                 LLSDTaskScriptUpdate llsdUpdateRequest = new LLSDTaskScriptUpdate();
-                LLSDHelpers.DeserialiseOSDMap(hash, llsdUpdateRequest);
+                LLSDHelpers.DeserializeOSDMap(hash, llsdUpdateRequest);
 
                 string capsBase = "/CAPS/" + m_capsObjectPath;
                 string uploaderPath = Util.RandomClass.Next(5000, 8000).ToString("0000");
@@ -696,9 +696,9 @@ namespace OpenSim.Framework.Communications.Capabilities
 
 //                m_log.InfoFormat("[CAPS]: " +
 //                                 "ScriptTaskInventory response: {0}",
-//                                 LLSDHelpers.SerialiseLLSDReply(uploadResponse)));
+//                                 LLSDHelpers.SerializeLLSDReply(uploadResponse)));
 
-                return LLSDHelpers.SerialiseLLSDReply(uploadResponse);
+                return LLSDHelpers.SerializeLLSDReply(uploadResponse);
             }
             catch (Exception e)
             {
@@ -724,7 +724,7 @@ namespace OpenSim.Framework.Communications.Capabilities
             //OpenMetaverse.StructuredData.OSDMap hash = (OpenMetaverse.StructuredData.OSDMap)OpenMetaverse.StructuredData.LLSDParser.DeserializeBinary(Utils.StringToBytes(request));
             Hashtable hash = (Hashtable) LLSD.LLSDDeserialize(Utils.StringToBytes(request));
             LLSDItemUpdate llsdRequest = new LLSDItemUpdate();
-            LLSDHelpers.DeserialiseOSDMap(hash, llsdRequest);
+            LLSDHelpers.DeserializeOSDMap(hash, llsdRequest);
 
             string capsBase = "/CAPS/" + m_capsObjectPath;
             string uploaderPath = Util.RandomClass.Next(5000, 8000).ToString("0000");
@@ -750,9 +750,9 @@ namespace OpenSim.Framework.Communications.Capabilities
 
 //            m_log.InfoFormat("[CAPS]: " +
 //                             "NoteCardAgentInventory response: {0}",
-//                             LLSDHelpers.SerialiseLLSDReply(uploadResponse)));
+//                             LLSDHelpers.SerializeLLSDReply(uploadResponse)));
 
-            return LLSDHelpers.SerialiseLLSDReply(uploadResponse);
+            return LLSDHelpers.SerializeLLSDReply(uploadResponse);
         }
 
         /// <summary>
@@ -974,7 +974,7 @@ namespace OpenSim.Framework.Communications.Capabilities
                 uploadComplete.new_inventory_item = inv;
                 uploadComplete.state = "complete";
 
-                res = LLSDHelpers.SerialiseLLSDReply(uploadComplete);
+                res = LLSDHelpers.SerializeLLSDReply(uploadComplete);
 
                 httpListener.RemoveStreamHandler("POST", uploaderPath);
 
@@ -1068,7 +1068,7 @@ namespace OpenSim.Framework.Communications.Capabilities
                 uploadComplete.new_inventory_item = inv;
                 uploadComplete.state = "complete";
 
-                res = LLSDHelpers.SerialiseLLSDReply(uploadComplete);
+                res = LLSDHelpers.SerializeLLSDReply(uploadComplete);
 
                 httpListener.RemoveStreamHandler("POST", uploaderPath);
 
@@ -1163,7 +1163,7 @@ namespace OpenSim.Framework.Communications.Capabilities
                     uploadComplete.task_id = primID;
                     uploadComplete.state = "complete";
 
-                    res = LLSDHelpers.SerialiseLLSDReply(uploadComplete);
+                    res = LLSDHelpers.SerializeLLSDReply(uploadComplete);
 
                     httpListener.RemoveStreamHandler("POST", uploaderPath);
 

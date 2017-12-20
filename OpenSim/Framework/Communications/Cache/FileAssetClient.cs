@@ -49,10 +49,10 @@ namespace OpenSim.Framework.Communications.Cache
             get { return "1.0"; }
         }
 
-        public override void Initialise(ConfigSettings p_set, string p_url)
+        public override void Initialize(ConfigSettings p_set, string p_url)
         {
             m_log.Debug("[FILEASSET] Plugin configured initialisation");
-            Initialise(p_url);
+            Initialize(p_url);
         }
 
         #endregion
@@ -65,10 +65,10 @@ namespace OpenSim.Framework.Communications.Cache
         public FileAssetClient(string p_url)
         {
             m_log.Debug("[FILEASSET] Direct constructor");
-            Initialise(p_url);
+            Initialize(p_url);
         }
 
-        public void Initialise(string dir)
+        public void Initialize(string dir)
         {
             if (!Directory.Exists(dir))
             {

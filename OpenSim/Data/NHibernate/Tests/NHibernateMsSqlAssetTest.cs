@@ -54,7 +54,7 @@ namespace OpenSim.Data.NHibernate.Tests
                 string connect = "MsSql2005Dialect;SqlClientDriver;Data Source=127.0.0.1;Network Library=DBMSSOCN;Initial Catalog=opensim-nunit;User ID=opensim-nunit;Password=opensim-nunit";
 
                 db = new NHibernateAssetData();
-                db.Initialise(connect);
+                db.Initialize(connect);
                 database = ((NHibernateAssetData)db).Manager;
             } 
             catch (Exception e)

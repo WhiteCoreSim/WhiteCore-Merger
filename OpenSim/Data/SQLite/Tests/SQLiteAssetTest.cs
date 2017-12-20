@@ -51,7 +51,7 @@ namespace OpenSim.Data.SQLite.Tests
             file = Path.GetTempFileName() + ".db";
             connect = "URI=file:" + file + ",version=3";
             db = new SQLiteAssetData();
-            db.Initialise(connect);
+            db.Initialize(connect);
         }
 
         [TestFixtureTearDown]

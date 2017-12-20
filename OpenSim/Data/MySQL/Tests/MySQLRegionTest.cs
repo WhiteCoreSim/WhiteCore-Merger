@@ -57,7 +57,7 @@ namespace OpenSim.Data.MySQL.Tests
                 ClearDB(database);
 
                 db = new MySQLDataStore();
-                db.Initialise(connect);
+                db.Initialize(connect);
             } 
             catch (Exception e)
             {

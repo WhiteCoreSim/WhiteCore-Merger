@@ -92,7 +92,7 @@ namespace OpenSim.Region.Physics.PhysXPlugin
             scene = mySdk.CreateScene();
         }
 
-        public override void Initialise(IMesher meshmerizer, IConfigSource config)
+        public override void Initialize(IMesher meshmerizer, IConfigSource config)
         {
             // Does nothing right now
         }

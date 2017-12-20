@@ -507,7 +507,7 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins.OpenSim
 
         #region IPlugin implementation
 
-        public void Initialise(AssetInventoryServer server)
+        public void Initialize(AssetInventoryServer server)
         {
             m_server = server;
             m_openSimConfig = server.ConfigFile.Configs["OpenSim"];
@@ -521,10 +521,10 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins.OpenSim
         {
         }
 
-        public void Initialise()
+        public void Initialize()
         {
             m_log.InfoFormat("[OPENSIMINVENTORYSTORAGE]: {0} cannot be default-initialized!", Name);
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         public void Dispose()

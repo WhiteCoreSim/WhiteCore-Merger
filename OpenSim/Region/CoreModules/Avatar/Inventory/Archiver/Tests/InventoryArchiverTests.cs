@@ -42,7 +42,7 @@ using OpenSim.Framework.Communications;
 using OpenSim.Framework.Communications.Cache;
 using OpenSim.Framework.Communications.Osp;
 using OpenSim.Region.CoreModules.Avatar.Inventory.Archiver;
-using OpenSim.Region.CoreModules.World.Serialiser;
+using OpenSim.Region.CoreModules.World.Serializer;
 using OpenSim.Region.Framework.Scenes;
 using OpenSim.Region.Framework.Scenes.Serialization;
 using OpenSim.Tests.Common;
@@ -238,14 +238,14 @@ namespace OpenSim.Region.CoreModules.Avatar.Inventory.Archiver.Tests
             tar.Close();
 
             MemoryStream archiveReadStream = new MemoryStream(archiveWriteStream.ToArray());            
-            SerialiserModule serialiserModule = new SerialiserModule();
+            SerializerModule serializerModule = new SerializerModule();
             InventoryArchiverModule archiverModule = new InventoryArchiverModule();
             
             // Annoyingly, we have to set up a scene even though inventory loading has nothing to do with a scene
             Scene scene = SceneSetupHelpers.SetupScene();
             IUserAdminService userAdminService = scene.CommsManager.UserAdminService;
             
-            SceneSetupHelpers.SetupSceneModules(scene, serialiserModule, archiverModule);
+            SceneSetupHelpers.SetupSceneModules(scene, serializerModule, archiverModule);
             userAdminService.AddUser(
                 userFirstName, userLastName, "meowfood", String.Empty, 1000, 1000, userUuid);
             userAdminService.AddUser(
@@ -303,14 +303,14 @@ namespace OpenSim.Region.CoreModules.Avatar.Inventory.Archiver.Tests
             tar.Close();
 
             MemoryStream archiveReadStream = new MemoryStream(archiveWriteStream.ToArray());            
-            SerialiserModule serialiserModule = new SerialiserModule();
+            SerializerModule serializerModule = new SerializerModule();
             InventoryArchiverModule archiverModule = new InventoryArchiverModule();
             
             // Annoyingly, we have to set up a scene even though inventory loading has nothing to do with a scene
             Scene scene = SceneSetupHelpers.SetupScene();
             IUserAdminService userAdminService = scene.CommsManager.UserAdminService;
             
-            SceneSetupHelpers.SetupSceneModules(scene, serialiserModule, archiverModule);
+            SceneSetupHelpers.SetupSceneModules(scene, serializerModule, archiverModule);
             userAdminService.AddUser(
                 userFirstName, userLastName, "meowfood", String.Empty, 1000, 1000, userUuid);
             

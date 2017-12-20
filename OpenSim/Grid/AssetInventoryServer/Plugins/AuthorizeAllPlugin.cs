@@ -44,7 +44,7 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins
 
         #region IPlugin implementation
 
-        public void Initialise(AssetInventoryServer server)
+        public void Initialize(AssetInventoryServer server)
         {
             //m_server = server;
 
@@ -52,12 +52,12 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins
         }
 
         /// <summary>
-        /// <para>Initialises asset interface</para>
+        /// <para>Initializes asset interface</para>
         /// </summary>
-        public void Initialise()
+        public void Initialize()
         {
             m_log.InfoFormat("[AUTHORIZEALL]: {0} cannot be default-initialized!", Name);
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         public void Dispose()

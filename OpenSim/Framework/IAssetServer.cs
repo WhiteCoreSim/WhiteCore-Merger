@@ -34,9 +34,9 @@ namespace OpenSim.Framework
     /// </summary>
     public interface IAssetServer : IPlugin
     {
-        void Initialise(ConfigSettings settings);
-        void Initialise(ConfigSettings settings, string url, string dir, bool test);
-        void Initialise(ConfigSettings settings, string url);
+        void Initialize(ConfigSettings settings);
+        void Initialize(ConfigSettings settings, string url, string dir, bool test);
+        void Initialize(ConfigSettings settings, string url);
         
         /// <summary>
         /// Start the asset server
@@ -75,56 +75,56 @@ namespace OpenSim.Framework
         void AssetNotFound(UUID assetID, bool IsTexture);
     }
 
-    public class AssetClientPluginInitialiser : PluginInitialiserBase
+    public class AssetClientPluginInitializer : PluginInitializerBase
     {
         private ConfigSettings config;
 
-        public AssetClientPluginInitialiser (ConfigSettings p_sv)
+        public AssetClientPluginInitializer (ConfigSettings p_sv)
         {
             config = p_sv;
         }
-        public override void Initialise (IPlugin plugin)
+        public override void Initialize (IPlugin plugin)
         {
             IAssetServer p = plugin as IAssetServer;
-            p.Initialise (config);
+            p.Initialize (config);
         }
     }
 
-    public class LegacyAssetClientPluginInitialiser : PluginInitialiserBase
+    public class LegacyAssetClientPluginInitializer : PluginInitializerBase
     {
         private ConfigSettings config;
         private string assetURL;
 
-        public LegacyAssetClientPluginInitialiser (ConfigSettings p_sv, string p_url)
+        public LegacyAssetClientPluginInitializer (ConfigSettings p_sv, string p_url)
         {
             config   = p_sv;
             assetURL = p_url;
         }
-        public override void Initialise (IPlugin plugin)
+        public override void Initialize (IPlugin plugin)
         {
             IAssetServer p = plugin as IAssetServer;
-            p.Initialise (config, assetURL);
+            p.Initialize (config, assetURL);
         }
     }
 
-    public class CryptoAssetClientPluginInitialiser : PluginInitialiserBase
+    public class CryptoAssetClientPluginInitializer : PluginInitializerBase
     {
         private ConfigSettings config;
         private string assetURL;
         private string currdir;
         private bool   test;
 
-        public CryptoAssetClientPluginInitialiser (ConfigSettings p_sv, string p_url, string p_dir, bool p_test)
+        public CryptoAssetClientPluginInitializer (ConfigSettings p_sv, string p_url, string p_dir, bool p_test)
         {
             config   = p_sv;
             assetURL = p_url;
             currdir  = p_dir;
             test     = p_test;
         }
-        public override void Initialise (IPlugin plugin)
+        public override void Initialize (IPlugin plugin)
         {
             IAssetServer p = plugin as IAssetServer;
-            p.Initialise (config, assetURL, currdir, test);
+            p.Initialize (config, assetURL, currdir, test);
         }
     }
 

@@ -118,15 +118,15 @@ namespace OpenSim.Grid.AssetInventoryServer.Plugins
 
         #region IPlugin implementation
 
-        public void Initialise(AssetInventoryServer server)
+        public void Initialize(AssetInventoryServer server)
         {
             //m_server = server;
         }
 
         /// <summary>
-        /// <para>Initialises metrics interface</para>
+        /// <para>Initializes metrics interface</para>
         /// </summary>
-        public void Initialise()
+        public void Initialize()
         {
             m_log.Info("[NULLMETRICS]: Null metrics loaded.");
         }

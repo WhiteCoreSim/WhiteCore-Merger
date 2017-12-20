@@ -367,7 +367,7 @@ namespace OpenSim.Region.Physics.OdePlugin
 #endif
 
         // Initialize the mesh plugin
-        public override void Initialise(IMesher meshmerizer, IConfigSource config)
+        public override void Initialize(IMesher meshmerizer, IConfigSource config)
         {
             mesher = meshmerizer;
             m_config = config;

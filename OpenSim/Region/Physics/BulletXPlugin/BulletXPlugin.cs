@@ -551,7 +551,7 @@ namespace OpenSim.Region.Physics.BulletXPlugin
             //this._heightmap = new float[65536];
         }
 
-        public override void Initialise(IMesher meshmerizer, IConfigSource config)
+        public override void Initialize(IMesher meshmerizer, IConfigSource config)
         {
             mesher = meshmerizer;
             // m_config = config;

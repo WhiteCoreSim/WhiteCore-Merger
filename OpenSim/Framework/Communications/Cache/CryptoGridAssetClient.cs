@@ -64,10 +64,10 @@ namespace OpenSim.Framework.Communications.Cache
             get { return "1.0"; }
         }
 
-        public override void Initialise(ConfigSettings p_set, string p_url, string p_dir, bool p_t)
+        public override void Initialize(ConfigSettings p_set, string p_url, string p_dir, bool p_t)
         {
             m_log.Debug("[CRYPTOGRID] Plugin configured initialisation");
-            Initialise(p_url, p_dir, p_t);
+            Initialize(p_url, p_dir, p_t);
         }
 
         #endregion
@@ -365,10 +365,10 @@ namespace OpenSim.Framework.Communications.Cache
         public CryptoGridAssetClient(string serverUrl, string keydir, bool decOnly)
         {
             m_log.Debug("[CRYPTOGRID] Direct constructor");
-            Initialise(serverUrl, keydir, decOnly);
+            Initialize(serverUrl, keydir, decOnly);
         }
 
-        public void Initialise(string serverUrl, string keydir, bool decOnly)
+        public void Initialize(string serverUrl, string keydir, bool decOnly)
         {
 
             m_log.Debug("[CRYPTOGRID] Common constructor");

@@ -200,7 +200,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
         /// the plugin can be enabled.
         /// </remarks>
 
-        public override void Initialise(OpenSimBase openSim)
+        public override void Initialize(OpenSimBase openSim)
         {
             try
             {
@@ -209,7 +209,7 @@ namespace OpenSim.ApplicationPlugins.Rest.Inventory
 
                 Rest.Log.InfoFormat("{0}  Plugin is initializing", MsgId);
 
-                base.Initialise(openSim);
+                base.Initialize(openSim);
 
                 // IsEnabled is implemented by the base class and
                 // reflects an overall RestPlugin status

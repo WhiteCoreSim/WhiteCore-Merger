@@ -56,10 +56,10 @@ namespace OpenSim.Data.MSSQL
         private MSSQLManager _Database;
       
         /// <summary>
-        /// Initialises the region datastore
+        /// Initializes the region datastore
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        public void Initialise(string connectionString)
+        public void Initialize(string connectionString)
         {
             if (!string.IsNullOrEmpty(connectionString))
             {

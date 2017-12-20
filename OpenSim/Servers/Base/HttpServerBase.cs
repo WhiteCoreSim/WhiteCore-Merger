@@ -78,7 +78,7 @@ namespace OpenSim.Servers.Base
             m_HttpServer = new BaseHttpServer(port);
         }
 
-        protected override void Initialise()
+        protected override void Initialize()
         {
             m_HttpServer.Start();
         }

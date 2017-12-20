@@ -59,7 +59,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
             m_extensions[typeof (T)] = instance;
         }
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             if (source.Configs["MRM"] != null)
             {
@@ -161,7 +161,7 @@ namespace OpenSim.Region.OptionalModules.Scripting.Minimodule
 
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             
         }

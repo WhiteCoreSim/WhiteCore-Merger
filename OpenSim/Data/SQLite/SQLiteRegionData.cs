@@ -80,12 +80,12 @@ namespace OpenSim.Data.SQLite
         /// <summary>
         /// See IRegionDataStore
         /// <list type="bullet">
-        /// <item>Initialises RegionData Interface</item>
-        /// <item>Loads and initialises a new SQLite connection and maintains it.</item>
+        /// <item>Initializes RegionData Interface</item>
+        /// <item>Loads and initializes a new SQLite connection and maintains it.</item>
         /// </list>
         /// </summary>
         /// <param name="connectionString">the connection string</param>
-        public void Initialise(string connectionString)
+        public void Initialize(string connectionString)
         {
             m_connectionString = connectionString;
 

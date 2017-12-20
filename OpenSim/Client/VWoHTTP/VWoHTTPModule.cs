@@ -50,7 +50,7 @@ namespace OpenSim.Client.VWoHTTP
 
         #region Implementation of IRegionModule
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             if (m_disabled)
                 return;
@@ -60,7 +60,7 @@ namespace OpenSim.Client.VWoHTTP
             m_httpd = scene.CommsManager.HttpServer;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_disabled)
                 return;

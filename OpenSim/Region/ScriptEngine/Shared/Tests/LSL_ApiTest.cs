@@ -60,7 +60,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Tests
             SceneObjectPart part = SceneSetupHelpers.AddSceneObject(scene);
 
             Emporia.Emporia engine = new Emporia.Emporia();
-            engine.Initialise(initConfigSource);
+            engine.Initialize(initConfigSource);
             engine.AddRegion(scene);
 
             m_lslApi = new LSL_Api();

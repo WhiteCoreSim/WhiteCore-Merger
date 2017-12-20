@@ -65,12 +65,12 @@ namespace OpenSim.Region.CoreModules.Agent.TextureSender
             fCache = new J2KDecodeFileCache(CacheFolder);
         }
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             scene.RegisterModuleInterface<IJ2KDecoder>(this);
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             
         }

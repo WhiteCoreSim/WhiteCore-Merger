@@ -55,13 +55,13 @@ namespace OpenSim.Data.NHibernate
             }
         }
 
-        public override void Initialise()
+        public override void Initialize()
         {
             m_log.Info("[NHibernateGridData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
-        public override void Initialise(string connect)
+        public override void Initialize(string connect)
         {
             m_log.InfoFormat("[NHIBERNATE] Initializing NHibernateGridData");
             manager = new NHibernateManager(connect, "GridStore");

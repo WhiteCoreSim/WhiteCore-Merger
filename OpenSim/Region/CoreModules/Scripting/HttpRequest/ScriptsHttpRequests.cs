@@ -231,7 +231,7 @@ namespace OpenSim.Region.CoreModules.Scripting.HttpRequest
 
         #region IRegionModule Members
 
-        public void Initialise(Scene scene, IConfigSource config)
+        public void Initialize(Scene scene, IConfigSource config)
         {
             m_scene = scene;
 
@@ -243,7 +243,7 @@ namespace OpenSim.Region.CoreModules.Scripting.HttpRequest
             m_pendingRequests = new Dictionary<UUID, HttpRequestClass>();
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
         }
 

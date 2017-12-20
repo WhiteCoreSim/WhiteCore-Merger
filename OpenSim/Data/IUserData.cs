@@ -180,9 +180,9 @@ namespace OpenSim.Data
         bool InventoryTransferRequest(UUID from, UUID to, UUID inventory);
 
         /// <summary>
-        /// Initialises the plugin (artificial constructor)
+        /// Initializes the plugin (artificial constructor)
         /// </summary>
-        void Initialise(string connect);
+        void Initialize(string connect);
 
         /// <summary>
         /// Gets the user appearance
@@ -196,14 +196,14 @@ namespace OpenSim.Data
         void LogoutUsers(UUID regionID);
     }
 
-    public class UserDataInitialiser : PluginInitialiserBase
+    public class UserDataInitializer : PluginInitializerBase
     {
         private string connect;
-        public UserDataInitialiser (string s) { connect = s; }
-        public override void Initialise (IPlugin plugin)
+        public UserDataInitializer (string s) { connect = s; }
+        public override void Initialize (IPlugin plugin)
         {
             IUserDataPlugin p = plugin as IUserDataPlugin;
-            p.Initialise (connect);
+            p.Initialize (connect);
         }
     }
 }

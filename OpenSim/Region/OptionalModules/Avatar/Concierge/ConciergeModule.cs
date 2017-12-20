@@ -77,7 +77,7 @@ namespace OpenSim.Region.OptionalModules.Avatar.Concierge
         internal object m_syncy = new object();
 
         #region IRegionModule Members
-        public override void Initialise(Scene scene, IConfigSource config)
+        public override void Initialize(Scene scene, IConfigSource config)
         {
             try
             {
@@ -169,7 +169,7 @@ namespace OpenSim.Region.OptionalModules.Avatar.Concierge
             m_log.InfoFormat("[Concierge]: initialized for {0}", scene.RegionInfo.RegionName);
         }
 
-        public override void PostInitialise()
+        public override void PostInitialize()
         {
         }
 

@@ -77,16 +77,16 @@ namespace OpenSim.Data.NHibernate
             }
         }
 
-        public void Initialise() 
+        public void Initialize() 
         { 
             m_log.Info("[NHibernateInventoryData]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException (Name);
+            throw new PluginNotInitializedException (Name);
         }
 
         /// <summary>
-        /// Initialises the interface
+        /// Initializes the interface
         /// </summary>
-        public void Initialise(string connect)
+        public void Initialize(string connect)
         {
             m_log.InfoFormat("[NHIBERNATE] Initializing NHibernateInventoryData");
             manager = new NHibernateManager(connect, "InventoryStore");

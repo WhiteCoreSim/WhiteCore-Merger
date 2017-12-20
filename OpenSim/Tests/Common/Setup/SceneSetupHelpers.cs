@@ -116,11 +116,11 @@ namespace OpenSim.Tests.Common.Setup
                 regInfo, acm, cm, scs, sm, null, false, false, false, configSource, null);
 
             IRegionModule capsModule = new CapabilitiesModule();            
-            capsModule.Initialise(testScene, new IniConfigSource());
+            capsModule.Initialize(testScene, new IniConfigSource());
             testScene.AddModule(capsModule.Name, capsModule);
             
             IRegionModule godsModule = new GodsModule();
-            godsModule.Initialise(testScene, new IniConfigSource());
+            godsModule.Initialize(testScene, new IniConfigSource());
             testScene.AddModule(godsModule.Name, godsModule);
             
             testScene.SetModuleInterfaces();
@@ -163,22 +163,22 @@ namespace OpenSim.Tests.Common.Setup
                 if (module is IRegionModule)
                 {
                     IRegionModule m = (IRegionModule)module;
-                    m.Initialise(scene, config);
+                    m.Initialize(scene, config);
                     scene.AddModule(m.Name, m);
                 }
                 else if (module is IRegionModuleBase)
                 {
-                    // for the new system, everything has to be initialised first,
-                    // shared modules have to be post-initialised, then all get an AddRegion with the scene
+                    // for the new system, everything has to be initialized first,
+                    // shared modules have to be post-initialized, then all get an AddRegion with the scene
                     IRegionModuleBase m = (IRegionModuleBase)module;
-                    m.Initialise(config);
+                    m.Initialize(config);
                     newModules.Add(m);
                 }
             }
 
             foreach (IRegionModuleBase module in newModules)
             {
-                if (module is ISharedRegionModule) ((ISharedRegionModule)module).PostInitialise();
+                if (module is ISharedRegionModule) ((ISharedRegionModule)module).PostInitialize();
             }
 
             foreach (IRegionModuleBase module in newModules)

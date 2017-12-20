@@ -53,7 +53,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Chat
         internal object m_syncInit = new object();
 
         #region IRegionModule Members
-        public virtual void Initialise(Scene scene, IConfigSource config)
+        public virtual void Initialize(Scene scene, IConfigSource config)
         {
             // wrap this in a try block so that defaults will work if
             // the config file doesn't specify otherwise.
@@ -85,7 +85,7 @@ namespace OpenSim.Region.CoreModules.Avatar.Chat
                              m_whisperdistance, m_saydistance, m_shoutdistance);
         }
         
-        public virtual void PostInitialise()
+        public virtual void PostInitialize()
         {
         }
 

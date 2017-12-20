@@ -71,24 +71,24 @@ namespace OpenSim.Framework.Communications.Cache
             get { return "1.0"; }
         }
 
-        public virtual void Initialise()
+        public virtual void Initialize()
         {
             m_log.Debug("[ASSET SERVER]: IPlugin null initialization");
         }
 
-        public virtual void Initialise(ConfigSettings settings)
+        public virtual void Initialize(ConfigSettings settings)
         {
             m_log.Debug("[ASSET SERVER]: IPlugin null configured initialization(1)");
             m_log.InfoFormat("[ASSET SERVER]: Initializing client [{0}/{1}", Name, Version);
         }
 
-        public virtual void Initialise(ConfigSettings settings, string p_url)
+        public virtual void Initialize(ConfigSettings settings, string p_url)
         {
             m_log.Debug("[ASSET SERVER]: IPlugin null configured initialization(2)");
             m_log.InfoFormat("[ASSET SERVER]: Initializing client [{0}/{1}", Name, Version);
         }
 
-        public virtual void Initialise(ConfigSettings settings, string p_url, string p_dir, bool p_t)
+        public virtual void Initialize(ConfigSettings settings, string p_url, string p_dir, bool p_t)
         {
             m_log.Debug("[ASSET SERVER]: IPlugin null configured initialization(3)");
             m_log.InfoFormat("[ASSET SERVER]: Initializing client [{0}/{1}", Name, Version);

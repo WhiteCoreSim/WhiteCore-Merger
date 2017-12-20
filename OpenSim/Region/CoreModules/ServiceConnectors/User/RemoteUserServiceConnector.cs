@@ -41,7 +41,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectors.User
             get { return "RemoteUserServicesConnector"; }
         }
 
-        public void Initialise(IConfigSource source)
+        public void Initialize(IConfigSource source)
         {
             IConfig moduleConfig = source.Configs["Modules"];
             if (moduleConfig != null)
@@ -54,7 +54,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectors.User
             }
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (!m_Enabled)
                 return;

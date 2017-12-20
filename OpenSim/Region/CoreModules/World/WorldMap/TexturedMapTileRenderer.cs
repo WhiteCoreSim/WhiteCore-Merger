@@ -178,7 +178,7 @@ namespace OpenSim.Region.CoreModules.World.WorldMap
         // TODO does it make sense to use a "real" cache and regenerate missing entries on fetch?
         private Dictionary<UUID, Color> m_mapping;
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             m_scene = scene;
             m_config = source; // not used currently

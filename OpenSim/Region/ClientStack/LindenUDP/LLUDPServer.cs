@@ -132,7 +132,7 @@ namespace OpenSim.Region.ClientStack.LindenUDP
             IPAddress _listenIP, ref uint port, int proxyPortOffset, bool allow_alternate_port, IConfigSource configSource, 
             IAssetCache assetCache, AgentCircuitManager authenticateClass)
         {
-            Initialise(_listenIP, ref port, proxyPortOffset, allow_alternate_port, configSource, assetCache, authenticateClass);
+            Initialize(_listenIP, ref port, proxyPortOffset, allow_alternate_port, configSource, assetCache, authenticateClass);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace OpenSim.Region.ClientStack.LindenUDP
         /// <param name="configSource"></param>
         /// <param name="assetCache"></param>
         /// <param name="circuitManager"></param>
-        public void Initialise(
+        public void Initialize(
             IPAddress _listenIP, ref uint port, int proxyPortOffsetParm, bool allow_alternate_port, IConfigSource configSource,
             IAssetCache assetCache, AgentCircuitManager circuitManager)
         {

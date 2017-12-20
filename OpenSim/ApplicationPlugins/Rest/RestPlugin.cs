@@ -187,10 +187,10 @@ namespace OpenSim.ApplicationPlugins.Rest
             get { return m_version; }
         }
 
-        public void Initialise()
+        public void Initialize()
         {
             m_log.Info("[RESTPLUGIN]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace OpenSim.ApplicationPlugins.Rest
         /// Note that entries MUST be added to the active configuration files before
         /// the plugin can be enabled.
         /// </remarks>
-        public virtual void Initialise(OpenSimBase openSim)
+        public virtual void Initialize(OpenSimBase openSim)
         {
             RequestID = "0";
             MsgID = RequestID;
@@ -253,7 +253,7 @@ namespace OpenSim.ApplicationPlugins.Rest
             }
         }
 
-        public virtual void PostInitialise()
+        public virtual void PostInitialize()
         {
         }
 

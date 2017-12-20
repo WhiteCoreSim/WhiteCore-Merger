@@ -57,7 +57,7 @@ namespace OpenSim.Client.MXP
         private readonly Timer m_ticker = new Timer(100);
         private bool m_shutdown = false;
 
-        public void Initialise(Scene scene, IConfigSource source)
+        public void Initialize(Scene scene, IConfigSource source)
         {
             if (!m_scenes.ContainsKey(scene.RegionInfo.RegionID))
                 m_scenes.Add(scene.RegionInfo.RegionID, scene);
@@ -65,7 +65,7 @@ namespace OpenSim.Client.MXP
             m_config = source;
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
             if (m_config.Configs["MXP"] != null)
             {

@@ -70,13 +70,13 @@ namespace OpenSim.Data.NHibernate
 
         #region Startup and shutdown.
 
-        public void Initialise()
+        public void Initialize()
         {
             m_log.Info("[NHIBERNATE]: " + Name + " cannot be default-initialized!");
-            throw new PluginNotInitialisedException(Name);
+            throw new PluginNotInitializedException(Name);
         }
 
-        public void Initialise(string connect)
+        public void Initialize(string connect)
         {
 
             m_log.InfoFormat("[NHIBERNATE] Initializing " + Name + ".");

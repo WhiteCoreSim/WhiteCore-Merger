@@ -64,7 +64,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectors.Interregion
 
         #region IRegionModule
 
-        public virtual void Initialise(Scene scene, IConfigSource config)
+        public virtual void Initialize(Scene scene, IConfigSource config)
         {
             if (!initialized)
             {
@@ -91,7 +91,7 @@ namespace OpenSim.Region.CoreModules.ServiceConnectors.Interregion
 
         }
 
-        public virtual void PostInitialise()
+        public virtual void PostInitialize()
         {
             if (m_enabled)
                 AddHTTPHandlers();

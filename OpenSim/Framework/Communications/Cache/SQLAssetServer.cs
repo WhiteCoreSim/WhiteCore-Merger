@@ -48,10 +48,10 @@ namespace OpenSim.Framework.Communications.Cache
             get { return "1.0"; }
         }
 
-        public override void Initialise(ConfigSettings p_set)
+        public override void Initialize(ConfigSettings p_set)
         {
             m_log.Debug("[SQLAssetServer]: Plugin configured initialisation");
-            Initialise(p_set.StandaloneAssetPlugin,p_set.StandaloneAssetSource);
+            Initialize(p_set.StandaloneAssetPlugin,p_set.StandaloneAssetSource);
         }
 
         #endregion
@@ -61,10 +61,10 @@ namespace OpenSim.Framework.Communications.Cache
         public SQLAssetServer(string pluginName, string connect)
         {
             m_log.Debug("[SQLAssetServer]: Direct constructor");
-            Initialise(pluginName, connect);
+            Initialize(pluginName, connect);
         }
 
-        public void Initialise(string pluginName, string connect)
+        public void Initialize(string pluginName, string connect)
         {
             AddPlugin(pluginName, connect);
         }
@@ -90,7 +90,7 @@ namespace OpenSim.Framework.Communications.Cache
                         IAssetDataPlugin plug =
                             (IAssetDataPlugin) Activator.CreateInstance(pluginAssembly.GetType(pluginType.ToString()));
                         m_assetProvider = plug;
-                        m_assetProvider.Initialise(connect);
+                        m_assetProvider.Initialize(connect);
 
                         m_log.Info("[AssetStorage]: " +
                                    "Added " + m_assetProvider.Name + " " +

@@ -52,7 +52,7 @@ namespace OpenSim.Data.MySQL
 
         private MySqlConnection m_Connection = null;
 
-        public void Initialise(string connectionString)
+        public void Initialize(string connectionString)
         {
             m_ConnectionString = connectionString;
 

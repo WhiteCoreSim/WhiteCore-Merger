@@ -63,7 +63,7 @@ namespace OpenSim.Grid.GridServer.Modules
         { 
         }
 
-        public void Initialise(string opensimVersion, IRegionProfileService gridDBService, IGridServiceCore gridCore, GridConfig config)
+        public void Initialize(string opensimVersion, IRegionProfileService gridDBService, IGridServiceCore gridCore, GridConfig config)
         {
             //m_opensimVersion = opensimVersion;
             m_gridDBService = gridDBService;
@@ -75,7 +75,7 @@ namespace OpenSim.Grid.GridServer.Modules
             RegisterHandlers();
         }
 
-        public void PostInitialise()
+        public void PostInitialize()
         {
 
         }

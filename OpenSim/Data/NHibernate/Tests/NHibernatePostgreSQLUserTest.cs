@@ -53,7 +53,7 @@ namespace OpenSim.Data.NHibernate.Tests
             try 
             {
                 db = new NHibernateUserData();
-                db.Initialise(connect);
+                db.Initialize(connect);
                 database = ((NHibernateUserData)db).Manager;
             } 
             catch (Exception e)

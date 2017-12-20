@@ -2118,7 +2118,7 @@
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2007-03-27 04:29:04Z">
               <Issue>
                <Item>AgentInventory.AgentInventory()</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;AgentInventory.AgentInventory()&#xD;&#xA;AgentInventory.Initialise():Void</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;AgentInventory.AgentInventory()&#xD;&#xA;AgentInventory.Initialize():Void</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2154,12 +2154,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="Initialise():System.Void">
+           <Member Name="Initialize():System.Void">
             <Messages>
-             <Message Id="Initialise" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2007-03-27 04:29:04Z">
+             <Message Id="Initialize" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2007-03-27 04:29:04Z">
               <Issue Name="Member">
-               <Item>Initialise</Item>
-               <Item>AgentInventory.Initialise():Void</Item>
+               <Item>Initialize</Item>
+               <Item>AgentInventory.Initialize():Void</Item>
               </Issue>
              </Message>
             </Messages>
@@ -4069,12 +4069,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="Initialise():System.Void">
+           <Member Name="Initialize():System.Void">
             <Messages>
-             <Message Id="Initialise" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2007-03-27 04:29:04Z">
+             <Message Id="Initialize" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2007-03-27 04:29:04Z">
               <Issue Name="Member">
-               <Item>Initialise</Item>
-               <Item>Grid.Initialise():Void</Item>
+               <Item>Initialize</Item>
+               <Item>Grid.Initialize():Void</Item>
               </Issue>
              </Message>
             </Messages>

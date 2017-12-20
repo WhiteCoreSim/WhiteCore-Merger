@@ -103,7 +103,7 @@ namespace OpenSim.Region.CoreModules.World.Terrain.Tests
             Assert.That(doublesExport[0, 0] == Math.PI, "Export to double[,] array not working correctly.");
 
             x[0, 0] = 1.0;
-            float[] floatsExport = x.GetFloatsSerialised();
+            float[] floatsExport = x.GetFloatsSerialized();
             Assert.That(floatsExport[0] == 1.0f, "Export to float[] not working correctly.");
 
             x[0, 0] = 1.0;

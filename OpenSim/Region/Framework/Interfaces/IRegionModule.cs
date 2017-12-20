@@ -32,8 +32,8 @@ namespace OpenSim.Region.Framework.Interfaces
 {
     public interface IRegionModule
     {
-        void Initialise(Scene scene, IConfigSource source);
-        void PostInitialise();
+        void Initialize(Scene scene, IConfigSource source);
+        void PostInitialize();
         void Close();
         string Name { get; }
         bool IsSharedModule { get; }
