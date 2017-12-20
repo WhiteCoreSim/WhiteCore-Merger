@@ -1,0 +1,195 @@
+<!-- -*- xml -*- -->
+<!-- please leve the top comment for us emacs folks -->
+<property name="projectdir" value="opensim-0.5.5" />
+
+<target name="distdir">
+   <delete dir="${projectdir}" />
+   <copy todir="${projectdir}">
+       <fileset basedir=".">
+          <include name="ThirdPartyLicenses/**" />
+          <include name="CONTRIBUTORS.txt" />
+          <include name="README" />
+          <include name="OpenSim/**/*.cs" />
+          <include name="**/*.build" />
+          <include name="**/*.csproj" />
+          <include name="**/*.csproj.user" />
+          <include name="**/*.sln" />
+          <include name="bin/*.dll" />
+          <include name="bin/*.so" />
+          <include name="bin/*.config" />
+          <include name="bin/assets/**" />
+          <include name="bin/data/**" />
+          <include name="bin/OpenSim*xml" />
+          <!-- the next is to exclude built libs -->
+          <exclude name="bin/OpenSim.*dll" />
+          <include name="bin/OpenSim.ini" />
+          <include name="bin/defaultstripe.png" />
+       </fileset>
+   </copy>
+   <touch file="${projectdir}/bin/startup_commands.txt" />
+</target>
+
+<target name="test" depends="build">
+  <setenv name="MONO_THREADS_PER_CPU" value="100" />
+      <nunit2 failonerror="true" verbose="true">
+      <formatter type="Plain" />
+      <test>
+        <assemblies>
+          <include name="./bin/OpenSim.Framework.Tests.dll" />
+          <include name="./bin/OpenSim.Framework.Communications.Tests.dll"/>
+          <include name="./bin/OpenSim.Framework.Servers.Tests.dll" />
+          <include name="./bin/OpenSim.Region.ClientStack.LindenUDP.Tests.dll" />
+          <include name="./bin/OpenSim.Region.ScriptEngine.Tests.dll" />
+          <include name="./bin/OpenSim.Region.CoreModules.Tests.dll" />
+          <include name="./bin/OpenSim.Region.Framework.Tests.dll" />
+          <include name="./bin/OpenSim.Data.SQLite.Tests.dll" />
+          <include name="./bin/OpenSim.Data.MySQL.Tests.dll" />
+        </assemblies>
+      </test>
+    </nunit2>
+</target>
+
+<target name="test-cov" depends="build">
+    <!-- Code Coverage Test. Prototype, only works with mono 1.2. Instructions in http://opensimulator.org/wiki/Automated_Testing -->
+    <mkdir dir="cov" failonerror="false" />
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Framework.Servers.cov,+[OpenSim.Framework.Servers]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Framework.Servers.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Framework.Servers" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Framework.Servers ./cov/OpenSim.Framework.Servers.cov" />
+    </exec>
+
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Framework.Communications.cov,+[OpenSim.Framework.Communications]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Framework.Communications.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Framework.Communications" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Framework.Servers ./cov/OpenSim.Framework.Communications.cov" />
+    </exec>
+    
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Region.ClientStack.LindenUDP.cov,+[OpenSim.Region.ClientStack.LindenUDP]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+     <arg value="./bin/OpenSim.Region.ClientStack.LindenUDP.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Region.ClientStack.LindenUDP" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Region.ClientStack.LindenUDP ./cov/OpenSim.Region.ClientStack.LindenUDP.cov" />
+    </exec>
+    
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Region.ScriptEngine.Shared.cov,+[OpenSim.Region.ScriptEngine.Shared]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Region.ScriptEngine.Shared.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Region.ScriptEngine.Shared" />
+    <exec program="monocov">      
+      <arg value="--export-html=./cov/OpenSim.Region.ScriptEngine.Shared ./cov/OpenSim.Region.ScriptEngine.Shared.cov" />
+    </exec>    
+    
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Region.ScriptEngine.Shared.CodeTools.cov,+[OpenSim.Region.ScriptEngine.Shared.CodeTools]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Region.ScriptEngine.Shared.CodeTools.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Region.ScriptEngine.Shared.CodeTools" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Region.ScriptEngine.Shared.CodeTools ./cov/OpenSim.Region.ScriptEngine.Shared.CodeTools.cov" />
+    </exec>    
+    
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Region.CoreModules.cov,+[OpenSim.Region.CoreModules]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Region.CoreModules.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Region.CoreModules" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Region.CoreModules ./cov/OpenSim.Region.CoreModules.cov" />
+    </exec>    
+
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Region.Framework.cov,+[OpenSim.Region.Framework]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Region.Framework.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Region.Framework" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Region.Framework ./cov/OpenSim.Region.Framework.cov" />
+    </exec>    
+    
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Data.SQLite.cov,+[OpenSim.Data.SQLite]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Data.SQLite.Tests.dll" />
+    </exec>
+    <delete dir="./cov/OpenSim.Data.SQLite" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Data.SQLite ./cov/OpenSim.Data.SQLite.cov" />
+    </exec>    
+    
+    <exec program="mono">
+      <arg value="--debug" />
+      <arg value="--profile=monocov:outfile=./cov/OpenSim.Data.MySQL.cov,+[OpenSim.Data.MySQL.Tests]" />
+      <arg value="/usr/lib/nunit/nunit-console.exe" />
+      <arg value="./bin/OpenSim.Data.MySQL.Tests.dll" />
+    </exec>  
+    <delete dir="./cov/OpenSim.Data.MySQL" />
+    <exec program="monocov">
+      <arg value="--export-html=./cov/OpenSim.Data.MySQL ./cov/OpenSim.Data.MySQL.cov" />
+    </exec>     
+
+    <delete file="C:\NUnitPrimaryTrace.txt" failonerror="false" />
+    <delete file="TestResult.xml" failonerror="false" />
+
+</target>
+
+
+<target name="test-xml" depends="build">
+      <nunit2 failonerror="true" verbose="true">
+      <formatter type="Xml" usefile="true" extension=".xml" outputdir="./test-results" />
+      <test>
+        <assemblies>
+          <include name="./bin/OpenSim.Framework.Tests.dll" />
+          <include name="./bin/OpenSim.Framework.Communications.Tests.dll"/>
+          <include name="./bin/OpenSim.Framework.Servers.Tests.dll" />
+          <include name="./bin/OpenSim.Region.ClientStack.LindenUDP.Tests.dll" />
+          <include name="./bin/OpenSim.Region.ScriptEngine.Tests.dll" />
+          <include name="./bin/OpenSim.Region.CoreModules.Tests.dll" />
+          <include name="./bin/OpenSim.Region.Framework.Tests.dll" />
+          <include name="./bin/OpenSim.Data.SQLite.Tests.dll" />
+          <include name="./bin/OpenSim.Data.MySQL.Tests.dll" />
+        </assemblies>
+      </test>
+    </nunit2>
+</target>
+
+<target name="doxygen">
+  <exec program="doxygen" workingdir="doc" commandline="doxygen.conf" />
+</target>
+
+
+<target name="dist" depends="distdir">
+    <zip zipfile="${projectdir}.zip">
+    <fileset basedir=".">
+        <include name="${projectdir}/**" />
+    </fileset>
+    </zip>
+    <tar destfile="${projectdir}.tar.gz" compression="GZip">
+    <fileset basedir=".">
+        <include name="${projectdir}/**" />
+    </fileset>
+    </tar>
+</target>
